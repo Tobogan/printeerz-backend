@@ -1,6 +1,5 @@
 @extends('layouts/templateFront')
 
-
 @section('content')
 
 <div class="container">

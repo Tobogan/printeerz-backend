@@ -11,9 +11,12 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">HEloo JO</div>
+    <div id="app_front"></div>
+    {{-- <div id="example"></div> --}}
+    {{-- <a href="{{ url('/home') }}">Home</a> --}}
+
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/App1.js') }}"></script>
+
 </body>
 </html>

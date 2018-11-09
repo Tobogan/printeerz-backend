@@ -74,8 +74,6 @@
     
 
         <div class="flex-center position-ref full-height">
-
-
             <div class="content">
                 <div class="title m-b-md">
                     PRINTEERZ
@@ -86,7 +84,7 @@
                             <a href="{{ url('/home') }}">Home</a>
                             <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="uik-nav-link-2__wrapper active uik-nav-link-2__highlighted" ><span class="uik-nav-link-2__text "><span class="uik-nav-link-2__icon"></span>Déconnexion</span></a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                        </form></div>                   
+                                        </form></div>
                     @else
                             <a href="{{ route('login') }}">Connexion</a>
                         @endauth

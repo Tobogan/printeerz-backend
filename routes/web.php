@@ -12,7 +12,7 @@
 */
 
 
-// Route::view('/{path?}', 'app');
+Route::view('/front/{path?}', 'app');
 
 Auth::routes();
 
@@ -153,8 +153,4 @@ Route::delete('comment/delete/{id}', 'CommentController@destroy')->name('destroy
 
 /*~~~~~~~~~~~___________Front Route__________~~~~~~~~~~~~*/
 
-// Route::get('front/show/{id}', 'FrontController@show')->name('show_front');
-
-Route::post('comment/add', 'CommentController@addComment');
-
-Route::delete('comment/delete/{id}', 'CommentController@destroy')->name('destroy_comment');
+Route::get('front/{id}', 'FrontController@show')->name('show_front');

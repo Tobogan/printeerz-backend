@@ -13,9 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Route::get('/front/show/{id}', 'FrontController@show')->name('show_front');
+Route::get('front/{id}', 'FrontController@show')->name('show_front');
+
+// Route::get('/home', 'HomeController@home')->name('home');
 
