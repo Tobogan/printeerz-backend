@@ -89,7 +89,7 @@
                         <tbody class="list">
                             @foreach ($products as $product)
                             <tr>
-                                <td class="product-sku"><a href="{{route('show_product', $product->id)}}">{{ $product->reference }}</a></td>
+                                <td class="product-sku"><a href="{{route('show_product', $product->id)}}"><b>{{ $product->reference }}</b></a></td>
                                 <td class="product-name">{{ $product->nom }}</td>
                                 @if ($product->sexe == 'Homme')
                                 <td class="product-sexe"> Homme </td>

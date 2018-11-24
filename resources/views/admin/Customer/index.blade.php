@@ -99,7 +99,7 @@
                         <tbody class="list">
                                 @foreach ($customers as $customer)
                                 <tr>
-                                    <td class="customer-name"><a href="{{route('show_customer', $customer->id)}}">{{ $customer->denomination }}</a></td>
+                                    <td class="customer-name"><a href="{{route('show_customer', $customer->id)}}"><b>{{ $customer->denomination }}</b></a></td>
                                     <td class="customer-contact-name">{{ $customer->contact_prenom . ' ' . $customer->contact_nom }}</td>
                                     <td class="customer-address">{{ $customer->adresse }}</td>
                                     <td class="customer-postal">{{ $customer->code_postal }}</td>

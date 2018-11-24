@@ -64,11 +64,6 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="#" class="text-muted">
-                                        
-                                    </a>
-                                </th>
-                                <th>
                                     <a href="#" class="text-muted sort" data-sort="event-name">
                                         Nom
                                     </a>
@@ -104,25 +99,8 @@
                         <tbody class="list">
                             @foreach ($events as $event)
                             <tr>
-                                @if($event->logoName)
-                                <td class="event-avatar">
-                                    <a class="avatar avatar d-inline-block" href="{{route('show_event', $event->id)}}">
-                                        @if (file_exists(public_path().'/uploads/'.$event->logoName))
-                                        <img src="/uploads/{{$event->logoName}}" class="miniRoundedImage avatar-img rounded"
-                                            alt="img_event">
-                                        @else
-                                        <div class="avatar-sm">
-                                            <span class="avatar-title rounded">{{ ucfirst($event->annonceur) }}</span>
-                                        </div>
-                                        @endif
-                                    </a>
-                                </td>
-                                @else
-                                <td class="event-avatar">
-                                    <img src="/uploads/no_image.jpg" class="miniRoundedImage" alt="img_event"></td>
-                                @endif
                                 <td class="event-name">
-                                    <a href="{{route('show_event', $event->id)}}">{{ $event->nom }}</a>
+                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->nom }}</b></a>
                                 </td>
                                 <td class="event-annonceur">{{ $event->annonceur }}</td>
 
