@@ -88,11 +88,40 @@ today = mm + '/' + dd + '/' + yyyy;
             contentType: false,
             processData: false,
             success: function(data){
-                $('#select_color1').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
+                $('#select_color').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
                 $('#select_color2').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
                 $('#select_color3').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
                 console.log(data.couleur)
             }
         });
     });
+
+    // $('#btn_color_variant').live('click', function(e) {
+    //     e.preventDefault(); 
+    //     var couleur_id = $('#variants').val();
+    //     $.ajax({
+    //         type: "GET",
+    //         url: '/admin/Couleur/show/'+couleur_id,
+    //         success: function(data){
+    //             $('#variant_colors').append('<input class="form-check-input" type="checkbox" value="'+data.id+'" id="variant"><label class="form-check-label" for="defaultCheck2">'+data.nom+'</label> <img src="/uploads/'+data.pantoneName+'" class="miniRoundedImage" alt="pantone" ><div class="form-check"> </div>');
+                
+    //         }
+    //     });
+    // });
+
+
 });
+
+// $('#product_id').on('change', function(e){
+//     var product_id = e.target.value;
+//     var couleurs = $('#couleurs').val();
+//     $.get('/select_product?product_id='+product_id, function(data){
+//         $('#variant_colors').empty();
+//         $('#btn_color').empty();
+//         $('#btn_color').append('<button type="button" class="btn btn-primary btn-sm mb-2" id="btn_color_variant">Sélectionner les couleurs</button>');
+//         $.each(data, function(index, variant){
+//             $('#variant_colors').append('<div class="form-check"><input class="form-check-input" type="checkbox" value="'+variant.couleur_id+'" id="variants"><label class="form-check-label" for="defaultCheck2">'+variant.couleur_id+'</label></div>');
+//             $('#variant_color_id').append('<input type="hidden" id="variants" name="variants" value="'+variant.couleur_id+'">');
+//         });
+//     });
+// });

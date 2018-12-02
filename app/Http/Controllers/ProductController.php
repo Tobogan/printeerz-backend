@@ -9,6 +9,7 @@ use App\Zone;
 use App\Couleur;
 use App\ImageZone;
 use App\Gabarit;
+use App\ProductVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -44,13 +45,12 @@ class ProductController extends Controller
     public function create()
     {
         $products = Product::all();
-        $zones = Zone::all();
         $couleurs = Couleur::all();
         $select_couleurs = [];
         foreach($couleurs as $couleur){
             $select_couleurs[$couleur->id] = $couleur->nom;
         }
-        return view('admin/Product.add', ['products' => $products, 'zones' => $zones, 'select_couleurs' => $select_couleurs]);
+        return view('admin/Product.add', ['products' => $products, 'select_couleurs' => $select_couleurs]);
     }
 
     /**
@@ -64,8 +64,8 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'nom' => 'required|string|max:255',
             'reference' => 'required|string|max:255',
-            'description' => 'max:750',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'description' => 'max:750'
+            // 'photo_illustration' => 'photo_illustration|mimes:jpeg,png,jpg,gif,svg|max:2048'
 
         ]);
         $product = new Product;
@@ -74,31 +74,22 @@ class ProductController extends Controller
         $product->reference = $request->reference;
         $product->description = $request->description;
         $product->sexe = $request->sexe;
-
         $product->save();
         $product->tailles()->sync($request->get('tailles_list'));
-        $product->couleurs()->sync($request->get('couleurs_list'));
-        $product->zones()->sync($request->get('zones_list'));
 
-        /*~~~~~~~~~~~___________REQUEST ZONES__________~~~~~~~~~~~~*/
-        if($request->color_FAV)
-        $product->color_FAV = 1;
-        if($request->color_coeur)
-        $product->color_coeur = 1;
-        if($request->color_FAR)
-        $product->color_FAR = 1;
+        /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
+        if ($request->hasFile('photo_illustration')){
+            $photo_illustration = time().'.'.request()->photo_illustration->getClientOriginalExtension();
+            request()->photo_illustration->move(public_path('uploads'), $photo_illustration);
 
-        /*~~~~~~~~~~~___________IMAGE PRINCIPALE__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
-
-            $product->imageName = $imageName;
+            $product->photo_illustration = $photo_illustration;
         }
-
         $product->save();
-        return redirect('admin/Product/index')->with('status', 'Produit ajouté');
+        // $product = Product::find($id);
+        $productVariants = ProductVariants::all();
+        return view('admin/Product.show',['productVariants' => $productVariants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
     }
+    
 
     /**
      * Display the specified resource.
@@ -109,9 +100,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
+        $productVariants = ProductVariants::all();
         $couleurs = Couleur::all();
         
-        return view('admin/Product.show', ['product' => $product, 'couleurs' => $couleurs]);
+        return view('admin/Product.show', ['product' => $product, 'couleurs' => $couleurs, 'productVariants' => $productVariants]);
     }
 
     /**
@@ -130,12 +122,8 @@ class ProductController extends Controller
         foreach($couleurs as $couleur){
             $select_couleurs[$couleur->id] = $couleur->nom;
         }
-        $gabarits = Gabarit::all();
-        $select_gabarits = [];
-        foreach($gabarits as $gabarit){
-            $select_gabarits[$gabarit->id] = $gabarit->nom;
-        }
-        return view('admin/Product.edit', ['product' => $product, 'zones' => $zones, 'couleurs' => $couleurs, 'select_couleurs' => $select_couleurs, 'select_gabarits' => $select_gabarits]);
+
+        return view('admin/Product.edit', ['product' => $product, 'zones' => $zones, 'couleurs' => $couleurs, 'select_couleurs' => $select_couleurs]);
     }
 
     /**
@@ -156,71 +144,37 @@ class ProductController extends Controller
             $id = $request->id;
             $product = Product::find($id);
             $product->nom = $request->nom;
-        $product->reference = $request->reference;
-        $product->description = $request->description;
-        $product->sexe = $request->sexe;
+            $product->reference = $request->reference;
+            $product->description = $request->description;
+            $product->sexe = $request->sexe;
 
-        $product->save();
-        $product->tailles()->sync($request->get('tailles_list'));
-        $product->couleurs()->sync($request->get('couleurs_list'));
-        $product->zones()->sync($request->get('zones_list'));
+            $product->save();
+            $product->tailles()->sync($request->get('tailles_list'));
 
-        /*~~~~~~~~~~~___________REQUEST ZONES__________~~~~~~~~~~~~*/
-        if($request->color_FAV)
-        $product->color_FAV = 1;
-        if($request->color_coeur)
-        $product->color_coeur = 1;
-        if($request->color_FAR)
-        $product->color_FAR = 1;
+            $product->save();
+            }        
+            else{
+                $validatedData = $request->validate([
+                    'nom' => 'required|string|max:255',
+                    'reference' => 'required|string|max:255',
+                    'description' => 'max:750'
+                ]);
+        
+                $id = $request->id;
+                
+                $product = Product::find($id);
+                $product->nom = $request->nom;
+            $product->reference = $request->reference;
+            $product->description = $request->description;
+            $product->sexe = $request->sexe;
 
-        /*~~~~~~~~~~~___________IMAGE PRINCIPALE__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
+            $product->save();
+            $product->tailles()->sync($request->get('tailles_list'));
+            $product->couleurs()->sync($request->get('couleurs_list'));
+            $product->zones()->sync($request->get('zones_list'));
 
-            $product->imageName = $imageName;
+            $product->save();
         }
-
-        $product->save();
-        }        
-        else{
-            $validatedData = $request->validate([
-                'nom' => 'required|string|max:255',
-                'reference' => 'required|string|max:255',
-                'description' => 'max:750'
-            ]);
-    
-            $id = $request->id;
-            
-            $product = Product::find($id);
-            $product->nom = $request->nom;
-        $product->reference = $request->reference;
-        $product->description = $request->description;
-        $product->sexe = $request->sexe;
-
-        $product->save();
-        $product->tailles()->sync($request->get('tailles_list'));
-        $product->couleurs()->sync($request->get('couleurs_list'));
-        $product->zones()->sync($request->get('zones_list'));
-
-        /*~~~~~~~~~~~___________REQUEST ZONES__________~~~~~~~~~~~~*/
-        if($request->color_FAV)
-        $product->color_FAV = 1;
-        if($request->color_coeur)
-        $product->color_coeur = 1;
-        if($request->color_FAR)
-        $product->color_FAR = 1;
-
-        /*~~~~~~~~~~~___________IMAGE PRINCIPALE__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
-
-            $product->imageName = $imageName;
-        }
-
-        $product->save();
-    }
         return redirect('admin/Product/index')->with('status', 'Le produit a été correctement modifié.');
     }
 

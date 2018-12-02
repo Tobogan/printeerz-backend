@@ -104,10 +104,14 @@
                         $edit = 'edit';
                         $show = 'show';
                         $home = 'home';
+                        $store = 'store';
+                        $destroy = 'destroy';
                         $pos = strpos($mystring, $create); 
                         $pos1 = strpos($mystring, $edit); 
                         $pos2 = strpos($mystring, $show); 
                         $pos3 = strpos($mystring, $home); 
+                        $pos4 = strpos($mystring, $store); 
+                        $pos5 = strpos($mystring, $destroy); 
                         ?>
                         
                         @if($pos == true)
@@ -118,6 +122,10 @@
                             <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détails</h2></div>
                         @elseif($pos3 == true)
                             <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Dashboard</h2></div>
+                        @elseif($pos4 == true)
+                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Ajout</h2></div>
+                        @elseif($pos5 == true)
+                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détail</h2></div>
                         @endif
 
 

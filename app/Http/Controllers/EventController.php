@@ -11,6 +11,7 @@ use App\ImageZone;
 use App\Couleur;
 use App\Gabarit;
 use App\User;
+use App\ProductVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -47,40 +48,30 @@ class EventController extends Controller
         }
         $products = Product::all();
         $select_products = [];
-        foreach($products as $product){
-            if(($product->color_FAV == 1) && ($product->color_coeur == 1 ) && ($product->color_FAR == 1)){
-                $select_products[$product->id] = $product->nom . ' (Face avant, Coeur, Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 1 && $product->color_coeur == 0 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Face avant) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 1 && $product->color_coeur == 1 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Face avant, Coeur) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 1 && $product->color_FAR == 1){
-                $select_products[$product->id] = $product->nom . ' (Coeur, Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 0 && $product->color_FAR == 1){
-                $select_products[$product->id] = $product->nom . ' (Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 1 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Coeur) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 0 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Aucune zone) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-        }
-        $gabarits = Gabarit::all();
-        $select_gabarits = [];
-        foreach($gabarits as $gabarit){
-            $select_gabarits[$gabarit->id] = $gabarit->nom;
+        foreach($products as $product){          
+                $select_products[$product->id] = $product->nom;
         }
         $couleurs = Couleur::all();
         $select_couleurs = [];
         foreach($couleurs as $couleur){
             $select_couleurs[$couleur->id] = $couleur->nom;
         }
-        return view('admin/Event.add', ['select' => $select, 'select_couleurs' => $select_couleurs, 'select_gabarits' => $select_gabarits, 'select_products' => $select_products, 'products' => $products]);
+        $productVariants = ProductVariants::all();
+    
+        return view('admin/Event.add', ['couleurs'=> $couleurs, 'productVariants' => $productVariants, 'select' => $select, 'select_couleurs' => $select_couleurs, 'select_products' => $select_products, 'products' => $products]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajax(){
+        $prod_id = Input::get('product_id');
+
+        $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
+
+        return Response::json($productVariants);
     }
 
     /**
@@ -100,34 +91,26 @@ class EventController extends Controller
         ]);
 
         $event = new Event;
+        // foreach ($ids as $id) {
+
+        //     $productVariants = ProductVariants::findOrfail($id);
+        //     $productVariants->present = true;
+        //     $productVariants->save;
+        
+        // }
+
         $event->nom = $request->nom;
         $event->annonceur = $request->annonceur;
         $event->customer_id = $request->customer_id;
         $event->save();
         $event->product_id = $request->product_id;
         $event->users()->sync($request->get('users_list'));
+        $event->productVariants()->sync($request->get('variant_id'));
         $event->lieu = $request->lieu;
         $event->type = $request->type;
         $event->date = $request->date;
         $event->description = $request->description;
 
-/*~~~~~~~~~~~___________NOMS DE COULEURS__________~~~~~~~~~~~~*/
-        $event->color1 = $request->color1;
-        $event->color2 = $request->color2;
-        $event->color3 = $request->color3;
-
-/*~~~~~~~~~~~___________NUMERO DU GABARIT__________~~~~~~~~~~~~*/
-        $event->color1_FAV_gabarit = $request->color1_FAV_gabarit;
-        $event->color2_FAV_gabarit = $request->color2_FAV_gabarit;
-        $event->color3_FAV_gabarit = $request->color3_FAV_gabarit;
-
-        $event->color1_FAR_gabarit = $request->color1_FAR_gabarit;
-        $event->color2_FAR_gabarit = $request->color2_FAR_gabarit;
-        $event->color3_FAR_gabarit = $request->color3_FAR_gabarit;
-
-        $event->color1_coeur_gabarit = $request->color1_coeur_gabarit;
-        $event->color2_coeur_gabarit = $request->color2_coeur_gabarit;
-        $event->color3_coeur_gabarit = $request->color3_coeur_gabarit;
         $event->save();
 
 /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
@@ -138,34 +121,6 @@ class EventController extends Controller
             $event->logoName = $logoName;
         } 
 
-        if ($request->hasFile('image1')){
-            $imageName1 = time().'1.'.request()->image1->getClientOriginalExtension();           
-            request()->image1->move(public_path('uploads'), $imageName1);
-
-            $event->imageName1 = $imageName1;
-        } 
-
-        if ($request->hasFile('image2')){
-            $imageName2 = time().'2.'.request()->image2->getClientOriginalExtension();           
-            request()->image2->move(public_path('uploads'), $imageName2);
-
-            $event->imageName2 = $imageName2;
-        } 
-
-        if ($request->hasFile('image3')){
-            $accueil_imageName = time().'3.'.request()->image3->getClientOriginalExtension();           
-            request()->image3->move(public_path('uploads'), $accueil_imageName);
-
-            $event->accueil_imageName = $accueil_imageName;
-        } 
-
-        if ($request->hasFile('image4')){
-            $veille_imageName = time().'4.'.request()->image4->getClientOriginalExtension();           
-            request()->image4->move(public_path('uploads'), $veille_imageName);
-
-            $event->veille_imageName = $veille_imageName;
-        } 
-
         if ($request->hasFile('BAT')){
             $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
             request()->BAT->move(public_path('uploads'), $BAT_name);
@@ -173,98 +128,12 @@ class EventController extends Controller
             $event->BAT_name = $BAT_name;
         } 
 
-/*~~~~~~~~~~~___________REQUEST ZONE FAV__________~~~~~~~~~~~~*/
-        if($request->color1_FAV)
-            $event->color1_FAV = 1;
-        if($request->color2_FAV)
-            $event->color2_FAV = 1;
-        if($request->color3_FAV)
-            $event->color3_FAV = 1;
 
-/*~~~~~~~~~~~___________REQUEST ZONE FAR__________~~~~~~~~~~~~*/
-        if($request->color1_FAR)
-            $event->color1_FAR = 1;
-        if($request->color2_FAR)
-            $event->color2_FAR = 1;
-        if($request->color3_FAR)
-            $event->color3_FAR = 1;
 
-/*~~~~~~~~~~~___________REQUEST ZONE COEUR__________~~~~~~~~~~~~*/
-        if($request->color1_coeur)
-            $event->color1_coeur = 1;
-        if($request->color2_coeur)
-            $event->color2_coeur = 1;
-        if($request->color3_coeur)
-            $event->color3_coeur = 1;
 
-/*~~~~~~~~~~~___________IMAGES COLOR1__________~~~~~~~~~~~~*/
-        if ($request->hasFile('color1_coeur_image')){
-            $color1_coeur_imageName = time().'1.'.request()->color1_coeur_image->getClientOriginalExtension();           
-            request()->color1_coeur_image->move(public_path('uploads'), $color1_coeur_imageName);
-
-            $event->color1_coeur_imageName = $color1_coeur_imageName;
-        }
-
-        if ($request->hasFile('color1_FAV_image')){
-            $color1_FAV_imageName = time().'2.'.request()->color1_FAV_image->getClientOriginalExtension();           
-            request()->color1_FAV_image->move(public_path('uploads'), $color1_FAV_imageName);
-
-            $event->color1_FAV_imageName = $color1_FAV_imageName;
-        }
-
-        if ($request->hasFile('color1_FAR_image')){
-            $color1_FAR_imageName = time().'3.'.request()->color1_FAR_image->getClientOriginalExtension();           
-            request()->color1_FAR_image->move(public_path('uploads'), $color1_FAR_imageName);
-
-            $event->color1_FAR_imageName = $color1_FAR_imageName;
-        }
-
-/*~~~~~~~~~~~___________IMAGES COLOR2__________~~~~~~~~~~~~*/
-        if ($request->hasFile('color2_coeur_image')){
-            $color2_coeur_imageName = time().'4.'.request()->color2_coeur_image->getClientOriginalExtension();           
-            request()->color2_coeur_image->move(public_path('uploads'), $color2_coeur_imageName);
-
-            $event->color2_coeur_imageName = $color2_coeur_imageName;
-        }
-
-        if ($request->hasFile('color2_FAV_image')){
-            $color2_FAV_imageName = time().'5.'.request()->color2_FAV_image->getClientOriginalExtension();           
-            request()->color2_FAV_image->move(public_path('uploads'), $color2_FAV_imageName);
-
-            $event->color2_FAV_imageName = $color2_FAV_imageName;
-        }
-
-        if ($request->hasFile('color2_FAR_image')){
-            $color2_FAR_imageName = time().'6.'.request()->color2_FAR_image->getClientOriginalExtension();           
-            request()->color2_FAR_image->move(public_path('uploads'), $color2_FAR_imageName);
-
-            $event->color2_FAR_imageName = $color2_FAR_imageName;
-        }
-
-/*~~~~~~~~~~~___________IMAGES COLOR3__________~~~~~~~~~~~~*/
-        if ($request->hasFile('color3_coeur_image')){
-            $color3_coeur_imageName = time().'7.'.request()->color3_coeur_image->getClientOriginalExtension();           
-            request()->color3_coeur_image->move(public_path('uploads'), $color3_coeur_imageName);
-
-            $event->color3_coeur_imageName = $color3_coeur_imageName;
-        }
-
-        if ($request->hasFile('color3_FAV_image')){
-            $color3_FAV_imageName = time().'8.'.request()->color3_FAV_image->getClientOriginalExtension();           
-            request()->color3_FAV_image->move(public_path('uploads'), $color3_FAV_imageName);
-
-            $event->color3_FAV_imageName = $color3_FAV_imageName;
-        }
-
-        if ($request->hasFile('color3_FAR_image')){
-            $color3_FAR_imageName = time().'9.'.request()->color3_FAR_image->getClientOriginalExtension();           
-            request()->color3_FAR_image->move(public_path('uploads'), $color3_FAR_imageName);
-
-            $event->color3_FAR_imageName = $color3_FAR_imageName;
-        }
 
         $event->save();
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
     }
 
     /**
@@ -297,29 +166,10 @@ class EventController extends Controller
         foreach($customers as $customer){
             $select[$customer->id] = $customer->denomination;
         }
+        $products = Product::all();
         $select_products = [];
-        foreach($products as $product){
-            if(($product->color_FAV == 1) && ($product->color_coeur == 1 ) && ($product->color_FAR == 1)){
-                $select_products[$product->id] = $product->nom . ' (Face avant, Coeur, Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 1 && $product->color_coeur == 0 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Face avant) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 1 && $product->color_coeur == 1 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Face avant, Coeur) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 1 && $product->color_FAR == 1){
-                $select_products[$product->id] = $product->nom . ' (Coeur, Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 0 && $product->color_FAR == 1){
-                $select_products[$product->id] = $product->nom . ' (Face arrière) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 1 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Coeur) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
-            if($product->color_FAV == 0 && $product->color_coeur == 0 && $product->color_FAR == 0){
-                $select_products[$product->id] = $product->nom . ' (Aucune zone) - ' . implode(', ', $product->couleurs->pluck('nom')->toArray());
-            }
+        foreach($products as $product){          
+                $select_products[$product->id] = $product->nom;
         }
         $gabarits = Gabarit::all();
         $select_gabarits = [];
@@ -365,21 +215,7 @@ class EventController extends Controller
             $event->date = $request->date;
             $event->description = $request->description;
 
-            $event->color1 = $request->color1;
-            $event->color2 = $request->color2;
-            $event->color3 = $request->color3;
-
-            $event->color1_FAV_gabarit = $request->color1_FAV_gabarit;
-            $event->color2_FAV_gabarit = $request->color2_FAV_gabarit;
-            $event->color3_FAV_gabarit = $request->color3_FAV_gabarit;
-
-            $event->color1_FAR_gabarit = $request->color1_FAR_gabarit;
-            $event->color2_FAR_gabarit = $request->color2_FAR_gabarit;
-            $event->color3_FAR_gabarit = $request->color3_FAR_gabarit;
-
-            $event->color1_coeur_gabarit = $request->color1_coeur_gabarit;
-            $event->color2_coeur_gabarit = $request->color2_coeur_gabarit;
-            $event->color3_coeur_gabarit = $request->color3_coeur_gabarit;
+            
             $event->save();
 
             if ($request->hasFile('image')){
@@ -388,110 +224,11 @@ class EventController extends Controller
                 $event->logoName = $logoName;
             } 
 
-            if ($request->hasFile('image1')){
-                $imageName1 = time().'1.'.request()->image1->getClientOriginalExtension();           
-                request()->image1->move(public_path('uploads'), $imageName1);
-                $event->imageName1 = $imageName1;
-            } 
-
-            if ($request->hasFile('image2')){
-                $imageName2 = time().'2.'.request()->image2->getClientOriginalExtension();           
-                request()->image2->move(public_path('uploads'), $imageName2);
-                $event->imageName2 = $imageName2;
-            } 
-
-            if ($request->hasFile('image3')){
-                $accueil_imageName = time().'3.'.request()->image3->getClientOriginalExtension();           
-                request()->image3->move(public_path('uploads'), $accueil_imageName);
-                $event->accueil_imageName = $accueil_imageName;
-            } 
-
-            if ($request->hasFile('image4')){
-                $veille_imageName = time().'4.'.request()->image4->getClientOriginalExtension();           
-                request()->image4->move(public_path('uploads'), $veille_imageName);
-                $event->veille_imageName = $veille_imageName;
-            } 
-
             if ($request->hasFile('BAT')){
                 $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
                 request()->BAT->move(public_path('uploads'), $BAT_name);
                 $event->BAT_name = $BAT_name;
             } 
-
-            /*~~~~~~~~~~~___________REQUEST ZONE FAV__________~~~~~~~~~~~~*/
-            if($request->color1_FAV)
-                $event->color1_FAV = 1;
-            if($request->color2_FAV)
-                $event->color2_FAV = 1;
-            if($request->color3_FAV)
-                $event->color3_FAV = 1;
-
-            /*~~~~~~~~~~~___________REQUEST ZONE FAR__________~~~~~~~~~~~~*/
-            if($request->color1_FAR)
-                $event->color1_FAR = 1;
-            if($request->color2_FAR)
-                $event->color2_FAR = 1;
-            if($request->color3_FAR)
-                $event->color3_FAR = 1;
-
-            /*~~~~~~~~~~~___________REQUEST ZONE COEUR__________~~~~~~~~~~~~*/
-            if($request->color1_coeur)
-                $event->color1_coeur = 1;
-            if($request->color2_coeur)
-                $event->color2_coeur = 1;
-            if($request->color3_coeur)
-                $event->color3_coeur = 1;
-
-            /*~~~~~~~~~~~___________Image color1__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color1_coeur_image')){
-                $color1_coeur_imageName = time().'1.'.request()->color1_coeur_image->getClientOriginalExtension();           
-                request()->color1_coeur_image->move(public_path('uploads'), $color1_coeur_imageName);
-                $event->color1_coeur_imageName = $color1_coeur_imageName;
-            }
-            if ($request->hasFile('color1_FAV_image')){
-                $color1_FAV_imageName = time().'2.'.request()->color1_FAV_image->getClientOriginalExtension();           
-                request()->color1_FAV_image->move(public_path('uploads'), $color1_FAV_imageName);
-                $event->color1_FAV_imageName = $color1_FAV_imageName;
-            }
-            if ($request->hasFile('color1_FAR_image')){
-                $color1_FAR_imageName = time().'3.'.request()->color1_FAR_image->getClientOriginalExtension();           
-                request()->color1_FAR_image->move(public_path('uploads'), $color1_FAR_imageName);
-                $event->color1_FAR_imageName = $color1_FAR_imageName;
-            }
-
-            /*~~~~~~~~~~~___________Images color2__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color2_coeur_image')){
-                $color2_coeur_imageName = time().'4.'.request()->color2_coeur_image->getClientOriginalExtension();           
-                request()->color2_coeur_image->move(public_path('uploads'), $color2_coeur_imageName);
-                $event->color2_coeur_imageName = $color2_coeur_imageName;
-            }
-            if ($request->hasFile('color2_FAV_image')){
-                $color2_FAV_imageName = time().'5.'.request()->color2_FAV_image->getClientOriginalExtension();           
-                request()->color2_FAV_image->move(public_path('uploads'), $color2_FAV_imageName);
-                $event->color2_FAV_imageName = $color2_FAV_imageName;
-            }
-            if ($request->hasFile('color2_FAR_image')){
-                $color2_FAR_imageName = time().'6.'.request()->color2_FAR_image->getClientOriginalExtension();           
-                request()->color2_FAR_image->move(public_path('uploads'), $color2_FAR_imageName);
-                $event->color2_FAR_imageName = $color2_FAR_imageName;
-            }
-
-            /*~~~~~~~~~~~___________Images color3__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color3_coeur_image')){
-                $color3_coeur_imageName = time().'7.'.request()->color3_coeur_image->getClientOriginalExtension();           
-                request()->color3_coeur_image->move(public_path('uploads'), $color3_coeur_imageName);
-                $event->color3_coeur_imageName = $color3_coeur_imageName;
-            }
-            if ($request->hasFile('color3_FAV_image')){
-                $color3_FAV_imageName = time().'8.'.request()->color3_FAV_image->getClientOriginalExtension();           
-                request()->color3_FAV_image->move(public_path('uploads'), $color3_FAV_imageName);
-                $event->color3_FAV_imageName = $color3_FAV_imageName;
-            }
-            if ($request->hasFile('color3_FAR_image')){
-                $color3_FAR_imageName = time().'9.'.request()->color3_FAR_image->getClientOriginalExtension();           
-                request()->color3_FAR_image->move(public_path('uploads'), $color3_FAR_imageName);
-                $event->color3_FAR_imageName = $color3_FAR_imageName;
-            }
 
         $event->save();
         }        
@@ -503,7 +240,6 @@ class EventController extends Controller
                 'lieu' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
-
             $id = $request->id;
             $event = Event::find($id);
 
@@ -518,21 +254,7 @@ class EventController extends Controller
             $event->date = $request->date;
             $event->description = $request->description;
 
-            $event->color1 = $request->color1;
-            $event->color2 = $request->color2;
-            $event->color3 = $request->color3;
-
-            $event->color1_FAV_gabarit = $request->color1_FAV_gabarit;
-            $event->color2_FAV_gabarit = $request->color2_FAV_gabarit;
-            $event->color3_FAV_gabarit = $request->color3_FAV_gabarit;
-
-            $event->color1_FAR_gabarit = $request->color1_FAR_gabarit;
-            $event->color2_FAR_gabarit = $request->color2_FAR_gabarit;
-            $event->color3_FAR_gabarit = $request->color3_FAR_gabarit;
-
-            $event->color1_coeur_gabarit = $request->color1_coeur_gabarit;
-            $event->color2_coeur_gabarit = $request->color2_coeur_gabarit;
-            $event->color3_coeur_gabarit = $request->color3_coeur_gabarit;
+            
             $event->save();
 
             if ($request->hasFile('image')){
@@ -541,110 +263,11 @@ class EventController extends Controller
                 $event->logoName = $logoName;
             } 
 
-            if ($request->hasFile('image1')){
-                $imageName1 = time().'1.'.request()->image1->getClientOriginalExtension();           
-                request()->image1->move(public_path('uploads'), $imageName1);
-                $event->imageName1 = $imageName1;
-            } 
-
-            if ($request->hasFile('image2')){
-                $imageName2 = time().'2.'.request()->image2->getClientOriginalExtension();           
-                request()->image2->move(public_path('uploads'), $imageName2);
-                $event->imageName2 = $imageName2;
-            } 
-
-            if ($request->hasFile('image3')){
-                $accueil_imageName = time().'3.'.request()->image3->getClientOriginalExtension();           
-                request()->image3->move(public_path('uploads'), $accueil_imageName);
-                $event->accueil_imageName = $accueil_imageName;
-            } 
-
-            if ($request->hasFile('image4')){
-                $veille_imageName = time().'4.'.request()->image4->getClientOriginalExtension();           
-                request()->image4->move(public_path('uploads'), $veille_imageName);
-                $event->veille_imageName = $veille_imageName;
-            } 
-
             if ($request->hasFile('BAT')){
                 $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
                 request()->BAT->move(public_path('uploads'), $BAT_name);
                 $event->BAT_name = $BAT_name;
             } 
-
-            /*~~~~~~~~~~~___________REQUEST ZONE FAV__________~~~~~~~~~~~~*/
-            if($request->color1_FAV)
-                $event->color1_FAV = 1;
-            if($request->color2_FAV)
-                $event->color2_FAV = 1;
-            if($request->color3_FAV)
-                $event->color3_FAV = 1;
-
-            /*~~~~~~~~~~~___________REQUEST ZONE FAR__________~~~~~~~~~~~~*/
-            if($request->color1_FAR)
-                $event->color1_FAR = 1;
-            if($request->color2_FAR)
-                $event->color2_FAR = 1;
-            if($request->color3_FAR)
-                $event->color3_FAR = 1;
-
-            /*~~~~~~~~~~~___________REQUEST ZONE COEUR__________~~~~~~~~~~~~*/
-            if($request->color1_coeur)
-                $event->color1_coeur = 1;
-            if($request->color2_coeur)
-                $event->color2_coeur = 1;
-            if($request->color3_coeur)
-                $event->color3_coeur = 1;
-
-            /*~~~~~~~~~~~___________Image color1__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color1_coeur_image')){
-                $color1_coeur_imageName = time().'1.'.request()->color1_coeur_image->getClientOriginalExtension();           
-                request()->color1_coeur_image->move(public_path('uploads'), $color1_coeur_imageName);
-                $event->color1_coeur_imageName = $color1_coeur_imageName;
-            }
-            if ($request->hasFile('color1_FAV_image')){
-                $color1_FAV_imageName = time().'2.'.request()->color1_FAV_image->getClientOriginalExtension();           
-                request()->color1_FAV_image->move(public_path('uploads'), $color1_FAV_imageName);
-                $event->color1_FAV_imageName = $color1_FAV_imageName;
-            }
-            if ($request->hasFile('color1_FAR_image')){
-                $color1_FAR_imageName = time().'3.'.request()->color1_FAR_image->getClientOriginalExtension();           
-                request()->color1_FAR_image->move(public_path('uploads'), $color1_FAR_imageName);
-                $event->color1_FAR_imageName = $color1_FAR_imageName;
-            }
-
-            /*~~~~~~~~~~~___________Images color2__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color2_coeur_image')){
-                $color2_coeur_imageName = time().'4.'.request()->color2_coeur_image->getClientOriginalExtension();           
-                request()->color2_coeur_image->move(public_path('uploads'), $color2_coeur_imageName);
-                $event->color2_coeur_imageName = $color2_coeur_imageName;
-            }
-            if ($request->hasFile('color2_FAV_image')){
-                $color2_FAV_imageName = time().'5.'.request()->color2_FAV_image->getClientOriginalExtension();           
-                request()->color2_FAV_image->move(public_path('uploads'), $color2_FAV_imageName);
-                $event->color2_FAV_imageName = $color2_FAV_imageName;
-            }
-            if ($request->hasFile('color2_FAR_image')){
-                $color2_FAR_imageName = time().'6.'.request()->color2_FAR_image->getClientOriginalExtension();           
-                request()->color2_FAR_image->move(public_path('uploads'), $color2_FAR_imageName);
-                $event->color2_FAR_imageName = $color2_FAR_imageName;
-            }
-
-            /*~~~~~~~~~~~___________Images color3__________~~~~~~~~~~~~*/
-            if ($request->hasFile('color3_coeur_image')){
-                $color3_coeur_imageName = time().'7.'.request()->color3_coeur_image->getClientOriginalExtension();           
-                request()->color3_coeur_image->move(public_path('uploads'), $color3_coeur_imageName);
-                $event->color3_coeur_imageName = $color3_coeur_imageName;
-            }
-            if ($request->hasFile('color3_FAV_image')){
-                $color3_FAV_imageName = time().'8.'.request()->color3_FAV_image->getClientOriginalExtension();           
-                request()->color3_FAV_image->move(public_path('uploads'), $color3_FAV_imageName);
-                $event->color3_FAV_imageName = $color3_FAV_imageName;
-            }
-            if ($request->hasFile('color3_FAR_image')){
-                $color3_FAR_imageName = time().'9.'.request()->color3_FAR_image->getClientOriginalExtension();           
-                request()->color3_FAR_image->move(public_path('uploads'), $color3_FAR_imageName);
-                $event->color3_FAR_imageName = $color3_FAR_imageName;
-            }
         $event->save();
         }
         return redirect('admin/Event/index');

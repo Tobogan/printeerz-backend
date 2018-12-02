@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Product;
+use App\ProductVariants;
 
 class Couleur extends Model
 {
@@ -11,7 +11,7 @@ class Couleur extends Model
         'nom', 'pantoneName'
     ];
 
-    public function products() {
-        return $this->belongsToMany('App\Product');
+    public function product() {
+        return $this->belongsToMany('App\ProductVariants');
     }
 }

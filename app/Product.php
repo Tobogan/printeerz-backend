@@ -10,11 +10,10 @@ use App\Event;
 use App\ImageZone;
 use App\Gabarit;
 
-
 class Product extends Model
 {
     protected $fillable = [
-        'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list','imageName'
+        'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list'
     ];
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/

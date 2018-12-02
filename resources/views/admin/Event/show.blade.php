@@ -6,49 +6,6 @@
     <div class="row">
         <div class="col row">
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
-                @if($event->color1_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color1_coeur_imageName" title="Couleur n°1 - Zone 'Coeur'" width="100%" src="/uploads/{{$event->color1_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($event->color1_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAV_imageName" title="Couleur n°1 - Zone 'Face avant'" width="100%" src="/uploads/{{$event->color1_FAV_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($event->color1_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAR_imageName" title="Couleur n°1 - Zone 'Face arrière'" width="100%" src="/uploads/{{$event->color1_FAR_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($event->color2_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_coeur_imageName" title="Couleur n°2 - Zone 'Coeur'" width="100%" src="/uploads/{{$event->color2_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($event->color2_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_FAV_imageName" title="Couleur n°2 - Zone 'Face avant'" width="100%" src="/uploads/{{$event->color2_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($event->color2_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color2_FAR_imageName" title="Couleur n°2 - Zone 'Face arrière'"width="100%" src="/uploads/{{$event->color2_FAR_imageName}}" alt="Image produit"></div>
-                    @endif   
-                @if($event->color3_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_coeur_imageName" title="Couleur n°3 - Zone 'Coeur'" width="100%" src="/uploads/{{$event->color3_coeur_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($event->color3_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAV_imageName" title="Couleur n°3 - Zone 'Face avant'"width="100%" src="/uploads/{{$event->color3_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($event->color3_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAR_imageName" title="Couleur n°3 - Zone 'Face arrière'"width="100%" src="/uploads/{{$event->color3_FAR_imageName}}" alt="Image produit"></div> 
-                @endif
-                @if($event->imageName1 != NULL)
-                    <div><img class="side_img mb-2 mt-2" title="Image n°1" width="100%"  src="/uploads/{{$event->imageName1}}"></div>
-                @endif
-
-                @if($event->imageName2 != NULL)
-                    <div><img width="100%" class="side_img mb-2 mt-2" title="Image n°2" src="/uploads/{{ $event->imageName2 }}"></div>  
-                @endif
-                
-                @if($event->accueil_imageName != NULL)
-                    <div><img width="100%" class="side_img mb-2 mt-2" title="Image d'accueil" src="/uploads/{{ $event->accueil_imageName }}"></div>
-                @endif
-
-                @if($event->veille_imageName != NULL)
-                    <div><img width="100%" class="side_img mb-2 mt-2" title="Ecran de veille" src="/uploads/{{ $event->veille_imageName }}"></div>
-               
-                @endif
             </div>
             <div class="col-lg-9">
                 @if($event->logoName != NULL)
@@ -90,6 +47,14 @@
             <div><small><i>Inconnu</i></small></div>
         @endif
 
+        <h6 class="mt-2">Couleurs de produit: </h6>
+            <?php $list_productVariants = $event->productVariants->pluck('nom')->toArray();?>
+        @if($list_productVariants)
+            <div><small><?php echo implode(', ', $list_productVariants); ?></small></div>
+        @else
+            <div><small>Pas d'utilisateurs spécifiés</small></div>
+        @endif
+
         <h6 class="mt-2">Lieu: </h6>
             <div><small>{{ $event->lieu }}</small></div>
 
@@ -98,174 +63,7 @@
 
         <h6 class="mt-2">Date: </h6>
             <div><small>{{ date('d-m-Y', strtotime($event->date)) }}</small></div>
-            
-        <h6 class="mt-2">Couleurs:</h6>
-        @foreach($couleurs as $couleur)
-            @if($couleur->id == $event->color1)
-                @if($couleur->pantoneName != null)
-                    <h6 class="mt-2">N°1:    <img src="/uploads/{{$couleur->pantoneName}}" class="miniRoundedImage ml-2" alt="pantone"> {{ $couleur->nom }}</h6>
-                @else
-                    <h6 class="mt-2">N°1:    <img src="/img/pointd'interrogation.jpg" class="miniRoundedImage ml-2" alt="pantone" > {{ $couleur->nom }}</h6>
-                @endif
-                    @if($event->color1_coeur)
-                        <div>Zone "Coeur"
-                        @if($event->color1_coeur_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color1_coeur_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color1_coeur_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color1_coeur_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color1_coeur_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                    @if($event->color1_FAV)
-                        <div>Zone "Face avant"
-                        @if($event->color1_FAV_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color1_FAV_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color1_FAV_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color1_FAV_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color1_FAV_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                    @if($event->color1_FAR)
-                        <div>Zone "Face arrière"
-                        @if($event->color1_FAR_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color1_FAR_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color1_FAR_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color1_FAR_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color1_FAR_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif 
-                        </div>
-                    @endif
-                @endif
-            @endforeach
 
-            @foreach($couleurs as $couleur)
-                @if($couleur->id == $event->color2)
-                @if($couleur->pantoneName != null)
-                    <h6 class="mt-3">N°2:    <img src="/uploads/{{$couleur->pantoneName}}" class="miniRoundedImage ml-2" alt="pantone"> {{ $couleur->nom }}</h6>
-                    @else
-                    <h6 class="mt-3">N°2:    <img src="/img/pointd'interrogation.jpg" class="miniRoundedImage ml-2" alt="pantone" > {{ $couleur->nom }}</h6>
-                    @endif
-                    @if($event->color2_coeur)
-                        <div>Zone "Coeur"
-                        @if($event->color2_coeur_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color2_coeur_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color2_coeur_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color2_coeur_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color2_coeur_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                        @if($event->color2_FAV)
-                            <div >Zone "Face avant"
-                            @if($event->color2_FAV_gabarit == '1')
-                                <small>avec un Gabarit 1</small>
-                            @elseif($event->color2_FAV_gabarit == '2')
-                                <small>avec un Gabarit 2</small>
-                            @elseif($event->color2_FAV_gabarit == '3')
-                                <small>avec un Gabarit 3</small>
-                            @elseif($event->color2_FAV_gabarit == '4')
-                                <small>avec un Gabarit 4</small>
-                            @elseif($event->color2_FAV_gabarit == '5')
-                                <small>avec un Gabarit 5</small>
-                            @endif
-                            </div>
-                        @endif
-                        @if($event->color2_FAR)
-                            <div >Zone "Face arrière"
-                            @if($event->color2_FAR_gabarit == '1')
-                                <small>avec un Gabarit 1</small>
-                            @elseif($event->color2_FAR_gabarit == '2')
-                                <small>avec un Gabarit 2</small>
-                            @elseif($event->color2_FAR_gabarit == '3')
-                                <small>avec un Gabarit 3</small>
-                            @elseif($event->color2_FAR_gabarit == '4')
-                                <small>avec un Gabarit 4</small>
-                            @elseif($event->color2_FAR_gabarit == '5')
-                                <small>avec un Gabarit 5</small>
-                            @endif
-                            </div>
-                        @endif
-                @endif
-            @endforeach
-            
-            @foreach($couleurs as $couleur)
-                @if($couleur->id == $event->color3)
-                @if($couleur->pantoneName != null)
-                <h6 class="mt-2">N°3:    <img src="/uploads/{{$couleur->pantoneName}}" class="miniRoundedImage ml-2" alt="pantone"> {{ $couleur->nom }}</h6>
-                @else
-                <h6 class="mt-2">N°3:    <img src="/img/pointd'interrogation.jpg" class="miniRoundedImage ml-2" alt="pantone" > {{ $couleur->nom }}</h6>
-                @endif
-                    @if($event->color3_coeur)
-                        <div >Zone "Coeur"
-                            @if($event->color3_coeur_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color3_coeur_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color3_coeur_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color3_coeur_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color3_coeur_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                    @if($event->color3_FAV)
-                        <div>Zone "Face avant"
-                        @if($event->color3_FAV_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color3_FAV_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color3_FAV_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color3_FAV_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color3_FAV_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                    @if($event->color3_FAR)
-                        <div>Zone "Face arrière"
-                        @if($event->color3_FAR_gabarit == '1')
-                            <small>avec un Gabarit 1</small>
-                        @elseif($event->color3_FAR_gabarit == '2')
-                            <small>avec un Gabarit 2</small>
-                        @elseif($event->color3_FAR_gabarit == '3')
-                            <small>avec un Gabarit 3</small>
-                        @elseif($event->color3_FAR_gabarit == '4')
-                            <small>avec un Gabarit 4</small>
-                        @elseif($event->color3_FAR_gabarit == '5')
-                            <small>avec un Gabarit 5</small>
-                        @endif
-                        </div>
-                    @endif
-                @endif
-            @endforeach
-                    <!-- col couleurs -->
-        <br>
             @if($event->BAT_name != null)
                 <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT_name }}', '_blank', 'fullscreen=yes'); return false;"><i class="uikon">send_round</i> Voir le BAT</a>
             @else

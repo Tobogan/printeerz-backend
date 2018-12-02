@@ -7,11 +7,12 @@ use App\Customer;
 use App\TypeEvent;
 use App\Product;
 use App\Comment;
+use App\ProductVariants;
 
 class Event extends Model
 {
     protected $fillable = [
-        'nom', 'customer_id', 'annonceur', 'couleurs_list', 'logoName', 'imageName1', 'imageName2', 'lieu', 'date', 'type', 'contact', 'commentaire', 'product_id'
+        'nom', 'customer_id', 'productVariants_id', 'annonceur', 'couleurs_list', 'logoName', 'imageName1', 'imageName2', 'lieu', 'date', 'type', 'contact', 'commentaire', 'product_id'
     ];
 
     public function customer() {
@@ -24,6 +25,10 @@ class Event extends Model
 
     public function comments() {
         return $this->hasMany('App\Comment');
+    }
+
+    public function productVariants() {
+        return $this->belongsToMany('App\ProductVariants');
     }
 
     // public function products() {

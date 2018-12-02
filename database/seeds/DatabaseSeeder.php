@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CustomersTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
         $this->call(GabaritsTableSeeder::class);
+        $this->call(ProductVariantsTableSeeder::class);
     }
 }
