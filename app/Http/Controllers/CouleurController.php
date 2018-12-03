@@ -6,6 +6,7 @@ use DB;
 use App\Couleur;
 use App\Customer;
 use App\Taille;
+use App\ProductVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -18,11 +19,27 @@ class CouleurController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index_productVariants()
+    {
+        $couleurs = Couleur::all();
+        $tailles = Taille::all();
+        $productVariants = ProductVariants::all();
+        return Response::json($couleurs, $tailles, $productVariants);
+        // return view('admin/Couleur.index', ['couleurs' => $couleurs, 'taille' => $tailles, 'productVariants' => $productVariants]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $couleurs = Couleur::all();
         $tailles = Taille::all();
-        return view('admin/Couleur.index', ['couleurs' => $couleurs, 'tailles' => $tailles]);
+        $productVariants = ProductVariants::all();
+    
+        return view('admin/Couleur.index', ['couleurs' => $couleurs, 'taille' => $tailles, 'productVariants' => $productVariants]);
     }
 
     /**
@@ -34,6 +51,20 @@ class CouleurController extends Controller
     {
         $couleurs = Couleur::all();
         return view('admin/Couleur.add', ['couleurs' => $couleurs]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function variant_colors()
+    {
+        $color_id[] = Input::get('variants[]');
+
+        $couleurs = Couleur::where('id', '=', $color_id)->get();
+
+        return Response::json($couleurs);
     }
 
     /**
@@ -83,8 +114,6 @@ class CouleurController extends Controller
         else{
             return 'no';
         }
-        
-        
     }
 
     /**
@@ -123,8 +152,6 @@ class CouleurController extends Controller
         else{
             return 'no';
         }
-        
-        
     }
 
     /**
@@ -136,7 +163,7 @@ class CouleurController extends Controller
     public function show($id)
     {
         $couleur = Couleur::find($id);
-        return view('admin/Couleur.show', ['couleur' => $couleur]);
+        return response()->json($couleur);
     }
 
     /**

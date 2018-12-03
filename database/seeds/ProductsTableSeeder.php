@@ -24,9 +24,20 @@ class ProductsTableSeeder extends Seeder
                 'reference' => 'ERDF457',
                 'sexe' => 'Homme',
                 'description' => NULL,
-                'imageName' => NULL,
+                'photo_illustration' => NULL,
                 'created_at' => '2018-10-21 18:11:48',
                 'updated_at' => '2018-10-21 18:11:48',
+            ),
+            1 => 
+            array (
+                'id' => 2,
+                'nom' => 'STANLEY LEADS ROUND NECK TEE-SHIRT',
+                'reference' => 'ERDF457',
+                'sexe' => 'Femme',
+                'description' => NULL,
+                'photo_illustration' => '1543765874.jpeg',
+                'created_at' => '2018-12-02 15:51:14',
+                'updated_at' => '2018-12-02 15:51:14',
             ),
         ));
         

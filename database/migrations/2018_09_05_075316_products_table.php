@@ -17,13 +17,9 @@ class ProductsTable extends Migration
             $table->increments('id');
             $table->string('nom');
             $table->string('reference');
-            $table->enum('sexe', ['Femme', 'Homme'])->default('Homme');
+            $table->enum('sexe', ['Femme', 'Homme','Enfant'])->default('Homme');
             $table->text('description')->nullable();
-            $table->string('imageName')->nullable();
-            $table->boolean('color_FAV')->default(0);
-            $table->boolean('color_FAR')->default(0);
-            $table->boolean('color_coeur')->default(0);
-            
+            $table->string('photo_illustration')->nullable();
             $table->timestamps();
         });
     }

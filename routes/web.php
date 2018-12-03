@@ -1,5 +1,7 @@
 <?php
-
+use App\ProductVariants;
+use App\Couleur;
+use Illuminate\Support\Facades\Input;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -113,6 +115,8 @@ Route::post('admin/Couleur/update', 'CouleurController@update')->name('update_co
 
 Route::get('admin/Couleur/destroy/{id}', 'CouleurController@destroy')->name('destroy_couleur');
 
+
+
 /*~~~~~~~~~~~___________Tailles Route__________~~~~~~~~~~~~*/
 
 Route::get('admin/Taille/index', 'TailleController@index')->name('index_taille');
@@ -130,7 +134,6 @@ Route::post('admin/Taille/update', 'TailleController@update')->name('update_tail
 Route::get('admin/Taille/destroy/{id}', 'TailleController@destroy')->name('destroy_taille');
 
 /*~~~~~~~~~~~___________Zones Route__________~~~~~~~~~~~~*/
-
 Route::get('admin/Zone/index', 'ZoneController@index')->name('index_zone');
 
 Route::get('admin/Zone/create', 'ZoneController@create')->name('create_zone');
@@ -146,11 +149,60 @@ Route::post('admin/Zone/update', 'ZoneController@update')->name('update_zone');
 Route::get('admin/Zone/destroy/{id}', 'ZoneController@destroy')->name('destroy_zone');
 
 /*~~~~~~~~~~~___________Comments Route__________~~~~~~~~~~~~*/
-
 Route::post('comment/add', 'CommentController@addComment');
 
 Route::delete('comment/delete/{id}', 'CommentController@destroy')->name('destroy_comment');
 
 /*~~~~~~~~~~~___________Front Route__________~~~~~~~~~~~~*/
-
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
+
+/*~~~~~~~~~~~___________Products Variants Route__________~~~~~~~~~~~~*/
+Route::get('admin/ProductVariants/index', 'ProductVariantsController@index')->name('index_productVariants');
+
+Route::get('admin/ProductVariants/create/{id}', 'ProductVariantsController@create')->name('create_productVariants');
+
+Route::post('admin/ProductVariants/store', 'ProductVariantsController@store')->name('store_productVariants');
+
+Route::get('admin/ProductVariants/show/{id}', 'ProductVariantsController@show')->name('show_productVariants');
+
+Route::get('admin/ProductVariants/edit/{id}', 'ProductVariantsController@edit')->name('edit_productVariants');
+
+Route::post('admin/ProductVariants/update', 'ProductVariantsController@update')->name('update_productVariants');
+
+Route::get('admin/ProductVariants/destroy/{id}', 'ProductVariantsController@destroy')->name('destroy_productVariants');
+
+// Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
+
+Route::get('/select_product',function(){
+    $prod_id = Input::get('product_id');
+
+    $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
+
+    return Response::json($productVariants);
+});
+
+
+
+Route::get('/colors',function(){
+    $color_id[] = Input::get('variants[]');
+    $couleurs = Couleur::where('id', '=', $color_id)->get();
+    // $productVariants = ProductVariants::all()->get();
+    // return Response::json($couleurs, $productVariants);
+    return Response::json($couleurs);
+});
+
+
+// $couleurs = Couleurs::select('nom')
+//     ->join('productVariants', 'couleur_id', '=', 'couleurs.id')
+//     ->where('couleur_id', '=', $prod_id)
+//     ->get();
+
+
+
+// Route::get('/admin/Couleur/variant_colors',function(){
+//     $couleur_id[] = Input::get('variants[]');
+//     //  dd($couleur_id);
+//     $color = Couleur::where('id', '=', $couleur_id)->get();
+
+//     return Response::json($color);
+// });

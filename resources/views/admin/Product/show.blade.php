@@ -6,39 +6,12 @@
     <div class="row">
         <div class="col row">
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
-                {{-- @if($product->color1_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color1_coeur_imageName" title="Couleur n°1 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color1_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color1_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAV_imageName" title="Couleur n°1 - Zone 'Face avant'" width="100%" src="/uploads/{{$product->color1_FAV_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color1_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAR_imageName" title="Couleur n°1 - Zone 'Face arrière'" width="100%" src="/uploads/{{$product->color1_FAR_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color2_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_coeur_imageName" title="Couleur n°2 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color2_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color2_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_FAV_imageName" title="Couleur n°2 - Zone 'Face avant'" width="100%" src="/uploads/{{$product->color2_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color2_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color2_FAR_imageName" title="Couleur n°2 - Zone 'Face arrière'"width="100%" src="/uploads/{{$product->color2_FAR_imageName}}" alt="Image produit"></div>
-                    @endif   
-                @if($product->color3_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_coeur_imageName" title="Couleur n°3 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color3_coeur_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color3_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAV_imageName" title="Couleur n°3 - Zone 'Face avant'"width="100%" src="/uploads/{{$product->color3_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color3_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAR_imageName" title="Couleur n°3 - Zone 'Face arrière'"width="100%" src="/uploads/{{$product->color3_FAR_imageName}}" alt="Image produit"></div> 
-                @endif --}}
             </div>
         <div class="col-lg-9">
-            @if($product->imageName != NULL)
+            @if($product->photo_illustration != NULL)
             <br>
                 <div class="image_principale">
-                    <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->imageName}}" alt="Image produit">
+                    <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->photo_illustration}}" alt="Image produit">
                     
                 </div>
             @else
@@ -59,62 +32,91 @@
             <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
             <h6 class="mb-2">Tailles disponibles: <small><?php echo implode(', ', $list_tailles); ?></small></h6>
 
-            <?php $list_couleurs = $product->couleurs->pluck('nom')->toArray();?>
-            <h6 class="mb-2">Couleurs disponibles: <small><?php echo implode(', ', $list_couleurs); ?></small></h6>
-            
-            <h6>Zones séléctionnées:</h6>
-                @if($product->color_FAV != 0)
-                <small>- Face avant</small><br>
-                @endif
-                @if($product->color_coeur != 0)
-                <small>- Coeur</small><br>
-                @endif
-                @if($product->color_FAR != 0)
-                <small>- Face arrière</small>
-                @endif
-            
-                <!--ICI gisait les couleurs zones et gabarits-->
-
-            <?php //$list_couleurs = $product->couleurs->pluck('nom')->toArray();?>
-
-            <div><?php //echo implode(', ', $list_couleurs); ?></div>
-            
             <h5 class="mt-2">Description: </h5>
 
             @if(strlen($product->description) != 0)
                 <div><small>{{ $product->description }}</small></div>
             @else
                 <td>{{ '...' }}</td>
-                @if (!$product->imageName)
+                @if ($product->photo_illustration == NULL)
                     <div><i>(image par défault)</i></div>
                 @endif
             @endif
+            <br>
+
+            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_productVariants', $product->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter variante</a>
             <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
+
             <hr>
         </div>
-    </div> 
+    </div>
 
-    {{-- <div class="row">
-        <div class="col-lg-3">
-            <div class="your-class mt-4">
-                @if($product->coeur_imageName != NULL)
-                    <div><img width="100%"  src="/uploads/{{ $product->coeur_imageName }}" alt="Zone d'impression du produitt"></div>  
-                @endif
-                
-                @if($product->face_avant_imageName != NULL)
-                    <div><img width="100%"  src="/uploads/{{ $product->face_avant_imageName }}" alt="Zone d'impression du produitt"></div>
-                @endif
+    <!--~~~~~~~~~~~___________Variantes__________~~~~~~~~~~~~-->
 
-                @if($product->face_arriere_imageName != NULL)
-                    <div><img width="100%"  src="/uploads/{{ $product->face_arriere_imageName }}" alt="Zone d'impression du produitt"></div>
+    <table class="datatable table table-striped" >
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Couleur</th>
+                    <th></th>
+                    <th>Zone n°1</th>
+                    <th></th>
+                    <th>Zone n°2</th>
+                    <th></th>
+                    <th>Zone n°3</th>
+                    <th></th>
+                    <th>Zone n°4</th>
+                    <th></th>
+                    <th>Zone n°5</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach ($productVariants as $productVariant)
+            @if($productVariant->product_id == $product->id)
+                @if($productVariant->couleur->pantoneName)
+                <td><img src="/uploads/{{$productVariant->couleur->pantoneName}}" class="miniRoundedImage" alt="pantone" ></td>
+                @else
+                <td><img src="/img/pointd'interrogation.jpg" class="miniRoundedImage" alt="pantone" ></td>
                 @endif
-            </div>  
-            <br><br>
-        </div>
-            <div class="col"></div>
-    </div> --}}
+                <td>{{ $productVariant->couleur->nom }}</td>
+                @if($productVariant->image1)
+                <td><img src="/uploads/{{$productVariant->image1}}" class="miniRoundedImage" alt="image1" ></td>
+                @else
+                <td></td>
+                @endif
+                <td>{{ $productVariant->zone1 }}</td>
+                @if($productVariant->image2)
+                <td><img src="/uploads/{{$productVariant->image2}}" class="miniRoundedImage" alt="image2" ></td>
+                @else
+                <td></td>
+                @endif
+                <td>{{ $productVariant->zone2 }}</td>
+                @if($productVariant->image3)
+                <td><img src="/uploads/{{$productVariant->image3}}" class="miniRoundedImage" alt="image3" ></td>
+                @else
+                <td></td>
+                @endif
+                <td>{{ $productVariant->zone3 }}</td>
+                @if($productVariant->image4)
+                <td><img src="/uploads/{{$productVariant->image4}}" class="miniRoundedImage" alt="image4" ></td>
+                @else
+                <td></td>
+                @endif
+                <td>{{ $productVariant->zone4 }}</td>
+                @if($productVariant->image5)
+                <td><img src="/uploads/{{$productVariant->image5}}" class="miniRoundedImage" alt="image5" ></td>
+                @else
+                <td></td>
+                @endif
+                <td>{{ $productVariant->zone5 }}</td>
+                <td><a class='btn btn-danger' href="{{route('destroy_productVariants', $productVariant->id)}}" title="Supprimer la variante du produit">Supprimer</a></td></tr>
+            @endif
+        @endforeach
+            </tbody>
+
 </div>
 
     @section('javascripts')
@@ -139,11 +141,6 @@
         document.getElementById('image_principale').title = tmp2;
   }
     </script>
-    {{-- <script type="text/javascript">
-        $('.image_principale').each(function() {
-        $(this).after( $(this).attr('title') ); 
-        });
-        </script> --}}
     @endsection
 
 @endsection
