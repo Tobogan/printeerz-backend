@@ -31,32 +31,25 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('product_id', 'Sélectionner les produits : ') !!}
-            {{-- {!! Form::select('product_id',$select_products, null, ['class' => 'form-control', 'name' =>'product_id', 'id' => 'product_id', 'placeholder' => '**************************** Séléctionner le produit ****************************']) !!}  --}}
+            {!! Form::label('product_id', 'Sélectionner le produit n°1 : ') !!}
             <select  class="form-control input-sm" id="product_id" name="product_id" >
+                    <option disabled selected value="">Sélectionner le produit n°1</option>
                 @foreach($products as $product)
-                    <option  placeholder="ajouter variante" value="{{$product->id}}">{{$product->nom}}</option>
+                    <option value="{{$product->id}}">{{$product->nom}}</option>
+                @endforeach
+            </select>
+        </div>
+        
+        <div name="variant_colors" id="variant_colors">
+            <label for="variant">Choisissez les couleurs pour ce produit :</label>
+            <select class="select2 form-control " multiple="multiple" id="variant_id" multiple data-placeholder="Choose ..." name="variant_id[]" style="width: 50%">
+                @foreach ($productVariants as $variant)
+                <option value="{{$variant->id}}">{{$variant->nom}}</option>
                 @endforeach
             </select>
         </div>
 
-        {{-- <div class="form-group">
-             <select class="form-control input-sm" id="variants" name="variants" placeholder="ajouter variante">
-                <option value=""></option>
-            </select>
-        </div> --}}
-        <div id="btn_color"></div>
-        
-        <div name="variant_colors" id="variant_colors">
-            <label for="variant">Variants</label>
-            <select class="select2 form-control " multiple="multiple" id="variant_id" multiple data-placeholder="Choose ..." name="variant_id[]" style="width: 50%">
-                {{-- @foreach ($productVariants as $variant)
-                <option value="{{$variant->id}}">{{$variant->nom}}</option>
-                @endforeach --}}
-            </select>
-        </div>
-
-        <div class="form-group">
+        <div class="form-group mt-2">
             {!! Form::label('users_list[]', 'Sélectionner les utilisateurs autorisés : ') !!}
             {!! Form::select('users_list[]', App\User::pluck('email','id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
         </div>
@@ -115,62 +108,15 @@
             $.get('/select_product?product_id='+product_id, function(data){
                 // $('#variant_colors').empty();
                 $('#btn_color').empty();
-                // $('#variant_id').empty();
+                $('#variant_id').empty();
                 // $('#btn_color').append('<button type="button" class="btn btn-primary btn-sm mb-2" id="btn_color_variant">Sélectionner les couleurs</button>');
                 $.each(data, function(index, variant){
                     // $('#variant_colors').append('<div class="form-check mb-2"><input class="form-check-input" type="checkbox" value="'+variant.id+'" name="variant_id[]" id="variant_id[]"><label class="form-check-label" for="defaultCheck2">'+variant.nom+'<img src="/uploads/'+variant.pantone+'" class="miniRoundedImage ml-2" alt="pantone" ></label></div>');
                     $('#variant_id').append('<option value="'+variant.id+'">'+variant.nom+'</option>');
                     $('#variant_color_id').append('<input type="hidden" id="variants" name="variants" value="'+variant.couleur_id+'">');
-                    
                     console.log(variant);
                 });
             });
-        });
-
-        // $('#btn_color_variant').live('click', function(e){
-        //     $.get('/colors', function(data){
-        //         success: function(data){
-        //             console.log(data);
-        //             $('#variant_colors').append('<input class="form-check-input" type="checkbox" value="'+data.id+'" id="variant"><label class="form-check-label" for="defaultCheck2">'+data.nom+'</label> <img src="/uploads/'+data.pantoneName+'" class="miniRoundedImage" alt="pantone" ><div class="form-check"> </div>');
-        //         }
-        //     });
-        // });
-
-        //     $('#btn_color_variant').live('click', function(e) {
-        //     e.preventDefault(); 
-        //     // var couleur_id = $('#variants').val();
-        //     $.ajax({
-        //         type: "GET",
-        //         url: '/admin/Couleur/index_productVariants',
-        //         success: function(data){
-        //             console.log(data);
-        //             // $('#variant_colors').append('<input class="form-check-input" type="checkbox" value="'+data.id+'" id="variant"><label class="form-check-label" for="defaultCheck2">'+data.nom+'</label> <img src="/uploads/'+data.pantoneName+'" class="miniRoundedImage" alt="pantone" ><div class="form-check"> </div>');
-        //         }
-        //     });
-        // });
-
-                
-    //     $('#btn_color_variant').live('click', function(e){
-    //     var color_id =  $('#variants').val();
-    //     $.get('/select_color?color_id='+color_id, function(data){
-    //         $.each(data, function(index, couleur){
-    //             console.log();
-    //             $('#variant_colors').append('<div class="form-check"><input class="form-check-input" type="checkbox" value="'+variant.couleur_id+'" id="variants"><label class="form-check-label" for="defaultCheck2">'+variant.couleur_id+'</label></div>');
-    //             // $('#variant_colors').append('<div>'+variant.zone1+'</div>');
-    //         });
-    //     });
-    // });</script>
-
-    {{-- <script>
-    $('#variants').on('change', function(e){
-        var color_id = e.target.value;
-        var couleur_id = $('#variants').val();
-        $.get('/select_color?color_id='+color_id, function(data){
-            $('#variants').empty();
-
-            console.log(couleur_id);
-                $('#variants').append('<div class="form-check"><input class="form-check-input" type="checkbox" value="'+couleur.id+'" id="variants"><label class="form-check-label" for="defaultCheck2">'+couleur.nom+'</label></div>');
-        });
-    });</script> --}}
+        });</script>
     @endsection
 @endsection

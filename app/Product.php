@@ -13,7 +13,7 @@ use App\Gabarit;
 class Product extends Model
 {
     protected $fillable = [
-        'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list'
+        'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list', 'photo_illustration'
     ];
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/

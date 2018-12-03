@@ -79,11 +79,12 @@ class ProductController extends Controller
 
         /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
         if ($request->hasFile('photo_illustration')){
-            $photo_illustration = time().'.'.request()->photo_illustration->getClientOriginalExtension();
-            request()->photo_illustration->move(public_path('uploads'), $photo_illustration);
+            $photo = time().'.'.request()->photo_illustration->getClientOriginalExtension();
+            request()->photo_illustration->move(public_path('uploads'), $photo);
 
-            $product->photo_illustration = $photo_illustration;
+            $product->photo_illustration = $photo;
         }
+
         $product->save();
         // $product = Product::find($id);
         $productVariants = ProductVariants::all();

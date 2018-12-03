@@ -38,14 +38,17 @@
                 <div><small>{{ $product->description }}</small></div>
             @else
                 <td>{{ '...' }}</td>
-                @if (!$product->photo_illustation)
+                @if ($product->photo_illustration == NULL)
                     <div><i>(image par défault)</i></div>
                 @endif
             @endif
+            <br>
+
             <a class='btn btn-primary btn-sm mt-2' href="{{route('create_productVariants', $product->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter variante</a>
             <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
+
             <hr>
         </div>
     </div>
