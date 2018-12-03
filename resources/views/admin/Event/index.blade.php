@@ -107,7 +107,7 @@
                                 @if($event->customer)
                                 <td class="event-customer">{{ $event->customer->denomination }}</td>
                                 @else
-                                <td class="event-customer"><i></i></td>
+                                <td class="event-customer text-muted">___</td>
                                 @endif
 
                                 <td class="event-place"> {{ $event->lieu }}</td>

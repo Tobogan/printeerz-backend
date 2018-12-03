@@ -28,14 +28,40 @@
     <div>{{ $customer->contact_poste .'- '. $customer->contact_prenom .' '. $customer->contact_nom .' '. $customer->contact_telephone }}</div>
 
     <h5 class="mt-3">Liste des événements: </h5>
+    
+    <div class="card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col">
 
-    @if(!empty($customer->event))
-        @foreach($customer->event as $event)
-        <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->nom }}</a></div>
-        @endforeach
-    @else
-        <div><i>Vide</i></div>
-    @endif
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Add a member
+                  </h4>
+                  
+                </div>
+              </div> <!-- / .row -->
+            </div>
+            <div class="card-header">
+                
+            </div>
+            <div data-toggle="lists" data-lists-values='["name"]'>
+                <input class="form-control search" type="search">
+                <ul class="list-group list">
+                @if(!empty($customer->event))
+                    @foreach($customer->event as $event)
+                    <li class="list-group-item">
+                        <a href="{{route('show_event', $event->id)}}" class="name">{{ '- '. $event->nom }}</a>
+                    </li>
+                    @endforeach
+                @else
+                <li class="list-group-item">
+                    <span class="name">Aucun événement</span>
+                </li>
+                @endif
+                </ul>
+            </div>
+
 
     <h5 class="mt-3">Informations: </h5>
 

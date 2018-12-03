@@ -9,7 +9,7 @@
 <body style="display: block;">
     <div id="root">
         {{-- Sidebar --}}
-        @include('includes.sidebar')
+        {{-- @include('includes.sidebar') --}}
         {{-- Main Content --}}
         <div class="main-content">
             @include('includes.topbar')
