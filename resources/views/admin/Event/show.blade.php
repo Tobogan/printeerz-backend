@@ -47,13 +47,7 @@
             <div><small><i>Inconnu</i></small></div>
         @endif
 
-        <h6 class="mt-2">Couleurs de produit: </h6>
-            <?php $list_productVariants = $event->productVariants->pluck('nom')->toArray();?>
-        @if($list_productVariants)
-            <div><small><?php echo implode(', ', $list_productVariants); ?></small></div>
-        @else
-            <div><small>Pas d'utilisateurs spécifiés</small></div>
-        @endif
+        
 
         <h6 class="mt-2">Lieu: </h6>
             <div><small>{{ $event->lieu }}</small></div>
@@ -80,6 +74,8 @@
             @endif
                     
             <br>
+            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventVariants', $event->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter un produit</a>
+
             <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_front', $event->id)}}"  title="Lancer l'event"><i class="uikon">send_round</i> Lancer</a>
             <a role="button" class='btn btn-success btn-sm mt-2' href="{{route('edit_event', $event->id)}}"  title="Modification du produit"><i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' href="{{route('destroy_event', $event->id)}}" onclick="return confirm('Êtes-vous sûr?')" title="Suppression du produit">Supprimer</a>
@@ -87,6 +83,34 @@
         </div> <!-- col lg-5 --->
     </div> <!-- row --->
 <!-- container --->
+
+<!--~~~~~~~~~~~___________Variantes__________~~~~~~~~~~~~-->
+
+<table class="datatable table table-striped" >
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Couleurs</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach ($eventVariants as $eventVariant)
+    @if($eventVariant->event_id == $event->id)
+        <td>{{ $eventVariant->product->nom }}</td>
+        <?php $list_productVariants = $eventVariant->productVariants->pluck('nom')->toArray();?>
+        @if($list_productVariants)
+            <td><small><?php echo implode(', ', $list_productVariants); ?></small></td>
+        @else
+            <td><small>Pas de couleurs séléctionnées</small></td>
+        @endif
+        {{-- <td>{{ $eventVariant->productVariants->nom }}</td> --}}
+        <td><a class='btn btn-danger' href="{{route('destroy_eventVariants', $eventVariant->id)}}" title="Supprimer le produit">Supprimer</a></td></tr>
+    @endif
+@endforeach
+    </tbody>
+
+    <!--~~~~~~~~~~~___________Commentaires__________~~~~~~~~~~~~-->
 
 <section class="mt-3" id="comments">
 <div class="container">

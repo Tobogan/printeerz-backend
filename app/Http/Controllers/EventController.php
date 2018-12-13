@@ -12,6 +12,7 @@ use App\Couleur;
 use App\Gabarit;
 use App\User;
 use App\ProductVariants;
+use App\EventVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -105,7 +106,6 @@ class EventController extends Controller
         $event->save();
         $event->product_id = $request->product_id;
         $event->users()->sync($request->get('users_list'));
-        $event->productVariants()->sync($request->get('variant_id'));
         $event->lieu = $request->lieu;
         $event->type = $request->type;
         $event->date = $request->date;
@@ -128,12 +128,11 @@ class EventController extends Controller
             $event->BAT_name = $BAT_name;
         } 
 
-
-
-
-
         $event->save();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
+        // return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
+        $eventVariants = EventVariants::all();
+        return view('admin/Event.show',['eventVariants' => $eventVariants, 'event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');    
+ 
     }
 
     /**
@@ -147,8 +146,9 @@ class EventController extends Controller
         $event = Event::find($id);
         $product = Product::find($id);
         $couleurs = Couleur::all();
+        $eventVariants = EventVariants::all();
         $user = User::find($id);
-        return view('admin/Event.show', ['event' => $event, 'couleurs' => $couleurs, 'product' => $product, 'user' => $user]);
+        return view('admin/Event.show', ['eventVariants' => $eventVariants, 'event' => $event, 'couleurs' => $couleurs, 'product' => $product, 'user' => $user]);
     }
 
     /**

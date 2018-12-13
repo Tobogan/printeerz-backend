@@ -30,7 +30,7 @@
             {!! Form::select('customer_id', $select, null, ['class' => 'form-control', 'placeholder' => '***************************** Séléctionner le client *****************************']) !!}
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             {!! Form::label('product_id', 'Sélectionner le produit n°1 : ') !!}
             <select  class="form-control input-sm" id="product_id" name="product_id" >
                     <option disabled selected value="">Sélectionner le produit n°1</option>
@@ -47,7 +47,7 @@
                 <option value="{{$variant->id}}">{{$variant->nom}}</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
         <div class="form-group mt-2">
             {!! Form::label('users_list[]', 'Sélectionner les utilisateurs autorisés : ') !!}

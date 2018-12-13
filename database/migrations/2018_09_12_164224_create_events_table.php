@@ -58,6 +58,14 @@ class CreateEventsTable extends Migration
             $table->integer('event_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
         });
+
+        Schema::create('event_variants_product_variants', function(Blueprint $table){
+            $table->increments('id');
+            $table->integer('product_variants_id')->unsigned()->index();
+            $table->integer('event_variants_id')->unsigned()->index();
+        });
+
+        
     }
 
 //     /**

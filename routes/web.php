@@ -171,6 +171,21 @@ Route::post('admin/ProductVariants/update', 'ProductVariantsController@update')-
 
 Route::get('admin/ProductVariants/destroy/{id}', 'ProductVariantsController@destroy')->name('destroy_productVariants');
 
+/*~~~~~~~~~~~___________Events Variants Route__________~~~~~~~~~~~~*/
+Route::get('admin/EventVariants/index', 'EventVariantsController@index')->name('index_eventVariants');
+
+Route::get('admin/EventVariants/create/{id}', 'EventVariantsController@create')->name('create_eventVariants');
+
+Route::post('admin/EventVariants/store', 'EventVariantsController@store')->name('store_eventVariants');
+
+Route::get('admin/EventVariants/show/{id}', 'EventVariantsController@show')->name('show_eventVariants');
+
+Route::get('admin/EventVariants/edit/{id}', 'EventVariantsController@edit')->name('edit_eventVariants');
+
+Route::post('admin/EventVariants/update', 'EventVariantsController@update')->name('update_eventVariants');
+
+Route::get('admin/EventVariants/destroy/{id}', 'EventVariantsController@destroy')->name('destroy_eventVariants');
+
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 
 Route::get('/select_product',function(){

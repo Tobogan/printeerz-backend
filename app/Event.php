@@ -27,9 +27,11 @@ class Event extends Model
         return $this->hasMany('App\Comment');
     }
 
-    public function productVariants() {
-        return $this->belongsToMany('App\ProductVariants');
-    }
+    // public function productVariants() {
+    //     return $this->hasMany('App\ProductVariants');
+    // }
+
+
 
     // public function products() {
     //     return $this->belongsToMany('App\Product');
