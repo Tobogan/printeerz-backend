@@ -16,6 +16,22 @@ class Product extends Model
         'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list', 'photo_illustration'
     ];
 
+    /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/
+
+
+      public function tailles() {
+        return $this->belongsToMany('App\Taille');
+    }
+
+    public function getTaillesListAttribute(){
+        if($this->id){
+            return $this->tailles->pluck('id');
+        }
+    }
+
+    public function setTaillesListAttribute($value){
+        return $this->tailles()->sync($value);
+    }
      /*~~~~~~~~~~~_____Relation Many to Many avec les couleurs dispo____~~~~~~~~~~~~*/
 
     public function couleurs() {

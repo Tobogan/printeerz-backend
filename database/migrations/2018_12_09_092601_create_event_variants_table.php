@@ -17,17 +17,8 @@ class CreateEventVariantsTable extends Migration
             $table->increments('id');
             $table->integer('event_id')->nullable();
             $table->integer('product_id')->nullable();
-            $table->integer('productvariants_id')->nullable();
-            $table->integer('taille_id')->nullable();
+            $table->integer('productVariants_id')->nullable();
             $table->timestamps();
-        });
-
-        Schema::create('event_variants_productvariants', function(Blueprint $table){
-            $table->increments('id');
-            $table->integer('event_variants_id')->unsigned()->index();
-            $table->integer('productvariants_id')->unsigned()->index();
-            //$table->foreign('productvariants_id')->references('id')->on('productvariants')->onDelete('cascade');
-            //$table->foreign('taille_id')->references('id')->on('taille')->onDelete('cascade');
         });
     }
 

@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Product;
-use App\Productvariants;
 
 class Taille extends Model
 {
@@ -15,9 +14,5 @@ class Taille extends Model
 
         public function products() {
             return $this->belongsToMany('App\Product');
-        }
-
-        public function productvariants() {
-            return $this->belongsToMany('App\Productvariants');
         }
 }

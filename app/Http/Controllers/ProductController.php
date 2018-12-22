@@ -9,7 +9,7 @@ use App\Zone;
 use App\Couleur;
 use App\ImageZone;
 use App\Gabarit;
-use App\Productvariants;
+use App\ProductVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -75,6 +75,7 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->sexe = $request->sexe;
         $product->save();
+        $product->tailles()->sync($request->get('tailles_list'));
 
         /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
         if ($request->hasFile('photo_illustration')){
@@ -86,8 +87,8 @@ class ProductController extends Controller
 
         $product->save();
         // $product = Product::find($id);
-        $Productvariants = Productvariants::all();
-        return view('admin/Product.show',['Productvariants' => $Productvariants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
+        $productVariants = ProductVariants::all();
+        return view('admin/Product.show',['productVariants' => $productVariants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
     }
     
 
@@ -100,10 +101,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $productvariants = Productvariants::all();
+        $productVariants = ProductVariants::all();
         $couleurs = Couleur::all();
         
-        return view('admin/Product.show', ['product' => $product, 'couleurs' => $couleurs, 'productvariants' => $productvariants]);
+        return view('admin/Product.show', ['product' => $product, 'couleurs' => $couleurs, 'productVariants' => $productVariants]);
     }
 
     /**

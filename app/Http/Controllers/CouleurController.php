@@ -6,7 +6,7 @@ use DB;
 use App\Couleur;
 use App\Customer;
 use App\Taille;
-use App\Productvariants;
+use App\ProductVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -19,13 +19,13 @@ class CouleurController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_Productvariants()
+    public function index_productVariants()
     {
         $couleurs = Couleur::all();
         $tailles = Taille::all();
-        $Productvariants = Productvariants::all();
-        return Response::json($couleurs, $tailles, $Productvariants);
-        // return view('admin/Couleur.index', ['couleurs' => $couleurs, 'taille' => $tailles, 'Productvariants' => $Productvariants]);
+        $productVariants = ProductVariants::all();
+        return Response::json($couleurs, $tailles, $productVariants);
+        // return view('admin/Couleur.index', ['couleurs' => $couleurs, 'taille' => $tailles, 'productVariants' => $productVariants]);
     }
 
     /**
@@ -37,9 +37,9 @@ class CouleurController extends Controller
     {
         $couleurs = Couleur::all();
         $tailles = Taille::all();
-        $Productvariants = Productvariants::all();
+        $productVariants = ProductVariants::all();
     
-        return view('admin/Couleur.index', ['couleurs' => $couleurs, 'tailles' => $tailles, 'Productvariants' => $Productvariants]);
+        return view('admin/Couleur.index', ['couleurs' => $couleurs, 'taille' => $tailles, 'productVariants' => $productVariants]);
     }
 
     /**

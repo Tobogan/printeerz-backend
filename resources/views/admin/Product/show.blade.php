@@ -29,6 +29,9 @@
 
             <h6 class="mb-2">Référence fournisseur: <small>{{ $product->reference }}</small></h6>
 
+            <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
+            <h6 class="mb-2">Tailles disponibles: <small><?php echo implode(', ', $list_tailles); ?></small></h6>
+
             <h5 class="mt-2">Description: </h5>
 
             @if(strlen($product->description) != 0)
@@ -41,7 +44,7 @@
             @endif
             <br>
 
-            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_Productvariants', $product->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter variante</a>
+            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_productVariants', $product->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter variante</a>
             <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
@@ -58,7 +61,6 @@
                     <th></th>
                     <th>Couleur</th>
                     <th></th>
-                    <th>Tailles</th>
                     <th>Zone n°1</th>
                     <th></th>
                     <th>Zone n°2</th>
@@ -72,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-        @foreach ($productvariants as $productVariant)
+        @foreach ($productVariants as $productVariant)
             @if($productVariant->product_id == $product->id)
                 @if($productVariant->couleur->pantoneName)
                 <td><img src="/uploads/{{$productVariant->couleur->pantoneName}}" class="miniRoundedImage" alt="pantone" ></td>
@@ -84,12 +86,6 @@
                 <td><img src="/uploads/{{$productVariant->image1}}" class="miniRoundedImage" alt="image1" ></td>
                 @else
                 <td></td>
-                @endif
-                <?php $list_tailles = $productVariant->tailles->pluck('nom')->toArray();?>
-                @if($list_tailles)
-                    <td><small><?php echo implode(', ', $list_tailles); ?></small></td>
-                @else
-                    <td><small>Pas de tailles séléctionnées</small></td>
                 @endif
                 <td>{{ $productVariant->zone1 }}</td>
                 @if($productVariant->image2)
@@ -116,7 +112,7 @@
                 <td></td>
                 @endif
                 <td>{{ $productVariant->zone5 }}</td>
-                <td><a class='btn btn-danger' href="{{route('destroy_Productvariants', $productVariant->id)}}" title="Supprimer la variante du produit">Supprimer</a></td></tr>
+                <td><a class='btn btn-danger' href="{{route('destroy_productVariants', $productVariant->id)}}" title="Supprimer la variante du produit">Supprimer</a></td></tr>
             @endif
         @endforeach
             </tbody>

@@ -48,6 +48,12 @@
                 {!! Form::file('photo_illustration', array('class' => 'form-control', 'id' => 'photo_illustration')) !!}
             </div>
 
+            <!--~~~~~~~~~~~___________TAILLES__________~~~~~~~~~~~~-->
+            <div class="form-group mt-2">
+                {!! Form::label('tailles_list[]', 'Sélectionner les tailles disponibles : ') !!}
+                {!! Form::select('tailles_list[]', App\Taille::pluck('nom', 'id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
+            </div>
+
             <!--~~~~~~~~~~~___________DESCRIPTION__________~~~~~~~~~~~~-->
             <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description concernant le produit."></textarea>
             <hr>

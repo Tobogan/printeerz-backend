@@ -43,7 +43,7 @@
         <div name="variant_colors" id="variant_colors">
             <label for="variant">Choisissez les couleurs pour ce produit :</label>
             <select class="select2 form-control " multiple="multiple" id="variant_id" multiple data-placeholder="Choose ..." name="variant_id[]" style="width: 50%">
-                @foreach ($Productvariants as $variant)
+                @foreach ($productVariants as $variant)
                 <option value="{{$variant->id}}">{{$variant->nom}}</option>
                 @endforeach
             </select>

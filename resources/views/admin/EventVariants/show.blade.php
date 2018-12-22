@@ -63,9 +63,9 @@
             <h6 class="mb-2">Couleurs disponibles: <small><?php echo implode(', ', $list_couleurs); ?></small></h6>
 
             <h6 class="mt-2">Couleurs de produit: </h6>
-            <?php $list_Productvariants = $event->Productvariants->pluck('nom')->toArray();?>
-        @if($list_Productvariants)
-            <div><small><?php echo implode(', ', $list_Productvariants); ?></small></div>
+            <?php $list_productVariants = $event->productVariants->pluck('nom')->toArray();?>
+        @if($list_productVariants)
+            <div><small><?php echo implode(', ', $list_productVariants); ?></small></div>
         @else
             <div><small>Pas d'utilisateurs spécifiés</small></div>
         @endif
