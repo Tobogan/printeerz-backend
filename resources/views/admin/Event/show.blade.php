@@ -91,6 +91,7 @@
         <tr>
             <th>Produit</th>
             <th>Couleurs</th>
+            <th>Tailles</th>
             <th></th>
         </tr>
     </thead>
@@ -98,13 +99,19 @@
 @foreach ($eventVariants as $eventVariant)
     @if($eventVariant->event_id == $event->id)
         <td>{{ $eventVariant->product->nom }}</td>
-        <?php $list_productVariants = $eventVariant->productVariants->pluck('nom')->toArray();?>
-        @if($list_productVariants)
-            <td><small><?php echo implode(', ', $list_productVariants); ?></small></td>
+        <?php $list_Productvariants = $eventVariant->Productvariants->pluck('nom')->toArray();?>
+        @if($list_Productvariants)
+            <td><small><?php echo implode(', ', $list_Productvariants); ?></small></td>
         @else
             <td><small>Pas de couleurs séléctionnées</small></td>
         @endif
-        {{-- <td>{{ $eventVariant->productVariants->nom }}</td> --}}
+        <?php $list_tailles = $eventVariant->tailles->pluck('nom')->toArray();?>
+        @if($list_tailles)
+            <td><small><?php echo implode(', ', $list_tailles); ?></small></td>
+        @else
+            <td><small>Pas de tailles séléctionnées</small></td>
+        @endif
+        {{-- <td>{{ $eventVariant->Productvariants->nom }}</td> --}}
         <td><a class='btn btn-danger' href="{{route('destroy_eventVariants', $eventVariant->id)}}" title="Supprimer le produit">Supprimer</a></td></tr>
     @endif
 @endforeach

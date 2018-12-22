@@ -143,6 +143,9 @@
                         
                         @elseif($_SERVER['REQUEST_URI'] == '/admin/Couleur/index')
                             <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des tailles & couleurs</h2></div>
+
+                        @elseif($_SERVER['REQUEST_URI'] == '/admin/Taille/index')
+                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des tailles & couleurs</h2></div>
                         @endif
 
                         <!-- ~~~~~~~~________ TITRE POUR CHAQUE PAGE EN FONCTION DE L'URI ________~~~~~~~~ -->

@@ -11,7 +11,7 @@ use App\ImageZone;
 use App\Couleur;
 use App\Gabarit;
 use App\User;
-use App\ProductVariants;
+use App\Productvariants;
 use App\EventVariants;
 
 use Illuminate\Http\Request;
@@ -57,9 +57,9 @@ class EventController extends Controller
         foreach($couleurs as $couleur){
             $select_couleurs[$couleur->id] = $couleur->nom;
         }
-        $productVariants = ProductVariants::all();
+        $Productvariants = Productvariants::all();
     
-        return view('admin/Event.add', ['couleurs'=> $couleurs, 'productVariants' => $productVariants, 'select' => $select, 'select_couleurs' => $select_couleurs, 'select_products' => $select_products, 'products' => $products]);
+        return view('admin/Event.add', ['couleurs'=> $couleurs, 'Productvariants' => $Productvariants, 'select' => $select, 'select_couleurs' => $select_couleurs, 'select_products' => $select_products, 'products' => $products]);
     }
 
     /**
@@ -70,9 +70,9 @@ class EventController extends Controller
     public function ajax(){
         $prod_id = Input::get('product_id');
 
-        $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
+        $Productvariants = Productvariants::where('product_id', '=', $prod_id)->get();
 
-        return Response::json($productVariants);
+        return Response::json($Productvariants);
     }
 
     /**
@@ -92,13 +92,6 @@ class EventController extends Controller
         ]);
 
         $event = new Event;
-        // foreach ($ids as $id) {
-
-        //     $productVariants = ProductVariants::findOrfail($id);
-        //     $productVariants->present = true;
-        //     $productVariants->save;
-        
-        // }
 
         $event->nom = $request->nom;
         $event->annonceur = $request->annonceur;

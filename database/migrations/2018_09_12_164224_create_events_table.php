@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
             $table->string('nom');
             $table->integer('customer_id')->nullable();
             $table->integer('product_id')->nullable();
-            $table->integer('productVariants_id')->nullable();
+            $table->integer('Productvariants_id')->nullable();
             $table->string('annonceur');
             $table->string('logoName')->nullable();
             $table->string('BAT_name')->nullable();
@@ -64,8 +64,6 @@ class CreateEventsTable extends Migration
             $table->integer('product_variants_id')->unsigned()->index();
             $table->integer('event_variants_id')->unsigned()->index();
         });
-
-        
     }
 
 //     /**

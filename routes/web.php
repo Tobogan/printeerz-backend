@@ -1,5 +1,5 @@
 <?php
-use App\ProductVariants;
+use App\Productvariants;
 use App\Couleur;
 use Illuminate\Support\Facades\Input;
 /*
@@ -157,19 +157,19 @@ Route::delete('comment/delete/{id}', 'CommentController@destroy')->name('destroy
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 
 /*~~~~~~~~~~~___________Products Variants Route__________~~~~~~~~~~~~*/
-Route::get('admin/ProductVariants/index', 'ProductVariantsController@index')->name('index_productVariants');
+Route::get('admin/Productvariants/index', 'ProductvariantsController@index')->name('index_Productvariants');
 
-Route::get('admin/ProductVariants/create/{id}', 'ProductVariantsController@create')->name('create_productVariants');
+Route::get('admin/Productvariants/create/{id}', 'ProductvariantsController@create')->name('create_Productvariants');
 
-Route::post('admin/ProductVariants/store', 'ProductVariantsController@store')->name('store_productVariants');
+Route::post('admin/Productvariants/store', 'ProductvariantsController@store')->name('store_Productvariants');
 
-Route::get('admin/ProductVariants/show/{id}', 'ProductVariantsController@show')->name('show_productVariants');
+Route::get('admin/Productvariants/show/{id}', 'ProductvariantsController@show')->name('show_Productvariants');
 
-Route::get('admin/ProductVariants/edit/{id}', 'ProductVariantsController@edit')->name('edit_productVariants');
+Route::get('admin/Productvariants/edit/{id}', 'ProductvariantsController@edit')->name('edit_Productvariants');
 
-Route::post('admin/ProductVariants/update', 'ProductVariantsController@update')->name('update_productVariants');
+Route::post('admin/Productvariants/update', 'ProductvariantsController@update')->name('update_Productvariants');
 
-Route::get('admin/ProductVariants/destroy/{id}', 'ProductVariantsController@destroy')->name('destroy_productVariants');
+Route::get('admin/Productvariants/destroy/{id}', 'ProductvariantsController@destroy')->name('destroy_Productvariants');
 
 /*~~~~~~~~~~~___________Events Variants Route__________~~~~~~~~~~~~*/
 Route::get('admin/EventVariants/index', 'EventVariantsController@index')->name('index_eventVariants');
@@ -190,25 +190,21 @@ Route::get('admin/EventVariants/destroy/{id}', 'EventVariantsController@destroy'
 
 Route::get('/select_product',function(){
     $prod_id = Input::get('product_id');
-
-    $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
-
-    return Response::json($productVariants);
+    $Productvariants = Productvariants::where('product_id', '=', $prod_id)->get();
+    return Response::json($Productvariants);
 });
-
-
 
 Route::get('/colors',function(){
     $color_id[] = Input::get('variants[]');
     $couleurs = Couleur::where('id', '=', $color_id)->get();
-    // $productVariants = ProductVariants::all()->get();
-    // return Response::json($couleurs, $productVariants);
+    // $Productvariants = Productvariants::all()->get();
+    // return Response::json($couleurs, $Productvariants);
     return Response::json($couleurs);
 });
 
 
 // $couleurs = Couleurs::select('nom')
-//     ->join('productVariants', 'couleur_id', '=', 'couleurs.id')
+//     ->join('Productvariants', 'couleur_id', '=', 'couleurs.id')
 //     ->where('couleur_id', '=', $prod_id)
 //     ->get();
 

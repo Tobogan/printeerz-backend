@@ -6,7 +6,8 @@ use DB;
 use App\Product;
 use App\Event;
 use App\EventVariants;
-use App\ProductVariants;
+use App\Productvariants;
+use App\Taille;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -39,13 +40,14 @@ class EventVariantsController extends Controller
     public function create($id)
     {
         $products = Product::all();
-        $productVariants = ProductVariants::all();
+        $productvariants = Productvariants::all();
+        $tailles = Taille::all();
         $event = Event::find($id);
         $select_couleurs = [];
         foreach($products as $product){
             $select_products[$product->id] = $product->nom;
         }
-        return view('admin/EventVariants.add', ['productVariants' => $productVariants, 'products' => $products, 'select_couleurs' => $select_products, 'event_id' => $id]);
+        return view('admin/EventVariants.add', ['tailles' => $tailles, 'productvariants' => $productvariants, 'products' => $products, 'select_couleurs' => $select_products, 'event_id' => $id]);
     }
 
     /**
@@ -59,12 +61,13 @@ class EventVariantsController extends Controller
         $validatedData = $request->validate([
             'event_id' => 'required|integer|max:255'
         ]);
+
         $eventVariant = new EventVariants;
         $eventVariant->event_id = $request->event_id;
         $eventVariant->product_id = $request->product_id;
         $eventVariant->save();
-        $eventVariant->productVariants()->sync($request->get('variant_id'));
-
+        $eventVariant->productvariants()->sync($request->get('variant_id'));
+        // $eventVariant->tailles()->sync($request->get('taille_id'));
         $eventVariant->save();
 
         $event = Event::find($eventVariant->event_id);
@@ -91,13 +94,13 @@ class EventVariantsController extends Controller
      */
     public function edit($id)
     {
-        $productVariant = ProductVariants::find($id);
+        $productVariant = Productvariants::find($id);
         $couleurs = Couleur::all();
         $select_couleurs = [];
         foreach($couleurs as $couleur){
             $select_couleurs[$couleur->id] = $couleur->nom;
         }
-        return view('admin/ProductVariants.edit', ['couleurs' => $couleurs, 'select_couleurs' => $select_couleurs]);
+        return view('admin/Productvariants.edit', ['couleurs' => $couleurs, 'select_couleurs' => $select_couleurs]);
     }
 
     /**
@@ -124,7 +127,7 @@ class EventVariantsController extends Controller
                 'image5' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
             $id = $request->id;
-            $productVariant = ProductVariants::find($id);
+            $productVariant = Productvariants::find($id);
             
             $productVariant->color = $request->color;
             $productVariant->product_id = $request->product_id;
@@ -158,7 +161,7 @@ class EventVariantsController extends Controller
                     'image5' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
                 $id = $request->id;
-                $productVariant = ProductVariants::find($id);
+                $productVariant = Productvariants::find($id);
                 
                 $productVariant->color = $request->color;
                 $productVariant->product_id = $request->product_id;

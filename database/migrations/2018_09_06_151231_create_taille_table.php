@@ -15,14 +15,9 @@ class CreateTailleTable extends Migration
     {
         Schema::create('tailles', function (Blueprint $table) {
             $table->increments('id');
+            //$table->integer('productvariants_id')->unsigned()->nullable();
             $table->string('nom');
             $table->timestamps();
-        });
-    
-        Schema::create('product_taille', function(Blueprint $table){
-            $table->increments('id');
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('taille_id')->unsigned()->index();
         });
     }
 
@@ -33,6 +28,6 @@ class CreateTailleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tailles');
+        Schema::dropIfExists('taille');
     }
 }

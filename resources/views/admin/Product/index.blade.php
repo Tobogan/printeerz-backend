@@ -21,7 +21,6 @@
             <th>Noms</th>
             <th>Références</th>
             <th>Sexes</th>
-            <th>Tailles</th>
             <th>Commentaires</th>
             <th></th>
         </tr>
@@ -36,8 +35,6 @@
     @else
         <td> Femme </td>
     @endif
-    <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
-    <td><?php echo implode(', ', $list_tailles); ?></td>
 
     <?php $description = $product->description;
     if(strlen($description) > 50){
