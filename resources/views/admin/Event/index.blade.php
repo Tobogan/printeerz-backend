@@ -1,66 +1,143 @@
 @extends('layouts/templateAdmin')
 
 @section('content')
-<div class="container">
+
 @if (session('status'))
-    <div class="alert alert-success mt-1">
-        {{ session('status') }}
-    </div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('status') }}
+</div>
 @endif
 
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
 
-  	<div><a href="{{action('EventController@create')}}"><button type="button" title="Ajout d'un nouvel événement" class="btn btn-primary right btn-sm mt-2 mb-2" style="float:right"><i class="uikon">add</i> Nouvel événement</button></a></div>
-<br>
-<br>
-<table class="display table table-striped datatable" >
-    <thead>
-		<tr>
-            <th>Avatar</th>
-            <th>Noms</th>
-            <th>Annonceur</th>
-            <th>Client</th>
-            <th>Lieu</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach ($events as $event)
-    <tr>
-    @if($event->logoName)
-    <td><a href="{{route('show_event', $event->id)}}"><img src="/uploads/{{$event->logoName}}" class="miniRoundedImage" alt="img_event"></a></td>
-    @else
-    <td><img src="/uploads/no_image.jpg" class="miniRoundedImage" alt="img_event" ></td>
-    @endif
-    <td><a style="text-decoration:none;color:black;" href="{{route('show_event', $event->id)}}">{{ $event->nom }}</a></td>
-    <td>{{ $event->annonceur }}</td>
+            <!-- Header -->
+            <div class="header mt-md-5">
+                <div class="header-body">
+                    <div class="row align-items-center">
+                        <div class="col">
 
-    @if($event->customer)
-    <td>{{ $event->customer->denomination }}</td>
-    @else
-    <td><i>Inconnu</i></td>
-    @endif
+                            <!-- Pretitle -->
+                            <h6 class="header-pretitle">
+                                Overview
+                            </h6>
 
-    <td>{{ $event->lieu }}</td>
-    <td>{{ $event->type }}</td>
-    <td>{{ date('d-m-Y', strtotime($event->date)) }}</td>
-    <?php $description = $event->description;
-    if(strlen($description) > 50){
-        $description = substr($description, 0, 50);
-        $description .= '...';
-    }
-    ?>
-    @if(strlen($description) != 0)
-    <td>{{ $description }}</td>
-    @else
-    <td>{{ '...' }}</td>
-    @endif
-    <td><a class='btn btn-success btn-sm' href="{{route('show_event', $event->id)}}" title="Détails de l'événement"> Détails </a></td></tr>
-@endforeach
-    </tbody>
-    </div>
+                            <!-- Title -->
+                            <h1 class="header-title">
+                                Evénements
+                            </h1>
 
-    
+                        </div>
+                        <div class="col-auto">
+
+                            <!-- Button -->
+                            <a href="{{action('EventController@create')}}" class="btn btn-primary">
+                                Créer un événement
+                            </a>
+
+                        </div>
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div id="eventTable" class="card mt-3" data-toggle="lists" data-lists-values='["event-name", "event-annonceur", "event-customer", "event-place","event-type", "event-date"]'>
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Search -->
+                            <form class="row align-items-center">
+                                <div class="col-auto pr-0">
+                                    <span class="fe fe-search text-muted"></span>
+                                </div>
+                                <div class="col">
+                                    <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="event-name">
+                                        Nom
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="event-annonceur">
+                                        Annonceur
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="event-customer">
+                                        Client
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="event-place">
+                                        Lieu
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="event-type">
+                                        Type
+                                    </a>
+                                </th>
+                                <th colspan="2">
+                                    <a href="#" class="text-muted sort" data-sort="event-date">
+                                        Date
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="list">
+                            @foreach ($events as $event)
+                            <tr>
+                                <td class="event-name">
+                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->nom }}</b></a>
+                                </td>
+                                <td class="event-annonceur">{{ $event->annonceur }}</td>
+
+                                @if($event->customer)
+                                <td class="event-customer">{{ $event->customer->denomination }}</td>
+                                @else
+                                <td class="event-customer text-muted">___</td>
+                                @endif
+
+                                <td class="event-place"> {{ $event->lieu }}</td>
+                                <td class="event-type">
+                                    <div class="badge badge-soft-primary">{{ $event->type }}</div>
+                                </td>
+                                <td class="event-date">{{ date('d-m-Y', strtotime($event->date)) }} </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            data-boundary="window">
+                                            <i class="fe fe-more-vertical"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="{{route('show_event', $event->id)}}" class="dropdown-item">
+                                                Voir l'événement
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / .row -->
+</div>
+
 @endsection

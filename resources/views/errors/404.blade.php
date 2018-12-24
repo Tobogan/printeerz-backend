@@ -1,39 +1,42 @@
-<h2>{{ $exception->getMessage() }}</h2>
-<!------ Include the above in your HEAD tag ---------->
+<!doctype html>
+<html lang="en">
+  
+  @include('includes.head')
+  <body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary" style="background-image: url('/img/daniel-jensen-440210-unsplash.jpg'); background-size: cover; background-repeat: no-repeat;">
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="error-template">
-                <h1>
-                    Oops!</h1>
-                <h2>
-                    404 Not Found</h2>
-                <div class="error-details">
-                    Une erreur est survenue, merci de contacter le service support.
-                </div>
-            </div>
+    <!-- CONTENT
+    ================================================== -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              Vous êtes perdu?
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Il n'y a personne ici 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              On se perd parfois mais la sortie est proche.
+            </p>
+
+            <!-- Button -->
+            <a href="{{route('home')}}" class="btn btn-lg btn-primary">
+              Retourner à l'accueil
+            </a>
+          
+          </div>
+
         </div>
-    </div>
-</div>
-<style>
+      </div> <!-- / .row -->
+    </div> <!-- / .container -->
 
-@import url('https://fonts.googleapis.com/css?family=Raleway');
-
-    body { background: linear-gradient(
-                rgba(0, 0, 0, 0.45), 
-                rgba(0, 0, 0, 0.45)
-                ),url(/img/daniel-jensen-440210-unsplash.jpg);
-                background-size: cover;
-                background-repeat: no-repeat;
-                color: white;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-        }
-
-    .error-template {padding: 40px 15px;text-align: center;}
-    .error-actions {margin-top:15px;margin-bottom:15px;}
-    .error-actions .btn { margin-right:10px; }
-</style>
+  </body>
+</html>

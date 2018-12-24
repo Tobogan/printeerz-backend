@@ -2,58 +2,126 @@
 
 @section('content')
 
-<div class="container">
 @if (session('status'))
-    <div class="alert alert-success mt-2 mb-2">
-        {{ session('status') }}
-    </div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('status') }}
+</div>
 @endif
 
-  	<a href="{{action('ProductController@create')}}"><button type="button" title="Ajout d'un nouveau produit" class="btn btn-primary btn-sm ml-2 mt-2 mb-2" style="float:right"><i class="uikon">add</i> Nouveau produit</button></a>
-  	<a href="{{action('CouleurController@index')}}"><button type="button" title="Gestion des couleurs" class="btn btn-info btn-sm ml-1 mt-2 mb-2"  role="group" aria-label="..." style="float:right"><i class="uikon">settings</i> Couleurs/Tailles</button></a>
-    <!-- <a href="{{action('ZoneController@index')}}"><button type="button" title="Gestion des zones" class="btn btn-info btn-sm mt-2 mb-2" style="float: right" role="group" aria-label="...">Zones</button></a> -->
-    <br>
-<br>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
 
-<table class="datatable table table-striped" >
-    <thead>
-		<tr>
-            <th>Noms</th>
-            <th>Références</th>
-            <th>Sexes</th>
-            <th>Tailles</th>
-            <th>Commentaires</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach ($products as $product)
+            <!-- Header -->
+            <div class="header mt-md-5">
+                <div class="header-body">
+                    <div class="row align-items-center">
+                        <div class="col">
 
-    <tr><td>{{ $product->nom }}</td>
-    <td>{{ $product->reference }}</td>
-    @if ($product->sexe == 'Homme')
-        <td> Homme </td>
-    @else
-        <td> Femme </td>
-    @endif
-    <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
-    <td><?php echo implode(', ', $list_tailles); ?></td>
+                            <!-- Pretitle -->
+                            <h6 class="header-pretitle">
+                                Overview
+                            </h6>
 
-    <?php $description = $product->description;
-    if(strlen($description) > 50){
-        $description = substr($description, 0, 50);
-        $description .= '...';
-    }
-    ?>
-    @if(strlen($description) != 0)
-    <td>{{ $description }}</td>
-    @else
-    <td>{{ '...' }}</td>
-    @endif
-    <td><a class='btn btn-success btn-sm' href="{{route('show_product', $product->id)}}" title="Détails du produit"> Détails </a></td></tr>
+                            <!-- Title -->
+                            <h1 class="header-title">
+                                Produits
+                            </h1>
 
-@endforeach
-    </tbody>
+                        </div>
+                        <div class="col-auto">
+
+                            <!-- Button -->
+                            <a href="{{action('ProductController@create')}}" class="btn btn-primary">
+                                Créer un produit
+                            </a>
+                            <a href="{{action('CouleurController@index')}}" class="btn btn-default">Gestion des couleurs</a>
+
+                        </div>
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div id="customerTable" class="card mt-3" data-toggle="lists" data-lists-values='["product-name", "product-sku", "product-sexe", "product-sizes"]'>
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Search -->
+                            <form class="row align-items-center">
+                                <div class="col-auto pr-0">
+                                    <span class="fe fe-search text-muted"></span>
+                                </div>
+                                <div class="col">
+                                    <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th colspan="1">
+                                    <a href="#" class="text-muted sort" data-sort="product-sku">
+                                        Référence
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="product-name">
+                                        Nom
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="product-sexe">
+                                        Sexe
+                                    </a>
+                                </th>
+                                <th colspan="2">
+                                    <a href="#" class="text-muted" data-sort="product-sizes">
+                                        Tailles
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @foreach ($products as $product)
+                            <tr>
+                                <td class="product-sku"><a href="{{route('show_product', $product->id)}}"><b>{{ $product->reference }}</b></a></td>
+                                <td class="product-name">{{ $product->nom }}</td>
+                                @if ($product->sexe == 'Homme')
+                                <td class="product-sexe"> Homme </td>
+                                @else
+                                <td class="product-sexe"> Femme </td>
+                                @endif
+                                <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
+                                <td class="product-sizes">
+                                    <?php echo implode(', ', $list_tailles); ?>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false" data-boundary="window">
+                                            <i class="fe fe-more-vertical"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="{{route('show_product', $product->id)}}" class="dropdown-item">
+                                                Voir le produit
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / .row -->
 </div>
 
 @endsection
