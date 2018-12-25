@@ -64,11 +64,6 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="#" class="text-muted sort" data-sort="user-id">
-                                    Id
-                                    </a>
-                                </th>
-                                <th>
                                     <a href="#">
                                         
                                     </a>
@@ -104,7 +99,6 @@
                         <tbody class="list">
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="user-id">{{ $user->id }}</td>
                                     <td class="user-avatar">
                                     @if($user->imageName)
                                     <div class="avatar avatar-sm">

@@ -114,7 +114,7 @@
                                 <td class="event-type">
                                     <div class="badge badge-soft-primary">{{ $event->type }}</div>
                                 </td>
-                                <td class="event-date">{{ date('d-m-Y', strtotime($event->date)) }} </td>
+                                <td class="event-date">{{ date('d/m/Y', strtotime($event->date)) }} </td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
