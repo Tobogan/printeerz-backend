@@ -27,8 +27,13 @@
 
     <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}" />
+    <style>
+        nav.navbar-dark{
+    background: #833ab4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
+    background: linear-gradient(to left, #fcb045, #fd1d1d, #833ab4); 
+}</style>
 
 </head>
