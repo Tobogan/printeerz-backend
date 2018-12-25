@@ -4,7 +4,7 @@
     
             <!-- Body -->
             <div class="header-body">
-                <div class="row align-items-end">
+                <div class="row align-items-center">
                     <div class="col-auto">
     
                         <!-- Avatar -->
@@ -28,12 +28,21 @@
     
                     </div>
                     <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
-    
-                        <!-- Button -->
-                        <a href="{{route('edit_customer', $customer->id)}}" class="btn btn-primary d-block d-md-inline-block">
-                            Modifier
-                        </a>
-    
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a href="#!" class="btn btn-lg btn-rounded-circle btn-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fe fe-more-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                <a href="{{route('edit_customer', $customer->id)}}" class="dropdown-item">
+                                    Modifier
+                                </a>
+                                <button type="button" data-toggle="modal" data-target="#modalDeleteCustomer" class="dropdown-item text-danger">
+                                    Supprimer
+                                </button>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                 </div> <!-- / .row -->
                 <div class="row align-items-center">

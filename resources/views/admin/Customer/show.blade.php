@@ -261,5 +261,5 @@
 </div>
 
 
-
+@include('admin.Customer.includes.modalDelete')
 @endsection
