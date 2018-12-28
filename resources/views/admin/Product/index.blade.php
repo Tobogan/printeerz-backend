@@ -35,7 +35,6 @@
                             <a href="{{action('ProductController@create')}}" class="btn btn-primary">
                                 Créer un produit
                             </a>
-                            <a href="{{action('CouleurController@index')}}" class="btn btn-default">Gestion des couleurs</a>
 
                         </div>
                 </div>

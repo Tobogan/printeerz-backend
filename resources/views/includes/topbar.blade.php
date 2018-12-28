@@ -75,10 +75,15 @@
                     <i class="fe fe-inbox"></i> Clients
                 </a>
             </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/Product/*') ? 'active' : '' }}" href="{{route('index_product')}}">
+            <li class="nav-item px-2 dropdown">
+                <a class="nav-link {{ request()->is('admin/Product/*') ? 'active' : '' }} dropdown-toggle" href="#"
+                    id="navbarProductsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fe fe-layers"></i> Produits
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarProductsDropdown">
+                    <a class="dropdown-item" href="{{route('index_product')}}">Tous les produits</a>
+                    <a class="dropdown-item" href="{{action('CouleurController@index')}}">Gestion des couleurs</a>
+                </div>  
             </li>
             <li class="nav-item px-2">
                 <a class="nav-link {{ request()->is('admin/User/*') ? 'active' : '' }}" href="{{route('user_index')}}">
