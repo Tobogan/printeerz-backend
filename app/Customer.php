@@ -8,7 +8,7 @@ use App\Event;
 class Customer extends Model
 {
     protected $fillable = [
-        'denomination', 'adresse', 'code_postal', 'ville', 'siren', 'activite', 'event_id', 'nb_events', 'nb_impression', 'informations', 'contact_nom', 'contact_prenom', 'contact_email', 'contact_email', 'contact_telephone', 'contact_poste'
+        'name', 'adress', 'postal_code', 'city', 'siren', 'activity', 'event_id', 'event_qty', 'print_qty', 'informations', 'contact_lastname', 'contact_firstname', 'contact_email', 'contact_email', 'contact_phone', 'contact_job'
     ];
 
     public function event() {

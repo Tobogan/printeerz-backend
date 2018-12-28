@@ -18,21 +18,21 @@
         {{csrf_field()}}
 
         <div class="form-group">
-        {!! Form::label('denomination', 'Entrer la dénomination : ') !!}
-        {!! Form::text('denomination', null, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
+        {!! Form::label('name', 'Entrer la nom : ') !!}
+        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::label('adresse_complete', 'Entrer l\'adresse : ') !!}
-            {!! Form::text('adresse', null, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
-            {!! Form::text('code_postal', null, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
-            {!! Form::text('ville', null, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
+            {!! Form::label('adress_complete', 'Entrer l\'adress : ') !!}
+            {!! Form::text('adress', null, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
+            {!! Form::text('postal_code', null, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
+            {!! Form::text('city', null, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
         </div>
 
 
         <div class="form-group">
-        {!! Form::label('activite', 'Entrer l\'activité : ') !!}
-        {!! Form::text('activite', null, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
+        {!! Form::label('activity', 'Entrer l\'activité : ') !!}
+        {!! Form::text('activity', null, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
         </div>
 
         <div class="form-group">
@@ -43,23 +43,26 @@
         {!! Form::label('contact', 'Entrer le contact : ') !!}
             <div class="row">
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_nom', null, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
+                    {!! Form::text('contact_lastname', null, ['class' => 'form-control', 'placeholder' => 'Nom :']) !!}
                 </div>
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_prenom', null, ['class' => 'form-control', 'placeholder' => 'Prénom:']) !!}
+                    {!! Form::text('contact_firstname', null, ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_telephone', null, ['class' => 'form-control', 'placeholder' => 'Téléphone:']) !!}
+                    {!! Form::text('contact_phone', null, ['class' => 'form-control', 'placeholder' => 'Téléphone :']) !!}
                 </div>
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_poste', null, ['class' => 'form-control', 'placeholder' => 'Poste:']) !!}
+                    {!! Form::text('contact_job', null, ['class' => 'form-control', 'placeholder' => 'Poste :']) !!}
+                </div>
+                <div class="col-6 mb-2">
+                    {!! Form::text('contact_email', null, ['class' => 'form-control', 'placeholder' => 'Email :']) !!}
                 </div>
             </div>
         <div class="form-group">
-        {!! Form::label('nb_events', 'Entrer le nombre d\'événements déjà organisés : ') !!}
-        {!! Form::number('nb_events', 0, ['class' => 'form-control']) !!}
+        {!! Form::label('event_qty', 'Entrer le nombre d\'événements déjà organisés : ') !!}
+        {!! Form::number('event_qty', 0, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

@@ -56,8 +56,6 @@
 
             <h6 class="mb-2">Référence fournisseur: <small>{{ $product->reference }}</small></h6>
 
-            <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
-            <h6 class="mb-2">Tailles disponibles: <small><?php echo implode(', ', $list_tailles); ?></small></h6>
 
             <?php $list_couleurs = $product->couleurs->pluck('nom')->toArray();?>
             <h6 class="mb-2">Couleurs disponibles: <small><?php echo implode(', ', $list_couleurs); ?></small></h6>

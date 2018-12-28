@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ProductsTable extends Migration
+class CreateGabarit2Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class ProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('gabarit2', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom');
-            $table->string('reference');
-            $table->enum('sexe', ['Femme', 'Homme','Enfant'])->default('Homme');
-            $table->text('description')->nullable();
-            $table->string('photo_illustration')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ class ProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('gabarit2');
     }
 }

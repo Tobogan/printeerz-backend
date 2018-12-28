@@ -15,4 +15,8 @@ class Taille extends Model
         public function products() {
             return $this->belongsToMany('App\Product');
         }
+
+        public function productVariants() {
+            return $this->belongsToMany('App\ProductVariants');
+        }
 }

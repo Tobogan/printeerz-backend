@@ -88,7 +88,7 @@
                     <a class="uik-nav-link-2__wrapper uik-nav-link-2__highlighted"  href="{{route('index_product')}}"><span class="uik-nav-link-2__text"><span class="uik-nav-link-2__icon"><i class="uikon">money_round</i></span>Produits</span></a>
                     {{-- <a class="uik-nav-link-2__wrapper uik-nav-link-2__highlighted"  href="{{route('index_product')}}"><span class="uik-nav-link-2__text"><span class="uik-nav-link-2__icon"><i class="uikon">gallery_grid_view</i></span>Gabarits</span></a> --}}
 
-                    <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="uik-nav-link-2__wrapper active uik-nav-link-2__highlighted" ><span class="uik-nav-link-2__text "><span class="uik-nav-link-2__icon"><i class="uikon">trending_down</i></span>Déconnexion</span></a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;" >
+                    <a href="{{route('logout')}}" onclick="event.preventDefault(); confirm('Êtes-vous sûr de vouloir vous déconnecter ?'); document.getElementById('logout-form').submit();" class="uik-nav-link-2__wrapper active uik-nav-link-2__highlighted" ><span class="uik-nav-link-2__text "><span class="uik-nav-link-2__icon"><i class="uikon">trending_down</i></span>Déconnexion</span></a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;" >
                                 {{ csrf_field() }}
                             </form></div>
                 <!-- <section class="uik-nav-section__wrapper"><span class="uik-nav-section-title__wrapper">Recently viewed</span><a class="uik-nav-link__wrapper"><span class="uik-nav-link__text">Overall Performance</span><span class="uik-nav-link__rightEl">→</span></a><a class="uik-nav-link__wrapper"><span class="uik-nav-link__text">Invoice #845</span><span class="uik-nav-link__rightEl">→</span></a><a class="uik-nav-link__wrapper"><span class="uik-nav-link__text">Customer: Minerva Viewer</span><span class="uik-nav-link__rightEl">→</span></a></section> -->
@@ -143,6 +143,8 @@
                         
                         @elseif($_SERVER['REQUEST_URI'] == '/admin/Couleur/index')
                             <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des tailles & couleurs</h2></div>
+                        @elseif($_SERVER['REQUEST_URI'] == '/')
+                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Home</h2></div>
                         @endif
 
                         <!-- ~~~~~~~~________ TITRE POUR CHAQUE PAGE EN FONCTION DE L'URI ________~~~~~~~~ -->
@@ -187,7 +189,7 @@
 } );
 
 </script>
-    <script type="text/javascript" src="{{ asset('slick/slick.min.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('slick/slick.min.js') }}"></script> --}}
     {{-- <script type="text/javascript" src="{{ asset('js/form.js') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/js.js') }}"></script>

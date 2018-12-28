@@ -29,12 +29,12 @@
 @foreach ($customers as $customer)
 
     <tr>
-        <td>{{ $customer->denomination }}</td>
-        <td>{{ $customer->contact_prenom . ' ' . $customer->contact_nom }}</td>
-        <td>{{ $customer->adresse }}</td>
-        <td>{{ $customer->code_postal }}</td>
-        <td>{{ $customer->ville }}</td>
-        <td>{{ $customer->nb_events }}</td>
+        <td>{{ $customer->name }}</td>
+        <td>{{ $customer->contact_firstname . ' ' . $customer->contact_lastname }}</td>
+        <td>{{ $customer->adress }}</td>
+        <td>{{ $customer->postal_code }}</td>
+        <td>{{ $customer->city }}</td>
+        <td>{{ $customer->event_qty }}</td>
 
             <?php 
             $informations = $customer->informations;

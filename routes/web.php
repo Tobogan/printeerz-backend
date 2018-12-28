@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@home')->name('home');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 /*~~~~~~~~~~~___________User Route__________~~~~~~~~~~~~*/
@@ -92,7 +92,11 @@ Route::post('admin/Event/update', 'EventController@update')->name('update_event'
 
 Route::get('admin/Event/destroy/{id}', 'EventController@destroy')->name('destroy_event');
 
-Route::get('admin/Event/show/comme,t', 'CommentController@addComment')->name('comment_event');
+Route::get('admin/Event/show/comment', 'CommentController@addComment')->name('comment_event');
+
+
+Route::get('admin/Event/show_eventVariants/{id}', 'EventController@show_eventVariants')->name('show_eventVariants');
+
 
 
 /*~~~~~~~~~~~___________Couleurs Route__________~~~~~~~~~~~~*/
@@ -178,13 +182,14 @@ Route::get('admin/EventVariants/create/{id}', 'EventVariantsController@create')-
 
 Route::post('admin/EventVariants/store', 'EventVariantsController@store')->name('store_eventVariants');
 
-Route::get('admin/EventVariants/show/{id}', 'EventVariantsController@show')->name('show_eventVariants');
-
 Route::get('admin/EventVariants/edit/{id}', 'EventVariantsController@edit')->name('edit_eventVariants');
 
 Route::post('admin/EventVariants/update', 'EventVariantsController@update')->name('update_eventVariants');
 
 Route::get('admin/EventVariants/destroy/{id}', 'EventVariantsController@destroy')->name('destroy_eventVariants');
+
+
+
 
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 

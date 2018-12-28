@@ -28,7 +28,7 @@
         
         <h6 class="mt-2">Client: </h6>
         @if($event->customer)
-            <div><small>{{ $event->customer->denomination}}</small></div>
+            <div><small>{{ $event->customer->name}}</small></div>
         @else
             <div><i><small>Inconnu</small></i></div>
         @endif
@@ -77,6 +77,7 @@
             <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventVariants', $event->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter un produit</a>
 
             <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_front', $event->id)}}"  title="Lancer l'event"><i class="uikon">send_round</i> Lancer</a>
+            <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_eventVariants', $event->id)}}"  title="Variantes"><i class="uikon">send_round</i> Variantes</a>
             <a role="button" class='btn btn-success btn-sm mt-2' href="{{route('edit_event', $event->id)}}"  title="Modification du produit"><i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' href="{{route('destroy_event', $event->id)}}" onclick="return confirm('Êtes-vous sûr?')" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_event')}}"> Retour </a>
@@ -84,31 +85,7 @@
     </div> <!-- row --->
 <!-- container --->
 
-<!--~~~~~~~~~~~___________Variantes__________~~~~~~~~~~~~-->
 
-<table class="datatable table table-striped" >
-    <thead>
-        <tr>
-            <th>Produit</th>
-            <th>Couleurs</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach ($eventVariants as $eventVariant)
-    @if($eventVariant->event_id == $event->id)
-        <td>{{ $eventVariant->product->nom }}</td>
-        <?php $list_productVariants = $eventVariant->productVariants->pluck('nom')->toArray();?>
-        @if($list_productVariants)
-            <td><small><?php echo implode(', ', $list_productVariants); ?></small></td>
-        @else
-            <td><small>Pas de couleurs séléctionnées</small></td>
-        @endif
-        {{-- <td>{{ $eventVariant->productVariants->nom }}</td> --}}
-        <td><a class='btn btn-danger' href="{{route('destroy_eventVariants', $eventVariant->id)}}" title="Supprimer le produit">Supprimer</a></td></tr>
-    @endif
-@endforeach
-    </tbody>
 
     <!--~~~~~~~~~~~___________Commentaires__________~~~~~~~~~~~~-->
 
@@ -139,6 +116,7 @@
         <br><br>
     </div>
     @endforeach
+
         <div class="event_comments_list1"></div>
         <div class="event_comments_list2"></div>
     </div>
@@ -177,24 +155,6 @@
     @section('javascripts')
     <script> var host = "{{URL::to('/')}}"; </script>
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-        $('.your-class').slick();
-    });
-    </script>
-    <script>
-        $('.side_img').on('click', function(){
-            swap(this)
-        })
-    function swap(img) {
-        var tmp = img.src;
-        img.src = document.getElementById('image_principale').src;
-        document.getElementById('image_principale').src = tmp;
-
-        var tmp2 = img.title;
-        img.title = document.getElementById('image_principale').title;
-        document.getElementById('image_principale').title = tmp2;
-    }
     </script>
     {{-- <script type="text/javascript">
     $('.image_principale').each(function() {

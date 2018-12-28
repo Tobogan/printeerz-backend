@@ -18,21 +18,21 @@
 
         {{csrf_field()}}
         <div class="form-group">
-        {!! Form::label('denomination', 'Entrer la dénomination : ') !!}
-        {!! Form::text('denomination', $customer->denomination, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
+        {!! Form::label('name', 'Entrer la nom : ') !!}
+        {!! Form::text('name', $customer->name, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::label('adresse_complete', 'Entrer l\'adresse : ') !!}
-            {!! Form::text('adresse', $customer->adresse, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
-            {!! Form::text('code_postal', $customer->code_postal, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
-            {!! Form::text('ville', $customer->ville, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
+            {!! Form::label('adress_complete', 'Entrer l\'adress : ') !!}
+            {!! Form::text('adress', $customer->adress, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
+            {!! Form::text('postal_code', $customer->postal_code, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
+            {!! Form::text('city', $customer->city, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
         </div>
 
 
         <div class="form-group">
-        {!! Form::label('activite', 'Entrer l\'activité : ') !!}
-        {!! Form::text('activite', $customer->activite, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
+        {!! Form::label('activity', 'Entrer l\'activité : ') !!}
+        {!! Form::text('activity', $customer->activity, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
         </div>
 
         <div class="form-group">
@@ -43,23 +43,26 @@
         {!! Form::label('contact', 'Entrer le contact : ') !!}
             <div class="row">
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_nom', $customer->contact_nom, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
+                {!! Form::text('contact_lastname', $customer->contact_lastname, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
                 </div>
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_prenom', $customer->contact_prenom, ['class' => 'form-control', 'placeholder' => 'Prénom:']) !!}
+                {!! Form::text('contact_firstname', $customer->contact_firstname, ['class' => 'form-control', 'placeholder' => 'Prénom:']) !!}
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_telephone', $customer->contact_telephone, ['class' => 'form-control', 'placeholder' => 'Téléphone:']) !!}
+                {!! Form::text('contact_phone', $customer->contact_phone, ['class' => 'form-control', 'placeholder' => 'Téléphone:']) !!}
                 </div>
                 <div class="col-6 mb-2">
-                {!! Form::text('contact_poste', $customer->contact_poste, ['class' => 'form-control', 'placeholder' => 'Poste:']) !!}
+                {!! Form::text('contact_job', $customer->contact_job, ['class' => 'form-control', 'placeholder' => 'Poste:']) !!}
                 </div>
+                <div class="col-6 mb-2">
+                    {!! Form::text('contact_email', $customer->contact_email, ['class' => 'form-control', 'placeholder' => 'Email:']) !!}
+                    </div>
             </div>
         <div class="form-group">
-        {!! Form::label('nb_events', 'Entrer le nombre d\'événements déjà organisés : ') !!}
-        {!! Form::number('nb_events', $customer->nb_events, ['class' => 'form-control']) !!}
+        {!! Form::label('event_qty', 'Entrer le nombre d\'événements déjà organisés : ') !!}
+        {!! Form::number('event_qty', $customer->event_qty, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
@@ -67,7 +70,7 @@
         <textarea class="form-control" name="informations" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
         </div>
         <hr>
-        <input type="hidden" class="form-control" name="actual_nom" value= '{{ $customer->denomination }}'>
+        <input type="hidden" class="form-control" name="actual_nom" value= '{{ $customer->name }}'>
 
         {!! Form::submit('Modifier', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
 

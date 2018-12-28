@@ -7,7 +7,6 @@ use DB;
 use App\Event;
 use App\Customer;
 use App\Product;
-use App\ImageZone;
 use App\Couleur;
 use App\Gabarit;
 use App\User;
@@ -45,7 +44,7 @@ class EventController extends Controller
         $customers = Customer::all();
         $select = [];
         foreach($customers as $customer){
-            $select[$customer->id] = $customer->denomination;
+            $select[$customer->id] = $customer->name;
         }
         $products = Product::all();
         $select_products = [];
@@ -92,13 +91,6 @@ class EventController extends Controller
         ]);
 
         $event = new Event;
-        // foreach ($ids as $id) {
-
-        //     $productVariants = ProductVariants::findOrfail($id);
-        //     $productVariants->present = true;
-        //     $productVariants->save;
-        
-        // }
 
         $event->nom = $request->nom;
         $event->annonceur = $request->annonceur;
@@ -152,6 +144,20 @@ class EventController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_eventVariants($id)
+    {
+        $event = Event::find($id);
+        $eventVariants = EventVariants::all();
+        $productVariants = ProductVariants::all();
+        return view('admin/Event.show_eventVariants', ['event' => $event, 'productVariants' => $productVariants, 'eventVariants' => $eventVariants]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -164,7 +170,7 @@ class EventController extends Controller
         $products = Product::all();
         $select = [];
         foreach($customers as $customer){
-            $select[$customer->id] = $customer->denomination;
+            $select[$customer->id] = $customer->name;
         }
         $products = Product::all();
         $select_products = [];

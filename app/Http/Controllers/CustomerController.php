@@ -54,32 +54,33 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'denomination' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'code_postal' => 'required|string|max:255',
-            'ville' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'adress' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'siren' => 'string|max:255',
-            'activite' => 'required|string|max:255',
-            'nb_events' => 'required|integer',
-            'contact_nom' => 'required|string|max:255',
-            'contact_prenom' => 'required|string|max:255',
-            'contact_telephone' => 'required|string|max:255',
-            'contact_poste' => 'required|string|max:255',
+            'activity' => 'required|string|max:255',
+            'event_qty' => 'required|integer',
+            'contact_lastname' => 'required|string|max:255',
+            'contact_firstname' => 'required|string|max:255',
+            'contact_phone' => 'required|string|max:255',
+            'contact_job' => 'required|string|max:255',
             'informations' => 'max:750'
         ]);
 
         $customer = new Customer;
-        $customer->denomination = $request->denomination;
-        $customer->adresse = $request->adresse;
-        $customer->code_postal = $request->code_postal;
-        $customer->activite = $request->activite;
-        $customer->ville = $request->ville;
+        $customer->name = $request->name;
+        $customer->adress = $request->adress;
+        $customer->postal_code = $request->postal_code;
+        $customer->activity = $request->activity;
+        $customer->city = $request->city;
         $customer->siren = $request->siren;
-        $customer->nb_events = $request->nb_events;
-        $customer->contact_nom = $request->contact_nom;
-        $customer->contact_prenom = $request->contact_prenom;
-        $customer->contact_telephone = $request->contact_telephone;
-        $customer->contact_poste = $request->contact_poste;
+        $customer->event_qty = $request->event_qty;
+        $customer->contact_lastname = $request->contact_lastname;
+        $customer->contact_firstname = $request->contact_firstname;
+        $customer->contact_email = $request->contact_email;
+        $customer->contact_phone = $request->contact_phone;
+        $customer->contact_job = $request->contact_job;
         $customer->informations = $request->informations;
         $customer->event_id = $request->event_id;
         $customer->save();
@@ -120,35 +121,36 @@ class CustomerController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_denomination') == request('denomination')){
+        if (request('actual_name') == request('name')){
             $validatedData = $request->validate([
-            'denomination' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'code_postal' => 'required|string|max:255',
-            'ville' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'adress' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'siren' => 'required|string|max:255',
-            'activite' => 'required|string|max:255',
-            'nb_events' => 'required|integer',
-            'contact_nom' => 'required|string|max:255',
-            'contact_prenom' => 'required|string|max:255',
-            'contact_telephone' => 'required|string|max:255',
-            'contact_poste' => 'required|string|max:255',
+            'activity' => 'required|string|max:255',
+            'event_qty' => 'required|integer',
+            'contact_lastname' => 'required|string|max:255',
+            'contact_firstname' => 'required|string|max:255',
+            'contact_phone' => 'required|string|max:255',
+            'contact_job' => 'required|string|max:255',
             'informations' => 'max:750'
         ]);
             $id = $request->id;
 
             $customer = Customer::find($id);
-            $customer->denomination = $request->denomination;
-            $customer->adresse = $request->adresse;
-            $customer->code_postal = $request->code_postal;
-            $customer->ville = $request->ville;
+            $customer->name = $request->name;
+            $customer->adress = $request->adress;
+            $customer->postal_code = $request->postal_code;
+            $customer->city = $request->city;
             $customer->siren = $request->siren;
-            $customer->activite = $request->activite;
-            $customer->nb_events = $request->nb_events;
-            $customer->contact_nom = $request->contact_nom;
-            $customer->contact_prenom = $request->contact_prenom;
-            $customer->contact_telephone = $request->contact_telephone;
-            $customer->contact_poste = $request->contact_poste;
+            $customer->activity = $request->activity;
+            $customer->event_qty = $request->event_qty;
+            $customer->contact_lastname = $request->contact_lastname;
+            $customer->contact_firstname = $request->contact_firstname;
+            $customer->contact_email = $request->contact_email;
+            $customer->contact_phone = $request->contact_phone;
+            $customer->contact_job = $request->contact_job;
             $customer->informations = $request->informations;
             $customer->event_id = $request->event_id;
             $customer->save();
@@ -156,33 +158,34 @@ class CustomerController extends Controller
         }        
         else{
             $validatedData = $request->validate([
-                'denomination' => 'required|string|max:255',
-                'adresse' => 'required|string|max:255',
-                'code_postal' => 'required|string|max:255',
-                'ville' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'adress' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
                 'siren' => 'required|string|max:255',
-                'activite' => 'required|string|max:255',
-                'nb_events' => 'required|integer',
-                'contact_nom' => 'required|string|max:255',
-                'contact_prenom' => 'required|string|max:255',
-                'contact_telephone' => 'required|string|max:255',
-                'contact_poste' => 'required|string|max:255',
+                'activity' => 'required|string|max:255',
+                'event_qty' => 'required|integer',
+                'contact_lastname' => 'required|string|max:255',
+                'contact_firstname' => 'required|string|max:255',
+                'contact_phone' => 'required|string|max:255',
+                'contact_job' => 'required|string|max:255',
                 'informations' => 'max:750'
             ]);
             $id = $request->id;
     
             $customer = Customer::find($id);
-            $customer->denomination = $request->denomination;
-            $customer->adresse = $request->adresse;
-            $customer->code_postal = $request->code_postal;
-            $customer->ville = $request->ville;
+            $customer->name = $request->name;
+            $customer->adress = $request->adress;
+            $customer->postal_code = $request->postal_code;
+            $customer->city = $request->city;
             $customer->siren = $request->siren;
-            $customer->activite = $request->activite;
-            $customer->nb_events = $request->nb_events;
-            $customer->contact_nom = $request->contact_nom;
-            $customer->contact_prenom = $request->contact_prenom;
-            $customer->contact_telephone = $request->contact_telephone;
-            $customer->contact_poste = $request->contact_poste;
+            $customer->activity = $request->activity;
+            $customer->event_qty = $request->event_qty;
+            $customer->contact_lastname = $request->contact_lastname;
+            $customer->contact_firstname = $request->contact_firstname;
+            $customer->contact_email = $request->contact_email;
+            $customer->contact_phone = $request->contact_phone;
+            $customer->contact_job = $request->contact_job;
             $customer->informations = $request->informations;
             $customer->event_id = $request->event_id;
             $customer->save();

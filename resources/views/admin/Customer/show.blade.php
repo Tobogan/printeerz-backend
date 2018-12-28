@@ -12,30 +12,30 @@
     </div> -->
     <div class="container">
     <div class="col-sm">
-    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->denomination }}</h2>
+    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->name }}</h2>
     <hr>
 
     <h5 class="mt-3">Adresse: </h5>
-    <div>{{ $customer->adresse .' '. $customer->code_postal .' '. $customer->ville }}</div>
+    <div>{{ $customer->adress .' '. $customer->postal_code .' '. $customer->city }}</div>
 
     <h5 class="mt-3">SIREN: </h5>
     <div>{{ $customer->siren }}</div>
 
     <h5 class="mt-3">Activité: </h5>
-    <div>{{ $customer->activite }}</div>
+    <div>{{ $customer->activity }}</div>
 
     <h5 class="mt-3">Contact: </h5>
-    <div>{{ $customer->contact_poste .'- '. $customer->contact_prenom .' '. $customer->contact_nom .' '. $customer->contact_telephone }}</div>
+    <div>{{ $customer->contact_job .'- '. $customer->contact_firstname .' '. $customer->contact_lastname .' '. $customer->contact_phone }}</div>
 
     <h5 class="mt-3">Liste des événements: </h5>
 
-    @if(!empty($customer->event))
-        @foreach($customer->event as $event)
-        <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->nom }}</a></div>
-        @endforeach
-    @else
-        <div><i>Vide</i></div>
-    @endif
+        @if(!$customer->event)
+            <div><i>Vide</i></div>
+        @else
+            @foreach($customer->event as $event)
+            <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->nom }}</a></div>
+            @endforeach
+        @endif
 
     <h5 class="mt-3">Informations: </h5>
 

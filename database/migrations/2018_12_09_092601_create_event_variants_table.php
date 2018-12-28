@@ -20,6 +20,12 @@ class CreateEventVariantsTable extends Migration
             $table->integer('productVariants_id')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('event_variants_product_variants', function(Blueprint $table){
+            $table->increments('id');
+            $table->integer('event_variants_id')->unsigned()->index();
+            $table->integer('product_variants_id')->unsigned()->index();
+        });
     }
 
     /**

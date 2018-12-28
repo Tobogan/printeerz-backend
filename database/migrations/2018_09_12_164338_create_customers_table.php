@@ -15,19 +15,20 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('denomination');
-            $table->string('adresse');
-            $table->string('code_postal');
-            $table->string('ville');
+            $table->string('name');
+            $table->string('adress');
+            $table->string('postal_code');
+            $table->string('city');
             $table->string('siren')->nullable();
-            $table->string('activite')->default('inconnu');
+            $table->string('activity')->default('inconnu');
             $table->string('event_id')->nullable();
-            $table->integer('nb_events')->nullable();
-            $table->integer('nb_impression')->nullable();
-            $table->string('contact_nom');
-            $table->string('contact_prenom');
-            $table->string('contact_telephone');
-            $table->string('contact_poste');
+            $table->integer('event_qty')->nullable();
+            $table->integer('print_qty')->nullable();
+            $table->string('contact_lastname');
+            $table->string('contact_firstname');
+            $table->string('contact_phone');
+            $table->string('contact_job');
+            $table->string('contact_email')->default('john@doe.com');
             $table->text('informations')->nullable();
             $table->timestamps();
         });

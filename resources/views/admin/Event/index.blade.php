@@ -30,22 +30,22 @@
 @foreach ($events as $event)
     <tr>
     @if($event->logoName)
-    <td><a href="{{route('show_event', $event->id)}}"><img src="/uploads/{{$event->logoName}}" class="miniRoundedImage" alt="img_event"></a></td>
+        <td><a href="{{route('show_event', $event->id)}}"><img src="/uploads/{{$event->logoName}}" class="miniRoundedImage" alt="img_event"></a></td>
     @else
-    <td><img src="/uploads/no_image.jpg" class="miniRoundedImage" alt="img_event" ></td>
+        <td><img src="/uploads/no_image.jpg" class="miniRoundedImage" alt="img_event" ></td>
     @endif
-    <td><a style="text-decoration:none;color:black;" href="{{route('show_event', $event->id)}}">{{ $event->nom }}</a></td>
-    <td>{{ $event->annonceur }}</td>
+        <td><a style="text-decoration:none;color:black;" href="{{route('show_event', $event->id)}}">{{ $event->nom }}</a></td>
+        <td>{{ $event->annonceur }}</td>
 
     @if($event->customer)
-    <td>{{ $event->customer->denomination }}</td>
+        <td>{{ $event->customer->name }}</td>
     @else
-    <td><i>Inconnu</i></td>
+        <td><i>Inconnu</i></td>
     @endif
 
-    <td>{{ $event->lieu }}</td>
-    <td>{{ $event->type }}</td>
-    <td>{{ date('d-m-Y', strtotime($event->date)) }}</td>
+        <td>{{ $event->lieu }}</td>
+        <td>{{ $event->type }}</td>
+        <td>{{ date('d-m-Y', strtotime($event->date)) }}</td>
     <?php $description = $event->description;
     if(strlen($description) > 50){
         $description = substr($description, 0, 50);
@@ -53,7 +53,7 @@
     }
     ?>
     @if(strlen($description) != 0)
-    <td>{{ $description }}</td>
+        <td>{{ $description }}</td>
     @else
     <td>{{ '...' }}</td>
     @endif

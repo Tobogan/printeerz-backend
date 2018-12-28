@@ -5,11 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Product;
+use App\ProductVariants;
+use App\Event;
 
 class EventVariants extends Model
 {
     protected $fillable = [
-        'product_id', 'event_id', 'productVariants_id'
+        'product_id', 'event_id', 'productVariants_id', 'variant_id'
     ];
 
     public function event() {
@@ -20,7 +22,7 @@ class EventVariants extends Model
         return $this->belongsToMany('App\ProductVariants');
     }
 
-    public function getproductVariantsListAttribute(){
+    public function getProductVariantsListAttribute(){
         if($this->id){
             return $this->productVariants->pluck('id');
         }

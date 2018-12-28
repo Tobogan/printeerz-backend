@@ -12,17 +12,17 @@
     </div> -->
     <div class="container">
     <div class="col-sm">
-    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->denomination }}</h2>
+    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->name }}</h2>
     <hr>
 
     <h5 class="mt-3">Adresse: </h5>
-    <div>{{ $customer->adresse .' '. $customer->code_postal .' '. $customer->ville }}</div>
+    <div>{{ $customer->adress .' '. $customer->postal_code .' '. $customer->city }}</div>
 
     <h5 class="mt-3">SIREN: </h5>
     <div>{{ $customer->siren }}</div>
 
     <h5 class="mt-3">Contact: </h5>
-    <div>{{ $customer->contact_poste .'- '. $customer->contact_prenom .' '. $customer->contact_nom .' '. $customer->contact_telephone }}</div>
+    <div>{{ $customer->contact_job .'- '. $customer->contact_firstname .' '. $customer->contact_lastname .' '. $customer->contact_phone }}</div>
 
     <h5 class="mt-3">Liste des événements: </h5>
     @foreach($customer->event as $event)
