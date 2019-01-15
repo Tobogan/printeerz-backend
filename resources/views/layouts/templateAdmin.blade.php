@@ -16,13 +16,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/datatable.css') }}"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">   
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    
-    
-    
-    <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>  
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('css/App.scss') }}"/>   --}}
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/App.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/datatable.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/App.scss') }}"/>
     
 </head>
 <body>
@@ -37,41 +34,38 @@
                         </div>
                         <div class="uik-scroll__wrapper">
                             <div class="uik-nav-user__wrapper">
-     
-@if(Auth::check())                         <!-- ~~~~~~~~________ PHOTO DE PROFIL DU USER ________~~~~~~~~ -->
-@if( Auth::user()->imageName)
-                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/{{ Auth::user()->imageName }}" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
+                                
+                            <!-- ~~~~~~~~________ PHOTO DE PROFIL DU USER ________~~~~~~~~ -->
+                                @if(Auth::check())
+                            @if( Auth::user()->profile_img)
+                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/{{ Auth::user()->profile_img }}" /></div><span class="uik-nav-user__name">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
 
-                                @if(Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 2)
                                     <span class="uik-nav-user__textTop">Administrateur</span></div>
-                                @elseif(Auth::user()->role == 'opérateur')
+                                @elseif(Auth::user()->role == 1)
                                     <span class="uik-nav-user__textTop">Opérateur</span></div>
-                                @elseif(Auth::user()->role == 'technicien')
+                                @elseif(Auth::user()->role == 3)
                                     <span class="uik-nav-user__textTop">Technicien</span></div>
                                 @endif
-@else     
-                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/no_image.jpg" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
+                            @else     
+                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/no_image.jpg" /></div><span class="uik-nav-user__name">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
                                          
-                                          <!-- ~~~~~~~~________ ROLE DU USER ________~~~~~~~~ -->
-                       
-    @if(Auth::user()->role == 'admin')
-                                <span class="uik-nav-user__textTop">Administrateur</span></div>
-    @elseif(Auth::user()->role == 'opérateur')
-                                <span class="uik-nav-user__textTop">Opérateur</span></div>
-    @elseif(Auth::user()->role == 'technicien')
-                                <span class="uik-nav-user__textTop">Technicien</span></div>
-    @endif
-
-    
-@endif
-@else
-    <?php return redirect('errors/404');?>
-           
-@endif   
+                            <!-- ~~~~~~~~________ ROLE DU USER ________~~~~~~~~ -->
+                                    @if(Auth::user()->role == 2)
+                                                                <span class="uik-nav-user__textTop">Administrateur</span></div>
+                                    @elseif(Auth::user()->role == 1)
+                                                                <span class="uik-nav-user__textTop">Opérateur</span></div>
+                                    @elseif(Auth::user()->role == 3)
+                                                                <span class="uik-nav-user__textTop">Technicien</span></div>
+                                    @endif
+                                    
+                                @endif
+                            @else
+                                <?php return redirect('errors/404');?>
+                            @endif
                 <div class="uik-divider__horizontal"></div>
 
                 <!-- ~~~~~~~~________ NAV DE GAUCHE ________~~~~~~~~ -->
-
                 <div class="uik-nav-link-two-container__wrapper">
                 <a class="uik-nav-link-2__wrapper active uik-nav-link-2__highlighted" href="{{route('home')}}">
                     <span class="uik-nav-link-2__text">
@@ -99,19 +93,20 @@
                 <div class="uik-container-v__container">
                     <div class="uik-top-bar__wrapper">
                         <div class="uik-top-bar-section__wrapper">
-                        <?php $mystring = $_SERVER['REQUEST_URI'];
+                        <?php 
+                        $mystring = $_SERVER['REQUEST_URI'];
                         $create = 'create';
                         $edit = 'edit';
                         $show = 'show';
                         $home = 'home';
                         $store = 'store';
                         $destroy = 'destroy';
-                        $pos = strpos($mystring, $create); 
-                        $pos1 = strpos($mystring, $edit); 
-                        $pos2 = strpos($mystring, $show); 
-                        $pos3 = strpos($mystring, $home); 
-                        $pos4 = strpos($mystring, $store); 
-                        $pos5 = strpos($mystring, $destroy); 
+                        $pos = strpos($mystring, $create);
+                        $pos1 = strpos($mystring, $edit);
+                        $pos2 = strpos($mystring, $show);
+                        $pos3 = strpos($mystring, $home);
+                        $pos4 = strpos($mystring, $store);
+                        $pos5 = strpos($mystring, $destroy);
                         ?>
                         
                         @if($pos == true)
@@ -151,9 +146,6 @@
 
                         <div class="uik-top-bar-section__wrapper">
                             <div class="uik-select__wrapper">
-
-                                 
-
                                 <!-- ~~~~~~~~________ BOUTON CHOIX DE LANGUE ________~~~~~~~~ -->
                                 <!--<button class="uik-btn__base uik-select__valueRendered" type="button">
                                     <div class="uik-btn__content">
@@ -165,13 +157,11 @@
                                 </button>-->
                             </div>
                         </div>
-                    </div>                                       
+                    </div>
                     @yield('content')
                          
     <!-- Scripts -->
-    
     <script src="{{ asset('js/app.js') }}"></script>
-    
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     {{-- <script

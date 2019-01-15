@@ -18,8 +18,8 @@
         {{csrf_field()}}
 
         <div class="form-group">
-        {!! Form::label('nom', 'Entrer la zone : ') !!}
-        {!! Form::text('nom', null, ['class' => 'form-control', 'placeholder' => 'Nom de la zone:']) !!}
+        {!! Form::label('lastname', 'Entrer la zone : ') !!}
+        {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Nom de la zone:']) !!}
         </div>
 
         {!! Form::label('image', 'Ajouter une photo de la zone: ') !!}

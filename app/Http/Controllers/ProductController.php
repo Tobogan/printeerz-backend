@@ -4,12 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Product;
-use App\Taille;
-use App\Zone;
-use App\Couleur;
-use App\ImageZone;
-use App\Gabarit;
-use App\ProductVariants;
+use App\Products_variants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -18,8 +13,8 @@ use App\Http\Middleware\isActivate;
 class ProductController extends Controller
 {
     public function __construct(){
-        $this->middleware(isActivate::class);
-        $this->middleware(isAdmin::class);
+        //$this->middleware(isActivate::class);
+        //$this->middleware(isAdmin::class);
         $this->middleware('auth');
 
     }
@@ -31,10 +26,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $tailles = Taille::all();
-        $couleurs = Couleur::all();
         
-        return view('admin/Product.index', ['products' => $products, 'tailles' => $tailles, 'couleurs' => $couleurs]);
+        return view('admin/Product.index', ['products' => $products]);
     }
 
     /**
@@ -45,12 +38,7 @@ class ProductController extends Controller
     public function create()
     {
         $products = Product::all();
-        $couleurs = Couleur::all();
-        $select_couleurs = [];
-        foreach($couleurs as $couleur){
-            $select_couleurs[$couleur->id] = $couleur->nom;
-        }
-        return view('admin/Product.add', ['products' => $products, 'select_couleurs' => $select_couleurs]);
+        return view('admin/Product.add', ['products' => $products]);
     }
 
     /**
@@ -62,27 +50,42 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'reference' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'product_type' => 'required|string|max:255',
             'description' => 'max:750'
-            // 'photo_illustration' => 'photo_illustration|mimes:jpeg,png,jpg,gif,svg|max:2048'
-
         ]);
+        
         $product = new Product;
         
-        $product->nom = $request->nom;
-        $product->reference = $request->reference;
+        $product->title = $request->title;
+        $product->vendor = array(
+            'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
+            'name' => $request->vendor_name,
+            'reference' => $request->vendor_reference
+        );
+        $product->gender = $request->gender;
+        $product->product_type = $request->product_type;
+        $product->product_zones = array(
+            'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
+            'title' => $request->product_zone_title,
+            'printzone_id' => $request->product_zone_printzone_id
+        );
+        $tags[]=$request->get('tags');
+        $product->tags=$tags;
         $product->description = $request->description;
-        $product->sexe = $request->sexe;
+        $variants_id[]=$request->get('variants_id');
+        $product->variants_id=$variants_id;
+        $product->is_active = $request->is_active; //penser à mettre l'input hidden
+        $product->is_deleted = $request->is_deleted;
         $product->save();
-        $product->tailles()->sync($request->get('tailles_list'));
 
         /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
-        if ($request->hasFile('photo_illustration')){
-            $photo = time().'.'.request()->photo_illustration->getClientOriginalExtension();
-            request()->photo_illustration->move(public_path('uploads'), $photo);
+        if ($request->hasFile('image')){
+            $photo = time().'.'.request()->image->getClientOriginalExtension();
+            request()->image->move(public_path('uploads'), $photo);
 
-            $product->photo_illustration = $photo;
+            $product->image = $photo;
         }
 
         $product->save();
@@ -117,14 +120,8 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $products = Product::all();
-        $zones = Zone::all();
-        $couleurs = Couleur::all();
-        $select_couleurs = [];
-        foreach($couleurs as $couleur){
-            $select_couleurs[$couleur->id] = $couleur->nom;
-        }
 
-        return view('admin/Product.edit', ['product' => $product, 'zones' => $zones, 'couleurs' => $couleurs, 'select_couleurs' => $select_couleurs]);
+        return view('admin/Product.edit', ['product' => $product, 'products' => $products]);
     }
 
     /**
@@ -138,46 +135,97 @@ class ProductController extends Controller
     {
         if (request('actual_nom') == request('nom')){
             $validatedData = $request->validate([
-                'nom' => 'required|string|max:255',
-                'reference' => 'required|string|max:255',
+                'title' => 'required|string|max:255',
+                'gender' => 'required|string|max:255',
+                'product_type' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
+            
             $id = $request->id;
             $product = Product::find($id);
-            $product->nom = $request->nom;
-            $product->reference = $request->reference;
+            $product->title = $request->title;
+            $product->vendor = array(
+                'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
+                'name' => $request->vendor_name,
+                'reference' => $request->vendor_reference
+            );
+            $product->gender = $request->gender;
+            $product->product_type = $request->product_type;
+            $product->product_zones = array(
+                'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
+                'title' => $request->product_zone_title,
+                'printzone_id' => $request->product_zone_printzone_id
+            );
+            $tags[]=$request->get('tags');
+            $product->tags=$tags;
             $product->description = $request->description;
-            $product->sexe = $request->sexe;
-
+            $variants_id[]=$request->get('variants_id');
+            $product->variants_id=$variants_id;
+            $product->is_active = $request->is_active; //penser à mettre l'input hidden
+            $product->is_deleted = $request->is_deleted;
             $product->save();
-            $product->tailles()->sync($request->get('tailles_list'));
+
+            /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
+            if ($request->hasFile('image')){
+                if(!is_null($product->image)){
+                    unlink(public_path('uploads/'.$product->image));
+                }
+                $photo = time().'.'.request()->image->getClientOriginalExtension();
+                request()->image->move(public_path('uploads'), $photo);
+
+                $product->image = $photo;
+            }
 
             $product->save();
             }        
             else{
                 $validatedData = $request->validate([
-                    'nom' => 'required|string|max:255',
-                    'reference' => 'required|string|max:255',
+                    'title' => 'required|string|max:255',
+                    'gender' => 'required|string|max:255',
+                    'product_type' => 'required|string|max:255',
                     'description' => 'max:750'
                 ]);
         
                 $id = $request->id;
                 
                 $product = Product::find($id);
-                $product->nom = $request->nom;
-            $product->reference = $request->reference;
-            $product->description = $request->description;
-            $product->sexe = $request->sexe;
+                $product->title = $request->title;
+                $product->vendor = array(
+                    'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
+                    'name' => $request->vendor_name,
+                    'reference' => $request->vendor_reference
+                );
+                $product->gender = $request->gender;
+                $product->product_type = $request->product_type;
+                $product->product_zones = array(
+                    'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
+                    'title' => $request->product_zone_title,
+                    'printzone_id' => $request->product_zone_printzone_id
+                );
+                $tags[]=$request->get('tags');
+                $product->tags=$tags;
+                $product->description = $request->description;
+                $variants_id[]=$request->get('variants_id');
+                $product->variants_id=$variants_id;
+                $product->is_active = $request->is_active; //penser à mettre l'input hidden
+                $product->is_deleted = $request->is_deleted;
+                $product->save();
 
-            $product->save();
-            $product->tailles()->sync($request->get('tailles_list'));
-            $product->couleurs()->sync($request->get('couleurs_list'));
-            $product->zones()->sync($request->get('zones_list'));
+                /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
+                if ($request->hasFile('image')){
+                    if(!is_null($product->image)){
+                        unlink(public_path('uploads/'.$product->image));
+                    }
+                    $photo = time().'.'.request()->image->getClientOriginalExtension();
+                    request()->image->move(public_path('uploads'), $photo);
 
-            $product->save();
+                    $product->image = $photo;
+                }
+
+                $product->save();
+            }
+            return redirect('admin/Product/index')->with('status', 'Le produit a été correctement modifié.');
         }
-        return redirect('admin/Product/index')->with('status', 'Le produit a été correctement modifié.');
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -188,7 +236,35 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        if(!is_null($product->image)){
+            unlink(public_path('uploads/'.$product->image));
+        }
         $product->delete();
         return redirect('admin/Product/index')->with('status', 'Le produit a été correctement supprimé.');
+    }
+
+    /*--~~~~~~~~~~~___________activate and desactivate a product function in index product__________~~~~~~~~~~~~-*/
+    public function desactivate($id)
+    {
+        $product = Product::find($id);
+        $product->is_active = false;
+        $product->update();
+        return redirect('admin/Product/index');
+    }
+
+    public function delete($id)
+    {
+        $product = Product::find($id);
+        $product->is_deleted = true;
+        $product->update();
+        return redirect('admin/Product/index');
+    }
+
+    public function activate($id)
+    {
+        $product = Product::find($id);
+        $product->is_active = true;
+        $product->update();
+        return redirect('admin/Product/index');
     }
 }

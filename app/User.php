@@ -2,9 +2,11 @@
 
 namespace App;
 
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 use App\Comment;
 
@@ -17,8 +19,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $collection = 'employees';
     protected $fillable = [
-        'nom', 'prenom', 'email', 'password', 'role', 'image', 'imageName', 'activate'
+        'id', 'username', 'lastname', 'firstname', 'email', 'phone', 'profile_img', 'role', 'password', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
     public function comments() {

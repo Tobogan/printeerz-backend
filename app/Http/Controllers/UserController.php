@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     public function __construct(){
-        $this->middleware(isActivate::class);
-        $this->middleware(isAdmin::class);
+        //$this->middleware(isActivate::class);
+        //$this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
     /**
@@ -49,24 +49,30 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'username' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'SIREN' => 'string|max:14',
+            'email' => 'required|string|email|max:255|unique:employees',
+            'password' => 'required|string|min:6|confirmed'
         ]);
+
         $user = new User;
-        $user->nom = $request->nom;
-        $user->prenom = $request->prenom;
+        $user->lastname = $request->lastname;
+        $user->firstname = $request->firstname;
+        $user->username = $request->username;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = bcrypt($request->password);
         $user->role = $request->role;
+        $user->is_active = $request->is_active; // penser à mettre l'input hidden
+        $user->is_deleted = $request->is_deleted;
 
-        if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
+        /*--~~~~~~~~~~~___________Upload img__________~~~~~~~~~~~~-*/
+        if ($request->hasFile('profile_img')){
+            $profile_img = time().'.'.request()->profile_img->getClientOriginalExtension();
+            request()->profile_img->move(public_path('uploads'), $profile_img);
 
-            $user->imageName = $imageName;
+            $user->profile_img = $profile_img;
         }
         
         $user->save();
@@ -82,7 +88,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('admin/user.show', ['user' => $user]);
+        return view('admin/User.show', ['user' => $user]);
     }
 
     /**
@@ -109,67 +115,72 @@ class UserController extends Controller
     {
         if (request('actual_email') == request('email')){
             $validatedData = $request->validate([
-                'nom' => 'string|max:255',
-                'prenom' => 'string|max:255',
-                'email' => 'string|email|max:255',
-                'password' => 'string|min:6|confirmed'
-                //'image' => 'required'
+                'username' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'firstname' => 'required|string|max:255',
+                'SIREN' => 'string|max:14',
+                'email' => 'required|string|email|max:255|unique:employees',
+                'password' => 'required|string|min:6|confirmed',
+                'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
-            $id = $request->id;
-            $user = User::find($id);
-            if(!is_null($user->imageName)){
-                Storage::delete('uploads' . $user->imageName);
-            }
-
-            if($request->file('image')){
-                if ($request->file('image')->isValid()){
-                    $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-                    request()->image->move(public_path('uploads'), $imageName);
-    
-                    $user->imageName = $imageName;
-                }
-            }
             
-            $user->nom = $request->nom;
-            $user->prenom = $request->prenom;
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->role = $request->role;  
-        }        
-        else{
-            $validatedData = $request->validate([
-                'nom' => 'string|max:255',
-                'prenom' => 'string|max:255',
-                'email' => 'string|email|max:255|unique:users',
-                'password' => 'string|min:6|confirmed'
-            ]);
-    
             $id = $request->id;
             $user = User::find($id);
 
-            if(!is_null($user->imageName)){
-                Storage::delete('uploads' . $user->imageName);
-            }
-            if($request->file('image')){
-                if ($request->file('image')->isValid()){
-                    $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-                    request()->image->move(public_path('uploads'), $imageName);
-    
-                    $user->imageName = $imageName;
+            /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
+            if ($request->hasFile('profile_img')){
+                if(!is_null($user->profile_img)){
+                    unlink(public_path('uploads/'.$user->profile_img));
                 }
+                $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
+                request()->profile_img->move(public_path('uploads'), $imageName);
+    
+                $user->profile_img = $imageName;
             }
 
-            $user->nom = $request->nom;
-            $user->prenom = $request->prenom;
+            $user->lastname = $request->lastname;
+            $user->firstname = $request->firstname;
+            $user->username = $request->username;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->role = $request->role;
-            if ($request->hasFile('image')){// delete l'ancienne photo 
-                $image = $request->image;
-                $imageName = time().'.'.$image->getClientOriginalExtension();            
-                request()->image->move(public_path('uploads'), $imageName);
-                $oldImageName = $user->image;
+            $user->is_active = $request->is_active;
+            $user->is_deleted = $request->is_deleted; 
+        }        
+        else{
+            $validatedData = $request->validate([
+                'username' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'firstname' => 'required|string|max:255',
+                'SIREN' => 'string|max:14',
+                'email' => 'required|string|email|max:255|unique:employees',
+                'password' => 'required|string|min:6|confirmed',
+                'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+    
+            $id = $request->id;
+            $user = User::find($id);
+
+            /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
+            if ($request->hasFile('profile_img')){
+                if(!is_null($user->profile_img)){
+                    unlink(public_path('uploads/'.$user->profile_img));
+                }
+                $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
+                request()->profile_img->move(public_path('uploads'), $imageName);
+    
+                $user->profile_img = $imageName;
             }
+
+            $user->lastname = $request->lastname;
+            $user->firstname = $request->firstname;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->role = $request->role;
+            $user->is_active = $request->is_active;
+            $user->is_deleted = $request->is_deleted; 
+
         }
         $user->save();
         return redirect('admin/User/index');
@@ -184,15 +195,26 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        Storage::delete('uploads' . $user->imageName);
+        if(!is_null($user->profile_img)){
+            unlink(public_path('uploads/'.$user->profile_img));
+        }
         $user->delete();
         return redirect('admin/User/index');
     }
 
+    /*--~~~~~~~~~~~___________activate and desactivate a user function in index User__________~~~~~~~~~~~~-*/
     public function desactivate($id)
     {
         $user = User::find($id);
-        $user->activate = 0;
+        $user->is_active = false;
+        $user->update();
+        return redirect('admin/User/index');
+    }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        $user->is_deleted = true;
         $user->update();
         return redirect('admin/User/index');
     }
@@ -200,7 +222,7 @@ class UserController extends Controller
     public function activate($id)
     {
         $user = User::find($id);
-        $user->activate = 1;
+        $user->is_active = true;
         $user->update();
         return redirect('admin/User/index');
     }

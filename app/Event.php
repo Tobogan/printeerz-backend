@@ -2,24 +2,25 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Customer;
-use App\TypeEvent;
-use App\Product;
-use App\Comment;
-use App\ProductVariants;
 
-class Event extends Model
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+
+class Event extends Eloquent
 {
+    protected $connection = 'mongodb';
+    protected $collection = 'events';
+
     protected $fillable = [
-        'nom', 'customer_id', 'productVariants_id', 'annonceur', 'couleurs_list', 'logoName', 'imageName1', 'imageName2', 'lieu', 'date', 'type', 'contact', 'commentaire', 'product_id'
+        'id', 'customer_id', 'advertiser', 'name', 'location[]', 'start_datetime', 'end_datetime', 'type', 'logo_img', 'cover_img', 'description', 'event_products_id[]', 'employees[]', 'comments[]', 'is_active', 'is_delected', 'created_at', 'updated_at'
     ];
 
     public function customer() {
         return $this->belongsTo('App\Customer');
     }
 
-    public function product() {
+    /*public function product() {
         return $this->belongsTo('App\Product');
     }
 
@@ -88,5 +89,5 @@ class Event extends Model
     public function setUserListAttribute($value) {
         return $this->users()->sync($value);
     }
-
+*/
 }

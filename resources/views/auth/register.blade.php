@@ -15,7 +15,7 @@
                             <label for="nom" class="col-md-4 control-label">Nom</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="nom" value="{{ old('nom') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required autofocus>
 
                                 @if ($errors->has('nom'))
                                     <span class="help-block">
@@ -25,15 +25,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('prenom') ? ' has-error' : '' }}">
-                            <label for="prenom" class="col-md-4 control-label">Prénom</label>
+                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
+                            <label for="firstname" class="col-md-4 control-label">Prénom</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="prenom" value="{{ old('prenom') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
 
-                                @if ($errors->has('prenom'))
+                                @if ($errors->has('firstname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('prenom') }}</strong>
+                                        <strong>{{ $errors->first('firstname') }}</strong>
                                     </span>
                                 @endif
                             </div>

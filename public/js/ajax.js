@@ -5,8 +5,8 @@ $( document ).ready( function() {
         var message = $('#message').val();
         var event_id = $('#event_id').val();
         var user_id = $('#user_id').val();
-        var user_nom = $('#user_nom').val();
-        var user_prenom = $('#user_prenom').val();
+        var user_lastname = $('#user_lastname').val();
+        var user_firstname = $('#user_firstname').val();
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1; 
@@ -26,7 +26,7 @@ today = mm + '/' + dd + '/' + yyyy;
             data: $(this).serialize(),
             success: function(data) {
                 console.log(data)    
-                $('.event_comments_list1').append('<div class="row">' + '<div class="col-3">' + '<div>' + user_prenom + ' ' + user_nom + '</div>'+'<br>' + '<small>(' + today+ ')</small>' + '</div>' + '<div class="col">' + '<div>' + name + '</div>' + '<hr>' + message + '</div></div><br>');                
+                $('.event_comments_list1').append('<div class="row">' + '<div class="col-3">' + '<div>' + user_firstname + ' ' + user_lastname + '</div>'+'<br>' + '<small>(' + today+ ')</small>' + '</div>' + '<div class="col">' + '<div>' + name + '</div>' + '<hr>' + message + '</div></div><br>');                
                 name = $('#name').val('');
                 message = $('#message').val('');
             }
@@ -76,7 +76,7 @@ today = mm + '/' + dd + '/' + yyyy;
 
     $('#AddColorAjax').on('submit', function(e) {
         e.preventDefault(); 
-        var nom = $('#nom').val();
+        var lastname = $('#lastname').val();
         var pantone = $('#pantone')[0].files[0];
         var select_couleurs = $('#select_couleurs').val();
         var formData = new FormData($(this)[0]);
@@ -88,9 +88,9 @@ today = mm + '/' + dd + '/' + yyyy;
             contentType: false,
             processData: false,
             success: function(data){
-                $('#select_color').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
-                $('#select_color2').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
-                $('#select_color3').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
+                $('#select_color').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
+                $('#select_color2').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
+                $('#select_color3').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
                 console.log(data.couleur)
             }
         });
@@ -103,7 +103,7 @@ today = mm + '/' + dd + '/' + yyyy;
     //         type: "GET",
     //         url: '/admin/Couleur/show/'+couleur_id,
     //         success: function(data){
-    //             $('#variant_colors').append('<input class="form-check-input" type="checkbox" value="'+data.id+'" id="variant"><label class="form-check-label" for="defaultCheck2">'+data.nom+'</label> <img src="/uploads/'+data.pantoneName+'" class="miniRoundedImage" alt="pantone" ><div class="form-check"> </div>');
+    //             $('#variant_colors').append('<input class="form-check-input" type="checkbox" value="'+data.id+'" id="variant"><label class="form-check-label" for="defaultCheck2">'+data.lastname+'</label> <img src="/uploads/'+data.pantoneName+'" class="miniRoundedImage" alt="pantone" ><div class="form-check"> </div>');
                 
     //         }
     //     });

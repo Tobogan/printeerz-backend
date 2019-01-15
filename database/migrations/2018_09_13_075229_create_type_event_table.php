@@ -24,12 +24,10 @@ class CreateTypeEventTable extends Migration
             $table->integer('event_id')->unsigned()->index();
             $table->integer('type_event_id')->unsigned()->index();
             // $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-            //$table->foreign('type_event_id')->references('id')->on('type_events')->onDelete('cascade');
+            // $table->foreign('type_event_id')->references('id')->on('type_events')->onDelete('cascade');
         });
     }
-
     
-
     /**
      * Reverse the migrations.
      *

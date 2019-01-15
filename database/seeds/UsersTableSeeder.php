@@ -20,8 +20,8 @@ class UsersTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'prenom' => 'Jérémy',
-                'nom' => 'Ruas',
+                'firstname' => 'Jérémy',
+                'lastname' => 'Ruas',
                 'role' => 'admin',
                 'email' => 'ruas.jeremy@gmail.com',
                 'password' => '$2y$10$/xf6R6MY.L5eWprypeVcvORlw9w7fvpgm/.HJyyx2b6yQ/yMH9XIK',
@@ -34,8 +34,8 @@ class UsersTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'prenom' => 'Julie',
-                'nom' => 'Morvan',
+                'firstname' => 'Julie',
+                'lastname' => 'Morvan',
                 'role' => 'admin',
                 'email' => 'daniel.philippe@ifrance.com',
                 'password' => '$2y$10$SvOBldszoLPcS5VubwDYae9zx5X4b05a6iE4IvMBobPfviBBUAkDy',
@@ -48,8 +48,8 @@ class UsersTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'prenom' => 'Madeleine',
-                'nom' => 'Marques',
+                'firstname' => 'Madeleine',
+                'lastname' => 'Marques',
                 'role' => 'admin',
                 'email' => 'igrenier@sfr.fr',
                 'password' => '$2y$10$hDNa22tukPfFJgHeomPGYeR3s1aXXOmf.yERXcFSu7/igJ/ndvl32',
@@ -62,8 +62,8 @@ class UsersTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'prenom' => 'Nathalie',
-                'nom' => 'Carre',
+                'firstname' => 'Nathalie',
+                'lastname' => 'Carre',
                 'role' => 'opérateur',
                 'email' => 'xvincent@ifrance.com',
                 'password' => '$2y$10$4wLmtGcrtfYSgZraD.MuEOAM7bpCjSr/hk8RY5vZnE32NHOPOZwf2',
@@ -76,8 +76,8 @@ class UsersTableSeeder extends Seeder
             4 => 
             array (
                 'id' => 5,
-                'prenom' => 'Olivie',
-                'nom' => 'Allain',
+                'firstname' => 'Olivie',
+                'lastname' => 'Allain',
                 'role' => 'admin',
                 'email' => 'emmanuel.royer@ruiz.fr',
                 'password' => '$2y$10$BTQG.j8twVxtPg1tHKEr5eUKgifiL3PDizOqY.tBKoE2QBXo1G3xe',
@@ -90,8 +90,8 @@ class UsersTableSeeder extends Seeder
             5 => 
             array (
                 'id' => 6,
-                'prenom' => 'Michelle',
-                'nom' => 'Marty',
+                'firstname' => 'Michelle',
+                'lastname' => 'Marty',
                 'role' => 'opérateur',
                 'email' => 'franck.albert@dbmail.com',
                 'password' => '$2y$10$vf75zaKhzhVe7NAa8Fy3yeKjTmlrrVgFho/xEc2ZKHIMS9echea4a',
@@ -104,8 +104,8 @@ class UsersTableSeeder extends Seeder
             6 => 
             array (
                 'id' => 7,
-                'prenom' => 'Audrey',
-                'nom' => 'Parent',
+                'firstname' => 'Audrey',
+                'lastname' => 'Parent',
                 'role' => 'opérateur',
                 'email' => 'aimee03@rodriguez.org',
                 'password' => '$2y$10$Cz0zPL2KEDs3OKJbn/Zno.COblQpmhZN1sVyWpX7cV/kwVCCiDxz6',
@@ -118,8 +118,8 @@ class UsersTableSeeder extends Seeder
             7 => 
             array (
                 'id' => 8,
-                'prenom' => 'Élodie',
-                'nom' => 'Guichard',
+                'firstname' => 'Élodie',
+                'lastname' => 'Guichard',
                 'role' => 'opérateur',
                 'email' => 'leclerc.eric@rousseau.fr',
                 'password' => '$2y$10$hv7ZIaadhlX.SWPOFLHprOZsAMl9eIEOerub6.CCIb4fu9DUas1NO',
@@ -132,8 +132,8 @@ class UsersTableSeeder extends Seeder
             8 => 
             array (
                 'id' => 9,
-                'prenom' => 'Zacharie',
-                'nom' => 'Seguin',
+                'firstname' => 'Zacharie',
+                'lastname' => 'Seguin',
                 'role' => 'opérateur',
                 'email' => 'marc50@picard.org',
                 'password' => '$2y$10$VZ/NghWJyej6mpbiM.2YVOIQj83gw2FoE/KlD8DU4qSI7SROivg7.',
@@ -146,8 +146,8 @@ class UsersTableSeeder extends Seeder
             9 => 
             array (
                 'id' => 10,
-                'prenom' => 'Thibaut',
-                'nom' => 'Caron',
+                'firstname' => 'Thibaut',
+                'lastname' => 'Caron',
                 'role' => 'opérateur',
                 'email' => 'agnes05@leroux.org',
                 'password' => '$2y$10$HA4nTIE4YNPC9URdKB74Guw7SwbE73A3agG94SyQClLsvLfVYPSG2',
@@ -160,8 +160,8 @@ class UsersTableSeeder extends Seeder
             10 => 
             array (
                 'id' => 11,
-                'prenom' => 'Aurore',
-                'nom' => 'Munoz',
+                'firstname' => 'Aurore',
+                'lastname' => 'Munoz',
                 'role' => 'opérateur',
                 'email' => 'klaporte@vincent.com',
                 'password' => '$2y$10$ItM6HRvsCnjzrCO/3sQbleKiBDuiWQBZFTK2nb33hSs4j9osHlUia',
@@ -174,8 +174,8 @@ class UsersTableSeeder extends Seeder
             11 => 
             array (
                 'id' => 12,
-                'prenom' => 'Clémence',
-                'nom' => 'Wagner',
+                'firstname' => 'Clémence',
+                'lastname' => 'Wagner',
                 'role' => 'technicien',
                 'email' => 'xthierry@bonnin.org',
                 'password' => '$2y$10$CzmJ7XXYLswyWGKqt3nj4.sAuReETnlaXM2XZhFDvr/IrZWeHwiMG',
@@ -188,8 +188,8 @@ class UsersTableSeeder extends Seeder
             12 => 
             array (
                 'id' => 13,
-                'prenom' => 'Corinne',
-                'nom' => 'David',
+                'firstname' => 'Corinne',
+                'lastname' => 'David',
                 'role' => 'technicien',
                 'email' => 'augustin.legoff@wanadoo.fr',
                 'password' => '$2y$10$YroU0qpB2EE6B1BeZJlBqeGGVTXdBQrVEKU3yUP3XDint9DaC4RvO',
@@ -202,8 +202,8 @@ class UsersTableSeeder extends Seeder
             13 => 
             array (
                 'id' => 14,
-                'prenom' => 'Marguerite',
-                'nom' => 'Leroy',
+                'firstname' => 'Marguerite',
+                'lastname' => 'Leroy',
                 'role' => 'technicien',
                 'email' => 'augustin72@lucas.net',
                 'password' => '$2y$10$OlhOKjvvJHYhLBWQnVleu.vBa3LDOs3FGk8lVeKz8lrE.5wwQfZo2',
@@ -216,8 +216,8 @@ class UsersTableSeeder extends Seeder
             14 => 
             array (
                 'id' => 15,
-                'prenom' => 'Dorothée',
-                'nom' => 'Blanchard',
+                'firstname' => 'Dorothée',
+                'lastname' => 'Blanchard',
                 'role' => 'technicien',
                 'email' => 'vaubry@tiscali.fr',
                 'password' => '$2y$10$/4yYWhaUPTAcrPgdEhMTH.KjC8IGzbSQr1NGZdAmuvOL230jf0whK',

@@ -12,35 +12,39 @@
     </div> -->
     <div class="container">
     <div class="col-sm">
-    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->name }}</h2>
+    <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->title }}</h2>
     <hr>
 
     <h5 class="mt-3">Adresse: </h5>
-    <div>{{ $customer->adress .' '. $customer->postal_code .' '. $customer->city }}</div>
+    <div>{{ $customer->location["address"] .' '. $customer->location["postal_code"] .' '. $customer->location["city"] }}</div>
 
     <h5 class="mt-3">SIREN: </h5>
-    <div>{{ $customer->siren }}</div>
+    <div>{{ $customer->SIREN }}</div>
 
     <h5 class="mt-3">Activité: </h5>
-    <div>{{ $customer->activity }}</div>
+    <div>{{ $customer->activity_type }}</div>
 
     <h5 class="mt-3">Contact: </h5>
-    <div>{{ $customer->contact_job .'- '. $customer->contact_firstname .' '. $customer->contact_lastname .' '. $customer->contact_phone }}</div>
+    <div>{{ $customer->contact_person["firstname"] }}</div>
+    <div>{{ $customer->contact_person["lastname"] }}</div>
+    <div>{{ $customer->contact_person["job_title"] }}</div>
+    <div>{{ $customer->contact_person["email"] }}</div>
+    <div>{{ $customer->contact_person["phone"] }}</div>
 
     <h5 class="mt-3">Liste des événements: </h5>
 
-        @if(!$customer->event)
+        @if(!$customer->events)
             <div><i>Vide</i></div>
         @else
-            @foreach($customer->event as $event)
-            <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->nom }}</a></div>
+            @foreach($customer->events as $event)
+            <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->name }}</a></div>
             @endforeach
         @endif
 
     <h5 class="mt-3">Informations: </h5>
 
-    @if(strlen($customer->informations) != 0)
-    <div>{{ $customer->informations }}</div>
+    @if(strlen($customer->comments) != 0)
+    <div>{{ $customer->comments }}</div>
     <br>
     @else
     <td>{{ '...' }}</td>

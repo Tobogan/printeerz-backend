@@ -2,20 +2,24 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Event;
 
-class Customer extends Model
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+
+class Customer extends Eloquent
 {
+    protected $connection = 'mongodb';
+    protected $collection = 'customers';
     protected $fillable = [
-        'name', 'adress', 'postal_code', 'city', 'siren', 'activity', 'event_id', 'event_qty', 'print_qty', 'informations', 'contact_lastname', 'contact_firstname', 'contact_email', 'contact_email', 'contact_phone', 'contact_job'
+        'id', 'title', 'activity_type', 'SIREN', 'location[]', 'contact_person[]', 'shows_id[]', 'image', 'comments', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
-    public function event() {
+    public function events() {
         return $this->hasMany('App\Event');
     }
 
-    public function getEventsListAttribute(){
+    /*public function getEventsListAttribute(){
         if($this->id){
             return $this->customers->pluck('id');
         }            
@@ -23,5 +27,5 @@ class Customer extends Model
 
     public function setEventsListAttribute($value){
         return $this->customers()->sync($value);
-    }
+    }*/
 }

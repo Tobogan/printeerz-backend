@@ -34,7 +34,7 @@
         @endif
 
         <h6 class="mt-2">Utilisateurs autorisés: </h6>
-            <?php $list_users = $event->users->pluck('prenom')->toArray();?>
+            <?php $list_users = $event->users->pluck('firstname')->toArray();?>
         @if($list_users)
             <div><small><?php echo implode(', ', $list_users); ?></small></div>
         @else
@@ -101,7 +101,7 @@
             @else
                 <div><img src="/uploads/no_image.jpg" class="miniRoundedImage" style="no-repeat center" alt="img_profile" >
             @endif
-               {{ $comment->user->prenom . ' ' . $comment->user->nom }} <br>(<small>{{ date('Y-m-d H:i:s', strtotime($comment->created_at)) }}</small>)</div>
+               {{ $comment->user->firstname . ' ' . $comment->user->nom }} <br>(<small>{{ date('Y-m-d H:i:s', strtotime($comment->created_at)) }}</small>)</div>
                 </div>
             <div class="col">
                 {{ $comment->name }}
@@ -127,7 +127,7 @@
     {{csrf_field()}}
     <input type="hidden" name="event_id" id="event_id" value="{{ $event->id }}">
     <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
-    <input type="hidden" name="user_prenom" id="user_prenom" value="{{ Auth::user()->prenom }}">
+    <input type="hidden" name="user_firstname" id="user_firstname" value="{{ Auth::user()->firstname }}">
     <input type="hidden" name="user_nom" id="user_nom" value="{{ Auth::user()->nom }}">
 
     <div class="row">

@@ -13,8 +13,8 @@ use App\Http\Middleware\isActivate;
 class CustomerController extends Controller
 {
     public function __construct(){
-        $this->middleware(isActivate::class);
-        $this->middleware(isAdmin::class);
+        //$this->middleware(isActivate::class);
+        //$this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
 
@@ -54,35 +54,47 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'adress' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'siren' => 'string|max:255',
-            'activity' => 'required|string|max:255',
-            'event_qty' => 'required|integer',
-            'contact_lastname' => 'required|string|max:255',
-            'contact_firstname' => 'required|string|max:255',
-            'contact_phone' => 'required|string|max:255',
-            'contact_job' => 'required|string|max:255',
-            'informations' => 'max:750'
+            'title' => 'required|string|max:255',
+            'activity_type' => 'required|string|max:255',
+            'SIREN' => 'string|max:255',
+            'location' => 'string|max:255',
+            'contact_person' => 'string|max:255',
+            'comments' => 'max:750'
         ]);
 
         $customer = new Customer;
-        $customer->name = $request->name;
-        $customer->adress = $request->adress;
-        $customer->postal_code = $request->postal_code;
-        $customer->activity = $request->activity;
-        $customer->city = $request->city;
-        $customer->siren = $request->siren;
-        $customer->event_qty = $request->event_qty;
-        $customer->contact_lastname = $request->contact_lastname;
-        $customer->contact_firstname = $request->contact_firstname;
-        $customer->contact_email = $request->contact_email;
-        $customer->contact_phone = $request->contact_phone;
-        $customer->contact_job = $request->contact_job;
-        $customer->informations = $request->informations;
-        $customer->event_id = $request->event_id;
+        $customer->title = $request->title;
+        $customer->activity_type = $request->activity_type;
+        $customer->SIREN = $request->SIREN;
+        $customer->comments = $request->comments;
+        $customer->contact_person = array(
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'job_title' => $request->job_title
+        );
+        $customer->location = array(
+            'address' => $request->address,
+            'postal_code' => $request->postal_code,
+            'city' => $request->city,
+            'country' => $request->country,
+            'longitude' => $request->longitude,
+            'lattitude' => $request->lattitude
+        );
+        $shows_id[]=$request->get('shows_id');
+        $customer->events=$shows_id;
+        $customer->is_active = $request->is_active;
+        $customer->is_deleted = $request->is_deleted;
+
+        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
+        if ($request->hasFile('image')){
+            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
+            request()->image->move(public_path('uploads'), $imageName);
+
+            $customer->image = $imageName;
+        } 
+
         $customer->save();
 
         return redirect('admin/Customer/index')->with('status', 'Le client a été correctement ajouté.');
@@ -121,76 +133,103 @@ class CustomerController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_name') == request('name')){
+        if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'adress' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'siren' => 'required|string|max:255',
-            'activity' => 'required|string|max:255',
-            'event_qty' => 'required|integer',
-            'contact_lastname' => 'required|string|max:255',
-            'contact_firstname' => 'required|string|max:255',
-            'contact_phone' => 'required|string|max:255',
-            'contact_job' => 'required|string|max:255',
-            'informations' => 'max:750'
+                'title' => 'required|string|max:255',
+                'activity_type' => 'required|string|max:255',
+                'SIREN' => 'string|max:255',
+                'location' => 'string|max:255',
+                'contact_person' => 'string|max:255',
+                'comments' => 'max:750'
         ]);
-            $id = $request->id;
+        $id = $request->id;
 
-            $customer = Customer::find($id);
-            $customer->name = $request->name;
-            $customer->adress = $request->adress;
-            $customer->postal_code = $request->postal_code;
-            $customer->city = $request->city;
-            $customer->siren = $request->siren;
-            $customer->activity = $request->activity;
-            $customer->event_qty = $request->event_qty;
-            $customer->contact_lastname = $request->contact_lastname;
-            $customer->contact_firstname = $request->contact_firstname;
-            $customer->contact_email = $request->contact_email;
-            $customer->contact_phone = $request->contact_phone;
-            $customer->contact_job = $request->contact_job;
-            $customer->informations = $request->informations;
-            $customer->event_id = $request->event_id;
-            $customer->save();
+        $customer = Customer::find($id);
+        $customer->title = $request->title;
+        $customer->activity_type = $request->activity_type;
+        $customer->SIREN = $request->SIREN;
+        $customer->comments = $request->comments;
+        $customer->contact_person = array(
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'job_title' => $request->job_title
+        );
+        $customer->location = array(
+            'address' => $request->address,
+            'postal_code' => $request->postal_code,
+            'city' => $request->city,
+            'country' => $request->country,
+            'longitude' => $request->longitude,
+            'lattitude' => $request->lattitude
+        );
+        $shows_id[]=$request->get('shows_id');
+        $customer->events=$shows_id;
+        $customer->is_active = $request->is_active;
+        $customer->is_deleted = $request->is_deleted;
 
+        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
+        if ($request->hasFile('image')){
+            if(!is_null($customer->image)){
+                unlink(public_path('uploads/'.$customer->image));
+            }
+            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
+            request()->image->move(public_path('uploads'), $imageName);
+
+            $customer->image = $imageName;
+        } 
+        $customer->save();
         }        
         else{
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'adress' => 'required|string|max:255',
-                'postal_code' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'siren' => 'required|string|max:255',
-                'activity' => 'required|string|max:255',
-                'event_qty' => 'required|integer',
-                'contact_lastname' => 'required|string|max:255',
-                'contact_firstname' => 'required|string|max:255',
-                'contact_phone' => 'required|string|max:255',
-                'contact_job' => 'required|string|max:255',
-                'informations' => 'max:750'
-            ]);
-            $id = $request->id;
-    
-            $customer = Customer::find($id);
-            $customer->name = $request->name;
-            $customer->adress = $request->adress;
-            $customer->postal_code = $request->postal_code;
-            $customer->city = $request->city;
-            $customer->siren = $request->siren;
-            $customer->activity = $request->activity;
-            $customer->event_qty = $request->event_qty;
-            $customer->contact_lastname = $request->contact_lastname;
-            $customer->contact_firstname = $request->contact_firstname;
-            $customer->contact_email = $request->contact_email;
-            $customer->contact_phone = $request->contact_phone;
-            $customer->contact_job = $request->contact_job;
-            $customer->informations = $request->informations;
-            $customer->event_id = $request->event_id;
-            $customer->save();
-            }     
-            return view('admin/Customer.show', ['customer' => $customer])->with('status', 'Le client a été correctement modifié.');    }
+                'title' => 'required|string|max:255',
+                'activity_type' => 'required|string|max:255',
+                'SIREN' => 'string|max:255',
+                'location' => 'string|max:255',
+                'contact_person' => 'string|max:255',
+                'comments' => 'max:750'
+        ]);
+        $id = $request->id;
+
+        $customer = Customer::find($id);
+        $customer->title = $request->title;
+        $customer->activity_type = $request->activity_type;
+        $customer->SIREN = $request->SIREN;
+        $customer->comments = $request->comments;
+        $customer->contact_person = array(
+        'lastname' => $request->lastname,
+        'firstname' => $request->firstname,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'job_title' => $request->job_title
+        );
+        $customer->location = array(
+            'address' => $request->address,
+            'postal_code' => $request->postal_code,
+            'city' => $request->city,
+            'country' => $request->country,
+            'longitude' => $request->longitude,
+            'lattitude' => $request->lattitude
+        );
+        $shows_id[]=$request->get('shows_id');
+        $customer->events=$shows_id;
+        $customer->is_active = $request->is_active; //penser à mettre l'input hidden
+        $customer->is_deleted = $request->is_deleted;
+
+        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
+        if ($request->hasFile('image')){
+            if(!is_null($customer->image)){
+                unlink(public_path('uploads/'.$customer->image));
+            }
+            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
+            request()->image->move(public_path('uploads'), $imageName);
+
+            $customer->image = $imageName;
+        } 
+        $customer->save();
+        }     
+        return view('admin/Customer.show', ['customer' => $customer])->with('status', 'Le client a été correctement modifié.');    }
 
     /**
      * Remove the specified resource from storage.
@@ -201,7 +240,35 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find($id);
+        if(!is_null($customer->image)){
+            unlink(public_path('uploads/'.$customer->image));
+        }
         $customer->delete();
         return redirect('admin/Customer/index')->with('status', 'Le client a été correctement supprimé.');
     }
+
+        /*--~~~~~~~~~~~___________activate and desactivate a customer function in index Customer__________~~~~~~~~~~~~-*/
+        public function desactivate($id)
+        {
+            $customer = Customer::find($id);
+            $customer->is_active = false;
+            $customer->update();
+            return redirect('admin/Customer/index');
+        }
+    
+        public function delete($id)
+        {
+            $customer = Customer::find($id);
+            $customer->is_deleted = true;
+            $customer->update();
+            return redirect('admin/Customer/index');
+        }
+    
+        public function activate($id)
+        {
+            $customer = Customer::find($id);
+            $customer->is_active = true;
+            $customer->update();
+            return redirect('admin/Customer/index');
+        }
 }

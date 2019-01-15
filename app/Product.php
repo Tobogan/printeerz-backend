@@ -3,23 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Couleur;
-use App\Zone;
-use App\Taille;
-use App\Event;
-use App\ImageZone;
-use App\Gabarit;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Product extends Model
+class Product extends Eloquent
 {
+    protected $connection = 'mongodb';
+    protected $collection = 'products';
+
     protected $fillable = [
-        'nom', 'reference', 'sexe', 'description', 'tailles_list', 'couleurs_list', 'zones_list', 'photo_illustration'
+        'id', 'title', 'vendor', 'gender', 'product_type', 'product_zones[]', 'image', 'tags[]', 'description', 'variants_id[]', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/
 
 
-      public function tailles() {
+    /*  public function tailles() {
         return $this->belongsToMany('App\Taille');
     }
 
@@ -31,10 +29,10 @@ class Product extends Model
 
     public function setTaillesListAttribute($value){
         return $this->tailles()->sync($value);
-    }
+    }*/
      /*~~~~~~~~~~~_____Relation Many to Many avec les couleurs dispo____~~~~~~~~~~~~*/
 
-    public function couleurs() {
+    /*public function couleurs() {
         return $this->belongsToMany('App\Couleur');
     }
 
@@ -46,11 +44,11 @@ class Product extends Model
 
     public function setCouleursListAttribute($value){
         return $this->couleurs()->sync($value);
-    }
+    }*/
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les zones d'impression____~~~~~~~~~~~~*/
 
-    public function zones() {
+   /* public function zones() {
         return $this->belongsToMany('App\Zone');
     }
 
@@ -95,5 +93,5 @@ class Product extends Model
 
     public function setGabaritsListAttribute($value){
         return $this->gabarits()->sync($value);
-    }
+    }*/
 }

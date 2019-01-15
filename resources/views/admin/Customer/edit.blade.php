@@ -70,7 +70,7 @@
         <textarea class="form-control" name="informations" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
         </div>
         <hr>
-        <input type="hidden" class="form-control" name="actual_nom" value= '{{ $customer->name }}'>
+        <input type="hidden" class="form-control" name="actual_title" value= '{{ $customer->title }}'>
 
         {!! Form::submit('Modifier', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
 

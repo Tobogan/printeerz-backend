@@ -16,7 +16,6 @@
     <thead>
 		<tr>
             <th>Nom</th>
-            <th>Contact</th>
             <th>Adresse</th>
             <th>Code Postal</th>
             <th>Ville</th>
@@ -29,8 +28,7 @@
 @foreach ($customers as $customer)
 
     <tr>
-        <td>{{ $customer->name }}</td>
-        <td>{{ $customer->contact_firstname . ' ' . $customer->contact_lastname }}</td>
+        <td>{{ $customer->title }}</td>
         <td>{{ $customer->adress }}</td>
         <td>{{ $customer->postal_code }}</td>
         <td>{{ $customer->city }}</td>

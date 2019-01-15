@@ -18,8 +18,8 @@ use App\Http\Middleware\isActivate;
 class ProductvariantsController extends Controller
 {
     public function __construct(){
-        $this->middleware(isActivate::class);
-        $this->middleware(isAdmin::class);
+        //$this->middleware(isActivate::class);
+        //$this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
     /**

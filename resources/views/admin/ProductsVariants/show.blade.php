@@ -6,39 +6,12 @@
     <div class="row">
         <div class="col row">
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
-                {{-- @if($product->color1_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color1_coeur_imageName" title="Couleur n°1 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color1_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color1_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAV_imageName" title="Couleur n°1 - Zone 'Face avant'" width="100%" src="/uploads/{{$product->color1_FAV_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color1_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color1_FAR_imageName" title="Couleur n°1 - Zone 'Face arrière'" width="100%" src="/uploads/{{$product->color1_FAR_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color2_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_coeur_imageName" title="Couleur n°2 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color2_coeur_imageName}}" alt="Image produit"></div>
-                @endif
-                @if($product->color2_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2"  id="img_color2_FAV_imageName" title="Couleur n°2 - Zone 'Face avant'" width="100%" src="/uploads/{{$product->color2_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color2_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color2_FAR_imageName" title="Couleur n°2 - Zone 'Face arrière'"width="100%" src="/uploads/{{$product->color2_FAR_imageName}}" alt="Image produit"></div>
-                    @endif   
-                @if($product->color3_coeur_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_coeur_imageName" title="Couleur n°3 - Zone 'Coeur'" width="100%" src="/uploads/{{$product->color3_coeur_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color3_FAV_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAV_imageName" title="Couleur n°3 - Zone 'Face avant'"width="100%" src="/uploads/{{$product->color3_FAV_imageName}}" alt="Image produit"></div>
-                    @endif
-                @if($product->color3_FAR_imageName != NULL)
-                    <div><img class="side_img mb-2 mt-2" id="img_color3_FAR_imageName" title="Couleur n°3 - Zone 'Face arrière'"width="100%" src="/uploads/{{$product->color3_FAR_imageName}}" alt="Image produit"></div> 
-                @endif --}}
             </div>
         <div class="col-lg-9">
             @if($product->photo_illustration != NULL)
             <br>
                 <div class="image_principale">
-                    <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->photo_illustration}}" alt="Image produit">
+                    <img  id="image_principale" width="100%" title="image_principale" src="/uploads/{{$product->photo_illustration}}" alt="Image produit">
                     
                 </div>
             @else
@@ -61,15 +34,6 @@
             <h6 class="mb-2">Couleurs disponibles: <small><?php echo implode(', ', $list_couleurs); ?></small></h6>
             
             <h6>Zones séléctionnées:</h6>
-                {{-- @if($product->color_FAV != 0)
-                <small>- Face avant</small><br>
-                @endif
-                @if($product->color_coeur != 0)
-                <small>- Coeur</small><br>
-                @endif
-                @if($product->color_FAR != 0)
-                <small>- Face arrière</small>
-                @endif --}}
             
                 <!--ICI gisait les couleurs zones et gabarits-->
 
