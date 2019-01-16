@@ -10,6 +10,8 @@
 @endif
 
   	<a href="{{action('ProductController@create')}}"><button type="button" title="Ajout d'un nouveau produit" class="btn btn-primary btn-sm ml-2 mt-2 mb-2" style="float:right"><i class="uikon">add</i> Nouveau produit</button></a>
+  	<a href="{{action('CouleurController@index')}}"><button type="button" title="Gestion des couleurs" class="btn btn-info btn-sm ml-1 mt-2 mb-2"  role="group" aria-label="..." style="float:right"><i class="uikon">settings</i> Couleurs/Tailles</button></a>
+    <!-- <a href="{{action('ZoneController@index')}}"><button type="button" title="Gestion des zones" class="btn btn-info btn-sm mt-2 mb-2" style="float: right" role="group" aria-label="...">Zones</button></a> -->
     <br>
 <br>
 
@@ -17,7 +19,6 @@
     <thead>
 		<tr>
             <th>Noms</th>
-            <th></th>
             <th>Références</th>
             <th>Sexes</th>
             <th>Tailles</th>
@@ -28,21 +29,15 @@
     <tbody>
 @foreach ($products as $product)
 
-    <tr>
-    <td>{{ $product->title }}</td>
-    @if(isset($product->product_zones["title"]))
-        <td>{{ $product->product_zones["title"] }}</td>
-    @else
-        <td></td>
-    @endif
+    <tr><td>{{ $product->nom }}</td>
     <td>{{ $product->reference }}</td>
     @if ($product->sexe == 'Homme')
         <td> Homme </td>
     @else
         <td> Femme </td>
     @endif
-    <?php ?>
-    <td></td>
+    <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
+    <td><?php echo implode(', ', $list_tailles); ?></td>
 
     <?php $description = $product->description;
     if(strlen($description) > 50){

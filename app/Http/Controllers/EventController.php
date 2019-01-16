@@ -5,13 +5,6 @@ namespace App\Http\Controllers;
 /*~~~~~~~~~~~___________MODELS__________~~~~~~~~~~~~*/
 use DB;
 use App\Event;
-use App\Customer;
-use App\Product;
-use App\Couleur;
-use App\Gabarit;
-use App\User;
-use App\ProductVariants;
-use App\EventVariants;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -41,24 +34,8 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        $customers = Customer::all();
-        $select = [];
-        foreach($customers as $customer){
-            $select[$customer->id] = $customer->name;
-        }
-        $products = Product::all();
-        $select_products = [];
-        foreach($products as $product){          
-                $select_products[$product->id] = $product->nom;
-        }
-        $couleurs = Couleur::all();
-        $select_couleurs = [];
-        foreach($couleurs as $couleur){
-            $select_couleurs[$couleur->id] = $couleur->nom;
-        }
-        $productVariants = ProductVariants::all();
-    
-        return view('admin/Event.add', ['couleurs'=> $couleurs, 'productVariants' => $productVariants, 'select' => $select, 'select_couleurs' => $select_couleurs, 'select_products' => $select_products, 'products' => $products]);
+        $events = Event::all();
+        return view('admin/Event.add', ['events' => $events]);
     }
 
     /**
@@ -83,48 +60,63 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'annonceur' => 'required|string|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'lieu' => 'required|string|max:255',
+            'advertiser' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
             'description' => 'max:750'
         ]);
 
         $event = new Event;
 
-        $event->nom = $request->nom;
-        $event->annonceur = $request->annonceur;
+        $event->name = $request->name;
+        $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
-        $event->save();
-        $event->product_id = $request->product_id;
-        $event->users()->sync($request->get('users_list'));
-        $event->lieu = $request->lieu;
+        $event->location = array(
+            'address' => $request->address,
+            'postal_code' => $request->postal_code,
+            'city' => $request->city,
+            'country' => $request->country,
+            'longitude' => $request->longitude,
+            'lattitude' => $request->lattitude
+        );
+        $event->start_datetime = $request->start_datetime;
+        $event->end_datetime = $request->end_datetime;
         $event->type = $request->type;
-        $event->date = $request->date;
         $event->description = $request->description;
+
+        $event_products_id[]=$request->get('event_products_id');
+        $event->event_products_id=$event_products_id;
+
+        $employees[]=$request->get('employees');
+        $event->employees=$employees;
+
+        $event->comments = array(
+            'id' => $request->comment_id,
+            'employee_id' => $request->employee_id,
+            'comment' => $request->comment,
+            'created_at' => $request->created_at
+        );
 
         $event->save();
 
 /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')){
-            $logoName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $logoName);
+        if ($request->hasFile('logo_img')){
+            $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
+            request()->logo_img->move(public_path('uploads'), $logoName);
 
             $event->logoName = $logoName;
         } 
 
-        if ($request->hasFile('BAT')){
-            $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
-            request()->BAT->move(public_path('uploads'), $BAT_name);
+        if ($request->hasFile('cover_img')){
+            $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
+            request()->cover_img->move(public_path('uploads'), $cover);
 
-            $event->BAT_name = $BAT_name;
+            $event->cover_img = $cover;
         } 
 
         $event->save();
         // return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
-        $eventVariants = EventVariants::all();
-        return view('admin/Event.show',['eventVariants' => $eventVariants, 'event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');    
- 
+        return view('admin/Event.show',['event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');
     }
 
     /**
@@ -136,11 +128,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        $product = Product::find($id);
-        $couleurs = Couleur::all();
-        $eventVariants = EventVariants::all();
-        $user = User::find($id);
-        return view('admin/Event.show', ['eventVariants' => $eventVariants, 'event' => $event, 'couleurs' => $couleurs, 'product' => $product, 'user' => $user]);
+        return view('admin/Event.show', ['event' => $event]);
     }
 
     /**
@@ -166,28 +154,8 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = Event::find($id);
-        $customers = Customer::all();
-        $products = Product::all();
-        $select = [];
-        foreach($customers as $customer){
-            $select[$customer->id] = $customer->name;
-        }
-        $products = Product::all();
-        $select_products = [];
-        foreach($products as $product){          
-                $select_products[$product->id] = $product->nom;
-        }
-        $gabarits = Gabarit::all();
-        $select_gabarits = [];
-        foreach($gabarits as $gabarit){
-            $select_gabarits[$gabarit->id] = $gabarit->nom;
-        }
-        $couleurs = Couleur::all();
-        $select_couleurs = [];
-        foreach($couleurs as $couleur){
-            $select_couleurs[$couleur->id] = $couleur->nom;
-        }
-        return view('admin/Event.edit', ['event' => $event, 'products' => $products, 'select_gabarits' => $select_gabarits,'select' => $select, 'select_products' => $select_products, 'select_couleurs' => $select_couleurs]);
+        
+        return view('admin/Event.edit', ['event' => $event]);
     }
 
     /**
@@ -199,82 +167,133 @@ class EventController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_nom') == request('nom')){
+        if (request('actual_name') == request('name')){
             $validatedData = $request->validate([
-                'nom' => 'required|string|max:255',
-                'annonceur' => 'required|string|max:255',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'lieu' => 'required|string|max:255',
+                'advertiser' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
             $event = Event::find($id);
 
-            $event->nom = $request->nom;
-            $event->annonceur = $request->annonceur;
+            $event->name = $request->name;
+            $event->advertiser = $request->advertiser;
             $event->customer_id = $request->customer_id;
-            $event->save();
-            $event->product_id = $request->product_id;
-            $event->users()->sync($request->get('users_list'));
-            $event->lieu = $request->lieu;
+            $event->location = array(
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'city' => $request->city,
+                'country' => $request->country,
+                'longitude' => $request->longitude,
+                'lattitude' => $request->lattitude
+            );
+            $event->start_datetime = $request->start_datetime;
+            $event->end_datetime = $request->end_datetime;
             $event->type = $request->type;
-            $event->date = $request->date;
             $event->description = $request->description;
 
-            
+            $event_products_id[]=$request->get('event_products_id');
+            $event->event_products_id=$event_products_id;
+
+            $employees[]=$request->get('employees');
+            $event->employees=$employees;
+
+            $event->comments = array(
+                'id' => $request->comment_id,
+                'employee_id' => $request->employee_id,
+                'comment' => $request->comment,
+                'created_at' => $request->created_at
+            );
+
             $event->save();
 
-            if ($request->hasFile('image')){
-                $logoName = time().'.'.request()->image->getClientOriginalExtension();           
-                request()->image->move(public_path('uploads'), $logoName);
+    /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
+            if ($request->hasFile('logo_img')){
+                if(!is_null($event->logo_img)){
+                    unlink(public_path('uploads/'.$event->logo_img));
+                }
+                $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
+                request()->logo_img->move(public_path('uploads'), $logoName);
+
                 $event->logoName = $logoName;
             } 
 
-            if ($request->hasFile('BAT')){
-                $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
-                request()->BAT->move(public_path('uploads'), $BAT_name);
-                $event->BAT_name = $BAT_name;
+            if ($request->hasFile('cover_img')){
+                if(!is_null($event->cover_img)){
+                    unlink(public_path('uploads/'.$event->cover_img));
+                }
+                $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
+                request()->cover_img->move(public_path('uploads'), $cover);
+
+                $event->cover_img = $cover;
             } 
 
-        $event->save();
+            $event->save();
         }        
         else{
             $validatedData = $request->validate([
-                'nom' => 'required|string|max:255',
-                'annonceur' => 'required|string|max:255',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'lieu' => 'required|string|max:255',
+                'advertiser' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
             $event = Event::find($id);
 
-            $event->nom = $request->nom;
-            $event->annonceur = $request->annonceur;
+            $event->name = $request->name;
+            $event->advertiser = $request->advertiser;
             $event->customer_id = $request->customer_id;
-            $event->save();
-            $event->product_id = $request->product_id;
-            $event->users()->sync($request->get('users_list'));
-            $event->lieu = $request->lieu;
+            $event->location = array(
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'city' => $request->city,
+                'country' => $request->country,
+                'longitude' => $request->longitude,
+                'lattitude' => $request->lattitude
+            );
+            $event->start_datetime = $request->start_datetime;
+            $event->end_datetime = $request->end_datetime;
             $event->type = $request->type;
-            $event->date = $request->date;
             $event->description = $request->description;
 
-            
+            $event_products_id[]=$request->get('event_products_id');
+            $event->event_products_id=$event_products_id;
+
+            $employees[]=$request->get('employees');
+            $event->employees=$employees;
+
+            $event->comments = array(
+                'id' => $request->comment_id,
+                'employee_id' => $request->employee_id,
+                'comment' => $request->comment,
+                'created_at' => $request->created_at
+            );
+
             $event->save();
 
-            if ($request->hasFile('image')){
-                $logoName = time().'.'.request()->image->getClientOriginalExtension();           
-                request()->image->move(public_path('uploads'), $logoName);
+    /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
+            if ($request->hasFile('logo_img')){
+                if(!is_null($event->logo_img)){
+                    unlink(public_path('uploads/'.$event->logo_img));
+                }
+                $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
+                request()->logo_img->move(public_path('uploads'), $logoName);
+
                 $event->logoName = $logoName;
             } 
 
-            if ($request->hasFile('BAT')){
-                $BAT_name = time().'5.'.request()->BAT->getClientOriginalExtension();           
-                request()->BAT->move(public_path('uploads'), $BAT_name);
-                $event->BAT_name = $BAT_name;
+            if ($request->hasFile('cover_img')){
+                if(!is_null($event->cover_img)){
+                    unlink(public_path('uploads/'.$event->cover_img));
+                }
+                $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
+                request()->cover_img->move(public_path('uploads'), $cover);
+
+                $event->cover_img = $cover;
             } 
-        $event->save();
+
+            $event->save();
         }
         return redirect('admin/Event/index');
     }
@@ -288,8 +307,38 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::find($id);
-
+        if(!is_null($event->logo_img)){
+            unlink(public_path('uploads/'.$event->logo_img));
+        }
+        if(!is_null($event->cover_img)){
+            unlink(public_path('uploads/'.$event->cover_img));
+        }
         $event->delete();
+        return redirect('admin/Event/index');
+    }
+
+    /*--~~~~~~~~~~~___________activate and desactivate a event function in index event__________~~~~~~~~~~~~-*/
+    public function desactivate($id)
+    {
+        $event = Event::find($id);
+        $event->is_active = false;
+        $event->update();
+        return redirect('admin/Event/index');
+    }
+
+    public function delete($id)
+    {
+        $event = Event::find($id);
+        $event->is_deleted = true;
+        $event->update();
+        return redirect('admin/Event/index');
+    }
+
+    public function activate($id)
+    {
+        $event = Event::find($id);
+        $event->is_active = true;
+        $event->update();
         return redirect('admin/Event/index');
     }
 }

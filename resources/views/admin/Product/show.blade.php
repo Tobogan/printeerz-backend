@@ -8,10 +8,10 @@
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
             </div>
         <div class="col-lg-9">
-            @if($product->photo_illustration != NULL)
+            @if($product->image != NULL)
             <br>
                 <div class="image_principale">
-                    <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->photo_illustration}}" alt="Image produit">
+                    <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->image}}" alt="Image produit">
                 </div>
             @else
             <br>
@@ -21,12 +21,18 @@
     </div>
 
         <div class="col-lg-5 ml-3">
-            <h4 class="mt-3">#{{ $product->id . ' ' . ucfirst($product->nom) }}</h4>
+            <h4 class="mt-3">#{{ $product->id . ' ' . ucfirst($product->title) }}</h4>
             <hr>
 
-            <h6 class="mb-2">Sexe: <small>{{ ucfirst($product->sexe) }}</small></h6>
+            <h6 class="mb-2">Sexe: <small>{{ ucfirst($product->gender) }}</small></h6>
 
-            <h6 class="mb-2">Référence fournisseur: <small>{{ $product->reference }}</small></h6>
+            <h6 class="mb-2"> <small>{{ $product->vendor["name"] }}</small></h6>
+
+            <h6 class="mb-2"> <small>{{ $product->product_type }}</small></h6>
+
+            <h6 class="mb-2"> <small>{{ $product->product_zones["title"] }}</small></h6>
+
+            <h6 class="mb-2">Référence fournisseur: <small>{{ $product->vendor["reference"] }}</small></h6>
 
             <h5 class="mt-2">Description: </h5>
 
@@ -34,13 +40,12 @@
                 <div><small>{{ $product->description }}</small></div>
             @else
                 <td>{{ '...' }}</td>
-                @if ($product->photo_illustration == NULL)
+                @if ($product->image == NULL)
                     <div><i>(image par défault)</i></div>
                 @endif
             @endif
             <br>
 
-            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_productVariants', $product->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter variante</a>
             <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
@@ -48,73 +53,6 @@
         </div>
     </div>
     <br><hr>
-
-    <!--~~~~~~~~~~~___________Variantes__________~~~~~~~~~~~~-->
-    <table class="datatable table table-striped" >
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Couleur</th>
-                    <th></th>
-                    <th>Tailles</th>
-                    <th>Zone n°1</th>
-                    <th></th>
-                    <th>Zone n°2</th>
-                    <th></th>
-                    <th>Zone n°3</th>
-                    <th></th>
-                    <th>Zone n°4</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach ($productVariants as $productVariant)
-            @if($productVariant->product_id == $product->id)
-                @if($productVariant->couleur->pantoneName)
-                    <td><img src="/uploads/{{$productVariant->couleur->pantoneName}}" class="miniRoundedImage" alt="pantone" ></td>
-                @else
-                    <td><img src="/img/pointd'interrogation.jpg" class="miniRoundedImage" alt="pantone" ></td>
-                @endif
-
-                    <td>{{ $productVariant->couleur->nom }}</td>
-                @if($productVariant->image1)
-                    <td><img src="/uploads/{{$productVariant->image1}}" class="miniRoundedImage" alt="image1" ></td>
-                @else
-                    <td></td>
-                @endif
-
-                <td>{{ $productVariant->taille->nom }}</td>
-
-                    <td>{{ $productVariant->zone1 }}</td>
-
-                @if($productVariant->image2)
-                    <td><img src="/uploads/{{$productVariant->image2}}" class="miniRoundedImage" alt="image2" ></td>
-                @else
-                    <td></td>
-                @endif
-
-                    <td>{{ $productVariant->zone2 }}</td>
-
-                @if($productVariant->image3)
-                    <td><img src="/uploads/{{$productVariant->image3}}" class="miniRoundedImage" alt="image3" ></td>
-                @else
-                    <td></td>
-                @endif
-
-                    <td>{{ $productVariant->zone3 }}</td>
-
-                @if($productVariant->image4)
-                    <td><img src="/uploads/{{$productVariant->image4}}" class="miniRoundedImage" alt="image4" ></td>
-                @else
-                    <td></td>
-                @endif
-                    <td>{{ $productVariant->zone4 }}</td>
-                    <td></td>
-                    <td><a class='btn btn-danger' href="{{route('destroy_productVariants', $productVariant->id)}}" title="Supprimer la variante du produit">Supprimer</a></td></tr>
-            @endif
-        @endforeach
-            </tbody>
 
 </div>
 

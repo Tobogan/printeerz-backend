@@ -16,7 +16,6 @@ class ProductController extends Controller
         //$this->middleware(isActivate::class);
         //$this->middleware(isAdmin::class);
         $this->middleware('auth');
-
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +25,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        
         return view('admin/Product.index', ['products' => $products]);
     }
 
@@ -90,8 +88,7 @@ class ProductController extends Controller
 
         $product->save();
         // $product = Product::find($id);
-        $productVariants = ProductVariants::all();
-        return view('admin/Product.show',['productVariants' => $productVariants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
+        return view('admin/Product.show',['product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
     }
     
 
@@ -104,10 +101,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $productVariants = ProductVariants::all();
-        $couleurs = Couleur::all();
-        
-        return view('admin/Product.show', ['product' => $product, 'couleurs' => $couleurs, 'productVariants' => $productVariants]);
+
+        return view('admin/Product.show', ['product' => $product]);
     }
 
     /**

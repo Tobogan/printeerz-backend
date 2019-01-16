@@ -1,6 +1,5 @@
 <?php
 use App\ProductVariants;
-use App\Couleur;
 use Illuminate\Support\Facades\Input;
 /*
 |--------------------------------------------------------------------------
