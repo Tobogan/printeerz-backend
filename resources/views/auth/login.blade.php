@@ -1,70 +1,122 @@
-@extends('layouts.template')
+<!doctype html>
+<html lang="{{ app()->getLocale() }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Connexion</div>
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+   <!-- Theme CSS -->
+    <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}" id="stylesheetLight">
+    <link rel="stylesheet" href="{{ asset('css/theme-dark.min.css') }}" id="stylesheetDark">
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">Adresse e-mail </label>
+    <style>body { display: none; }</style>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+    <script>
+        var colorScheme = ( localStorage.getItem('dashkitColorScheme') ) ? localStorage.getItem('dashkitColorScheme') : 'light';
+    </script>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Mot de passe</label>
+    <title>{{ config('Printeerz', 'Printeerz') }}</title>
+  </head>
+  <body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+    <!-- CONTENT
+    ================================================== -->
+    <div class="container" id="app">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <!-- Heading -->
+          <h1 class="display-4 text-center mb-3">
+            Connexion
+          </h1>
+          
+          <!-- Subheading -->
+          <p class="text-muted text-center mb-5">
+            Accéder au back-office
+          </p>
+          
+          <!-- Form -->
+          <form method="POST" action="{{ route('login') }}">
+            {{ csrf_field() }}
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                                
-                            </div>
-                        </div>
+            <!-- Email address -->
+            <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Se souvenir de moi
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+              <!-- Label -->
+              <label>Adresse email</label>
 
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Se connecter
-                                </button>
+              <!-- Input -->
+              <input type="email" id="email" name="email" class="form-control" placeholder="nom@domaine.com" value="{{ old('email') }}" required autofocus>
+              @if ($errors->has('email'))
+                <div class="invalid-feedback">
+                {{ $errors->first('email') }}
+                </div>
+              @endif
+            </div>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Mot de passe oublié
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+            <!-- Password -->
+            <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
+
+              <div class="row">
+                <div class="col">
+                      
+                  <!-- Label -->
+                  <label>Mot de passe</label>
+
+                </div>
+                <div class="col-auto">
+                  
+                  <!-- Help text -->
+                  <a href="{{ route('password.request') }}" class="form-text small text-muted">
+                    Mot de passe oublié?
+                  </a>
+
+                </div>
+              </div> <!-- / .row -->
+
+                <!-- Input -->
+                <input id="password" type="password" name="password" class="form-control form-control-appended" placeholder="Entrer votre mot de passe">
+
+                @if ($errors->has('password'))
+                <div class="invalid-feedback">
+                    {{ $errors->first('password') }}
+                </div>
+                @endif
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-lg btn-block btn-primary mb-3">
+              Connexion
+            </button>
+
+            <!-- Link -->
+            <div class="text-center">
+                <div class="checkbox">
+                    <label class="text-muted">
+                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Se souvenir de moi
+                    </label>
                 </div>
             </div>
+            
+          </form>
+
         </div>
-    </div>
-</div>
-@endsection
+      </div> <!-- / .row -->
+    </div> <!-- / .container -->
+
+    <!-- JAVASCRIPT
+    ================================================== -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- Libs JS -->
+    <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Theme JS -->
+    <script src="{{ asset('js/theme.min.js') }}"></script>
+
+  </body>
+</html>

@@ -32,14 +32,40 @@
     <div>{{ $customer->contact_person["phone"] }}</div>
 
     <h5 class="mt-3">Liste des événements: </h5>
+    
+    <div class="card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col">
 
-        @if(!$customer->events)
-            <div><i>Vide</i></div>
-        @else
-            @foreach($customer->events as $event)
-            <div><a href="{{route('show_event', $event->id)}}">{{ '- '. $event->name }}</a></div>
-            @endforeach
-        @endif
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Add a member
+                  </h4>
+                  
+                </div>
+              </div> <!-- / .row -->
+            </div>
+            <div class="card-header">
+                
+            </div>
+            <div data-toggle="lists" data-lists-values='["name"]'>
+                <input class="form-control search" type="search">
+                <ul class="list-group list">
+                @if(!empty($customer->event))
+                    @foreach($customer->event as $event)
+                    <li class="list-group-item">
+                        <a href="{{route('show_event', $event->id)}}" class="name">{{ '- '. $event->nom }}</a>
+                    </li>
+                    @endforeach
+                @else
+                <li class="list-group-item">
+                    <span class="name">Aucun événement</span>
+                </li>
+                @endif
+                </ul>
+            </div>
+
 
     <h5 class="mt-3">Informations: </h5>
 
