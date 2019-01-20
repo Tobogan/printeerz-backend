@@ -16,17 +16,23 @@
                     <div class="col-auto">
                         <!-- Avatar -->
                         <a class="avatar avatar-sm">
-                            <img src="/uploads/{{ Auth::user()->imageName }}" alt="..." class="avatar-img rounded-circle">
+                            <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
                         </a>
                     </div>
                     <div class="col ml--2">
                         <!-- Title -->
                         <h4 class="card-title mb-0">
-                            <a class="text-white">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</a>
+                            <a class="text-white">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</a>
                         </h4>
                         <!-- Time -->
                         <p class="card-text small text-light">
-                            {{ ucfirst(Auth::user()->role) }}
+                            @if(Auth::user()->role == 2)
+                            Administrateur
+                            @elseif(Auth::user()->role == 1)
+                            Opérateur
+                            @else
+                            Technicien
+                            @endif
                         </p>
                     </div>
                     <div class="col-auto">

@@ -15,7 +15,7 @@ class Customer extends Eloquent
         'id', 'title', 'activity_type', 'SIREN', 'location[]', 'contact_person[]', 'shows_id[]', 'image', 'comments', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
-    public function events() {
+    public function shows_id() {
         return $this->hasMany('App\Event');
     }
 

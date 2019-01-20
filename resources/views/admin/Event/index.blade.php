@@ -100,21 +100,24 @@
                             @foreach ($events as $event)
                             <tr>
                                 <td class="event-name">
-                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->nom }}</b></a>
+                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->name }}</b></a>
                                 </td>
-                                <td class="event-annonceur">{{ $event->annonceur }}</td>
+                                <td class="event-annonceur">{{ $event->advertiser }}</td>
 
                                 @if($event->customer)
-                                <td class="event-customer">{{ $event->customer->denomination }}</td>
+                                <td class="event-customer">{{ $event->customer_id['title'] }}</td>
                                 @else
                                 <td class="event-customer text-muted">___</td>
                                 @endif
-
-                                <td class="event-place"> {{ $event->lieu }}</td>
+                                @if(isset($event->location["city"]))
+                                <td class="event-place"> {{ $event->location["city"] }}</td>
+                                @else
+                                <td class="event-place">...</td>
+                                @endif
                                 <td class="event-type">
                                     <div class="badge badge-soft-primary">{{ $event->type }}</div>
                                 </td>
-                                <td class="event-date">{{ date('d-m-Y', strtotime($event->date)) }} </td>
+                                <td class="event-date">{{ date('d-m-Y', strtotime($event->start_datetime)) }} </td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"

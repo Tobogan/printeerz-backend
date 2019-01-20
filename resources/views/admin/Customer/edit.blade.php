@@ -18,57 +18,94 @@
 
         {{csrf_field()}}
         <div class="form-group">
-        {!! Form::label('name', 'Entrer la nom : ') !!}
-        {!! Form::text('name', $customer->name, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
+            {!! Form::label('title', 'Entrer la nom : ') !!}
+            {!! Form::text('title', $customer->title, ['class' => 'form-control', 'placeholder' => 'Nom du client :']) !!}
+            @if(isset($customer->location['address']))
+                {!! Form::text('address', $customer->location['address'], ['class' => 'form-control', 'placeholder' => 'Adresse :']) !!}
+            @else
+                {!! Form::text('address', null, ['class' => 'form-control', 'placeholder' => 'Adresse :']) !!}
+            @endif
+            @if(isset($customer->location['postal_code']))
+                {!! Form::text('postal_code', $customer->location['postal_code'], ['class' => 'form-control', 'placeholder' => 'Code postal :']) !!}
+            @else
+                {!! Form::text('postal_code', null, ['class' => 'form-control', 'placeholder' => 'Code postal :']) !!}
+            @endif
+            @if(isset($customer->location['city']))
+                {!! Form::text('city', $customer->location['city'], ['class' => 'form-control', 'placeholder' => 'Ville :']) !!}
+            @else
+                {!! Form::text('city', null, ['class' => 'form-control', 'placeholder' => 'Ville :']) !!}
+            @endif
+            @if(isset($customer->location['country']))
+                {!! Form::text('country', $customer->location['country'], ['class' => 'form-control', 'placeholder' => 'Pays :']) !!}
+            @else
+                {!! Form::text('country', null, ['class' => 'form-control', 'placeholder' => 'Pays :']) !!}
+            @endif
+            @if(isset($customer->location['longitude']))
+                {!! Form::text('longitude', $customer->location['longitude'], ['class' => 'form-control', 'placeholder' => 'Longitude :']) !!}
+            @else
+                {!! Form::text('longitude', null, ['class' => 'form-control', 'placeholder' => 'Longitude :']) !!}
+            @endif
+            @if(isset($customer->location['lattitude']))
+                {!! Form::text('lattitude', $customer->location['lattitude'], ['class' => 'form-control', 'placeholder' => 'Lattitude :']) !!}
+            @else
+                {!! Form::text('lattitude', null, ['class' => 'form-control', 'placeholder' => 'Lattitude :']) !!}
+            @endif
+            {!! Form::label('activity_type', 'Entrer le type d\'activité : ') !!}
+            {!! Form::text('activity_type', $customer->activity_type, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
+            {!! Form::label('shows_id[]', 'Sélectionner les évenements de ce client : ') !!}
+            {!! Form::select('shows_id[]', App\Event::pluck('name','id'), $customer->events, ['class' => 'form-control', 'multiple' => 'true']) !!} 
+            {!! Form::label('SIREN', 'Entrer le SIREN/SIRET : ') !!}
+            {!! Form::text('SIREN', $customer->SIREN, ['class' => 'form-control', 'placeholder' => 'SIREN/SIRET:']) !!}
         </div>
-
-        <div class="form-group">
-            {!! Form::label('adress_complete', 'Entrer l\'adress : ') !!}
-            {!! Form::text('adress', $customer->adress, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
-            {!! Form::text('postal_code', $customer->postal_code, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
-            {!! Form::text('city', $customer->city, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
-        </div>
-
-
-        <div class="form-group">
-        {!! Form::label('activity', 'Entrer l\'activité : ') !!}
-        {!! Form::text('activity', $customer->activity, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
-        </div>
-
-        <div class="form-group">
-        {!! Form::label('siren', 'Entrer le SIREN : ') !!}
-        {!! Form::text('siren', $customer->siren, ['class' => 'form-control', 'placeholder' => 'SIREN:']) !!}
-        </div>
-
-        {!! Form::label('contact', 'Entrer le contact : ') !!}
-            <div class="row">
-                <div class="col-6 mb-2">
-                {!! Form::text('contact_lastname', $customer->contact_lastname, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
-                </div>
-                <div class="col-6 mb-2">
-                {!! Form::text('contact_firstname', $customer->contact_firstname, ['class' => 'form-control', 'placeholder' => 'Prénom:']) !!}
-                </div>
+        {!! Form::label('contact_person', 'Entrer le contact : ') !!}
+        <div class="row">
+            <div class="col-6 mb-2">
+                @if(isset($customer->contact_person['lastname']))
+                    {!! Form::text('lastname', $customer->contact_person['lastname'], ['class' => 'form-control', 'placeholder' => 'Nom :']) !!}
+                @else
+                    {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Nom :']) !!}
+                @endif
             </div>
-            <div class="row">
-                <div class="col-6 mb-2">
-                {!! Form::text('contact_phone', $customer->contact_phone, ['class' => 'form-control', 'placeholder' => 'Téléphone:']) !!}
-                </div>
-                <div class="col-6 mb-2">
-                {!! Form::text('contact_job', $customer->contact_job, ['class' => 'form-control', 'placeholder' => 'Poste:']) !!}
-                </div>
-                <div class="col-6 mb-2">
-                    {!! Form::text('contact_email', $customer->contact_email, ['class' => 'form-control', 'placeholder' => 'Email:']) !!}
-                    </div>
+            <div class="col-6 mb-2">
+                @if(isset($customer->contact_person['firstname']))
+                    {!! Form::text('lastname', $customer->contact_person['lastname'], ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
+                @else
+                    {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
+                @endif
             </div>
-        <div class="form-group">
-        {!! Form::label('event_qty', 'Entrer le nombre d\'événements déjà organisés : ') !!}
-        {!! Form::number('event_qty', $customer->event_qty, ['class' => 'form-control']) !!}
+        </div>
+        <div class="row">
+            <div class="col-6 mb-2">
+                @if(isset($customer->contact_person['phone']))
+                    {!! Form::text('phone', $customer->contact_person['phone'], ['class' => 'form-control', 'placeholder' => 'Téléphone :']) !!}
+                @else
+                    {!! Form::text('phone', null, ['class' => 'form-control', 'placeholder' => 'Téléphone :']) !!}
+                @endif
+            </div>
+            <div class="col-6 mb-2">
+                @if(isset($customer->contact_person['job_title']))
+                    {!! Form::text('job_title', $customer->contact_person['job_title'], ['class' => 'form-control', 'placeholder' => 'Poste :']) !!}
+                @else
+                    {!! Form::text('job_title', null, ['class' => 'form-control', 'placeholder' => 'Poste :']) !!}
+                @endif
+            </div>
+            <div class="col-6 mb-2">
+                @if(isset($customer->contact_person['email']))
+                    {!! Form::text('email', $customer->contact_person['email'], ['class' => 'form-control', 'placeholder' => 'Email :']) !!}
+                @else
+                    {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Email :']) !!}
+                @endif
+            </div>
         </div>
 
-        <div class="form-group">
-        {!! Form::label('informations', 'Informations : ') !!}
-        <textarea class="form-control" name="informations" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
+        <!--~~~~~~~~~~~___________PHOTO PRINCIPALE__________~~~~~~~~~~~~-->
+        <div class="form-group mt-2">
+            {!! Form::label('image', 'Ajouter une image/logo: ') !!}
+            {!! Form::file('image', array('class' => 'form-control', 'id' => 'image')) !!}
+            {!! Form::label('comments', 'Informations : ') !!}
+        <textarea class="form-control" value='{{$customer->comments}}' name="comments" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
         </div>
+
         <hr>
         <input type="hidden" class="form-control" name="actual_title" value= '{{ $customer->title }}'>
 

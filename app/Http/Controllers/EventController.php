@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 /*~~~~~~~~~~~___________MODELS__________~~~~~~~~~~~~*/
 use DB;
 use App\Event;
+use App\Customer;
+use App\Product;
+use App\User;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -35,7 +38,13 @@ class EventController extends Controller
      */
     public function create(){
         $events = Event::all();
-        return view('admin/Event.add', ['events' => $events]);
+        $products = Product::all();
+        $customers =Customer::all();
+        $select_customers = [];
+        foreach($customers as $customer) {
+            $select_customers[$customer->id] = $customer->title;
+        }
+        return view('admin/Event.add', ['events' => $events, 'select_customers' => $select_customers, 'products' => $products]);
     }
 
     /**
@@ -114,9 +123,16 @@ class EventController extends Controller
             $event->cover_img = $cover;
         } 
 
+        if ($request->hasFile('BAT')){
+            $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
+            request()->BAT->move(public_path('uploads'), $bat_file);
+
+            $event->BAT = $bat_file;
+        } 
+
         $event->save();
-        // return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
-        return view('admin/Event.show',['event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
+        //return view('admin/Event.show',['event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');
     }
 
     /**
@@ -227,7 +243,17 @@ class EventController extends Controller
                 request()->cover_img->move(public_path('uploads'), $cover);
 
                 $event->cover_img = $cover;
-            } 
+            }
+
+            if ($request->hasFile('BAT')){
+                if(!is_null($event->BAT)){
+                    unlink(public_path('uploads/'.$event->BAT));
+                }
+                $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
+                request()->BAT->move(public_path('uploads'), $bat_file);
+
+                $event->BAT = $bat_file;
+            }
 
             $event->save();
         }        
@@ -291,7 +317,17 @@ class EventController extends Controller
                 request()->cover_img->move(public_path('uploads'), $cover);
 
                 $event->cover_img = $cover;
-            } 
+            }
+
+            if ($request->hasFile('BAT')){
+                if(!is_null($event->BAT)){
+                    unlink(public_path('uploads/'.$event->BAT));
+                }
+                $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
+                request()->BAT->move(public_path('uploads'), $bat_file);
+
+                $event->BAT = $bat_file;
+            }
 
             $event->save();
         }

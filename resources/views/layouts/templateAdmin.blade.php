@@ -21,7 +21,6 @@
         @yield('javascripts')
     </div>
 
-</script>
     {{-- <script type="text/javascript" src="{{ asset('slick/slick.min.js') }}"></script> --}}
     {{-- <script type="text/javascript" src="{{ asset('js/form.js') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>

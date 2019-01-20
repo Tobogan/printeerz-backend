@@ -90,7 +90,7 @@
                                 </th>
                                 <th colspan="2">
                                     <a href="#" class="text-muted sort" data-sort="customer-total">
-                                        Nb d'événements
+                                        Activité
                                     </a>
                                 </th>
                             </tr>
@@ -99,12 +99,28 @@
                         <tbody class="list">
                                 @foreach ($customers as $customer)
                                 <tr>
-                                    <td class="customer-name"><a href="{{route('show_customer', $customer->id)}}"><b>{{ $customer->denomination }}</b></a></td>
-                                    <td class="customer-contact-name">{{ $customer->contact_prenom . ' ' . $customer->contact_nom }}</td>
-                                    <td class="customer-address">{{ $customer->adresse }}</td>
-                                    <td class="customer-postal">{{ $customer->code_postal }}</td>
-                                    <td class="customer-city">{{ $customer->ville }}</td>
-                                    <td class="customer-total">{{ $customer->nb_events }}</td>
+                                    <td class="customer-name"><a href="{{route('show_customer', $customer->id)}}"><b>{{ $customer->title }}</b></a></td>
+                                    @if(isset($customer->contact_person['lastname']) && isset($customer->contact_person['firstname']))
+                                        <td class="customer-contact-name">{{ $customer->contact_person['firstname'] . ' ' . $customer->contact_person['lastname'] }}</td>
+                                    @else
+                                        <td>...</td>
+                                    @endif
+                                    @if(isset($customer->location['address']))
+                                        <td class="customer-address">{{ $customer->location['address'] }}</td>
+                                    @else
+                                        <td>...</td>
+                                    @endif
+                                    @if(isset($customer->location['postal_code']))
+                                        <td class="customer-postal">{{ $customer->location['postal_code'] }}</td>
+                                    @else
+                                        <td>...</td>
+                                    @endif
+                                    @if(isset($customer->location['city']))
+                                        <td class="customer-city">{{ $customer->location['city'] }}</td>
+                                    @else
+                                        <td>...</td>
+                                    @endif
+                                    <td class="customer-total">{{ $customer->activity_type }}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"

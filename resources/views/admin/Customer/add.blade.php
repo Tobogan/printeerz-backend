@@ -3,7 +3,6 @@
 @section('content')
 
 
-
 <div class="container mt-3">
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -30,7 +29,7 @@
             {!! Form::label('activity_type', 'Entrer le type d\'activité : ') !!}
             {!! Form::text('activity_type', null, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
             {!! Form::label('shows_id[]', 'Sélectionner les évenements de ce client : ') !!}
-            {!! Form::select('shows_id[]', App\Event::pluck('name','id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
+            {!! Form::select('shows_id[]', App\Event::pluck('name','_id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
             {!! Form::label('SIREN', 'Entrer le SIREN/SIRET : ') !!}
             {!! Form::text('SIREN', null, ['class' => 'form-control', 'placeholder' => 'SIREN/SIRET:']) !!}
         </div>

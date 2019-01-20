@@ -21,28 +21,24 @@
         </div>
 
         <div class="col-lg-5 ml-3">
-            <h2 class="mt-2">#{{ $event->id . ' ' . $event->nom }}</h2>
+            <h2 class="mt-2">#{{ $event->id . ' ' . $event->name }}</h2>
         <hr>
         <h6 class="mt-2">Annonceur: </h6>
-            <div><small>{{ $event->annonceur }}</small></div>
+            <div><small>{{ $event->advertiser }}</small></div>
         
         <h6 class="mt-2">Client: </h6>
-        @if($event->customer)
-            <div><small>{{ $event->customer->name}}</small></div>
+
+        @if($event->customer->title)
+            <div><small>{{ $event->customer->title}}</small></div>
         @else
             <div><i><small>Inconnu</small></i></div>
         @endif
 
         <h6 class="mt-2">Utilisateurs autorisés: </h6>
-            <?php $list_users = $event->users->pluck('firstname')->toArray();?>
-        @if($list_users)
-            <div><small><?php echo implode(', ', $list_users); ?></small></div>
-        @else
-            <div><small>Pas d'utilisateurs spécifiés</small></div>
-        @endif
+
             <h6 class="mt-2">Produit sélectionné: </h6>
-        @if($event->product)
-            <div><small>{{ $event->product->nom}}</small></div>
+        @if($event->event_products)
+            <div><small>{{ $event->product->title}}</small></div>
         @else
             <div><small><i>Inconnu</i></small></div>
         @endif
@@ -55,8 +51,9 @@
         <h6 class="mt-2">Type d'événement: </h6>
             <div><small>{{ $event->type }}</small></div>
 
-        <h6 class="mt-2">Date: </h6>
-            <div><small>{{ date('d-m-Y', strtotime($event->date)) }}</small></div>
+        <h6 class="mt-2">Dates : </h6>
+            <div><small>{{ date('d-m-Y', strtotime($event->start_datetime)) }}</small></div>
+            <div><small>{{ date('d-m-Y', strtotime($event->end_datetime)) }}</small></div>
 
             @if($event->BAT_name != null)
                 <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT_name }}', '_blank', 'fullscreen=yes'); return false;"><i class="uikon">send_round</i> Voir le BAT</a>
@@ -74,7 +71,7 @@
             @endif
                     
             <br>
-            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventVariants', $event->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter un produit</a>
+            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventsProducts', $event->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter un produit</a>
 
             <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_front', $event->id)}}"  title="Lancer l'event"><i class="uikon">send_round</i> Lancer</a>
             <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_eventVariants', $event->id)}}"  title="Variantes"><i class="uikon">send_round</i> Variantes</a>
@@ -89,7 +86,7 @@
 
     <!--~~~~~~~~~~~___________Commentaires__________~~~~~~~~~~~~-->
 
-<section class="mt-3" id="comments">
+{{--<section class="mt-3" id="comments">
 <div class="container">
     <input type="hidden" id="_token" value="{{ csrf_token() }}">
     @foreach($event->comments as $comment)
@@ -147,7 +144,7 @@
     </div>
 {{ Form::close() }}
 </div>
-</div>
+</div>--}}
 
 
 

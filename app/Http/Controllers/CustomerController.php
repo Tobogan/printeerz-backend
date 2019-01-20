@@ -8,6 +8,7 @@ use App\Customer;
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
+use Illuminate\Support\Facades\Input;
 
 
 class CustomerController extends Controller

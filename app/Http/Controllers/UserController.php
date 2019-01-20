@@ -119,7 +119,6 @@ class UserController extends Controller
                 'lastname' => 'required|string|max:255',
                 'firstname' => 'required|string|max:255',
                 'SIREN' => 'string|max:14',
-                'email' => 'required|string|email|max:255|unique:employees',
                 'password' => 'required|string|min:6|confirmed',
                 'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
@@ -141,7 +140,7 @@ class UserController extends Controller
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
-            $user->email = $request->email;
+
             $user->password = bcrypt($request->password);
             $user->role = $request->role;
             $user->is_active = $request->is_active;

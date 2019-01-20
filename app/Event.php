@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Customer;
+use App\Product;
+use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
@@ -20,11 +22,15 @@ class Event extends Eloquent
         return $this->belongsTo('App\Customer');
     }
 
-    /*public function product() {
-        return $this->belongsTo('App\Product');
+    public function event_products() {
+        return $this->hasMany('App\Product');
     }
 
-    public function comments() {
+    public function employees() {
+        return $this->hasMany('App\User');
+    }
+
+    /*public function comments() {
         return $this->hasMany('App\Comment');
     }
 
@@ -47,38 +53,6 @@ class Event extends Eloquent
     // public function setProductListAttribute($value) {
     //     return $this->products()->sync($value);
     // }
-
-    public function typeEvents() {
-        return $this->belongstoMany('App\TypeEvent');
-    }
-
-    public function getTypeEventsListAttribute() {
-        if($this->id){
-            return $this->typeEvents->pluck('id');
-        }            
-    }
-
-    public function setTypeTypeEventsListAttribute($value) {
-        return $this->typeEvents()->sync($value);
-    }
-
-    public function couleurs() {
-        return $this->belongsToMany('App\Couleur');
-    }
-
-    public function getCouleursListAttribute(){
-        if($this->id){
-            return $this->couleurs->pluck('id');
-        }            
-    }
-
-    public function setCouleursListAttribute($value){
-        return $this->couleurs()->sync($value);
-    }
-
-    public function users() {
-        return $this->belongsToMany('App\User');
-    }
 
     public function getUserListAttribute() {
         if($this->id){
