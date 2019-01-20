@@ -1,7 +1,7 @@
 <html lang="fr" data-reactroot="">
 <?php //session_start();
 
-//$user_image = session('imageName');
+//$user_image = session('user_photo_url');
 ?>
 <head>
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
@@ -17,13 +17,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">   
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     
-    
-    
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>  
     {{-- <link rel="stylesheet" type="text/css" href="{{ asset('css/App.scss') }}"/>   --}}
 
-    
 </head>
 <body>
     <link async="" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" />
@@ -39,31 +36,27 @@
                             <div class="uik-nav-user__wrapper">
      
 @if(Auth::check())                         <!-- ~~~~~~~~________ PHOTO DE PROFIL DU USER ________~~~~~~~~ -->
-@if( Auth::user()->imageName)
-                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/{{ Auth::user()->imageName }}" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
+    @if( Auth::user()->user_photo_url)
+        <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/{{ Auth::user()->user_photo_url }}" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
+        @if(Auth::user()->role == 'admin')
+            <span class="uik-nav-user__textTop">Administrateur</span></div>
+        @elseif(Auth::user()->role == 'opérateur')
+            <span class="uik-nav-user__textTop">Opérateur</span></div>
+        @elseif(Auth::user()->role == 'technicien')
+            <span class="uik-nav-user__textTop">Technicien</span></div>
+        @endif
+    @else     
+        <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/no_image.jpg" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
 
-                                @if(Auth::user()->role == 'admin')
+        <!-- ~~~~~~~~________ ROLE DU USER ________~~~~~~~~ -->
+        @if(Auth::user()->role == 'admin')
                                     <span class="uik-nav-user__textTop">Administrateur</span></div>
-                                @elseif(Auth::user()->role == 'opérateur')
+        @elseif(Auth::user()->role == 'opérateur')
                                     <span class="uik-nav-user__textTop">Opérateur</span></div>
-                                @elseif(Auth::user()->role == 'technicien')
+        @elseif(Auth::user()->role == 'technicien')
                                     <span class="uik-nav-user__textTop">Technicien</span></div>
-                                @endif
-@else     
-                                <div class="uik-nav-user__avatarWrapper"><img alt="bob" class="uik-nav-user__avatar" src="/uploads/no_image.jpg" /></div><span class="uik-nav-user__name">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
-                                         
-                                          <!-- ~~~~~~~~________ ROLE DU USER ________~~~~~~~~ -->
-                       
-    @if(Auth::user()->role == 'admin')
-                                <span class="uik-nav-user__textTop">Administrateur</span></div>
-    @elseif(Auth::user()->role == 'opérateur')
-                                <span class="uik-nav-user__textTop">Opérateur</span></div>
-    @elseif(Auth::user()->role == 'technicien')
-                                <span class="uik-nav-user__textTop">Technicien</span></div>
+        @endif
     @endif
-
-    
-@endif
 @else
     <?php return redirect('errors/404');?>
            
@@ -71,7 +64,6 @@
                 <div class="uik-divider__horizontal"></div>
 
                 <!-- ~~~~~~~~________ NAV DE GAUCHE ________~~~~~~~~ -->
-
                 <div class="uik-nav-link-two-container__wrapper">
                 <a class="uik-nav-link-2__wrapper active uik-nav-link-2__highlighted" href="{{route('home')}}">
                     <span class="uik-nav-link-2__text">
@@ -95,83 +87,76 @@
             </div>
         </div>
     </div>
-                
-                <div class="uik-container-v__container">
-                    <div class="uik-top-bar__wrapper">
-                        <div class="uik-top-bar-section__wrapper">
-                        <?php $mystring = $_SERVER['REQUEST_URI'];
-                        $create = 'create';
-                        $edit = 'edit';
-                        $show = 'show';
-                        $home = 'home';
-                        $store = 'store';
-                        $destroy = 'destroy';
-                        $pos = strpos($mystring, $create); 
-                        $pos1 = strpos($mystring, $edit); 
-                        $pos2 = strpos($mystring, $show); 
-                        $pos3 = strpos($mystring, $home); 
-                        $pos4 = strpos($mystring, $store); 
-                        $pos5 = strpos($mystring, $destroy); 
-                        ?>
-                        
-                        @if($pos == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Ajout</h2></div>
-                        @elseif($pos1 == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Modification</h2></div>
-                        @elseif($pos2 == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détails</h2></div>
-                        @elseif($pos3 == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Dashboard</h2></div>
-                        @elseif($pos4 == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Ajout</h2></div>
-                        @elseif($pos5 == true)
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détail</h2></div>
-                        @endif
+    <div class="uik-container-v__container">
+        <div class="uik-top-bar__wrapper">
+            <div class="uik-top-bar-section__wrapper">
+            <?php $mystring = $_SERVER['REQUEST_URI'];
+            $create = 'create';
+            $edit = 'edit';
+            $show = 'show';
+            $home = 'home';
+            $store = 'store';
+            $destroy = 'destroy';
+            $pos = strpos($mystring, $create); 
+            $pos1 = strpos($mystring, $edit); 
+            $pos2 = strpos($mystring, $show); 
+            $pos3 = strpos($mystring, $home); 
+            $pos4 = strpos($mystring, $store); 
+            $pos5 = strpos($mystring, $destroy); 
+            ?>
+            
+            @if($pos == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Ajout</h2></div>
+            @elseif($pos1 == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Modification</h2></div>
+            @elseif($pos2 == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détails</h2></div>
+            @elseif($pos3 == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Dashboard</h2></div>
+            @elseif($pos4 == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Ajout</h2></div>
+            @elseif($pos5 == true)
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Détail</h2></div>
+            @endif
 
 
-                        @if($_SERVER['REQUEST_URI'] == '/admin/Product/index')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des produits</h2></div>
+            @if($_SERVER['REQUEST_URI'] == '/admin/Product/index')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des produits</h2></div>
 
-                        @elseif($_SERVER['REQUEST_URI'] == '/admin/Event/index')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des événements</h2></div>
+            @elseif($_SERVER['REQUEST_URI'] == '/admin/Event/index')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des événements</h2></div>
 
-                        @elseif($_SERVER['REQUEST_URI'] == '/admin/Customer/index')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des clients</h2></div>
+            @elseif($_SERVER['REQUEST_URI'] == '/admin/Customer/index')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des clients</h2></div>
 
-                        @elseif($_SERVER['REQUEST_URI'] == '/admin/User/index')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des utilisateurs</h2></div>
-                        
-                        @elseif($_SERVER['REQUEST_URI'] == '/admin/Couleur/index')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des tailles & couleurs</h2></div>
-                        @elseif($_SERVER['REQUEST_URI'] == '/')
-                            <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Home</h2></div>
-                        @endif
+            @elseif($_SERVER['REQUEST_URI'] == '/admin/User/index')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des utilisateurs</h2></div>
+            
+            @elseif($_SERVER['REQUEST_URI'] == '/admin/Couleur/index')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Gestion des tailles & couleurs</h2></div>
+            @elseif($_SERVER['REQUEST_URI'] == '/')
+                <h2 class="uik-top-bar-title__wrapper uik-top-bar-title__large">Home</h2></div>
+            @endif
 
-                        <!-- ~~~~~~~~________ TITRE POUR CHAQUE PAGE EN FONCTION DE L'URI ________~~~~~~~~ -->
-
-                        <div class="uik-top-bar-section__wrapper">
-                            <div class="uik-select__wrapper">
-
-                                 
-
-                                <!-- ~~~~~~~~________ BOUTON CHOIX DE LANGUE ________~~~~~~~~ -->
-                                <!--<button class="uik-btn__base uik-select__valueRendered" type="button">
-                                    <div class="uik-btn__content">
-                                        <div class="uik-select__valueRenderedWrapper">
-                                            <div class="uik-select__valueWrapper"><span><img alt="english" class="uik-analytics-header__selectFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAAAXNSR0IArs4c6QAAAfFJREFUKBVVkD9oE3EUgL/fXf41TWhS1MZa29pGBxEqrTqIo6BGW0Fs6CAO6qA4VKzo0hTUOii4SMHNoSjBgtDBRqNiEB0silbwD1WTiKZgorU5TWIuyd15OVz64D14j+/jPZ74cnZ0puPccCg6qzA++Y7k1zzKk8OkVvjQFIVN5TIrB6ZpbrRxaneAQ9IHqoG2mDRu3xGKHY+wz53h6cUeTh5cT0WtooKVmimGt3hIDK+hP/OAdN9Oxj76Q6Lv2D0jGFzF+dY0AZdG02AYw5Te+P1o+Ty9qoqYf4syn+RP/yBj117w/vMiovT4keGSdEqahG4augnWIxUOoxeLdE1NIft8CFlGVFTcLhuSLBCzYGgWurw4/reV5WOrk8wqFk8cNWo6lNUaht3EdR29VOJXNIpwOGgeGrJg4XRSF+rX6c4GxEDkmbGhw8/IkY14HsbxdHdidAZ5ZbNZJ25eWrLEQvw+OVXmaq6ddOoHUgMau7pt1C5foSgcjN78hF4oWDCGQaFU5dKN12it7fjtGtvuTuAqKYjUdNwI/M5wR2nh+ssKye9/Wbi9lznzIXJTE+syOdr23GJrz2rOHOgitLbG3MQktpaFVCzq7g1dSGTJ/SxjlyVkr5dGc6csBF6Pg0JZIvE8y7dsherp7eyPjMz8AyZFwToTjm94AAAAAElFTkSuQmCC"/>ENG</span></div>
-                                            <div class="uik-select__arrowWrapper"></div>
-                                        </div>
-                                    </div>
-                                </button>-->
+            <!-- ~~~~~~~~________ TITRE POUR CHAQUE PAGE EN FONCTION DE L'URI ________~~~~~~~~ -->
+            <div class="uik-top-bar-section__wrapper">
+                <div class="uik-select__wrapper">
+                    <!-- ~~~~~~~~________ BOUTON CHOIX DE LANGUE ________~~~~~~~~ -->
+                    <!--<button class="uik-btn__base uik-select__valueRendered" type="button">
+                        <div class="uik-btn__content">
+                            <div class="uik-select__valueRenderedWrapper">
+                                <div class="uik-select__valueWrapper"><span><img alt="english" class="uik-analytics-header__selectFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAAAXNSR0IArs4c6QAAAfFJREFUKBVVkD9oE3EUgL/fXf41TWhS1MZa29pGBxEqrTqIo6BGW0Fs6CAO6qA4VKzo0hTUOii4SMHNoSjBgtDBRqNiEB0silbwD1WTiKZgorU5TWIuyd15OVz64D14j+/jPZ74cnZ0puPccCg6qzA++Y7k1zzKk8OkVvjQFIVN5TIrB6ZpbrRxaneAQ9IHqoG2mDRu3xGKHY+wz53h6cUeTh5cT0WtooKVmimGt3hIDK+hP/OAdN9Oxj76Q6Lv2D0jGFzF+dY0AZdG02AYw5Te+P1o+Ty9qoqYf4syn+RP/yBj117w/vMiovT4keGSdEqahG4augnWIxUOoxeLdE1NIft8CFlGVFTcLhuSLBCzYGgWurw4/reV5WOrk8wqFk8cNWo6lNUaht3EdR29VOJXNIpwOGgeGrJg4XRSF+rX6c4GxEDkmbGhw8/IkY14HsbxdHdidAZ5ZbNZJ25eWrLEQvw+OVXmaq6ddOoHUgMau7pt1C5foSgcjN78hF4oWDCGQaFU5dKN12it7fjtGtvuTuAqKYjUdNwI/M5wR2nh+ssKye9/Wbi9lznzIXJTE+syOdr23GJrz2rOHOgitLbG3MQktpaFVCzq7g1dSGTJ/SxjlyVkr5dGc6csBF6Pg0JZIvE8y7dsherp7eyPjMz8AyZFwToTjm94AAAAAElFTkSuQmCC"/>ENG</span></div>
+                                <div class="uik-select__arrowWrapper"></div>
                             </div>
                         </div>
-                    </div>                                       
-                    @yield('content')
+                    </button>-->
+                </div>
+            </div>
+        </div>                                       
+        @yield('content')
                          
     <!-- Scripts -->
-    
     <script src="{{ asset('js/app.js') }}"></script>
-    
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     {{-- <script

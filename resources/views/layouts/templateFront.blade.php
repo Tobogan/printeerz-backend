@@ -2,7 +2,7 @@
 
 <?php //session_start();
 
-//$user_image = session('imageName');
+//$user_image = session('user_photo_url');
 ?>
 <head>
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />

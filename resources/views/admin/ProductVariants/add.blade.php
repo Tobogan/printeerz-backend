@@ -29,7 +29,6 @@
 
                 <!--~~~~~~~~~~~___________TAILLES__________~~~~~~~~~~~~-->
                     {{-- {!! Form::select('taille_id', $select_tailles, null, ['class' => 'form-control mb-1 mt-2', 'placeholder' => '********************* Choisissez la taille *********************']) !!}                   --}}
-
                     @foreach($tailles as $taille)
                         <div class="form-check form-check-inline mt-2 mb-2">
                             <input class="form-check-input" name="taille_id[]" type="checkbox" id="{{$taille->nom}}" value="{{$taille->id}}">

@@ -96,8 +96,8 @@
     <div class="" id="{{ $comment->id }}">
         <div class="row"> 
             <div class="col-3">
-            @if($comment->user->imageName)
-                <div><img src="/uploads/{{$comment->user->imageName}}" class="miniRoundedImage" alt="img_profile" >
+            @if($comment->user->user_photo_url)
+                <div><img src="/uploads/{{$comment->user->user_photo_url}}" class="miniRoundedImage" alt="img_profile" >
             @else
                 <div><img src="/uploads/no_image.jpg" class="miniRoundedImage" style="no-repeat center" alt="img_profile" >
             @endif

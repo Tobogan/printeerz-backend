@@ -29,8 +29,8 @@
 @foreach ($users as $user)
 
 <tr><td>{{ $user->id }}</td>
-@if($user->imageName)
-<td><img src="/uploads/{{$user->imageName}}" class="miniRoundedImage" alt="img_profile" ></td>
+@if($user->user_photo_url)
+<td><img src="/uploads/{{$user->user_photo_url}}" class="miniRoundedImage" alt="img_profile" ></td>
 @else
 <td><img src="/uploads/no_image.jpg" class="miniRoundedImage" alt="img_profile" ></td>
 @endif

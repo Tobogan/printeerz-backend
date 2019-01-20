@@ -63,10 +63,10 @@ class UserController extends Controller
         $user->role = $request->role;
 
         if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
+            $user_photo_url = time().'.'.request()->image->getClientOriginalExtension();           
+            request()->image->move(public_path('uploads'), $user_photo_url);
 
-            $user->imageName = $imageName;
+            $user->user_photo_url = $user_photo_url;
         }
         
         $user->save();
@@ -117,16 +117,16 @@ class UserController extends Controller
             ]);
             $id = $request->id;
             $user = User::find($id);
-            if(!is_null($user->imageName)){
-                Storage::delete('uploads' . $user->imageName);
+            if(!is_null($user->user_photo_url)){
+                Storage::delete('uploads' . $user->user_photo_url);
             }
 
             if($request->file('image')){
                 if ($request->file('image')->isValid()){
-                    $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-                    request()->image->move(public_path('uploads'), $imageName);
+                    $user_photo_url = time().'.'.request()->image->getClientOriginalExtension();           
+                    request()->image->move(public_path('uploads'), $user_photo_url);
     
-                    $user->imageName = $imageName;
+                    $user->user_photo_url = $user_photo_url;
                 }
             }
             
@@ -147,15 +147,15 @@ class UserController extends Controller
             $id = $request->id;
             $user = User::find($id);
 
-            if(!is_null($user->imageName)){
-                Storage::delete('uploads' . $user->imageName);
+            if(!is_null($user->user_photo_url)){
+                Storage::delete('uploads' . $user->user_photo_url);
             }
             if($request->file('image')){
                 if ($request->file('image')->isValid()){
-                    $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-                    request()->image->move(public_path('uploads'), $imageName);
+                    $user_photo_url = time().'.'.request()->image->getClientOriginalExtension();           
+                    request()->image->move(public_path('uploads'), $user_photo_url);
     
-                    $user->imageName = $imageName;
+                    $user->user_photo_url = $user_photo_url;
                 }
             }
 
@@ -166,8 +166,8 @@ class UserController extends Controller
             $user->role = $request->role;
             if ($request->hasFile('image')){// delete l'ancienne photo 
                 $image = $request->image;
-                $imageName = time().'.'.$image->getClientOriginalExtension();            
-                request()->image->move(public_path('uploads'), $imageName);
+                $user_photo_url = time().'.'.$image->getClientOriginalExtension();            
+                request()->image->move(public_path('uploads'), $user_photo_url);
                 $oldImageName = $user->image;
             }
         }
@@ -184,7 +184,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        Storage::delete('uploads' . $user->imageName);
+        Storage::delete('uploads' . $user->user_photo_url);
         $user->delete();
         return redirect('admin/User/index');
     }
@@ -192,7 +192,7 @@ class UserController extends Controller
     public function desactivate($id)
     {
         $user = User::find($id);
-        $user->activate = 0;
+        $user->is_activate = 0;
         $user->update();
         return redirect('admin/User/index');
     }
@@ -200,7 +200,7 @@ class UserController extends Controller
     public function activate($id)
     {
         $user = User::find($id);
-        $user->activate = 1;
+        $user->is_activate = 1;
         $user->update();
         return redirect('admin/User/index');
     }

@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->enum('role', ['opérateur', 'technicien', 'admin'])->default('opérateur');
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('activate')->default(1);
-            $table->string('imageName')->nullable();
+            $table->boolean('is_activate')->default(1);
+            $table->string('user_photo_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

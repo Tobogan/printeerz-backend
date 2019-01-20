@@ -20,9 +20,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@home')->name('home');
 
-Route::get('/', function () {
-    return view('home');
-});
+
+Route::get('/', 'HomeController@home')->name('welcome');
+
+// Route::get('/', function () {
+//     return view('home');
+// });
 
 /*~~~~~~~~~~~___________User Route__________~~~~~~~~~~~~*/
 

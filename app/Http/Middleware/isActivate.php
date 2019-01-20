@@ -17,7 +17,7 @@ class isActivate
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-            if(Auth::user()->activate != 1){
+            if(Auth::user()->is_activate != 1){
                 abort(404);
             }
         }
