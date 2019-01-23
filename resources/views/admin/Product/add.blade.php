@@ -54,7 +54,7 @@
             <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description concernant le produit."></textarea>
             <hr>
             <input type="hidden" name="is_active" id="is_active" value="true">
-            <input type="hidden" name="is_deleted" id="is_active" value="false">
+            <input type="hidden" name="is_deleted" id="is_deleted" value="false">
 
             <div>
             {!! Form::submit('Ajouter', ['class' => 'btn btn-primary btn-sm mb-2 mt-2', 'style' => 'float: right']) !!}       

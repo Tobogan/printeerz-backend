@@ -8,11 +8,12 @@
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
             </div>
             <div class="col-lg-9">
-                @if($event->logoName != NULL)
+                @if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img))
                 <br>
                     <div class="image_principale">
                         <img id="image_principale" width="100%" title="Logo évenement" src="/uploads/{{$event->logoName}}">
                     </div>
+                @elseif(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img))
                 @else
                 <br>
                     <div class="image_principale"><img id="image_principale" title="image par défaut" width="100%" src="/img/2000px-No_image_available_400_x_600.svg.png"></div>
@@ -28,7 +29,7 @@
         
         <h6 class="mt-2">Client: </h6>
 
-        @if($event->customer->title)
+        @if($event->customer)
             <div><small>{{ $event->customer->title}}</small></div>
         @else
             <div><i><small>Inconnu</small></i></div>

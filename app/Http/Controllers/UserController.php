@@ -114,22 +114,36 @@ class UserController extends Controller
     public function update(Request $request)
     {
         if (request('actual_email') == request('email')){
-            $validatedData = $request->validate([
-                'username' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'firstname' => 'required|string|max:255',
-                'SIREN' => 'string|max:14',
-                'password' => 'required|string|min:6|confirmed',
-                'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ]);
+            if($request->password) {
+                $validatedData = $request->validate([
+                    'username' => 'required|string|max:255',
+                    'lastname' => 'required|string|max:255',
+                    'firstname' => 'required|string|max:255',
+                    'SIREN' => 'string|max:14',
+                    'password' => 'string|min:6|confirmed',
+                    'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                ]);
+            }
+            else {
+                $validatedData = $request->validate([
+                    'username' => 'required|string|max:255',
+                    'lastname' => 'required|string|max:255',
+                    'firstname' => 'required|string|max:255',
+                    'SIREN' => 'string|max:14',
+
+                    'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                ]);
+            }
+            
             
             $id = $request->id;
             $user = User::find($id);
 
             /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
             if ($request->hasFile('profile_img')){
-                if(!is_null($user->profile_img)){
-                    unlink(public_path('uploads/'.$user->profile_img));
+                $file_path_profile_img = public_path('uploads/'.$user->profile_img);
+                if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
+                    unlink($file_path_profile_img);
                 }
                 $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
                 request()->profile_img->move(public_path('uploads'), $imageName);
@@ -140,30 +154,43 @@ class UserController extends Controller
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
-
-            $user->password = bcrypt($request->password);
+            if($request->password) {
+                $user->password = bcrypt($request->password);
+            }
             $user->role = $request->role;
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted; 
         }        
         else{
-            $validatedData = $request->validate([
-                'username' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'firstname' => 'required|string|max:255',
-                'SIREN' => 'string|max:14',
-                'email' => 'required|string|email|max:255|unique:employees',
-                'password' => 'required|string|min:6|confirmed',
-                'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ]);
+            if($request->password) {
+                $validatedData = $request->validate([
+                    'username' => 'required|string|max:255',
+                    'lastname' => 'required|string|max:255',
+                    'firstname' => 'required|string|max:255',
+                    'SIREN' => 'string|max:14',
+                    'password' => 'string|min:6|confirmed',
+                    'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                ]);
+            }
+            else {
+                $validatedData = $request->validate([
+                    'username' => 'required|string|max:255',
+                    'lastname' => 'required|string|max:255',
+                    'firstname' => 'required|string|max:255',
+                    'SIREN' => 'string|max:14',
+
+                    'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                ]);
+            }
     
             $id = $request->id;
             $user = User::find($id);
 
             /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
             if ($request->hasFile('profile_img')){
-                if(!is_null($user->profile_img)){
-                    unlink(public_path('uploads/'.$user->profile_img));
+                $file_path_profile_img = public_path('uploads/'.$user->profile_img);
+                if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
+                    unlink($file_path_profile_img);
                 }
                 $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
                 request()->profile_img->move(public_path('uploads'), $imageName);
@@ -194,8 +221,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if(!is_null($user->profile_img)){
-            unlink(public_path('uploads/'.$user->profile_img));
+        $file_path_profile_img = public_path('uploads/'.$user->profile_img);
+        if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
+            unlink($file_path_profile_img);
         }
         $user->delete();
         return redirect('admin/User/index');

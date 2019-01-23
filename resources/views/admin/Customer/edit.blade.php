@@ -103,7 +103,7 @@
             {!! Form::label('image', 'Ajouter une image/logo: ') !!}
             {!! Form::file('image', array('class' => 'form-control', 'id' => 'image')) !!}
             {!! Form::label('comments', 'Informations : ') !!}
-        <textarea class="form-control" value='{{$customer->comments}}' name="comments" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
+        <textarea class="form-control" name="comments" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client.">{{$customer->comments}}</textarea>
         </div>
 
         <hr>

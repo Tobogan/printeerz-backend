@@ -101,7 +101,7 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="user-avatar">
-                                    @if($user->profile_img)
+                                    @if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img))
                                     <div class="avatar avatar-sm">
                                         <img src="/uploads/{{$user->profile_img}}" class="avatar-img rounded-circle" alt="img_profile" >
                                     </div>
@@ -110,7 +110,7 @@
                                         <?php 
                                         $avatarLastName = $user->lastname; 
                                         $avatarFirstName = $user->firstname; 
-                                        $avatarInitials = $avatarLastName[0] . $avatarFirstName[0] ;
+                                        $avatarInitials = $avatarFirstName[0] . $avatarLastName[0] ;
                                         ?>
                                         <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
                                     </div>

@@ -17,71 +17,65 @@
         {{csrf_field()}}
         <!--~~~~~~~~~~~___________NOM__________~~~~~~~~~~~~-->
         <div class="form-group">
-                {!! Form::label('nom', 'Entrer le nom : ', ['class' => 'mt-2']) !!}
-                {!! Form::text('nom', $product->nom, ['class' => 'form-control']) !!}
+            {!! Form::text('title', $product->title, ['class' => 'form-control mt-2', 'id' => 'title','placeholder' => 'Nom du produit']) !!}
+            @if($product->gender =='male')
+            <div class="form-check">
+                <input id="gender" class="form-check-input" type="radio" name="gender" value="male" checked>
+                <label class="form-check-label" >
+                    Homme
+                </label>
             </div>
+            <div class="form-check">
+                <input id = "gender" class="form-check-input" type="radio" name="gender" value="female">
+                <label class="form-check-label">
+                    Femme
+                </label>
+            </div>
+            @else
+            <div class="form-check">
+                <input id="gender" class="form-check-input" type="radio" name="gender" value="male">
+                <label class="form-check-label" >
+                    Homme
+                </label>
+            </div>
+            <div class="form-check">
+                <input id = "gender" class="form-check-input" type="radio" name="gender" value="female" checked>
+                <label class="form-check-label">
+                    Femme
+                </label>
+            </div>
+            @endif
 
-            <!--~~~~~~~~~~~___________REFERENCE__________~~~~~~~~~~~~-->
-            <div class="form-group">
-                {!! Form::label('référence', 'Entrer la référence fournisseur : ') !!}
-                {!! Form::text('reference', $product->reference, ['class' => 'form-control']) !!}
-            </div>
-
-            <!--~~~~~~~~~~~___________SEXE__________~~~~~~~~~~~~-->
-            <div class="form-group">
-                {!! Form::label('sexe', 'Sélectionner le sexe : ') !!}
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sexe" value="Homme" checked>
-                    <label class="form-check-label" >
-                        Homme
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sexe" value="Femme">
-                    <label class="form-check-label">
-                        Femme
-                    </label>
-                </div>
-            </div>
-        
-            <!--~~~~~~~~~~~___________PHOTO PRINCIPALE__________~~~~~~~~~~~~-->
-            <div class="form-group mt-2">
-                {!! Form::label('image', 'Ajouter une photo de profil: ') !!}
-                {!! Form::file('image', array('class' => 'form-control')) !!}
-            </div>
-
-            <!--~~~~~~~~~~~___________TAILLES__________~~~~~~~~~~~~-->
-            <div class="form-group mt-2">
-                {!! Form::label('tailles_list[]', 'Sélectionner les tailles disponibles  : ') !!}
-                {!! Form::select('tailles_list[]', App\Taille::pluck('nom', 'id'), $product->tailles->pluck('id'), ['class' => 'form-control', 'multiple' => 'true']) !!} 
-            </div>
-
-            <!--~~~~~~~~~~~___________COULEURS__________~~~~~~~~~~~~-->
-            <div class="form-group mt-2">
-                {!! Form::label('couleurs_list[]', 'Sélectionner les couleurs disponibles  : ') !!}
-                {!! Form::select('couleurs_list[]', App\Couleur::pluck('nom', 'id'), $product->couleurs->pluck('id'), ['class' => 'form-control', 'multiple' => 'true']) !!} 
-            </div>
-
-            {!! Form::label('description', 'Description : ') !!}
-            <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description concernant le produit."></textarea>
+            {!! Form::text('vendor_name', $product->vendor['name'], ['class' => 'form-control', 'placeholder' => 'Marque du produit :']) !!}
+            {!! Form::text('vendor_reference', $product->vendor['reference'], ['class' => 'form-control', 'placeholder' => 'Référence produit :']) !!}
+            {!! Form::text('product_type', $product->product_type, ['class' => 'form-control mt-2', 'placeholder' => 'Type de produit :']) !!}
+            {!! Form::text('product_zone_title', $product->product_zones['title'], ['class' => 'form-control mt-2', 'placeholder' => 'Zone d\'impression :']) !!}
+            <!--mettre les printzones dans le select-->
+            {{--{!! Form::select('product_zone_printzone_id', null, null, ['class' => 'form-control', 'placeholder' => '***************************** Séléctionner la zone d\'impression *****************************']) !!}--}}
+            <!--mettre les tags ici-->
+            <!--mettre les variantes ici-->
+        </div>
     
-    <hr>
-        
-               
-        
-            
-            <!--~~~~~~~~~~~___________DESCRIPTION__________~~~~~~~~~~~~-->
-           
+        <!--~~~~~~~~~~~___________PHOTO PRINCIPALE__________~~~~~~~~~~~~-->
+        <div class="form-group mt-2">
+            {!! Form::label('image', 'Ajouter une photo d\'illustration: ') !!}
+            {!! Form::file('image', array('class' => 'form-control', 'id' => 'image')) !!}
+        </div>
+
+        <!--~~~~~~~~~~~___________DESCRIPTION__________~~~~~~~~~~~~-->
+        <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description concernant le produit.">{{$product->description}}</textarea>
+        <hr>
+        <input type="hidden" name="is_active" id="is_active" value="true">
+        <input type="hidden" name="is_deleted" id="is_deleted" value="false">
+        <input type="hidden" name="actual_title" id="actual_title" value="{{$product->title}}">
         <div>
-        
-        <input type="hidden" class="form-control" name="actual_nom" value= '{{ $product->nom }}'>
 
-        {!! Form::submit('Modifier', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
+    {!! Form::submit('Modifier', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
 
-        <a class='btn btn-secondary btn-sm' style="float: left" href="{{route('index_product')}}"> Retour </a>
+    <a class='btn btn-secondary btn-sm' style="float: left" href="{{route('index_product')}}"> Retour </a>
 
-        {!! Form::close() !!}
-    </div>
+    {!! Form::close() !!}
+</div>
 </div>
 
 </div>
@@ -94,70 +88,5 @@
     });
 </script>  --}}
 
-    <!--~~~~~~~~~~~___________SCRIPT ANIMATION INPUT IMAGE SELON ZONE SELECT__________~~~~~~~~~~~~-->
-<script>
-    
-/*$(document).ready(function(){
-    for(i=1; i<4; i++) {
-        $('.color' + i + '_FAV_image').fadeOut();
-        $('.color' + i + '_FAR_image').fadeOut();
-        $('.color' + i + '_coeur_image').fadeOut();
-    }
-    $('#checkbox_FAV_color1').change(function(){
-        if(this.checked)
-            $('.color1_FAV_image').fadeIn('slow');
-        else
-            $('.color1_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAV_color2').change(function(){
-        if(this.checked)
-            $('.color2_FAV_image').fadeIn('slow');
-        else
-            $('.color2_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAV_color3').change(function(){
-        if(this.checked)
-            $('.color3_FAV_image').fadeIn('slow');
-        else
-            $('.color3_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color1').change(function(){
-        if(this.checked)
-            $('.color1_FAR_image').fadeIn('slow');
-        else
-            $('.color1_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color2').change(function(){
-        if(this.checked)
-            $('.color2_FAR_image').fadeIn('slow');
-        else
-            $('.color2_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color3').change(function(){
-        if(this.checked)
-            $('.color3_FAR_image').fadeIn('slow');
-        else
-            $('.color3_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color1').change(function(){
-        if(this.checked)
-            $('.color1_coeur_image').fadeIn('slow');
-        else
-            $('.color1_coeur_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color2').change(function(){
-        if(this.checked)
-            $('.color2_coeur_image').fadeIn('slow');
-        else
-            $('.color2_coeur_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color3').change(function(){
-        if(this.checked)
-            $('.color3_coeur_image').fadeIn('slow');
-        else
-            $('.color3_coeur_image').fadeOut('slow');
-    });
-});*/
-</script>
 @endsection
 @endsection

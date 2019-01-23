@@ -128,7 +128,7 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_nom') == request('nom')){
+        if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'gender' => 'required|string|max:255',

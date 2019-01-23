@@ -8,7 +8,7 @@
             <div id="scrollbarProduct" class="col-lg-3 mt-3">
             </div>
         <div class="col-lg-9">
-            @if($product->image != NULL)
+            @if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image))
             <br>
                 <div class="image_principale">
                     <img  id="image_principale" width="100%" title="image principale" src="/uploads/{{$product->image}}" alt="Image produit">
@@ -45,7 +45,6 @@
                 @endif
             @endif
             <br>
-
             <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>

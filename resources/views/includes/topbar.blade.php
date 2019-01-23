@@ -15,11 +15,19 @@
                     aria-haspopup="true" aria-expanded="false">
                     <div class="col-auto">
                         <!-- Avatar -->
-                        @if(Auth::check())
                         <a class="avatar avatar-sm">
-                            <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
+                            @if(file_exists(public_path('uploads/'.Auth::user()->profile_img)) && !empty(Auth::user()->profile_img))
+                                <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
+                            @else
+                            <?php 
+                            $avatarLastName = Auth::user()->lastname; 
+                            $avatarFirstName = Auth::user()->firstname; 
+                            $avatarInitials = $avatarFirstName[0] . $avatarLastName[0] ;
+                            ?>
+                            <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
+                            @endif
                         </a>
-                        @endif
+
                     </div>
                     <div class="col ml--2">
                         <!-- Title -->
