@@ -224,36 +224,39 @@ class EventController extends Controller
 
             $event->save();
 
-    /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
+            /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
             if ($request->hasFile('logo_img')){
-                if(!is_null($event->logo_img)){
-                    unlink(public_path('uploads/'.$event->logo_img));
-                }
-                $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
-                request()->logo_img->move(public_path('uploads'), $logoName);
-
-                $event->logoName = $logoName;
-            } 
-
-            if ($request->hasFile('cover_img')){
-                if(!is_null($event->cover_img)){
-                    unlink(public_path('uploads/'.$event->cover_img));
-                }
-                $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
-                request()->cover_img->move(public_path('uploads'), $cover);
-
-                $event->cover_img = $cover;
+            $file_path_logo_img = public_path('uploads/'.$event->logo_img);
+            if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
+                unlink($file_path_logo_img);
             }
+            $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
+            request()->logo_img->move(public_path('uploads'), $logoName);
 
-            if ($request->hasFile('BAT')){
-                if(!is_null($event->BAT)){
-                    unlink(public_path('uploads/'.$event->BAT));
-                }
-                $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
-                request()->BAT->move(public_path('uploads'), $bat_file);
+            $event->logoName = $logoName;
+        } 
 
-                $event->BAT = $bat_file;
+        if ($request->hasFile('cover_img')){
+            $file_path_cover_img = public_path('uploads/'.$event->cover_img);
+            if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
+                unlink($file_path_cover_img);
             }
+            $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
+            request()->cover_img->move(public_path('uploads'), $cover);
+
+            $event->cover_img = $cover;
+        }
+
+        if ($request->hasFile('BAT')){
+            $file_path_BAT = public_path('uploads/'.$event->BAT);
+            if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
+                unlink($file_path_BAT);
+            }
+            $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
+            request()->BAT->move(public_path('uploads'), $bat_file);
+
+            $event->BAT = $bat_file;
+        }
 
             $event->save();
         }        
@@ -300,8 +303,9 @@ class EventController extends Controller
 
     /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
             if ($request->hasFile('logo_img')){
-                if(!is_null($event->logo_img)){
-                    unlink(public_path('uploads/'.$event->logo_img));
+                $file_path_logo_img = public_path('uploads/'.$event->logo_img);
+                if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
+                    unlink($file_path_logo_img);
                 }
                 $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
                 request()->logo_img->move(public_path('uploads'), $logoName);
@@ -310,8 +314,9 @@ class EventController extends Controller
             } 
 
             if ($request->hasFile('cover_img')){
-                if(!is_null($event->cover_img)){
-                    unlink(public_path('uploads/'.$event->cover_img));
+                $file_path_cover_img = public_path('uploads/'.$event->cover_img);
+                if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
+                    unlink($file_path_cover_img);
                 }
                 $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
                 request()->cover_img->move(public_path('uploads'), $cover);
@@ -320,8 +325,9 @@ class EventController extends Controller
             }
 
             if ($request->hasFile('BAT')){
-                if(!is_null($event->BAT)){
-                    unlink(public_path('uploads/'.$event->BAT));
+                $file_path_BAT = public_path('uploads/'.$event->BAT);
+                if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
+                    unlink($file_path_BAT);
                 }
                 $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
                 request()->BAT->move(public_path('uploads'), $bat_file);
@@ -343,11 +349,17 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::find($id);
-        if(!is_null($event->logo_img)){
-            unlink(public_path('uploads/'.$event->logo_img));
+        $file_path_logo_img = public_path('uploads/'.$event->logo_img);
+        if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
+            unlink($file_path_logo_img);
         }
-        if(!is_null($event->cover_img)){
-            unlink(public_path('uploads/'.$event->cover_img));
+        $file_path_cover_img = public_path('uploads/'.$event->cover_img);
+        if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
+            unlink($file_path_cover_img);
+        }
+        $file_path_BAT = public_path('uploads/'.$event->BAT);
+        if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
+            unlink($file_path_BAT);
         }
         $event->delete();
         return redirect('admin/Event/index');

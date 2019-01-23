@@ -38,7 +38,9 @@
 
             <h6 class="mt-2">Produit sélectionné: </h6>
         @if($event->event_products)
-            <div><small>{{ $event->product->title}}</small></div>
+            @foreach($event->event_products as $product)
+                <div><small>{{ $product->title}}</small></div>
+            @endforeach
         @else
             <div><small><i>Inconnu</i></small></div>
         @endif
@@ -55,8 +57,8 @@
             <div><small>{{ date('d-m-Y', strtotime($event->start_datetime)) }}</small></div>
             <div><small>{{ date('d-m-Y', strtotime($event->end_datetime)) }}</small></div>
 
-            @if($event->BAT_name != null)
-                <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT_name }}', '_blank', 'fullscreen=yes'); return false;"><i class="uikon">send_round</i> Voir le BAT</a>
+            @if($event->BAT != null)
+                <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT }}', '_blank', 'fullscreen=yes'); return false;"><i class="uikon">send_round</i> Voir le BAT</a>
             @else
                 <div><i>(Pas de BAT)</i></div>
             @endif

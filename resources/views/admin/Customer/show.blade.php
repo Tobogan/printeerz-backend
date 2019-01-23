@@ -1,15 +1,15 @@
 @extends('layouts/templateAdmin')
 
 @section('content')
-<!-- <div class="container mt-3">
+<div class="container mt-3">
 <div class="row">
     <div class="col-sm" style="width: 18rem;">
-    @if ($customer->logoName)
-        <img class="card-img-top right" src="/uploads/{{$customer->logoName}}" alt="logo_event">
+    @if ($customer->image)
+        <img class="card-img-top right" src="/uploads/{{$customer->image}}" alt="logo_event">
     @else
         <img src="/img/tee-shirt-blanc-gildan.jpg" class="card-img-top right" alt="img_default">
     @endif
-    </div> -->
+    </div>
     <div class="container">
     <div class="col-sm">
     <h2 class="mt-3">{{ '#'. $customer->id .' '.$customer->title }}</h2>
@@ -17,7 +17,8 @@
 
     <h5 class="mt-3">Adresse: </h5>
     <div>{{ $customer->location["address"] .' '. $customer->location["postal_code"] .' '. $customer->location["city"] }}</div>
-
+    <h5 class="mt-3">Longitude/Lattitude: </h5>
+    <div>{{ $customer->location["longitude"] .' '. $customer->location["lattitude"] }}</div>
     <h5 class="mt-3">SIREN: </h5>
     <div>{{ $customer->SIREN }}</div>
 

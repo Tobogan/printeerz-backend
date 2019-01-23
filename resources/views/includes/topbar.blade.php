@@ -15,25 +15,31 @@
                     aria-haspopup="true" aria-expanded="false">
                     <div class="col-auto">
                         <!-- Avatar -->
+                        @if(Auth::check())
                         <a class="avatar avatar-sm">
                             <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
                         </a>
+                        @endif
                     </div>
                     <div class="col ml--2">
                         <!-- Title -->
                         <h4 class="card-title mb-0">
+                                @if(Auth::check())
                             <a class="text-white">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</a>
+                                @endif
                         </h4>
                         <!-- Time -->
-                        <p class="card-text small text-light">
-                            @if(Auth::user()->role == 2)
-                            Administrateur
-                            @elseif(Auth::user()->role == 1)
-                            Opérateur
-                            @else
-                            Technicien
-                            @endif
-                        </p>
+                        @if(Auth::check())
+                            <p class="card-text small text-light">
+                                @if(Auth::user()->role == 2)
+                                Administrateur
+                                @elseif(Auth::user()->role == 1)
+                                Opérateur
+                                @else
+                                Technicien
+                                @endif
+                            </p>
+                        @endif
                     </div>
                     <div class="col-auto">
 

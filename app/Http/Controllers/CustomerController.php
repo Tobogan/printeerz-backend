@@ -172,8 +172,9 @@ class CustomerController extends Controller
 
         /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
         if ($request->hasFile('image')){
-            if(!is_null($customer->image)){
-                unlink(public_path('uploads/'.$customer->image));
+            $file_path = public_path('uploads/'.$customer->image);
+            if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
+                unlink($file_path);
             }
             $imageName = time().'.'.request()->image->getClientOriginalExtension();           
             request()->image->move(public_path('uploads'), $imageName);
@@ -217,11 +218,11 @@ class CustomerController extends Controller
         $customer->events=$shows_id;
         $customer->is_active = $request->is_active; //penser à mettre l'input hidden
         $customer->is_deleted = $request->is_deleted;
-
         /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
         if ($request->hasFile('image')){
-            if(!is_null($customer->image)){
-                unlink(public_path('uploads/'.$customer->image));
+            $file_path = public_path('uploads/').$customer->image;
+            if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
+                unlink($file_path);
             }
             $imageName = time().'.'.request()->image->getClientOriginalExtension();           
             request()->image->move(public_path('uploads'), $imageName);
@@ -241,8 +242,9 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find($id);
-        if(!is_null($customer->image)){
-            unlink(public_path('uploads/'.$customer->image));
+        $file_path = public_path('uploads/').$customer->image;
+        if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
+            unlink($file_path);
         }
         $customer->delete();
         return redirect('admin/Customer/index')->with('status', 'Le client a été correctement supprimé.');

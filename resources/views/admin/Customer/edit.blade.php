@@ -68,9 +68,9 @@
             </div>
             <div class="col-6 mb-2">
                 @if(isset($customer->contact_person['firstname']))
-                    {!! Form::text('lastname', $customer->contact_person['lastname'], ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
+                    {!! Form::text('firstname', $customer->contact_person['firstname'], ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
                 @else
-                    {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
+                    {!! Form::text('firstname', null, ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
                 @endif
             </div>
         </div>

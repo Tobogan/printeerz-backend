@@ -1,6 +1,7 @@
 <?php
 use App\ProductVariants;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Auth\Middleware\Authenticate;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,11 +18,11 @@ Route::view('/front/{path?}', 'app');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@home')->name('home');
+Route::get('/home', 'HomeController@home')->name('home')->middleware('auth');
 
 Route::get('/', function () {
     return view('home');
-});
+})->middleware('auth');
 
 /*~~~~~~~~~~~___________User Route__________~~~~~~~~~~~~*/
 

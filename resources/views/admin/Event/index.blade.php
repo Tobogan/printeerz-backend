@@ -105,7 +105,7 @@
                                 <td class="event-annonceur">{{ $event->advertiser }}</td>
 
                                 @if($event->customer)
-                                <td class="event-customer">{{ $event->customer_id['title'] }}</td>
+                                <td class="event-customer">{{ $event->customer->title }}</td>
                                 @else
                                 <td class="event-customer text-muted">___</td>
                                 @endif

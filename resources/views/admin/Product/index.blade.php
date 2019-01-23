@@ -35,8 +35,6 @@
                             <a href="{{action('ProductController@create')}}" class="btn btn-primary">
                                 Créer un produit
                             </a>
-                            <a href="{{action('CouleurController@index')}}" class="btn btn-default">Gestion des couleurs</a>
-
                         </div>
                 </div>
             </div>
@@ -81,25 +79,40 @@
                                 </th>
                                 <th colspan="2">
                                     <a href="#" class="text-muted" data-sort="product-sizes">
-                                        Tailles
+                                        Fournisseur
                                     </a>
                                 </th>
+                                <th colspan="2">
+                                        <a href="#" class="text-muted" data-sort="product-type">
+                                            Type de produit
+                                        </a>
+                                    </th>
                             </tr>
                         </thead>
                         <tbody class="list">
                             @foreach ($products as $product)
                             <tr>
-                                <td class="product-sku"><a href="{{route('show_product', $product->id)}}"><b>{{ $product->reference }}</b></a></td>
-                                <td class="product-name">{{ $product->nom }}</td>
-                                @if ($product->sexe == 'Homme')
+                                @if(isset($product->vendor["reference"]))
+                                    <td class="product-sku"><a href="{{route('show_product', $product->id)}}"><b>{{ $product->vendor["reference"] }}</b></a></td>
+                                @else
+                                    <td>...</td>
+                                @endif
+                                <td class="product-name">{{ $product->title }}</td>
+                                @if ($product->gender == 'male')
                                 <td class="product-sexe"> Homme </td>
                                 @else
                                 <td class="product-sexe"> Femme </td>
                                 @endif
-                                <?php $list_tailles = $product->tailles->pluck('nom')->toArray();?>
+                                <?php //$list_tailles = $product->tailles->pluck('nom')->toArray();?>
                                 <td class="product-sizes">
-                                    <?php echo implode(', ', $list_tailles); ?>
+                                    @if(isset($product->vendor["name"]))
+                                        <td class="product-vendor-name"> {{ $product->vendor["name"] }}</td>
+                                    @else
+                                        <td class="product-vendor-name">...</td>
+                                    @endif
+                                    <?php// echo implode(', ', $list_tailles); ?>
                                 </td>
+                                <td class="product-type">{{ $product->product_type }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
