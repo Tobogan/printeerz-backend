@@ -3,8 +3,14 @@
 @section('content')
 
 @if (session('status'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('status') }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+            </div>
+        </div>
+    </div>
 </div>
 @endif
 
