@@ -173,7 +173,7 @@ Route::get('front/{id}', 'FrontController@show')->name('show_front');
 /*~~~~~~~~~~~___________ProductsVariants Route__________~~~~~~~~~~~~*/
 Route::get('admin/ProductsVariants/index', 'ProductsVariantsController@index')->name('index_productsVariants');
 
-Route::get('admin/ProductsVariants/create/{id}', 'ProductsVariantsController@create')->name('create_productsVariants');
+Route::get('admin/ProductsVariants/create', 'ProductsVariantsController@create')->name('create_productsVariants');
 
 Route::post('admin/ProductsVariants/store', 'ProductsVariantsController@store')->name('store_productsVariants');
 

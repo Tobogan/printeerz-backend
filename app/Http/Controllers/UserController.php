@@ -130,7 +130,6 @@ class UserController extends Controller
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
                     'SIREN' => 'string|max:14',
-
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
             }
@@ -160,7 +159,8 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted; 
-        }        
+        }
+
         else{
             if($request->password) {
                 $validatedData = $request->validate([
@@ -178,7 +178,6 @@ class UserController extends Controller
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
                     'SIREN' => 'string|max:14',
-
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
             }
@@ -206,7 +205,6 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted; 
-
         }
         $user->save();
         return redirect('admin/User/index');

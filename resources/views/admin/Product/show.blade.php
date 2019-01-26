@@ -45,38 +45,64 @@
                 @endif
             @endif
             <br>
-            <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit"> <i class="uikon">edit</i> Modifier</a>
+            <a role="button" class='btn btn-success btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('edit_product', $product->id)}}" title="Modification du produit">Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_product', $product->id)}}" title="Suppression du produit">Supprimer</a>
+            <!--<a role="button" class='btn btn-primary btn-sm mt-2' href="{{route('create_productsVariants')}}" title="Ajouter une variante">Ajouter une variante</a>-->
+            <span class="input-group-btn"><button type="button" class="btn btn-success btn-sm ml-1 mt-1" data-toggle="modal" style="float:right" data-target="#exampleModal">Ajouter une variante</button></span>
+
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
             <hr>
         </div>
+
+        <!--~~~~~~~~~~~___________MODAL AJOUT DE COULEUR__________~~~~~~~~~~~~-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Nouvelle variante</h2>
+                        @if (session('status'))
+                            <div class="alert alert-success mt-1 mb-2">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            {!! Form::open(['id' => 'AddProductsVariants', 'files' => true]) !!}
+                    <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            {!! Form::label('name', 'Ajouter le nom de la variante: ') !!}
+                            {!! Form::text('name', null, array('class'=>'form-control mb-2', 'placeholder' => 'Nom :', 'id'=>'name', 'name'=>'name')) !!}
+                            {!! Form::label('color', 'Ajouter le couleur: ') !!}
+                            {!! Form::text('color', null, array('class'=>'form-control mb-2', 'placeholder' => 'Couleur :','id' => 'color', 'name' => 'color')) !!}
+                            {!! Form::label('size', 'Ajouter la taille: ') !!}
+                            {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' => 'Taille :','id' => 'size', 'name' => 'size')) !!}
+                            {!! Form::label('quantity', 'Ajouter la quantité: ') !!}
+                            {!! Form::text('quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'quantity', 'name' => 'quantity')) !!}
+                        </div>
+                       {{ Form::submit('Valider', array('name'=>'submit',  'class'=>'btn btn-primary btn-sm', 'id' => 'submit_modal', 'onclick' => "this.value='Ajoutée'")) }} 
+                        {{Form::close()}}
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close_modal" type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <br><hr>
-
 </div>
 
     @section('javascripts')
-    <script> var host = "{{URL::to('/')}}"; </script>
-
-    <script type="text/javascript">
-        $(document).ready(function(){
-        $('.your-class').slick();
-    });
-    </script>
-    <script>
-        $('.side_img').on('click', function(){
-            swap(this)
-        })
-    function swap(img) {
-        var tmp = img.src;
-        img.src = document.getElementById('image_principale').src;
-        document.getElementById('image_principale').src = tmp;
-
-        var tmp2 = img.title;
-        img.title = document.getElementById('image_principale').title;
-        document.getElementById('image_principale').title = tmp2;
-  }
-    </script>
+    <script type="text/Javascript">
+        $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var modal = $(this)
+        });</script>
+    <script> var host = "{{URL::to('/')}}";</script>
     @endsection
 
 @endsection

@@ -62,7 +62,7 @@
                     <table class="table table-sm table-nowrap card-table">
                         <thead>
                             <tr>
-                                <th colspan="1">
+                                <th>
                                     <a href="#" class="text-muted sort" data-sort="product-sku">
                                         Référence
                                     </a>
@@ -77,7 +77,7 @@
                                         Sexe
                                     </a>
                                 </th>
-                                <th colspan="2">
+                                <th colspan="1">
                                     <a href="#" class="text-muted" data-sort="product-sizes">
                                         Fournisseur
                                     </a>
@@ -103,15 +103,11 @@
                                 @else
                                 <td class="product-sexe"> Femme </td>
                                 @endif
-                                <?php //$list_tailles = $product->tailles->pluck('nom')->toArray();?>
-                                <td class="product-sizes">
-                                    @if(isset($product->vendor["name"]))
-                                        <td class="product-vendor-name"> {{ $product->vendor["name"] }}</td>
-                                    @else
-                                        <td class="product-vendor-name">...</td>
+                                @if(isset($product->vendor["name"]))
+                                    <td class="product-vendor-name">{{ $product->vendor["name"] }}</td>
+                                @else
+                                    <td class="product-vendor-name">...</td>
                                     @endif
-                                    <?php// echo implode(', ', $list_tailles); ?>
-                                </td>
                                 <td class="product-type">{{ $product->product_type }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">

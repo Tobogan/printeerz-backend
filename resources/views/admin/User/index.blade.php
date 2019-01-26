@@ -110,7 +110,7 @@
                                         <?php 
                                         $avatarLastName = $user->lastname; 
                                         $avatarFirstName = $user->firstname; 
-                                        $avatarInitials = $avatarFirstName[0] . $avatarLastName[0] ;
+                                        $avatarInitials = $avatarFirstName[0] . $avatarLastName[0];
                                         ?>
                                         <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
                                     </div>

@@ -16,6 +16,7 @@
     <script src="{{ asset('libs/list.js/dist/list.min.js') }}"></script>
     <script src="{{ asset('libs/dropzone/dist/min/dropzone.min.js') }}"></script>
     <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
+    <script>$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });</script>
 
     <!-- Theme JS -->
     <script src="{{ asset('js/theme.min.js') }}"></script>

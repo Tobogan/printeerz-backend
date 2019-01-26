@@ -162,8 +162,9 @@ class ProductController extends Controller
 
             /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
             if ($request->hasFile('image')){
-                if(!is_null($product->image)){
-                    unlink(public_path('uploads/'.$product->image));
+                $file_path_image = public_path('uploads/'.$product->image);
+                if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
+                    unlink($file_path_image);
                 }
                 $photo = time().'.'.request()->image->getClientOriginalExtension();
                 request()->image->move(public_path('uploads'), $photo);
@@ -208,8 +209,9 @@ class ProductController extends Controller
 
                 /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
                 if ($request->hasFile('image')){
-                    if(!is_null($product->image)){
-                        unlink(public_path('uploads/'.$product->image));
+                    $file_path_image = public_path('uploads/'.$product->image);
+                    if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
+                        unlink($file_path_image);
                     }
                     $photo = time().'.'.request()->image->getClientOriginalExtension();
                     request()->image->move(public_path('uploads'), $photo);
@@ -231,8 +233,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        if(!is_null($product->image)){
-            unlink(public_path('uploads/'.$product->image));
+        $file_path_image = public_path('uploads/'.$product->image);
+        if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
+            unlink($file_path_image);
         }
         $product->delete();
         return redirect('admin/Product/index')->with('status', 'Le produit a été correctement supprimé.');

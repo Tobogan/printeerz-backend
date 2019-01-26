@@ -14,7 +14,7 @@
 @endif
     <div class="row">
         <div class="col">
-            {!! Form::open(['action' => 'ProductVariantsController@store', 'files' => true]) !!}
+            {!! Form::open(['action' => 'ProductsVariantsController@store', 'files' => true]) !!}
                 {{csrf_field()}}
 
             <!--~~~~~~~~~~~___________ COLOR __________~~~~~~~~~~~~-->

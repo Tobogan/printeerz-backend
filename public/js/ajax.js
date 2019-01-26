@@ -76,7 +76,7 @@ today = mm + '/' + dd + '/' + yyyy;
 
     $('#AddColorAjax').on('submit', function(e) {
         e.preventDefault(); 
-        var lastname = $('#lastname').val();
+        var nom = $('#nom').val();
         var pantone = $('#pantone')[0].files[0];
         var select_couleurs = $('#select_couleurs').val();
         var formData = new FormData($(this)[0]);
@@ -88,10 +88,34 @@ today = mm + '/' + dd + '/' + yyyy;
             contentType: false,
             processData: false,
             success: function(data){
-                $('#select_color').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
-                $('#select_color2').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
-                $('#select_color3').append('<option value="' + data.couleur.id +'" >' + data.couleur.lastname + '</option>');
+                $('#select_color').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
+                $('#select_color2').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
+                $('#select_color3').append('<option value="' + data.couleur.id +'" >' + data.couleur.nom + '</option>');
                 console.log(data.couleur)
+            }
+        });
+    });
+
+    $('#AddProductsVariants').on('submit', function(e) {
+        e.preventDefault(); 
+        var name = $('#name').val();
+        var color = $('#color').val();
+        var size = $('#size').val();
+        var quantity = $('#quantity').val();
+        var product_id = $('#product_id').val();
+        var token = $('#_token').val();
+        $.ajax({
+            type: "POST",
+            url: '/admin/ProductsVariants/store',
+            data: {
+                name:name, 
+                color:color, 
+                size:size, 
+                quantity:quantity, 
+                product_id:product_id
+            },
+            success: function(data){
+                console.log(data);
             }
         });
     });

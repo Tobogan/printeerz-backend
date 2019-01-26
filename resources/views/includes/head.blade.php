@@ -30,5 +30,4 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}" />
-
 </head>
