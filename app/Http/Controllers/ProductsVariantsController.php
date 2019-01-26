@@ -72,7 +72,6 @@ class ProductsVariantsController extends Controller
             );
             $products_variants->is_active = $request->is_active; //penser à mettre l'input hidden
             $products_variants->is_deleted = $request->is_deleted;
-            $products_variants->save();
             
             if ($request->hasFile('image')){
                 $photo = time().'.'.request()->image->getClientOriginalExtension();

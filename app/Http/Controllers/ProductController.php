@@ -101,8 +101,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-
-        return view('admin/Product.show', ['product' => $product]);
+        $products_variants = Products_variants::all();
+        return view('admin/Product.show', ['product' => $product, 'products_variants' => $products_variants]);
     }
 
     /**

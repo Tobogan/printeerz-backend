@@ -112,10 +112,16 @@ today = mm + '/' + dd + '/' + yyyy;
                 color:color, 
                 size:size, 
                 quantity:quantity, 
-                product_id:product_id
+                product_id:product_id,
+                _token:token
             },
-            success: function(data){
-                console.log(data);
+            success: function(msg){
+                console.log(msg);
+                $('#name').val('');
+                $('#color').val('');
+                $('#size').val('');
+                $('#quantity').val('');
+                $('#product_id').val('');
             }
         });
     });

@@ -45,9 +45,7 @@
         @else
             <div><small><i>Inconnu</i></small></div>
         @endif
-
         
-
         <h6 class="mt-2">Lieu: </h6>
             <div><small>{{ $event->lieu }}</small></div>
 
@@ -59,7 +57,7 @@
             <div><small>{{ date('d-m-Y', strtotime($event->end_datetime)) }}</small></div>
 
             @if($event->BAT != null)
-                <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT }}', '_blank', 'fullscreen=yes'); return false;"><i class="uikon">send_round</i> Voir le BAT</a>
+                <a class='btn btn-light btn-sm mt-2' role="button" href="#" onclick="window.open('/uploads/{{ $event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
             @else
                 <div><i>(Pas de BAT)</i></div>
             @endif
@@ -72,13 +70,13 @@
                     <div><i>(logo par défault)</i></div>
                 @endif
             @endif
-                    
-            <br>
-            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventsProducts', $event->id)}}" title="Ajouter une variante du produit"><i class="uikon">add</i> Ajouter un produit</a>
 
-            <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_front', $event->id)}}"  title="Lancer l'event"><i class="uikon">send_round</i> Lancer</a>
-            <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_eventVariants', $event->id)}}"  title="Variantes"><i class="uikon">send_round</i> Variantes</a>
-            <a role="button" class='btn btn-success btn-sm mt-2' href="{{route('edit_event', $event->id)}}"  title="Modification du produit"><i class="uikon">edit</i> Modifier</a>
+            <br>
+            <a class='btn btn-primary btn-sm mt-2' href="{{route('create_eventsProducts', $event->id)}}" title="Ajouter une variante du produit">Ajouter un produit</a>
+
+            <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_front', $event->id)}}"  title="Lancer l'event">Lancer</a>
+            <a role="button" class='btn btn-warning btn-sm mt-2' href="{{route('show_eventVariants', $event->id)}}"  title="Variantes">Variantes</a>
+            <a role="button" class='btn btn-success btn-sm mt-2' href="{{route('edit_event', $event->id)}}"  title="Modification du produit">Modifier</a>
             <a role="button" class='btn btn-danger btn-sm mt-2' href="{{route('destroy_event', $event->id)}}" onclick="return confirm('Êtes-vous sûr?')" title="Suppression du produit">Supprimer</a>
             <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_event')}}"> Retour </a>
         </div> <!-- col lg-5 --->

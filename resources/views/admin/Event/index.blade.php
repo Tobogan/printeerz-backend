@@ -30,12 +30,10 @@
 
                         </div>
                         <div class="col-auto">
-
                             <!-- Button -->
                             <a href="{{action('EventController@create')}}" class="btn btn-primary">
                                 Créer un événement
                             </a>
-
                         </div>
                 </div>
             </div>
