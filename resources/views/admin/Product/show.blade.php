@@ -192,6 +192,8 @@
 
         <!--~~~~~~~~~~~___________MODAL AJOUT DE PRODUCTS_VARIANTS__________~~~~~~~~~~~~-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                {!! Form::open(['id' => 'AddProductsVariants', 'files' => true]) !!}
+
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -206,7 +208,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['id' => 'AddProductsVariants', 'files' => true]) !!}
+                    <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
                             <input type="hidden" name="is_active" id="is_active" value="true">
@@ -229,12 +232,13 @@
                             {!! Form::text('vendor_quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'vendor_quantity', 'name' => 'vendor_quantity')) !!}
                             <input type="hidden" id="_token" value="{{ csrf_token() }}">
                         </div>
-                        {{ Form::submit('Valider', array('class'=>'btn btn-primary btn-sm', 'id' => 'AddPV', 'onclick' => "this.value='Ajoutée'")) }} 
-                        {{Form::close()}}
                     </div>
                     <div class="modal-footer">
-                        <button id="close_modal" type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fermer</button>
+                        <button id="close_modal" type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+                        {{ Form::submit('Valider', array('class'=>'btn btn-primary btn-sm', 'id' => 'submit_modal', 'onclick' => "this.value='Ajoutée'")) }} 
+
                     </div>
+                    {{Form::close()}}
                 </div>
             </div>
         </div>

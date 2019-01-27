@@ -3,7 +3,7 @@
 @section('content')
 
 @if (session('status'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('status') }}
 </div>
 @endif

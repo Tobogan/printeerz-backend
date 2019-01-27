@@ -2,222 +2,214 @@
 
 @section('content')
 
-<div class="container mt-3">
-  @if ($errors->any())
-      <div class="alert alert-danger">
-          <ul>
-              @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-              @endforeach
-          </ul>
-      </div>
-  @endif
-      {!! Form::open(['action' => 'EventController@store', 'files' => true]) !!}
-          {{csrf_field()}}
-  
-          <div class="form-group">
-              {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom de l\'événement:']) !!}
-              {!! Form::text('advertiser', null, ['class' => 'form-control', 'placeholder' => 'Annonceur :']) !!}
-              {!! Form::select('customer_id', $select_customers, null, ['class' => 'form-control']) !!}
-              {!! Form::text('address', null, ['class' => 'form-control mt-2', 'placeholder' => 'Adresse :']) !!} 
-              {!! Form::text('postal_code', null, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal :']) !!}
-              {!! Form::text('city', null, ['class' => 'form-control mt-2', 'placeholder' => 'Ville :']) !!}
-              {!! Form::text('country', null, ['class' => 'form-control mt-2', 'placeholder' => 'Pays :']) !!}
-              {!! Form::text('longitude', null, ['class' => 'form-control mt-2', 'placeholder' => 'Longitude :']) !!}
-              {!! Form::text('lattitude', null, ['class' => 'form-control mt-2', 'placeholder' => 'Lattitude :']) !!}
-              {!! Form::date('start_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' => 'Date de départ :']) !!}
-              {!! Form::date('end_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' => 'Date de fin :']) !!}
-              {!! Form::text('type', null, ['class' => 'form-control', 'placeholder' => 'Type d\'événement :']) !!}
-              {!! Form::label('event_products_id[]', 'Sélectionner les produits : ') !!}
-              {!! Form::select('event_products_id[]', App\Product::pluck('title','_id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
-              {!! Form::label('employees[]', 'Sélectionner l\'équipe : ') !!}
-              {!! Form::select('employees[]', App\User::pluck('username','_id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!}
-              {!! Form::label('logo_img', 'Ajouter une image/logo : ') !!}
-              {!! Form::file('logo_img', array('class' => 'form-control mb-3', 'id' => 'logo_img')) !!}
-              {!! Form::label('cover_img', 'Ajouter une image de couverture : ') !!}
-              {!! Form::file('cover_img', array('class' => 'form-control mb-3', 'id' => 'cover_img')) !!}
-              {!! Form::label('BAT', 'Ajouter le BAT: ') !!}
-              {!! Form::file('BAT', array('class' => 'form-control mb-3', 'id' => 'BAT')) !!}
-              <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description de l'événement."></textarea>
+<div class="container mt-md-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="header-body">
+          <div class="row align-items-center">
+            <div class="col">
+
+              <!-- Pretitle -->
+              <h6 class="header-pretitle">
+                Nouvel événement
+              </h6>
+
+              <!-- Title -->
+              <h1 class="header-title">
+                Créer un événement
+              </h1>
+
+            </div>
+            <div class="col-auto">
+            </div>
           </div>
-  
-          {!! Form::submit('Ajouter', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
-  
-          <a class='btn btn-secondary btn-sm' style="float: left" href="{{route('index_event')}}"> Retour </a>
-  
-          {!! Form::close() !!}
-  
+        </div>
       </div>
+    </div>
   </div>
-  @endsection
+</div>
 
-{{--<div class="container-fluid">
-        <div class="row justify-content-center">
-          <div class="col-12 col-lg-10 col-xl-8">
-            
-            <!-- Header -->
-            <div class="header mt-md-5">
-              <div class="header-body">
-                <div class="row align-items-center">
-                  <div class="col">
-                    
-                    <!-- Pretitle -->
-                    <h6 class="header-pretitle">
-                      Nouvel événement
-                    </h6>
 
-                    <!-- Title -->
-                    <h1 class="header-title">
-                      Créer un événement
-                    </h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+      @endif
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          {!! Form::open(['action' => 'EventController@store', 'files' => true]) !!}
+          {{csrf_field()}}
+          <form>
 
-                  </div>
-                </div> <!-- / .row -->
-                <div class="row align-items-center">
-                    <div class="col">
-                        
-                        <!-- Nav -->
-                        <ul class="nav nav-tabs nav-overflow header-tabs">
-                        <li class="nav-item">
-                            <a href="#!" class="nav-link active">
-                            General
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#!" class="nav-link">
-                            Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#!" class="nav-link">
-                            Images
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#!" class="nav-link">
-                            Utilisateurs
-                            </a>
-                        </li>
-                        </ul>
+            <!-- Event name -->
+            <div class="form-group">
+              <label>
+                Nom de l'événement
+              </label>
+              {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom de l\'événement']) !!}
+            </div>
 
-                    </div>
-                    </div>
+            <!-- Customer -->
+            <div class="form-group">
+              <label class="mb-1">
+                Client
+              </label>
+              <small class="form-text text-muted">
+                Sélectionner le client. S'il n'existe pas, veuillez le créer dans la section Clients
+              </small>
+              {!! Form::select('customer_id', $select_customers, null, ['class' => 'form-control', 'data-toggle' =>
+              'select']) !!}
+            </div>
+
+            <!-- Advertiser -->
+            <div class="form-group">
+              <label class="mb-1">
+                Annonceur
+              </label>
+              <small class="form-text text-muted">
+                This is how others will learn about the project, so make it good!
+              </small>
+              {!! Form::text('advertiser', null, ['class' => 'form-control', 'placeholder' => 'Nom de l\'annonceur'])
+              !!}
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <!-- Date -->
+                <div class="form-group">
+                  <label>
+                    Date de début
+                  </label>
+                  {!! Form::date('start_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' =>
+                  'Début', 'data-toggle' => 'flatpickr']) !!}
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <!-- Lieu -->
+                <div class="form-group">
+                  <label>
+                    Date de fin
+                  </label>
+                  {!! Form::date('end_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' => 'Fin',
+                  'data-toggle' => 'flatpickr']) !!}
+                </div>
               </div>
             </div>
 
-            <!-- Form -->
-            {!! Form::open(['action' => 'EventController@store', 'files' => true, 'class' => 'mb-5']) !!}
-            {{csrf_field()}}
+            <!-- Lieu -->
+            <div class="form-group">
+              <label class="mb-1">
+                Lieu de l'événement
+              </label>
+              <small class="form-text text-muted">
+                Où se déroule l'événement?
+              </small>
+              {!! Form::text('address', null, ['class' => 'form-control mt-2', 'placeholder' => 'Renseigner l\'adresse']) !!}
+            </div>
 
-              <!-- Team name -->
-              <div class="form-group">
-                {!! Form::label('name', 'Nom de l\'événement: ') !!}
-                {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
-                {!! Form::label('adverstiser', 'Entrer l\'annonceur : ') !!}
-                {!! Form::text('advertiser', null, ['class' => 'form-control', 'placeholder' => 'Annonceur:']) !!}
-              </div>
+            <!-- Event type -->
+            <div class="form-group">
+              <label class="mb-1">
+                Type de l'événement
+              </label>
+              <small class="form-text text-muted">
+                De quel type est cet événement ?
+              </small>
+              {!! Form::text('type', null, ['class' => 'form-control', 'placeholder' => 'Type d\'événement']) !!}
 
-              <!-- Team description -->
-              <div class="form-group">
-                <label class="mb-1">
-                  Description de l'événement
-                </label>
-                <small class="form-text text-muted">
-                  This is how others will learn about the project, so make it good!
-                </small>
-                <div data-toggle="quill" data-quill-placeholder="Description"></div>
-              </div>
-
-                <!-- Project cover -->
-                <div class="form-group">
-                    <label class="mb-1">
-                        Ajouter le logo de l'événement
-                    </label>
-                    <small class="form-text text-muted">
-                        Please use an image no larger than 1200px * 600px. 
-                    </small>
-                    <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://">
-                        <div class="fallback">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="teamCoverUploads">
-                                <label class="custom-file-label" for="teamCoverUploads">Choose file</label>
-                            </div>
-                        </div>
-    
-                        <div class="dz-preview dz-preview-single">
-                            <div class="dz-preview-cover">
-                                <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              <!-- Divider -->
-              <hr class="mt-4 mb-5">
-
-              <!-- Team members -->
-              <div class="form-group">
-                <label>
-                    Sélectionner les utilisateurs autorisés
-                </label>
-                {!! Form::select('users_list[]', App\User::pluck('email','id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
-              </div>
+            </div>
 
 
+            <!-- Divider -->
+            <hr class="mt-4 mb-5">
 
-              <!-- Divider -->
-              <hr class="mt-5 mb-5">
+            <!-- Event logo -->
+            <div class="form-group">
+              <label class="mb-1">
+                Logo de l'événement
+              </label>
+              <small class="form-text text-muted">
+                Utilisez une image au format 1:1 avec une taille 400x400 maximum
+              </small>
+              <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
 
-              <div class="row">
-                <div class="col-12 col-md-6">
-                  
-                  <!-- Private team -->
-                  <div class="form-group">
-                    <label class="mb-1">
-                      Private team
-                    </label>
-                    <small class="form-text text-muted">
-                      If you are available for hire outside of the current situation, you can encourage others to hire you.
-                    </small>
-                    <div class="custom-control custom-checkbox-toggle">
-                      <input type="checkbox" class="custom-control-input" id="exampleToggle" checked>
-                      <label class="custom-control-label" for="exampleToggle"></label>
-                    </div>
+                <div class="fallback">
+                  <div class="custom-file">
+                    {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
+                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
                   </div>
-                  
                 </div>
-                <div class="col-12 col-md-6">
 
-                  <!-- Warning -->
-                  <div class="card bg-light border">
-                    <div class="card-body">
-                      
-                      <h4 class="mb-2">
-                        <i class="fe fe-alert-triangle"></i> Warning
-                      </h4>
-
-                      <p class="small text-muted mb-0">
-                        Once a team is made private, you cannot revert it to a public team.
-                      </p>
-
-                    </div>
+                <div class="dz-preview dz-preview-single">
+                  <div class="dz-preview-cover">
+                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
                   </div>
-                  
                 </div>
-              </div> <!-- / .row -->
 
-              <!-- Divider -->
-              <hr class="mt-5 mb-5">
+              </div>
+            </div>
 
-              <!-- Buttons -->
-              <a href="#" class="btn btn-block btn-primary">
-                Create team
-              </a>
-              <a href="#" class="btn btn-block btn-link text-muted">
-                Cancel this team
-              </a>
+            <!-- Event cover -->
+            <div class="form-group">
+              <label class="mb-1">
+                Cover de l'événement
+              </label>
+              <small class="form-text text-muted">
+                ...
+              </small>
+              <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://">
 
-              {!! Form::close() !!}
+                <div class="fallback">
+                  <div class="custom-file">
+                    {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img')) !!}
+                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
+                  </div>
+                </div>
 
-          </div>
-        </div> <!-- / .row -->
-      </div>--}}
+                <div class="dz-preview dz-preview-single">
+                  <div class="dz-preview-cover">
+                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Description de l'événement</label>
+              <div data-toggle="quill" data-quill-placeholder="Décrivez l'événement"></div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="mt-4 mb-5">
+
+            <!-- Buttons -->
+            {!! Form::submit('Créer l\'événement', ['class' => 'btn btn-block btn-primary']) !!}
+
+            <a href="{{route('index_event')}}" class="btn btn-block btn-link text-muted">
+              Annuler
+            </a>
+            {!! Form::close() !!}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection
