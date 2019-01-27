@@ -4,9 +4,20 @@
 <div id="tabs">
 
     @include('admin.Customer.includes.header')
-
+    <?php //dd($customer->shows_id())?> 
+    
     <!-- #OVERVIEW -->
 
+  {{--}}  @foreach($customer->shows_id as $row => $key)
+
+    @foreach($key as $event)
+        @foreach($events as $event_obj)
+            @if($event_obj->id == $event)
+                {{  $event_obj->name }}
+            @endif
+        @endforeach
+    @endforeach
+@endforeach--}}
 
     <!-- #INFORMATIONS -->
     <div class="container" id="informations">
@@ -24,6 +35,7 @@
                                 <!-- Title -->
                                 <h5 class="mb-0">
                                     Adresse
+                                    
                                 </h5>
 
                             </div>
@@ -31,6 +43,8 @@
 
                                 <time class="small text-muted">
                                     {{ $customer->location["address"] .' '. $customer->location["postal_code"] .' '. $customer->location["city"] }}
+                                    <?php //dd($customer->events_id ?>
+                                    
                                 </time>
 
                             </div>

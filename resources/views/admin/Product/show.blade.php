@@ -34,6 +34,7 @@
 
         <h6 class="mb-2">Référence fournisseur: <small>{{ $product->vendor["reference"] }}</small></h6>
 
+
         <h5 class="mt-2">Description: </h5>
 
         @if(strlen($product->description) != 0)
@@ -52,103 +53,142 @@
         <a class='btn btn-secondary btn-sm mt-2' href="{{route('index_product')}}"> Retour </a>
         <hr>
     </div>
-    <div id="customerTable" class="card mt-3" data-toggle="lists" data-lists-values='["products_variant-name", "products_variant-color", "products_variant-size", "products_variant-quantity", "products_variant-position", "products_variant-product-zone-title"]'>
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
+    
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+    
+                <!-- Header -->
+                <div class="header mt-md-5">
+                    <div class="header-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+    
+                                <!-- Pretitle -->
+                                <h6 class="header-pretitle">
+                                    Overview
+                                </h6>
+    
+                                <!-- Title -->
+                                <h1 class="header-title">
+                                    Variantes
+                                </h1>
+    
+                            </div>
 
-                <!-- Search -->
-                <form class="row align-items-center">
-                    <div class="col-auto pr-0">
-                        <span class="fe fe-search text-muted"></span>
                     </div>
-                    <div class="col">
-                        <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
+                </div>
+    
+                <!-- Card -->
+                <div id="products_variantsTable" class="card mt-3" data-toggle="lists" data-lists-values='["products_variant-image", "products_variant-color", "products_variant-size", "products_variant-quantity", "products_variant-position", "products_variant-product-zone-title"]'>
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+    
+                                <!-- Search -->
+                                <form class="row align-items-center">
+                                    <div class="col-auto pr-0">
+                                        <span class="fe fe-search text-muted"></span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
+                                    </div>
+                                </form>
+    
+                            </div>
+                        </div> <!-- / .row -->
                     </div>
-                </form>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-nowrap card-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="products_variant-color">
+                                            Couleur
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="products_variant-size">
+                                            Taille
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="products_variant-quantity">
+                                            Quantité
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="products_variant-position">
+                                            Position
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="products_variant-product_zone_title">
+                                            Zone d'impression
+                                        </a>
+                                    </th>
+                                    <th colspan="2">
+                                    <a href="#" class="text-muted sort" data-sort="products_variant-product_zone_title">
+                                        Status
+                                    </a>
+                                    </th>
+                                    <th colspan="2">
 
+                                    </th>
+                                </tr>
+                            </thead>
+    
+                            <tbody class="list">
+                                @foreach ($products_variants as $products_variant)
+                                    @if($products_variant->product_id == $product->id)
+                                        <tr>
+                                            <td class="products_variant-color">{{ $products_variant->color }}</td>
+                                            <td class="products_variant-size">{{ $products_variant->size }}</td>
+                                            <td class="products_variant-quantity">{{ $products_variant->quantity }}</td>
+                                            <td class="products_variant-position">{{ $products_variant->position }}</td>
+                                            @if(isset($products_variant->product_zones['title']))
+                                            <td class="products_variant-product_zone_title">{{ $products_variant->product_zones['title'] }}</td>
+                                            @else
+                                            <td>...</td>
+                                            @endif
+                                            @if ($products_variant->is_active == true)
+                                                <td class="products_variant-status"><span class="badge badge-soft-success">Activé</span></td>
+                                            @else
+                                                <td class="products_variant-status"><span class="badge badge-soft-secondary">Désactivé</span></td>
+                                            @endif
+                                            <td class="text-right">
+                                                <div class="dropdown">
+                                                    <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                        data-boundary="window">
+                                                        <i class="fe fe-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        @if ($products_variant->is_active == true)
+                                                        <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_productsVariants', $products_variant->id)}}"> Désactiver </a>
+                                                        @else
+                                                        <a class="dropdown-item" href="{{route('activate_productsVariants', $products_variant->id)}}">Activer</a>
+                                                        @endif
+                                                        <hr class="dropdown-divider">
+                                                        <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_productsVariants', $products_variant->id)}}"> Supprimer </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <ul class="pagination">
+                        </ul>
+                    </div>
+                </div>
+    
             </div>
         </div> <!-- / .row -->
     </div>
-    <div class="table-responsive">
-        <table class="table table-sm table-nowrap card-table">
-            <thead>
-                <tr>
-                    <th>
-                        <a href="#" class="text-muted sort" data-sort="products_variant-name">
-                            Nom
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" class="text-muted sort" data-sort="products_variant-color">
-                            Couleur
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" class="text-muted sort" data-sort="products_variant-size">
-                            Taille
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" class="text-muted sort" data-sort="products_variant-quantity">
-                            Quantité
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" class="text-muted sort" data-sort="products_variant-position">
-                            Position
-                        </a>
-                    </th>
-                    <th colspan="2">
-                        <a href="#" class="text-muted sort" data-sort="products_variant-product-zone-title">
-                            Zone d'impression
-                        </a>
-                    </th>
-                    <th colspan="2">
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody class="list">
-                    @foreach ($products_variants as $products_variant)
-                        @if($products_variant->product_id == $product->id)
-                            <tr>
-                                <td class="products_variant-name"><b>{{ $products_variant->name }}</b></td>
-                                <td class="products_variant-color"><b>{{ $products_variant->color }}</b></td>
-                                <td class="products_variant-size"><b>{{ $products_variant->size }}</b></td>
-                                <td class="products_variant-quantity"><b>{{ $products_variant->quantity }}</b></td>
-                                <td class="products_variant-position"><b>{{ $products_variant->position }}</b></td>
-                                @if(isset($products_variant->product_zones['title']))
-                                    <td class="products_variant-product-zone-title">{{ $products_variant->product_zones['title'] }}</td>
-                                @else
-                                    <td>...</td>
-                                @endif
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            data-boundary="window">
-                                            <i class="fe fe-more-vertical"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="{{route('destroy_productsVariants', $products_variant->_id)}}" class="dropdown-item">
-                                                Supprimer
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>        
-                            </tr>
-                        @endif
-                @endforeach
-            </tbody>
-        </table>
-
-    </div>
-    <div class="card-footer">
-        <ul class="pagination">
-        </ul>
-    </div>
-    
 
         <!--~~~~~~~~~~~___________MODAL AJOUT DE PRODUCTS_VARIANTS__________~~~~~~~~~~~~-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -166,20 +206,30 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                            {!! Form::open(['id' => 'AddProductsVariants', 'files' => true]) !!}
-                    <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
-                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        {!! Form::open(['id' => 'AddProductsVariants', 'files' => true]) !!}
                         <div class="form-group">
-                            {!! Form::label('name', 'Ajouter le nom de la variante: ') !!}
-                            {!! Form::text('name', null, array('class'=>'form-control mb-2', 'placeholder' => 'Nom :', 'id'=>'name', 'name'=>'name')) !!}
+                            <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
+                            <input type="hidden" name="is_active" id="is_active" value="true">
+                            <input type="hidden" name="is_deleted" id="is_deleted" value="false">
                             {!! Form::label('color', 'Ajouter le couleur: ') !!}
                             {!! Form::text('color', null, array('class'=>'form-control mb-2', 'placeholder' => 'Couleur :','id' => 'color', 'name' => 'color')) !!}
                             {!! Form::label('size', 'Ajouter la taille: ') !!}
                             {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' => 'Taille :','id' => 'size', 'name' => 'size')) !!}
                             {!! Form::label('quantity', 'Ajouter la quantité: ') !!}
                             {!! Form::text('quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'quantity', 'name' => 'quantity')) !!}
+                            {!! Form::label('position', 'Ajouter la position: ') !!}
+                            {!! Form::text('position', null, array('class'=>'form-control mb-2', 'placeholder' => 'Position :','id' => 'position', 'name' => 'position')) !!}
+                            {!! Form::label('product_zone_title', 'Ajouter le nom de la zone d\'impression: ') !!}
+                            {!! Form::text('product_zone_title', null, array('class'=>'form-control mb-2', 'placeholder' => 'Titre :','id' => 'product_zone_title', 'name' => 'product_zone_title')) !!}
+                            {!! Form::label('product_zone_image', 'Ajouter une image: ') !!}
+                            {!! Form::file('product_zone_image', array('class' => 'form-control mb-4', 'id' => 'product_zone_image')) !!}
+                            {!! Form::label('vendor_sku', 'Ajouter une Sku : ') !!}
+                            {!! Form::text('vendor_sku', null, array('class'=>'form-control mb-2', 'placeholder' => 'Sku :','id' => 'vendor_sku', 'name' => 'vendor_sku')) !!}
+                            {!! Form::label('vendor_quantity', 'Ajouter la quantité fournisseur : ') !!}
+                            {!! Form::text('vendor_quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'vendor_quantity', 'name' => 'vendor_quantity')) !!}
+                            <input type="hidden" id="_token" value="{{ csrf_token() }}">
                         </div>
-                        {{ Form::submit('Valider', array('class'=>'btn btn-primary btn-sm', 'id' => 'submit_modal', 'onclick' => "this.value='Ajoutée'")) }} 
+                        {{ Form::submit('Valider', array('class'=>'btn btn-primary btn-sm', 'id' => 'AddPV', 'onclick' => "this.value='Ajoutée'")) }} 
                         {{Form::close()}}
                     </div>
                     <div class="modal-footer">

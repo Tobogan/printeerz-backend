@@ -34,12 +34,7 @@
             <h6 class="mb-2">Couleurs disponibles: <small><?php echo implode(', ', $list_couleurs); ?></small></h6>
             
             <h6>Zones séléctionnées:</h6>
-            
-                <!--ICI gisait les couleurs zones et gabarits-->
 
-            <?php //$list_couleurs = $product->couleurs->pluck('nom')->toArray();?>
-
-            <div><?php //echo implode(', ', $list_couleurs); ?></div>
             
             <h5 class="mt-2">Description: </h5>
 

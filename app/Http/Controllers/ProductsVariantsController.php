@@ -44,7 +44,7 @@ class ProductsVariantsController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request) {
+        if ($request->ajax()) {
             $validatedData = $request->validate([
                 'name' => 'string|max:255',
                 'color' => 'string|max:255',
@@ -53,7 +53,6 @@ class ProductsVariantsController extends Controller
                 'position' => 'string|max:255',
                 'description' => 'max:750'
             ]);
-            
             $products_variants = new Products_variants;
             $products_variants->name = $request->name;
             $products_variants->vendor = array(
@@ -70,21 +69,21 @@ class ProductsVariantsController extends Controller
                 'title' => $request->product_zone_title,
                 'image' => $request->product_zone_image
             );
-            $products_variants->is_active = $request->is_active; //penser à mettre l'input hidden
+            $products_variants->is_active = $request->is_active;
             $products_variants->is_deleted = $request->is_deleted;
-            
-            if ($request->hasFile('image')){
-                $photo = time().'.'.request()->image->getClientOriginalExtension();
-                request()->image->move(public_path('uploads'), $photo);
-                $products_variants->image = $photo;
+            if ($request->hasFile('product_zone_image')){
+                $photo = time().'.'.request()->product_zone_image->getClientOriginalExtension();
+                request()->product_zone_image->move(public_path('uploads'), $photo);
+                $products_variants->product_zone_image = $photo;
             }
             $products_variants->save();
-
             $response = array(
                 'status' => 'success',
-                'msg' => 'Setting created successfully'
+                'msg' => 'Setting created successfully',
+                'products_variants' => $products_variants
             );
             return response()->json($response);
+            
         }
         else {
             return 'no';

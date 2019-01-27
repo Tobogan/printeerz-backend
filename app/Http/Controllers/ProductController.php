@@ -88,7 +88,8 @@ class ProductController extends Controller
 
         $product->save();
         // $product = Product::find($id);
-        return view('admin/Product.show',['product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
+        $products_variants = Products_variants::all();
+        return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
     }
     
 

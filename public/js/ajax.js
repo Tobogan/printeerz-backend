@@ -97,31 +97,39 @@ today = mm + '/' + dd + '/' + yyyy;
     });
 
     $('#AddProductsVariants').on('submit', function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
+        var product_id = $('#product_id').val();
         var name = $('#name').val();
         var color = $('#color').val();
         var size = $('#size').val();
         var quantity = $('#quantity').val();
-        var product_id = $('#product_id').val();
+        var position = $('#position').val();
+        var product_zone_title = $('#product_zone_title').val();
+        var vendor_sku = $('#vendor_sku').val();
+        var vendor_quantity = $('#vendor_quantity').val();
         var token = $('#_token').val();
+        var is_active = $('#is_active').val();
+        var is_deleted = $('#is_deleted').val();
+        var product_zone_image = $('#product_zone_image')[0].files[0];
+        var formData = new FormData($(this)[0]);
         $.ajax({
             type: "POST",
             url: '/admin/ProductsVariants/store',
-            data: {
-                name:name, 
-                color:color, 
-                size:size, 
-                quantity:quantity, 
-                product_id:product_id,
-                _token:token
-            },
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function(msg){
-                console.log(msg);
-                $('#name').val('');
-                $('#color').val('');
-                $('#size').val('');
-                $('#quantity').val('');
-                $('#product_id').val('');
+                name = $('#name').val('');
+                color = $('#color').val('');
+                size = $('#size').val('');
+                quantity = $('#quantity').val('');
+                position = $('#position').val('');
+                product_zone_title = $('#product_zone_title').val('');
+                vendor_sku = $('#vendor_sku').val('');
+                vendor_quality = $('#vendor_quantity').val('');
+                product_zone_image = $('#product_zone_image').val('');
+                console.log(msg.products_variants);
             }
         });
     });

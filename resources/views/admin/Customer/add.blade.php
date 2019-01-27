@@ -2,13 +2,11 @@
 
 @section('content')
 
-<<<<<<< HEAD
 
 <div class="container mt-3">
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
-=======
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
@@ -35,15 +33,15 @@
         @if ($errors->any())
         <div class="alert alert-danger" role="alert">
             <p>Certains champs sont obligatoires</p>
->>>>>>> features/update_customer_layout
             @foreach ($errors->all() as $error)
                 {{ $error }},
             @endforeach
-<<<<<<< HEAD
         </ul>
     </div>
-@endif
-    {!! Form::open(['action' => 'CustomerController@store', 'files' => true]) !!}
+    @endif
+    @endif
+
+   {{-- {!! Form::open(['action' => 'CustomerController@store', 'files' => true]) !!}
         {{csrf_field()}}
 
         <div class="form-group">
@@ -91,9 +89,8 @@
             {!! Form::file('image', array('class' => 'form-control', 'id' => 'image')) !!}
             {!! Form::label('comments', 'Informations : ') !!}
             <textarea class="form-control" name="comments" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
-=======
         </div>
-        @endif
+        @endif--}}
 
         {!! Form::open(['action' => array('CustomerController@store'), 'files' => true, 'class' => 'mb-4']) !!}
         <div class="row">
@@ -106,7 +103,7 @@
                     Nom du client
                     </label>
                     <!-- Input -->
-                    {!! Form::text('denomination', null, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
+                    {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Dénomination:']) !!}
 
                 </div>
             </div>
@@ -119,7 +116,7 @@
                     Adresse
                     </label>
                     <!-- Input -->
-                    {!! Form::text('adresse', null, ['class' => 'form-control', 'placeholder' => 'Adresse:']) !!}
+                    {!! Form::text('address', null, ['class' => 'form-control', 'placeholder' => 'Adresse :']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -130,7 +127,7 @@
                     Code postal
                     </label>
                     <!-- Input -->
-                    {!! Form::text('code_postal', null, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal:']) !!}
+                    {!! Form::text('postal_code', null, ['class' => 'form-control mt-2', 'placeholder' => 'Code postal :']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -141,7 +138,7 @@
                     Ville
                     </label>
                     <!-- Input -->
-                    {!! Form::text('ville', null, ['class' => 'form-control mt-2', 'placeholder' => 'Ville:']) !!}
+                    {!! Form::text('city', null, ['class' => 'form-control mt-2', 'placeholder' => 'Ville :']) !!}
                 </div>
             </div>
         </div>
@@ -155,7 +152,7 @@
                     Activité
                     </label>
                     <!-- Input -->
-                    {!! Form::text('activite', null, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
+                    {!! Form::text('activity_type', null, ['class' => 'form-control', 'placeholder' => 'Activité:']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -163,10 +160,10 @@
                 <div class="form-group">
                     <!-- Label -->
                     <label>
-                    SIREN
+                    SIREN/SIRET
                     </label>
                     <!-- Input -->
-                    {!! Form::text('siren', null, ['class' => 'form-control', 'placeholder' => 'SIREN:']) !!}
+                    {!! Form::text('SIREN', null, ['class' => 'form-control', 'placeholder' => 'SIREN/SIRET:']) !!}
                 </div>
             </div>
         </div>        
@@ -184,7 +181,7 @@
                     Nom
                     </label>
                     <!-- Input -->
-                    {!! Form::text('contact_nom', null, ['class' => 'form-control', 'placeholder' => 'Nom:']) !!}
+                    {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Nom :']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -195,7 +192,7 @@
                     Prénom
                     </label>
                     <!-- Input -->
-                    {!! Form::text('contact_prenom', null, ['class' => 'form-control', 'placeholder' => 'Prénom:']) !!}
+                    {!! Form::text('firstname', null, ['class' => 'form-control', 'placeholder' => 'Prénom :']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -206,7 +203,7 @@
                     Téléphone
                     </label>
                     <!-- Input -->
-                    {!! Form::text('contact_telephone', null, ['class' => 'form-control', 'placeholder' => 'Téléphone:']) !!}
+                    {!! Form::text('phone', null, ['class' => 'form-control', 'placeholder' => 'Téléphone :']) !!}
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -217,10 +214,22 @@
                     Poste
                     </label>
                     <!-- Input -->
-                    {!! Form::text('contact_poste', null, ['class' => 'form-control', 'placeholder' => 'Poste:']) !!}
+                    {!! Form::text('job_title', null, ['class' => 'form-control', 'placeholder' => 'Poste :']) !!}
                 </div>
             </div>
-        </div>    
+        </div>
+        <div class="col-12">
+            <!-- First name -->
+            <div class="form-group">
+                <!-- Label -->
+                <label>
+                Logo du client
+                </label>
+                <!-- Input -->
+                {!! Form::file('image', array('class' => 'form-control', 'id' => 'image')) !!}
+
+            </div>
+        </div>
         <hr class="mt-4 mb-5">
         <div class="row">
             <div class="col-12">
@@ -228,10 +237,10 @@
                 <div class="form-group">
                     <!-- Label -->
                     <label>
-                    Nombre d'événements déjà organisés
+                    Les événements déjà organisés pour ce client
                     </label>
                     <!-- Input -->
-                    {!! Form::number('nb_events', null, ['class' => 'form-control']) !!}
+                    {!! Form::select('shows_id[]', App\Event::pluck('name','_id'), null, ['class' => 'form-control', 'multiple' => 'true']) !!} 
                 </div>
             </div>
         </div>
@@ -244,7 +253,7 @@
                     Commentaires
                     </label>
                     <!-- Input -->
-                    <textarea class="form-control" name="informations" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
+                    <textarea class="form-control" name="comments" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici des informations concernant le client."></textarea>
                 </div>        
             </div>
         </div>
@@ -255,7 +264,6 @@
                         <a class='btn btn-secondary' style="float: left" href="{{route('index_customer')}}">Annuler</a> 
                 </div>
             </div>
->>>>>>> features/update_customer_layout
         </div>
         {!! Form::close() !!}
     </div>

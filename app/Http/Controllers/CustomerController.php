@@ -84,7 +84,7 @@ class CustomerController extends Controller
             'lattitude' => $request->lattitude
         );
         $shows_id[]=$request->get('shows_id');
-        $customer->events=$shows_id;
+        $customer->shows_id=$shows_id;
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
 
@@ -110,7 +110,8 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('admin/Customer.show', ['customer' => $customer]);
+        $events = Event::all();
+        return view('admin/Customer.show', ['events' => $events, 'customer' => $customer]);
     }
 
     /**

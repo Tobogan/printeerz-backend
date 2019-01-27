@@ -106,6 +106,11 @@ Route::post('admin/Event/update', 'EventController@update')->name('update_event'
 
 Route::get('admin/Event/destroy/{id}', 'EventController@destroy')->name('destroy_event');
 
+Route::get('admin/Event/activate/{id}', 'EventController@activate')->name('activate_event');
+
+Route::get('admin/Event/desactivate/{id}', 'EventController@desactivate')->name('desactivate_event');
+
+
 Route::get('admin/Event/show/comment', 'CommentController@addComment')->name('comment_event');
 
 
@@ -184,6 +189,11 @@ Route::get('admin/ProductsVariants/edit/{id}', 'ProductsVariantsController@edit'
 Route::post('admin/ProductsVariants/update', 'ProductsVariantsController@update')->name('update_productsVariants');
 
 Route::get('admin/ProductsVariants/destroy/{id}', 'ProductsVariantsController@destroy')->name('destroy_productsVariants');
+
+Route::get('admin/ProductsVariants/activate/{id}', 'ProductsVariantsController@activate')->name('activate_productsVariants');
+
+Route::get('admin/ProductsVariants/desactivate/{id}', 'ProductsVariantsController@desactivate')->name('desactivate_productsVariants');
+
 
 /*~~~~~~~~~~~___________Events Products Route__________~~~~~~~~~~~~*/
 Route::get('admin/EventProducts/index', 'EventProductsController@index')->name('index_eventProducts');

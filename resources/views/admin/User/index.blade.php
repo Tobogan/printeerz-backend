@@ -143,10 +143,10 @@
                                             <a href="{{route('edit_user', $user->id)}}" class="dropdown-item">
                                                 Modifier l'utilisateur
                                             </a>
-                                            @if ($user->activate == 1)
+                                            @if ($user->is_active == true)
                                             <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_user', $user->id)}}"> Désactiver </a>
                                             @else
-                                            <a class="dropdown-item" href="{{route('activate_user', $user->id)}}">Activer/Désactiver</a>
+                                            <a class="dropdown-item" href="{{route('activate_user', $user->id)}}">Activer</a>
                                             @endif
                                             <hr class="dropdown-divider">
                                             <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_user', $user->id)}}"> Supprimer </a>
