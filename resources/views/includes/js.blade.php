@@ -7,6 +7,7 @@
 <!-- Libs JS -->
 <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('libs/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('libs/chart.js/dist/Chart.min.js') }}"></script>
 <script src="{{ asset('libs/chart.js/Chart.extension.min.js') }}"></script>
