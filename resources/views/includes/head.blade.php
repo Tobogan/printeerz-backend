@@ -32,8 +32,18 @@
 
     <style>
         nav.navbar-dark{
-    background: #833ab4;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
-    background: linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);}
+            background: #833ab4;
+            background: -webkit-linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
+            background: linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
+        }
+        .event_product_colors{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .event_product_color{
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
