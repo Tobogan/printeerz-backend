@@ -83,8 +83,7 @@ class CustomerController extends Controller
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
         );
-        $shows_id[]=$request->get('shows_id');
-        $customer->shows_id=$shows_id;
+        $customer->events_id=$request->get('shows_id');
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
 
@@ -95,7 +94,6 @@ class CustomerController extends Controller
 
             $customer->image = $imageName;
         } 
-
         $customer->save();
 
         return redirect('admin/Customer/index')->with('status', 'Le client a été correctement ajouté.');

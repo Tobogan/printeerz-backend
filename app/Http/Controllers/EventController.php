@@ -112,21 +112,18 @@ class EventController extends Controller
         if ($request->hasFile('logo_img')){
             $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
             request()->logo_img->move(public_path('uploads'), $logoName);
-
             $event->logoName = $logoName;
         } 
 
         if ($request->hasFile('cover_img')){
             $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
             request()->cover_img->move(public_path('uploads'), $cover);
-
             $event->cover_img = $cover;
         } 
 
         if ($request->hasFile('BAT')){
             $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
             request()->BAT->move(public_path('uploads'), $bat_file);
-
             $event->BAT = $bat_file;
         } 
 
@@ -260,7 +257,7 @@ class EventController extends Controller
 
             $event->save();
         }        
-        else{
+        else {
             $validatedData = $request->validate([
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
@@ -334,7 +331,6 @@ class EventController extends Controller
 
                 $event->BAT = $bat_file;
             }
-
             $event->save();
         }
         return redirect('admin/Event/index');

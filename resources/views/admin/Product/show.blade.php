@@ -129,7 +129,7 @@
                                     </th>
                                     <th colspan="2">
                                     <a href="#" class="text-muted sort" data-sort="products_variant-product_zone_title">
-                                        Status
+                                        Statuts
                                     </a>
                                     </th>
                                     <th colspan="2">
@@ -147,9 +147,9 @@
                                             <td class="products_variant-quantity">{{ $products_variant->quantity }}</td>
                                             <td class="products_variant-position">{{ $products_variant->position }}</td>
                                             @if(isset($products_variant->product_zones['title']))
-                                            <td class="products_variant-product_zone_title">{{ $products_variant->product_zones['title'] }}</td>
+                                                <td class="products_variant-product_zones_title">{{ $products_variant->product_zones['title'] }}</td>
                                             @else
-                                            <td>...</td>
+                                                <td>...</td>
                                             @endif
                                             @if ($products_variant->is_active == true)
                                                 <td class="products_variant-status"><span class="badge badge-soft-success">Activé</span></td>
@@ -158,16 +158,16 @@
                                             @endif
                                             <td class="text-right">
                                                 <div class="dropdown">
-                                                    <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
+                                                    <a href="!" class="dropdown-ellipses dropdown-toggle" role="button"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                         data-boundary="window">
                                                         <i class="fe fe-more-vertical"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         @if ($products_variant->is_active == true)
-                                                        <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_productsVariants', $products_variant->id)}}"> Désactiver </a>
+                                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_productsVariants', $products_variant->id)}}"> Désactiver </a>
                                                         @else
-                                                        <a class="dropdown-item" href="{{route('activate_productsVariants', $products_variant->id)}}">Activer</a>
+                                                            <a class="dropdown-item" href="{{route('activate_productsVariants', $products_variant->id)}}">Activer</a>
                                                         @endif
                                                         <hr class="dropdown-divider">
                                                         <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_productsVariants', $products_variant->id)}}"> Supprimer </a>
@@ -252,7 +252,7 @@
         var button = $(event.relatedTarget)
         var modal = $(this)
         });</script>
-    <script> var host = "{{URL::to('/')}}";</script>
+    {{--<script> var host = "{{URL::to('/')}}";</script>--}}
     @endsection
 
 @endsection

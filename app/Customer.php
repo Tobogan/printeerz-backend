@@ -12,11 +12,11 @@ class Customer extends Eloquent
     protected $connection = 'mongodb';
     protected $collection = 'customers';
     protected $fillable = [
-        'id', 'title', 'activity_type', 'SIREN', 'location[]', 'contact_person[]', 'shows_id[]', 'image', 'comments', 'is_active', 'is_deleted', 'created_at', 'updated_at'
+        'id', 'title', 'activity_type', 'SIREN', 'location[]', 'contact_person[]', 'events_id[]', 'image', 'comments', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
     public function events() {
-        return $this->HasMany('App\Event');
+        return $this->hasMany('App\Event');
     }
 
     /*public function getEventsListAttribute(){

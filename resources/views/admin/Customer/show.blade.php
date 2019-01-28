@@ -7,17 +7,16 @@
     <?php //dd($customer->shows_id())?> 
     
     <!-- #OVERVIEW -->
-
-  {{--}}  @foreach($customer->shows_id as $row => $key)
-
-    @foreach($key as $event)
-        @foreach($events as $event_obj)
-            @if($event_obj->id == $event)
-                {{  $event_obj->name }}
-            @endif
+    @if($customer->events_id)
+        @foreach($events as $event)
+            @foreach($customer->events_id as $event_id)
+                @if($event->id == $event_id)
+                   <ul>
+                       <li>{{ $event->name }}</li></ul> 
+                @endif
+            @endforeach
         @endforeach
-    @endforeach
-@endforeach--}}
+    @endif
 
     <!-- #INFORMATIONS -->
     <div class="container" id="informations">
@@ -35,7 +34,6 @@
                                 <!-- Title -->
                                 <h5 class="mb-0">
                                     Adresse
-                                    
                                 </h5>
 
                             </div>
@@ -44,7 +42,9 @@
                                 <time class="small text-muted">
                                     {{ $customer->location["address"] .' '. $customer->location["postal_code"] .' '. $customer->location["city"] }}
                                     <?php //dd($customer->events_id ?>
-                                    
+                                    @foreach($customer->events as $event)
+                                        {{ $event->name }}
+                                    @endforeach
                                 </time>
 
                             </div>

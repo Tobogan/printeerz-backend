@@ -7,6 +7,8 @@ use App\Product;
 use App\Products_variants;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse; 
 
 class ProductsVariantsController extends Controller
 {
@@ -37,14 +39,14 @@ class ProductsVariantsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request) {
             $validatedData = $request->validate([
                 'name' => 'string|max:255',
                 'color' => 'string|max:255',
@@ -83,7 +85,6 @@ class ProductsVariantsController extends Controller
                 'products_variants' => $products_variants
             );
             return response()->json($response);
-            
         }
         else {
             return 'no';

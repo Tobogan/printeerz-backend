@@ -23,7 +23,6 @@
 
     {{-- <script type="text/javascript" src="{{ asset('slick/slick.min.js') }}"></script> --}}
     {{-- <script type="text/javascript" src="{{ asset('js/form.js') }}"></script> --}}
-    <script type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/js.js') }}"></script>
     {{-- <script type="text/javascript" src="{{ asset('js/App.js') }}"></script> --}}
 
