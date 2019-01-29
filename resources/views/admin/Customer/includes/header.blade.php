@@ -9,8 +9,14 @@
     
                         <!-- Avatar -->
                         <div class="avatar avatar-xl header-avatar-top">
-                            <img src="https://scontent-cdt1-1.xx.fbcdn.net/v/t1.0-1/p480x480/15181490_10155611927283298_8861825542125359600_n.jpg?_nc_cat=1&_nc_ht=scontent-cdt1-1.xx&oh=d82689e732ea86575deef69b4cb4b1e2&oe=5C8EAF81"
-                                alt="..." class="avatar-img rounded-circle border border-4 border-body">
+                            @if($customer->image)
+                                <img src="{{ $customer->image }}" alt="" class="avatar-img rounded-circle border border-4 border-body">
+                            @else
+                                <?php 
+                                    $customerInitials = $customer->title[0];
+                                ?>
+                                <span class="avatar-title rounded text-uppercase">{{ $customerInitials }}</span>
+                            @endif
                         </div>
     
                     </div>
