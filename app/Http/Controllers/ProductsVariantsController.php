@@ -66,18 +66,36 @@ class ProductsVariantsController extends Controller
             $products_variants->size = $request->size;
             $products_variants->quantity = $request->quantity;
             $products_variants->position = $request->position;
-            $products_variants->product_zones = array(
-                'id' => $request->product_zone_id,
-                'title' => $request->product_zone_title,
-                'image' => $request->product_zone_image
-            );
+            
             $products_variants->is_active = $request->is_active;
             $products_variants->is_deleted = $request->is_deleted;
-            if ($request->hasFile('product_zone_image')){
-                $photo = time().'.'.request()->product_zone_image->getClientOriginalExtension();
-                request()->product_zone_image->move(public_path('uploads'), $photo);
-                $products_variants->product_zone_image = $photo;
+            if ($request->hasFile('product_zone_image1')) {
+                $photo1 = time().'1.'.request()->product_zone_image1->getClientOriginalExtension();
+                request()->product_zone_image1->move(public_path('uploads'), $photo1);
             }
+            if ($request->hasFile('product_zone_image2')) {
+                $photo2 = time().'2.'.request()->product_zone_image2->getClientOriginalExtension();
+                request()->product_zone_image2->move(public_path('uploads'), $photo2);
+            }
+            if ($request->hasFile('product_zone_image3')) {
+                $photo3 = time().'3.'.request()->product_zone_image3->getClientOriginalExtension();
+                request()->product_zone_image3->move(public_path('uploads'), $photo3);
+            }
+            $products_variants->product_zones1 = array(
+                'id' => $request->product_zone_id1,
+                'title' => $request->product_zone_title1,
+                'image' => $photo1
+            );
+            $products_variants->product_zones2 = array(
+                'id' => $request->product_zone_id2,
+                'title' => $request->product_zone_title2,
+                'image' => $photo2
+            );
+            $products_variants->product_zones3 = array(
+                'id' => $request->product_zone_id3,
+                'title' => $request->product_zone_title3,
+                'image' => $photo3
+            );
             $products_variants->save();
             $response = array(
                 'status' => 'success',
@@ -226,7 +244,9 @@ class ProductsVariantsController extends Controller
             unlink($file_path_image);
         }
         $products_variants->delete();
-        return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement supprimé.');
+        $product = Product::find($products_variants->product_id);
+        $products_variants = Products_variants::all();
+        return view('admin/Product.show', ['product' => $product, 'products_variants' => $products_variants])->with('status', 'Le variante a été correctement supprimé.');
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a products_variants function in index products_variants__________~~~~~~~~~~~~-*/

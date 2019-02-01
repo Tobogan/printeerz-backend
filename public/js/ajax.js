@@ -98,7 +98,9 @@ today = mm + '/' + dd + '/' + yyyy;
 
     $('#AddProductsVariants').on('submit', function(e) {
         e.preventDefault();
-        var product_zone_image = $('#product_zone_image')[0].files[0];
+        var product_zone_image1 = $('#product_zone_image1')[0].files[0];
+        var product_zone_image2 = $('#product_zone_image2')[0].files[0];
+        var product_zone_image3 = $('#product_zone_image3')[0].files[0];
         var formData = new FormData($(this)[0]);
         $.ajax({
             type: "POST",
@@ -113,10 +115,14 @@ today = mm + '/' + dd + '/' + yyyy;
                 size = $('#size').val('');
                 quantity = $('#quantity').val('');
                 position = $('#position').val('');
-                product_zone_title = $('#product_zone_title').val('');
+                product_zone_title1 = $('#product_zone_title1').val('');
+                product_zone_title2 = $('#product_zone_title2').val('');
+                product_zone_title3 = $('#product_zone_title3').val('');
                 vendor_sku = $('#vendor_sku').val('');
                 vendor_quality = $('#vendor_quantity').val('');
-                product_zone_image = $('#product_zone_image').val('');
+                product_zone_image1 = $('#product_zone_image1').val('');
+                product_zone_image2 = $('#product_zone_image2').val('');
+                product_zone_image3 = $('#product_zone_image3').val('');
                 console.log(msg.products_variants);
             }
         });

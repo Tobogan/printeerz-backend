@@ -220,12 +220,17 @@
                             {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' => 'Taille :','id' => 'size', 'name' => 'size')) !!}
                             {!! Form::label('quantity', 'Ajouter la quantité: ') !!}
                             {!! Form::text('quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'quantity', 'name' => 'quantity')) !!}
+                            {{--
                             {!! Form::label('position', 'Ajouter la position: ') !!}
                             {!! Form::text('position', null, array('class'=>'form-control mb-2', 'placeholder' => 'Position :','id' => 'position', 'name' => 'position')) !!}
-                            {!! Form::label('product_zone_title', 'Ajouter le nom de la zone d\'impression: ') !!}
-                            {!! Form::text('product_zone_title', null, array('class'=>'form-control mb-2', 'placeholder' => 'Titre :','id' => 'product_zone_title', 'name' => 'product_zone_title')) !!}
-                            {!! Form::label('product_zone_image', 'Ajouter une image: ') !!}
-                            {!! Form::file('product_zone_image', array('class' => 'form-control mb-4', 'id' => 'product_zone_image')) !!}
+                            --}}
+                            {!! Form::label('product_zones', 'Ajouter le ou les nom(s) de(s) zone(s) d\'impression et les images associées: ') !!}
+                            {!! Form::text('product_zone_title1', null, array('class'=>'form-control mb-2', 'placeholder' => 'Zone 1 :','id' => 'product_zone_title1', 'name' => 'product_zone_title1')) !!}
+                            {!! Form::file('product_zone_image1', array('class' => 'form-control mb-3', 'id' => 'product_zone_image1')) !!}
+                            {!! Form::text('product_zone_title2', null, array('class'=>'form-control mb-2', 'placeholder' => 'Zone 2 :','id' => 'product_zone_title2', 'name' => 'product_zone_title2')) !!}
+                            {!! Form::file('product_zone_image2', array('class' => 'form-control mb-3', 'id' => 'product_zone_image2')) !!}
+                            {!! Form::text('product_zone_title3', null, array('class'=>'form-control mb-2', 'placeholder' => 'Zone 3 :','id' => 'product_zone_title3', 'name' => 'product_zone_title3')) !!}
+                            {!! Form::file('product_zone_image3', array('class' => 'form-control mb-3', 'id' => 'product_zone_image3')) !!}
                             {!! Form::label('vendor_sku', 'Ajouter une Sku : ') !!}
                             {!! Form::text('vendor_sku', null, array('class'=>'form-control mb-2', 'placeholder' => 'Sku :','id' => 'vendor_sku', 'name' => 'vendor_sku')) !!}
                             {!! Form::label('vendor_quantity', 'Ajouter la quantité fournisseur : ') !!}

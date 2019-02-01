@@ -62,6 +62,7 @@ class UserController extends Controller
         $user->firstname = $request->firstname;
         $user->username = $request->username;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
         $user->is_active = $request->is_active; // penser à mettre l'input hidden
@@ -71,7 +72,6 @@ class UserController extends Controller
         if ($request->hasFile('profile_img')){
             $profile_img = time().'.'.request()->profile_img->getClientOriginalExtension();
             request()->profile_img->move(public_path('uploads'), $profile_img);
-
             $user->profile_img = $profile_img;
         }
         
@@ -114,12 +114,11 @@ class UserController extends Controller
     public function update(Request $request)
     {
         if (request('actual_email') == request('email')){
-            if($request->password) {
+            if($request->password != null) {
                 $validatedData = $request->validate([
                     'username' => 'required|string|max:255',
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
-                    'SIREN' => 'string|max:14',
                     'password' => 'string|min:6|confirmed',
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
@@ -129,14 +128,13 @@ class UserController extends Controller
                     'username' => 'required|string|max:255',
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
-                    'SIREN' => 'string|max:14',
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
             }
             
             
-            $id = $request->id;
-            $user = User::find($id);
+            $user_id = $request->user_id;
+            $user = User::find($user_id);
 
             /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
             if ($request->hasFile('profile_img')){
@@ -157,17 +155,16 @@ class UserController extends Controller
                 $user->password = bcrypt($request->password);
             }
             $user->role = $request->role;
+            $user->phone = $request->phone;
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted; 
         }
-
         else{
-            if($request->password) {
+            if($request->password != null) {
                 $validatedData = $request->validate([
                     'username' => 'required|string|max:255',
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
-                    'SIREN' => 'string|max:14',
                     'password' => 'string|min:6|confirmed',
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
@@ -177,7 +174,6 @@ class UserController extends Controller
                     'username' => 'required|string|max:255',
                     'lastname' => 'required|string|max:255',
                     'firstname' => 'required|string|max:255',
-                    'SIREN' => 'string|max:14',
                     'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
             }
@@ -201,6 +197,7 @@ class UserController extends Controller
             $user->firstname = $request->firstname;
             $user->username = $request->username;
             $user->email = $request->email;
+            $user->phone = $request->phone;
             $user->password = bcrypt($request->password);
             $user->role = $request->role;
             $user->is_active = $request->is_active;
