@@ -21,10 +21,10 @@
                                     </a>
                                     <!-- Menu -->
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item sort" data-sort="name" href="#!">
+                                        <a class="dropdown-item sort" data-sort="name" href="#">
                                             Asc
                                         </a>
-                                        <a class="dropdown-item sort" data-sort="name" href="#!">
+                                        <a class="dropdown-item sort" data-sort="name" href="#">
                                             Desc
                                         </a>
                                     </div>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-auto">
                                 <!-- Button -->
-                                <a href="#!" class="btn btn-sm btn-primary">
+                                <a href="#" class="btn btn-sm btn-primary">
                                     Ajouter un événement
                                 </a>
                             </div>
@@ -67,7 +67,7 @@
                                             <div class="col-auto">
                                                 <!-- Avatar -->
                                                 <a href="{{route('show_event', $event->id)}}" class="avatar avatar-lg">
-                                                    @if($event->logoName)
+                                                    @if(file_exists(public_path('uploads/'.$event->logoName)) && !empty($event->logoName))
                                                         <img src="{{ $event->logoName }}" alt="" class="avatar-img rounded">
                                                     @else
                                                         <?php 
@@ -128,7 +128,7 @@
                             Ajouter le premier événement
                         </p>
                         <!-- Button -->
-                        <a href="#!" class="btn btn-primary">
+                        <a href="#" class="btn btn-primary">
                             Ajouter un événement
                         </a>
                     </div>

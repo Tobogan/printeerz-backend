@@ -14,7 +14,7 @@
                         Ajouter votre premier utilisateur pour cet événement
                     </p>
                     <!-- Button -->
-                    <a href="#!" class="btn btn-primary">
+                    <a href="#" class="btn btn-primary">
                         Ajouter un utilisateur
                     </a>
                 </div>

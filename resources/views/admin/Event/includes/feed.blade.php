@@ -28,7 +28,7 @@
                     <div class="col-auto">
 
                         <!-- Avatar -->
-                        <a href="#!" class="avatar">
+                        <a href="#" class="avatar">
                             <span class="avatar-title rounded-circle">JR</span>
                         </a>
 

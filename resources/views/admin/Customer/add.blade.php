@@ -195,12 +195,10 @@
                 <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://"
-                            id="logo_event_upload">
+                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img'))
-                                    !!}
+                                    {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
                                     <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
                                 </div>
                             </div>
@@ -223,11 +221,12 @@
                             Evénements déjà organisés
                         </label>
                         <!-- Input -->
-                        {!! Form::select('shows_id[]', App\Event::pluck('name','_id'), null, ['class' =>
-                        'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                        {!! Form::select('shows_id[]', App\Event::pluck('name','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
                     </div>
                 </div>
             </div>
+            {!! Form::hidden('is_active', "true") !!}
+            {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">

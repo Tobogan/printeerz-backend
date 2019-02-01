@@ -2,12 +2,12 @@
 <ul class="nav nav-tabs nav-overflow header-tabs">
     <li class="nav-item">
         <a href="#overview" class="nav-link active">
-            Général
+            Evénements
         </a>
     </li>
     <li class="nav-item">
         <a href="#informations" class="nav-link">
-            Coordonnées
+            Informations
         </a>
     </li>
     <li class="nav-item">

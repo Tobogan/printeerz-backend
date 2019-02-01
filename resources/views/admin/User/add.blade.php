@@ -46,8 +46,7 @@
                             Nom d'utilisateur
                         </label>
                         <!-- Input -->
-                        <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}"
-                            required autofocus>
+                        <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
                         @if ($errors->has('username'))
                         <span class="help-block">
                             <strong>{{ $errors->first('username') }}</strong>
@@ -73,8 +72,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                         <label for="firstname" class="label">Prénom</label>
-                        <input id="name" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}"
-                            required autofocus>
+                        <input id="name" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
 
                         @if ($errors->has('firstname'))
                         <span class="help-block">
@@ -86,8 +84,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="label">E-Mail</label>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}"
-                            required>
+                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                         @if ($errors->has('email'))
                         <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -115,11 +112,11 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="password-confirm" class="label">Confirmation du mot de passe</label>
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                            required>
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                     </div>
                 </div>
             </div>
+
             <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12">

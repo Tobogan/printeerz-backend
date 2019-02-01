@@ -52,12 +52,17 @@ class UserController extends Controller
             'username' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
-            'SIREN' => 'string|max:14',
             'email' => 'required|string|email|max:255|unique:employees',
             'password' => 'required|string|min:6|confirmed'
         ]);
 
         $user = new User;
+        if ($request->hasFile('profile_img')){
+            $photo = time().'.'.request()->profile_img->getClientOriginalExtension();
+            request()->profile_img->move(public_path('uploads'), $photo);
+
+            $user->profile_img = $photo;
+        }
         $user->lastname = $request->lastname;
         $user->firstname = $request->firstname;
         $user->username = $request->username;
@@ -65,7 +70,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
-        $user->is_active = $request->is_active; // penser à mettre l'input hidden
+        $user->is_active = $request->is_active;
         $user->is_deleted = $request->is_deleted;
 
         /*--~~~~~~~~~~~___________Upload img__________~~~~~~~~~~~~-*/
@@ -132,7 +137,6 @@ class UserController extends Controller
                 ]);
             }
             
-            
             $user_id = $request->user_id;
             $user = User::find($user_id);
 
@@ -144,13 +148,12 @@ class UserController extends Controller
                 }
                 $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
                 request()->profile_img->move(public_path('uploads'), $imageName);
-    
                 $user->profile_img = $imageName;
             }
-
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
+            $user->phone = $request->phone;
             if($request->password) {
                 $user->password = bcrypt($request->password);
             }
@@ -159,7 +162,7 @@ class UserController extends Controller
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted; 
         }
-        else{
+        else {
             if($request->password != null) {
                 $validatedData = $request->validate([
                     'username' => 'required|string|max:255',
@@ -178,8 +181,8 @@ class UserController extends Controller
                 ]);
             }
     
-            $id = $request->id;
-            $user = User::find($id);
+            $user_id = $request->user_id;
+            $user = User::find($user_id);
 
             /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
             if ($request->hasFile('profile_img')){
@@ -192,10 +195,10 @@ class UserController extends Controller
     
                 $user->profile_img = $imageName;
             }
-
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
+            $user->phone = $request->phone;
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->password = bcrypt($request->password);

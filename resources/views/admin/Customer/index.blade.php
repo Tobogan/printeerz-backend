@@ -129,7 +129,7 @@
                                     <td class="customer-total">{{ $customer->activity_type }}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
-                                            <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button"
+                                            <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 data-boundary="window">
                                                 <i class="fe fe-more-vertical"></i>

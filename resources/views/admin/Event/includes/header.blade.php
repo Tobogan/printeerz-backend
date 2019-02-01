@@ -43,7 +43,7 @@
                   <a href="{{route('edit_event', $event->id)}}" class="dropdown-item">
                     Modifier
                   </a>
-                  <a href="#!" class="dropdown-item text-danger">
+                  <a href="#" class="dropdown-item text-danger">
                     Supprimer
                   </a>
                 </div>

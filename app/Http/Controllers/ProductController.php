@@ -238,8 +238,14 @@ class ProductController extends Controller
         if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
             unlink($file_path_image);
         }
+        $products_variants = Products_variants::all();
+        foreach($products_variants as $products_variant) {
+            if($products_variant->product_id == $product->id) {
+                $products_variant->delete();
+            }
+        }
         $product->delete();
-        return redirect('admin/Product/index')->with('status', 'Le produit a été correctement supprimé.');
+        return redirect('admin/Product/index')->with('status', 'Le produit et ses variantes ont été correctement supprimés.');
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a product function in index product__________~~~~~~~~~~~~-*/

@@ -9,7 +9,7 @@
     
                         <!-- Avatar -->
                         <div class="avatar avatar-xl header-avatar-top">
-                            @if($customer->image)
+                            @if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image))
                                 <img src="{{ $customer->image }}" alt="" class="avatar-img rounded-circle border border-4 border-body">
                             @else
                                 <?php 
@@ -36,7 +36,7 @@
                     <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
                         <div class="col-auto">
                             <div class="dropdown">
-                                <a href="#!" class="btn btn-lg btn-rounded-circle btn-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#" class="btn btn-lg btn-rounded-circle btn-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fe fe-more-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">

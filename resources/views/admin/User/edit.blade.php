@@ -11,11 +11,11 @@
                         <div class="col">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
-                                CREATION
+                                MODIFICATION
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Créer un utilisateur
+                                Modifier un utilisateur
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -46,8 +46,7 @@
                             Nom d'utilisateur
                         </label>
                         <!-- Input -->
-                        <input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}"
-                            required autofocus>
+                        <input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}" required autofocus>
                         @if ($errors->has('username'))
                         <span class="help-block">
                             <strong>{{ $errors->first('username') }}</strong>
@@ -60,8 +59,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
                         <label for="lastname" class="label">Nom</label>
-                        <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}"
-                            required autofocus>
+                        <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}" required autofocus>
 
                         @if ($errors->has('lastname'))
                         <span class="help-block">
@@ -73,8 +71,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                         <label for="firstname" class="label">Prénom</label>
-                        <input id="name" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}"
-                            required autofocus>
+                        <input id="name" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}" required autofocus>
 
                         @if ($errors->has('firstname'))
                         <span class="help-block">
@@ -86,7 +83,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="label">E-Mail</label>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}">
+                        <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
                         @if ($errors->has('email'))
                         <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -136,7 +133,7 @@
                             </div>
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="" alt="" data-dz-thumbnail>
+                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
                                 </div>
                             </div>
                         </div>
@@ -149,33 +146,41 @@
                     <p class="h3">Rôle</p>
                     <p class="mb-4">Sélectionner le rôle de l'utilisateur</p>
                 </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        @if($user->role == "1")
+                @if($user->role == '1')
+                    <div class="col-12">
+                        <div class="form-group">
                             <select name="role" id="role" class="form-control" data-toggle="select">
                                 <option value="1" selected>Opérateur</option>
                                 <option value="3">Technicien</option>
                                 <option value="2">Administrateur</option>
                             </select>
-                        @elseif($user->role == "2")
+                        </div>
+                    </div>
+                @elseif($user->role == '2')
+                    <div class="col-12">
+                        <div class="form-group">
                             <select name="role" id="role" class="form-control" data-toggle="select">
                                 <option value="1">Opérateur</option>
                                 <option value="3">Technicien</option>
                                 <option value="2" selected>Administrateur</option>
                             </select>
-                        @else
+                        </div>
+                    </div>
+                @else
+                    <div class="col-12">
+                        <div class="form-group">
                             <select name="role" id="role" class="form-control" data-toggle="select">
                                 <option value="1">Opérateur</option>
                                 <option value="3" selected>Technicien</option>
                                 <option value="2">Administrateur</option>
                             </select>
-                        @endif
+                        </div>
                     </div>
-                </div>
+                @endif
                 <input type="hidden" class="form-control" name="is_active" value=true>
                 <input type="hidden" class="form-control" name="is_deleted" value=false>
-                <input type="hidden" class="form-control" name="actual_email" value="{{ $user->email }}">
-                <input type="hidden" class="form-control" name="user_id" value="{{ $user->id }}">
+                <input type="hidden" name="actual_email" id="actual_email" value="{{$user->email}}">
+                <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}">
 
             </div>
             <hr class="mt-4 mb-5">

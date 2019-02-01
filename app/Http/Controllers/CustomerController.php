@@ -164,13 +164,12 @@ class CustomerController extends Controller
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
         );
-        $shows_id[]=$request->get('shows_id');
-        $customer->events=$shows_id;
+        $customer->events_id=$request->get('shows_id');
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
 
         /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $file_path = public_path('uploads/'.$customer->image);
             if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
                 unlink($file_path);
@@ -182,7 +181,7 @@ class CustomerController extends Controller
         } 
         $customer->save();
         }        
-        else{
+        else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'activity_type' => 'required|string|max:255',
@@ -213,10 +212,10 @@ class CustomerController extends Controller
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
         );
-        $shows_id[]=$request->get('shows_id');
-        $customer->events=$shows_id;
+        $customer->events_id = $request->get('shows_id');
         $customer->is_active = $request->is_active; //penser à mettre l'input hidden
         $customer->is_deleted = $request->is_deleted;
+
         /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
         if ($request->hasFile('image')){
             $file_path = public_path('uploads/').$customer->image;

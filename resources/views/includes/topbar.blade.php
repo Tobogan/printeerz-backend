@@ -105,6 +105,11 @@
                     <i class="fe fe-user"></i> Utilisateurs
                 </a>
             </li>
+            <li class="nav-item px-2">
+                <a class="nav-link {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
+                    <i class="fe fe-layers"></i> Zones d'impression
+                </a>
+            </li>
         </ul>
 
     </div>
