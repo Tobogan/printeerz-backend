@@ -8,36 +8,30 @@
     {{ session('status') }}
 </div>
 @endif
-
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12">
-
             <!-- Header -->
             <div class="header mt-md-5">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 Overview
                             </h6>
-
                             <!-- Title -->
                             <h1 class="header-title">
                                 Utilisateurs
                             </h1>
-
                         </div>
                         <div class="col-auto">
-
                             <!-- Button -->
                             <a href="{{action('UserController@create')}}" class="btn btn-primary">
                                 Créer un utilisateur
                             </a>
-
                         </div>
+                    </div>
                 </div>
             </div>
 
@@ -46,7 +40,6 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
-
                             <!-- Search -->
                             <form class="row align-items-center">
                                 <div class="col-auto pr-0">
@@ -56,7 +49,6 @@
                                     <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
                                 </div>
                             </form>
-
                         </div>
                     </div> <!-- / .row -->
                 </div>
@@ -66,7 +58,6 @@
                             <tr>
                                 <th>
                                     <a href="#">
-                                        
                                     </a>
                                 </th>
                                 <th>
@@ -99,11 +90,13 @@
 
                         <tbody class="list">
                             @foreach ($users as $user)
-                                <tr>
-                                    <td class="user-avatar">
-                                    @if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img))
+                            <tr>
+                                <td class="user-avatar">
+                                    @if(file_exists(public_path('uploads/'.$user->profile_img)) &&
+                                    !empty($user->profile_img))
                                     <div class="avatar avatar-sm">
-                                        <img src="/uploads/{{$user->profile_img}}" class="avatar-img rounded-circle" alt="img_profile" >
+                                        <img src="/uploads/{{$user->profile_img}}" class="avatar-img rounded-circle"
+                                            alt="img_profile">
                                     </div>
                                     @else
                                     <div class="avatar-sm">
@@ -115,28 +108,26 @@
                                         <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
                                     </div>
                                     @endif
-                                    </td>
-                                    <td class="user-lastname">{{ $user->lastname }}</td>
-                                    <td class="user-firstname">{{ $user->firstname }}</td>
-                                    <td class="user-email">{{ $user->email }}</td>
-                                    @if ($user->role == 2)
-                                    <td class="user-role"> Administrateur </td>
-                                    @elseif ($user->role == 1)
-                                    <td class="user-role"> Opérateur </td>
-                                    @else
-                                    <td class="user-role"> Technicien </td>
+                                </td>
+                                <td class="user-lastname">{{ $user->lastname }}</td>
+                                <td class="user-firstname">{{ $user->firstname }}</td>
+                                <td class="user-email">{{ $user->email }}</td>
+                                <td class="user-role">
+                                    @if ($user->role == 2) Administrateur
+                                    @elseif ($user->role == 1)Opérateur
+                                    @else Technicien
                                     @endif
-                                    @if ($user->is_active == true)
-                                    <td class="user-status"><span class="badge badge-soft-success">Activé</span></td>
-                                    @else
-                                    <td class="user-status"><span class="badge badge-soft-secondary">Désactivé</span></td>
+                                </td>
+                                <td class="user-status">
+                                    @if ($user->is_active == true)<span class="badge badge-soft-success">Activé</span>
+                                    @else <span class="badge badge-soft-secondary">Désactivé</span>
                                     @endif
-
+                                </td>
+                                {{-- Menu --}}
                                 <td class="text-right">
                                     <div class="dropdown">
-                                        <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            data-boundary="window">
+                                        <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false" data-boundary="window">
                                             <i class="fe fe-more-vertical"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
@@ -144,12 +135,14 @@
                                                 Modifier l'utilisateur
                                             </a>
                                             @if ($user->is_active == true)
-                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_user', $user->id)}}"> Désactiver </a>
+                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_user', $user->id)}}">
+                                                Désactiver </a>
                                             @else
                                             <a class="dropdown-item" href="{{route('activate_user', $user->id)}}">Activer</a>
                                             @endif
                                             <hr class="dropdown-divider">
-                                            <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_user', $user->id)}}"> Supprimer </a>
+                                            <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')"
+                                                href="{{route('destroy_user', $user->id)}}"> Supprimer </a>
                                         </div>
                                     </div>
                                 </td>
@@ -158,8 +151,10 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <ul class="pagination">
-                    </ul>
+                    <nav aria-label="customers-table-pagination" class="float-right">
+                        <ul class="pagination">
+                        </ul>
+                    </nav>
                 </div>
             </div>
 
