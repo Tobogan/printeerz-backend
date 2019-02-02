@@ -17,13 +17,8 @@
         
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}" id="stylesheetLight">
-    {{-- <link rel="stylesheet" href="{{ asset('css/theme-dark.min.css') }}" id="stylesheetDark"> --}}
 
     <style>body { display: none; }</style>
-
-    <script>
-        var colorScheme = ( localStorage.getItem('dashkitColorScheme') ) ? localStorage.getItem('dashkitColorScheme') : 'light';
-    </script>
 
     <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">

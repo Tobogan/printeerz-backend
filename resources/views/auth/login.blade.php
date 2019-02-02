@@ -11,13 +11,8 @@
 
   <!-- Theme CSS -->
   <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}" id="stylesheetLight">
-  <link rel="stylesheet" href="{{ asset('css/theme-dark.min.css') }}" id="stylesheetDark">
 
   <style>body { display: none; }</style>
-
-  <script>
-    var colorScheme = ( localStorage.getItem('dashkitColorScheme') ) ? localStorage.getItem('dashkitColorScheme') : 'light';</script>
-
 
   <title>{{ config('Printeerz', 'Printeerz') }}</title>
 </head>
