@@ -167,6 +167,10 @@ Route::post('admin/Printzones/update', 'PrintzonesController@update')->name('upd
 
 Route::get('admin/Printzones/destroy/{id}', 'PrintzonesController@destroy')->name('destroy_printzones');
 
+Route::get('admin/Printzones/desactivate/{id}', 'PrintzonesController@desactivate')->name('desactivate_printzones');
+
+Route::get('admin/Printzones/activate/{id}', 'PrintzonesController@activate')->name('activate_printzones');
+
 /*~~~~~~~~~~~___________Comments Route__________~~~~~~~~~~~~*/
 Route::post('comment/add', 'CommentController@addComment');
 

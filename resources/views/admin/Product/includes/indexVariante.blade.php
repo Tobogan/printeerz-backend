@@ -22,7 +22,7 @@
     @foreach ($products_variants as $products_variant)
         @if($products_variant->product_id == $product->id)
         {{-- if have results --}}
-        <?php $i++ ?>
+        <?php $i++; ?>
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col">
@@ -62,9 +62,8 @@
                     </tr>
                 </thead>
                 <tbody class="list">
-                    @foreach ($products_variants as $products_variant)
-                    @if($products_variant->product_id == $product->id)
                     <tr>
+                       
                         <td class="products_variant-color">{{ $products_variant->color }}</td>
                         <td class="products_variant-size">{{ $products_variant->size }}</td>
                         <td class="products_variant-quantity">{{ $products_variant->quantity }}</td>
@@ -88,8 +87,6 @@
                             </div>
                         </td>
                     </tr>
-                    @endif
-                    @endforeach
                 </tbody>
             </table>
         </div>

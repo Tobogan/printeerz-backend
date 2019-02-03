@@ -123,9 +123,11 @@
                                     <td class="printzones-tray_width"><b>{{ $printzone->tray_width }}</b></td>
                                     <td class="printzones-tray_height"><b>{{ $printzone->tray_height }}</b></td>
                                     <td class="printzones-is_active">
-                                        @if ($printzone->is_active == true)<span class="badge badge-soft-success">Activé</span>
-                                        @else <span class="badge badge-soft-secondary">Désactivé</span>
-                                        @endif
+                                    @if($printzone->is_active == true)
+                                        <span class="badge badge-soft-success">Activée</span>
+                                    @else 
+                                        <span class="badge badge-soft-secondary">Désactivée</span>
+                                    @endif
                                     </td>
                                     <td class="printzones-description"><b>{{ $printzone->description }}</b></td>
                                     <td class="text-right">
@@ -137,8 +139,17 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a href="{{route('show_printzones', $printzone->id)}}" class="dropdown-item">
-                                                    Voir la zone d'impression
+                                                    Modifier la zone d'impression
                                                 </a>
+                                                @if ($printzone->is_active == true)
+                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_printzones', $printzone->id)}}">
+                                                Désactiver </a>
+                                            @else
+                                            <a class="dropdown-item" href="{{route('activate_printzones', $printzone->id)}}">Activer</a>
+                                            @endif
+                                            <hr class="dropdown-divider">
+                                            <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')"
+                                                href="{{route('destroy_printzones', $printzone->id)}}"> Supprimer </a>
                                             </div>
                                         </div>
                                     </td>        

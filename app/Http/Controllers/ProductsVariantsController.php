@@ -69,7 +69,7 @@ class ProductsVariantsController extends Controller
             
             $products_variants->is_active = $request->is_active;
             $products_variants->is_deleted = $request->is_deleted;
-            if ($request->hasFile('product_zone_image1')) {
+            /*if ($request->hasFile('product_zone_image1')) {
                 $photo1 = time().'1.'.request()->product_zone_image1->getClientOriginalExtension();
                 request()->product_zone_image1->move(public_path('uploads'), $photo1);
             }
@@ -95,11 +95,11 @@ class ProductsVariantsController extends Controller
                 'id' => $request->product_zone_id3,
                 'title' => $request->product_zone_title3,
                 'image' => $photo3
-            );
+            );*/
             $products_variants->save();
             $response = array(
                 'status' => 'success',
-                'msg' => 'Setting created successfully',
+                'msg' => 'Variant created successfully',
                 'products_variants' => $products_variants
             );
             return response()->json($response);

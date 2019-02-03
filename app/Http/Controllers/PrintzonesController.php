@@ -58,6 +58,7 @@ class PrintzonesController extends Controller
         $printzone = new Printzones;
 
         $printzone->name = $request->name;
+        $printzone->zone = $request->zone;
         $printzone->printer_id = $request->printer_id;
         $printzone->width = $request->width;
         $printzone->height = $request->height;
@@ -71,7 +72,7 @@ class PrintzonesController extends Controller
 
         $printzone->save();
 
-        return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement crée.');
+        return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement créee.');
     }
 
     /**
@@ -120,6 +121,7 @@ class PrintzonesController extends Controller
             $printzone = Printzones::find($id);
     
             $printzone->name = $request->name;
+            $printzone->zone = $request->zone;
             $printzone->printer_id = $request->printer_id;
             $printzone->width = $request->width;
             $printzone->height = $request->height;
@@ -149,6 +151,7 @@ class PrintzonesController extends Controller
             $printzone = Printzones::find($id);
     
             $printzone->name = $request->name;
+            $printzone->zone = $request->zone;
             $printzone->printer_id = $request->printer_id;
             $printzone->width = $request->width;
             $printzone->height = $request->height;
