@@ -1,42 +1,44 @@
 <!doctype html>
-<html lang="en">
-  
-  @include('includes.head')
-  <body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary" style="background-image: url('/img/daniel-jensen-440210-unsplash.jpg'); background-size: cover; background-repeat: no-repeat;">
+<html lang="fr">
 
-    <!-- CONTENT
+@include('includes.head')
+
+<body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary" style="background-image: url('/img/daniel-jensen-440210-unsplash.jpg'); background-size: cover; background-repeat: no-repeat;">
+
+  <!-- CONTENT
     ================================================== -->
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-5 col-xl-4 my-5">
-          
-          <div class="text-center">
-          
-            <!-- Preheading -->
-            <h6 class="text-uppercase text-muted mb-4">
-              Vous êtes perdu?
-            </h6>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-5 col-xl-4 my-5">
 
-            <!-- Heading -->
-            <h1 class="display-4 mb-3">
-              Il n'y a personne ici 😭
-            </h1>
+        <div class="text-center">
 
-            <!-- Subheading -->
-            <p class="text-muted mb-4">
-              On se perd parfois mais la sortie est proche.
-            </p>
+          <!-- Preheading -->
+          <h6 class="text-uppercase text-muted mb-4">
+            Vous êtes perdu?
+          </h6>
 
-            <!-- Button -->
-            <a href="{{route('home')}}" class="btn btn-lg btn-primary">
-              Retourner à l'accueil
-            </a>
-          
-          </div>
+          <!-- Heading -->
+          <h1 class="display-4 mb-3">
+            Il n'y a personne ici 😭
+          </h1>
+
+          <!-- Subheading -->
+          <p class="text-muted mb-4">
+            On se perd parfois mais la sortie est proche.
+          </p>
+
+          <!-- Button -->
+          <a href="{{route('home')}}" class="btn btn-lg btn-primary">
+            Retourner à l'accueil
+          </a>
 
         </div>
-      </div> <!-- / .row -->
-    </div> <!-- / .container -->
 
-  </body>
+      </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .container -->
+
+</body>
+
 </html>

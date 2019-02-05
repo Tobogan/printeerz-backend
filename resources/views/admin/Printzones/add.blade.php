@@ -16,7 +16,7 @@
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Créer d'une zone d'impression
+                                Créer une zone d'impression
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -40,7 +40,6 @@
                 {{csrf_field()}}
                 <div class="col-12">
                     <!-- First name -->
-                    <p class="h3">Nom de la zone</p>
                     <div class="form-group">
                         <!-- Label -->
                         <label>
@@ -135,6 +134,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Description de la zone</label>
+                        {!! Form::hidden('description', null) !!}
                         <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
                     </div>
                 </div>

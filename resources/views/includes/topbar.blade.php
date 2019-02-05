@@ -16,8 +16,9 @@
                     <div class="col-auto">
                         <!-- Avatar -->
                         <a class="avatar avatar-sm">
-                            @if(file_exists(public_path('uploads/'.Auth::user()->profile_img)) && !empty(Auth::user()->profile_img))
-                                <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
+                            @if(file_exists(public_path('uploads/'.Auth::user()->profile_img)) &&
+                            !empty(Auth::user()->profile_img))
+                            <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
                             @else
                             <?php 
                             $avatarLastName = Auth::user()->lastname; 
@@ -32,21 +33,21 @@
                     <div class="col ml--2">
                         <!-- Title -->
                         <h4 class="card-title mb-0">
-                                @if(Auth::check())
+                            @if(Auth::check())
                             <a class="text-white">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</a>
-                                @endif
+                            @endif
                         </h4>
                         <!-- Time -->
                         @if(Auth::check())
-                            <p class="card-text small text-light">
-                                @if(Auth::user()->role == 2)
-                                Administrateur
-                                @elseif(Auth::user()->role == 1)
-                                Opérateur
-                                @else
-                                Technicien
-                                @endif
-                            </p>
+                        <p class="card-text small text-light">
+                            @if(Auth::user()->role == 2)
+                            Administrateur
+                            @elseif(Auth::user()->role == 1)
+                            Opérateur
+                            @else
+                            Technicien
+                            @endif
+                        </p>
                         @endif
                     </div>
                     <div class="col-auto">

@@ -12,11 +12,11 @@
                         <div class="col">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
-                                CREATION
+                                MODIFICATION
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Créer d'une zone d'impression
+                                {{$printzone->name}}
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -34,13 +34,11 @@
                 </ul>
             </div>
             @endif
-            {!! Form::open(['action' => array('PrintzonesController@update'), 'id' => $printzone->id,'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('PrintzonesController@update'), 'id' => $printzone->id, 'files' => true, 'class' => 'mb-4']) !!}
+            {{csrf_field()}}
             <div class="row">
-                {{csrf_field()}}
                 <div class="col-12">
                     <!-- First name -->
-                    <p class="h3">Nom de la zone</p>
                     <div class="form-group">
                         <!-- Label -->
                         <label>
@@ -69,8 +67,8 @@
                             Largeur de la zone
                         </label>
                         <!-- Input -->
-                        {!! Form::number('width', $printzone->width, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur de la zone :']) !!}
+                        {!! Form::number('width', $printzone->width, ['class' => 'form-control', 'placeholder'
+                        =>'Largeur de la zone :']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -81,7 +79,8 @@
                             Hauteur de la zone
                         </label>
                         <!-- Input -->
-                        {!! Form::number('height', $printzone->height, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
+                        {!! Form::number('height', $printzone->height, ['class' => 'form-control', 'placeholder' =>
+                        'Hauteur de la zone']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -116,8 +115,8 @@
                             Largeur du plateau
                         </label>
                         <!-- Input -->
-                        {!! Form::number('tray_width', $printzone->tray_width, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur du plateau :']) !!}
+                        {!! Form::number('tray_width', $printzone->tray_width, ['class' => 'form-control',
+                        'placeholder' => 'Largeur du plateau :']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -128,14 +127,15 @@
                             Hauteur du plateau
                         </label>
                         <!-- Input -->
-                        {!! Form::number('tray_height', $printzone->tray_height, ['class' => 'form-control', 'placeholder' =>
-                        'Hauteur du plateau :']) !!}
+                        {!! Form::number('tray_height', $printzone->tray_height, ['class' => 'form-control',
+                        'placeholder' => 'Hauteur du plateau :']) !!}
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
                         <label>Description de la zone</label>
-                        <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
+                        {!! Form::hidden('description', $printzone->description) !!}
+                        <div id="printzone_description_edit" name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
                     </div>
                 </div>
             </div>
@@ -153,4 +153,31 @@
         </div>
     </div>
 </div>
+
+@section('javascripts')
+
+<script>
+    var form = document.querySelector('form');
+    var description = document.querySelector('input[name=description]');
+    
+    function editDesc(){
+        var desc = new Quill('#printzone_description_edit');
+    };
+
+    editDesc();
+
+    form.onsubmit = function() {
+    // Populate hidden form on submit
+    description.value = JSON.stringify(quill.getContents());
+    
+    console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+    
+    // No back end to actually submit to!
+    alert('Open the console to see the submit data!')
+    return false;
+    };
+</script>
+
+@endsection
+
 @endsection

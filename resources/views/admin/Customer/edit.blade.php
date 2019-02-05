@@ -12,7 +12,7 @@
                         <div class="col">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
-                                Overview
+                                {{$customer->title}}
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
@@ -287,6 +287,7 @@
                         'form-control', 'multiple', 'data-toggle' => 'select']) !!} </div>
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
