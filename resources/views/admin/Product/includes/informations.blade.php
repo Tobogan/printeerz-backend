@@ -16,7 +16,8 @@
             @if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="img-thumbnail" src="/uploads/{{$product->image}}" alt="Image produit">
+                    <img width="100%" title="image principale" class="img-thumbnail" src="/uploads/{{$product->image}}"
+                        alt="Image produit">
                 </div>
             </div>
             @else
@@ -52,7 +53,7 @@
                     </div>
                     <hr>
                     @endif
-                    @if ($product -> gender)    
+                    @if ($product -> gender)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Sexe</h5>
@@ -65,7 +66,7 @@
                     </div>
                     <hr>
                     @endif
-                    @if ($product -> vendor['name'])    
+                    @if ($product -> vendor['name'])
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Fournisseur</h5>

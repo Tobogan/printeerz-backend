@@ -21,18 +21,19 @@
                 <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
                     <div class="col-auto">
                         <div class="dropdown">
-                            <a href="#" class="btn btn-lg btn-rounded-circle btn-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fe fe-more-vertical"></i>
+                            <a href="#" class="btn btn-lg btn-rounded-circle btn-white" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fe fe-more-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('edit_product', $product->id)}}" class="dropdown-item">
-                                Modifier
-                            </a>
-                            <button type="button" data-toggle="modal" data-target="#modalDeleteProduct" class="dropdown-item text-danger">
-                                Supprimer
-                            </button>
+                                <a href="{{route('edit_product', $product->id)}}" class="dropdown-item">
+                                    Modifier
+                                </a>
+                                <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteCustomer">
+                                    Supprimer
+                                </a>
                             </div>
-                        </div>    
+                        </div>
                     </div>
                 </div>
             </div> <!-- / .row -->
