@@ -98,7 +98,7 @@
                                         <img src="/uploads/{{$user->profile_img}}" class="avatar-img rounded-circle"
                                             alt="img_profile">
                                     </div>
-                                    @else
+                                    @else <!--Initials-->
                                     <div class="avatar-sm">
                                         <?php 
                                         $avatarLastName = $user->lastname; 
@@ -135,14 +135,14 @@
                                                 Modifier l'utilisateur
                                             </a>
                                             @if ($user->is_active == true)
-                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_user', $user->id)}}">
+                                                <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_user', $user->id)}}">
                                                 Désactiver </a>
                                             @else
-                                            <a class="dropdown-item" href="{{route('activate_user', $user->id)}}">Activer</a>
+                                                <a class="dropdown-item" href="{{route('activate_user', $user->id)}}">Activer</a>
                                             @endif
-                                            <hr class="dropdown-divider">
-                                            <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')"
-                                                href="{{route('destroy_user', $user->id)}}"> Supprimer </a>
+                                                <hr class="dropdown-divider">
+                                                <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')"
+                                                    href="{{route('destroy_user', $user->id)}}"> Supprimer </a>
                                         </div>
                                     </div>
                                 </td>

@@ -46,61 +46,40 @@ class ProductsVariantsController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request) {
+        
+        if ($request->ajax()) {
             $validatedData = $request->validate([
-                'name' => 'string|max:255',
                 'color' => 'string|max:255',
                 'size' => 'string|max:255',
                 'quantity' => 'string|max:255',
                 'position' => 'string|max:255',
                 'description' => 'max:750'
             ]);
-            $products_variants = new Products_variants;
-            $products_variants->name = $request->name;
-            $products_variants->vendor = array(
-                'sku' => $request->vendor_sku,
-                'quantity' => $request->vendor_quantity
-            );
-            $products_variants->product_id = $request->product_id;
-            $products_variants->color = $request->color;
-            $products_variants->size = $request->size;
-            $products_variants->quantity = $request->quantity;
-            $products_variants->position = $request->position;
-            
-            $products_variants->is_active = $request->is_active;
-            $products_variants->is_deleted = $request->is_deleted;
-            /*if ($request->hasFile('product_zone_image1')) {
-                $photo1 = time().'1.'.request()->product_zone_image1->getClientOriginalExtension();
-                request()->product_zone_image1->move(public_path('uploads'), $photo1);
+            $input_size = $request->size;
+            $sizes = explode(",", $input_size);
+            $input_color = $request->color;
+            $products_variants = array();
+            $colors = explode(",",$input_color);
+            foreach($colors as $color) {
+                foreach($sizes as $size) {
+                    $products_variants = new Products_variants;
+                    /*$products_variants->vendor = array(
+                        'sku' => $request->vendor_sku,
+                        'quantity' => $request->vendor_quantity
+                    );*/
+                    $products_variants->size = $size;
+                    $products_variants->product_id = $request->product_id;
+                    $products_variants->color = $color;
+                    $products_variants->is_active = $request->is_active;
+                    $products_variants->is_deleted = $request->is_deleted;
+                    $products_variants->save();
+                }
             }
-            if ($request->hasFile('product_zone_image2')) {
-                $photo2 = time().'2.'.request()->product_zone_image2->getClientOriginalExtension();
-                request()->product_zone_image2->move(public_path('uploads'), $photo2);
-            }
-            if ($request->hasFile('product_zone_image3')) {
-                $photo3 = time().'3.'.request()->product_zone_image3->getClientOriginalExtension();
-                request()->product_zone_image3->move(public_path('uploads'), $photo3);
-            }
-            $products_variants->product_zones1 = array(
-                'id' => $request->product_zone_id1,
-                'title' => $request->product_zone_title1,
-                'image' => $photo1
-            );
-            $products_variants->product_zones2 = array(
-                'id' => $request->product_zone_id2,
-                'title' => $request->product_zone_title2,
-                'image' => $photo2
-            );
-            $products_variants->product_zones3 = array(
-                'id' => $request->product_zone_id3,
-                'title' => $request->product_zone_title3,
-                'image' => $photo3
-            );*/
-            $products_variants->save();
             $response = array(
                 'status' => 'success',
                 'msg' => 'Variant created successfully',
-                'products_variants' => $products_variants
+                'products_variants' => $products_variants,
+                'colors' => $colors
             );
             return response()->json($response);
         }

@@ -23,12 +23,8 @@
                     {!! Form::text('color', null, array('class'=>'form-control mb-2', 'placeholder' =>'Couleur :','id' => 'color', 'name' => 'color')) !!}
                     {!! Form::label('size', 'Ajouter la taille: ') !!}
                     {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' =>'Taille :','id' => 'size', 'name' => 'size')) !!}
-                    {!! Form::label('quantity', 'Ajouter la quantité: ') !!}
-                    {!! Form::text('quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'quantity', 'name' => 'quantity')) !!}
-                    {!! Form::label('vendor_sku', 'Ajouter une Sku : ') !!}
-                    {!! Form::text('vendor_sku', null, array('class'=>'form-control mb-2', 'placeholder' =>'Sku :','id' => 'vendor_sku', 'name' => 'vendor_sku')) !!}
-                    {!! Form::label('vendor_quantity', 'Ajouter la quantité fournisseur : ') !!}
-                    {!! Form::text('vendor_quantity', null, array('class'=>'form-control mb-2','placeholder' => 'Quantité :','id' => 'vendor_quantity', 'name' => 'vendor_quantity'))!!}
+                    {{--{!! Form::label('quantity', 'Ajouter la quantité: ') !!}
+                    {!! Form::text('quantity', null, array('class'=>'form-control mb-2', 'placeholder' => 'Quantité :','id' => 'quantity', 'name' => 'quantity')) !!}--}}
                 </div>
             </div>
             <div class="modal-footer">
