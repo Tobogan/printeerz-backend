@@ -42,21 +42,6 @@
             </div>
         </div>
     </div>
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <!-- Search -->
-                <form class="row align-items-center">
-                    <div class="col-auto pr-0">
-                        <span class="fe fe-search text-muted"></span>
-                    </div>
-                    <div class="col">
-                        <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
-                    </div>
-                </form>
-            </div>
-        </div> <!-- / .row -->
-    </div>
     <div class="table-responsive">
         <table class="table table-sm table-nowrap card-table">
             <thead>
@@ -76,7 +61,7 @@
                             Quantité
                         </a>
                     </th>
-                    <th colspan="2">
+                    <th colspan="1">
                     </th>
                 </tr>
             </thead>

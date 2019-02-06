@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset ('libs/quill/dist/quill.core.css') }}">
     <link rel="stylesheet" href="{{ asset ('libs/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset ('libs/flatpickr/dist/flatpickr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset ('libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     {{-- Theme CSS --}}
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}" id="stylesheetLight">

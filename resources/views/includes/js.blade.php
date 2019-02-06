@@ -11,6 +11,7 @@
 <script src="{{ asset('libs/list.js/dist/list.min.js') }}"></script>
 <script src="{{ asset('libs/dropzone/dist/min/dropzone.min.js') }}"></script>
 <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js') }}"></script>
 <script src="{{ asset('js/theme.min.js') }}"></script>
 
 <script src="{{ asset('js/ajax.js') }}"></script>

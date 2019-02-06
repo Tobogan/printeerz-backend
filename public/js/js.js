@@ -29,3 +29,16 @@ $("#tabs").tabs({
 });
 
 $('#element').toast('show');
+
+$('#addVariante').on('keypress', function (e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    $(this).trigger('submit');
+  }
+});
+
+$('input[data-role="tagsinput"]').tagsinput({
+  tagClass: 'badge badge-primary'
+});
+
+$(".bootstrap-tagsinput").addClass('form-control');
