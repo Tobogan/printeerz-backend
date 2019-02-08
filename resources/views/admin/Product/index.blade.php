@@ -40,7 +40,7 @@
                 </div>
 
                 <!-- Card -->
-                <div id="customerTable" class="card mt-3" data-toggle="lists" data-lists-values='["product-name", "product-sku", "product-sexe", "product-sizes"]'>
+                <div id="customerTable" class="card mt-3" data-toggle="lists" data-lists-values='["product-name", "product-sku", "product-gender", "product-sizes"]'>
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
@@ -73,8 +73,8 @@
                                         </a>
                                     </th>
                                     <th>
-                                        <a href="#" class="text-muted sort" data-sort="product-sexe">
-                                            Sexe
+                                        <a href="#" class="text-muted sort" data-sort="product-gender">
+                                            Genre
                                         </a>
                                     </th>
                                     <th colspan="1">

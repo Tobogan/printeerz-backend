@@ -69,7 +69,7 @@
                 @foreach ($products_variants as $products_variant)
                     @if($products_variant->product_id == $product->id)
                         <tr>
-                            <td class="products_variant-color">{{ $products_variant->color }}</td>
+                            <td class="products_variant-color"><a href="{{route('edit_productsVariants', $products_variant->id)}}"><b>{{ $products_variant->color }}</b></a></td>
                             <td class="products_variant-size">{{ $products_variant->size }}</td>
                             <td class="products_variant-quantity">{{ $products_variant->quantity }}</td>
                             <td class="text-right">
