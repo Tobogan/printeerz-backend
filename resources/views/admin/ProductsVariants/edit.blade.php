@@ -95,7 +95,7 @@
                     <div class="form-group">
                         <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
                             <div class="fallback">
-                                <div class="custom-file">
+                                <div class="custom-file">   
                                     {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
                                     <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
                                 </div>

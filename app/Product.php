@@ -11,7 +11,7 @@ class Product extends Eloquent
     protected $collection = 'products';
 
     protected $fillable = [
-        'id', 'title', 'vendor', 'gender', 'product_type', 'product_zones[]', 'image', 'tags[]', 'description', 'variants_id[]', 'is_active', 'is_deleted', 'created_at', 'updated_at'
+        'id', 'title', 'vendor', 'gender', 'product_type', 'printzones_id[]', 'image', 'tags[]', 'description', 'variants_id[]', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/

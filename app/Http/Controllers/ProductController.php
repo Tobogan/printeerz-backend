@@ -64,11 +64,7 @@ class ProductController extends Controller
         );
         $product->gender = $request->gender;
         $product->product_type = $request->product_type;
-        $product->product_zones = array(
-            'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
-            'title' => $request->product_zone_title,
-            'printzone_id' => $request->product_zone_printzone_id
-        );
+        $product->printzones_id = $request->get('printzones_id'); //les printzones dispo sur ce produit
         $tags[]=$request->get('tags');
         $product->tags=$tags;
         $product->description = $request->description;
@@ -147,11 +143,7 @@ class ProductController extends Controller
             );
             $product->gender = $request->gender;
             $product->product_type = $request->product_type;
-            $product->product_zones = array(
-                'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
-                'title' => $request->product_zone_title,
-                'printzone_id' => $request->product_zone_printzone_id
-            );
+            $product->printzones_id = $request->get('printzones_id');
             $tags[]=$request->get('tags');
             $product->tags=$tags;
             $product->description = $request->description;
@@ -194,11 +186,7 @@ class ProductController extends Controller
                 );
                 $product->gender = $request->gender;
                 $product->product_type = $request->product_type;
-                $product->product_zones = array(
-                    'id' => $request->product_zone_id,    // gros doute là dessus @Jo voir avec lui
-                    'title' => $request->product_zone_title,
-                    'printzone_id' => $request->product_zone_printzone_id
-                );
+                $product->printzones_id = $request->get('printzones_id'); //les printzones dispo sur ce produit
                 $tags[]=$request->get('tags');
                 $product->tags=$tags;
                 $product->description = $request->description;

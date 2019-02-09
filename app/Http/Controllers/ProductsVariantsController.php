@@ -46,14 +46,10 @@ class ProductsVariantsController extends Controller
      */
     public function store(Request $request)
     {
-        
         if ($request->ajax()) {
             $validatedData = $request->validate([
                 'color' => 'string|max:255',
                 'size' => 'string|max:255',
-                'quantity' => 'string|max:255',
-                'position' => 'string|max:255',
-                'description' => 'max:750'
             ]);
             $input_size = $request->size;
             $sizes = explode(",", $input_size);
@@ -63,10 +59,6 @@ class ProductsVariantsController extends Controller
             foreach($colors as $color) {
                 foreach($sizes as $size) {
                     $products_variant = new Products_variants;
-                    /*$products_variant->vendor = array(
-                        'sku' => $request->vendor_sku,
-                        'quantity' => $request->vendor_quantity
-                    );*/
                     $products_variant->size = $size;
                     $products_variant->product_id = $request->product_id;
                     $products_variant->color = $color;
@@ -96,7 +88,9 @@ class ProductsVariantsController extends Controller
      */
     public function show($id)
     {
-        //
+        $products_variant = Products_variants::find($id);
+        $products_variants = Products_variants::all();
+        return view('admin/Product.show', ['products_variant' => $product, 'products_variants' => $products_variants]);
     }
 
     /**
@@ -118,30 +112,29 @@ class ProductsVariantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        if (request('actual_color') == request('color')){
+        if (request('actual_name') == request('name')){
             $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
                 'color' => 'required|string|max:255',
                 'size' => 'required|string|max:255',
                 'quantity' => 'required|string|max:255',
+                'position' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
-            
-            $id = $request->products_variant_id;
-            $products_variant = Products_variants::find($id);
-            // dd($products_variant);
-            $product = Product::find($products_variant->product_id);
-            //dd($products_variant);
-            $products_variant->vendor = array(
+            $products_variants = new Products_variants;
+            $products_variants->name = $request->name;
+            $products_variants->vendor = array(
                 'sku' => $request->vendor_sku,
                 'quantity' => $request->vendor_quantity
             );
-            $products_variant->color = $request->color;
-            $products_variant->size = $request->size;
-            $products_variant->quantity = $request->quantity;
-            $products_variant->position = $request->position;
-            $products_variant->product_zones = array(
+            $products_variants->product_id = $request->product_id;
+            $products_variants->color = $request->color;
+            $products_variants->size = $request->size;
+            $products_variants->quantity = $request->quantity;
+            $products_variants->position = $request->position;
+            $products_variants->product_zones = array(
                 'id' => $request->product_zone_id,
                 'title' => $request->product_zone_title,
                 'image' => $request->product_zone_image
@@ -164,30 +157,33 @@ class ProductsVariantsController extends Controller
             return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
         }
 
+
         else {
             $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
                 'color' => 'required|string|max:255',
                 'size' => 'required|string|max:255',
                 'quantity' => 'required|string|max:255',
+                'position' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
-            
-            $id = $request->id;
-            $products_variant = Products_variants::find($id);
-            $products_variant->vendor = array(
+            $products_variants = new Products_variants;
+            $products_variants->name = $request->name;
+            $products_variants->vendor = array(
                 'sku' => $request->vendor_sku,
                 'quantity' => $request->vendor_quantity
             );
-            $products_variant->color = $request->color;
-            $products_variant->size = $request->size;
-            $products_variant->quantity = $request->quantity;
-            $products_variant->position = $request->position;
-            $products_variant->product_zones = array(
+            $products_variants->product_id = $request->product_id;
+            $products_variants->color = $request->color;
+            $products_variants->size = $request->size;
+            $products_variants->quantity = $request->quantity;
+            $products_variants->position = $request->position;
+            $products_variants->product_zones = array(
                 'id' => $request->product_zone_id,
                 'title' => $request->product_zone_title,
                 'image' => $request->product_zone_image
             );
-            $products_variant->is_active = $request->is_active; //penser à mettre l'input hidden
+            $products_variant->is_active = $request->is_active;
             $products_variant->is_deleted = $request->is_deleted;
             $products_variant->save();
             
@@ -201,10 +197,9 @@ class ProductsVariantsController extends Controller
                 $products_variant->image = $photo;
             }
             $products_variant->save();
-            $product = Product::find($products_variant->product_id);
             $products_variants = Products_variants::all();
-            return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a été correctement configurée.');    
-        }
+            return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
+         }
     }
 
     /**

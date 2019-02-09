@@ -98,15 +98,9 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (msg) {
-                name = $('#name').val('');
                 color = $('#color').val('');
                 size = $('#size').val('');
-                quantity = $('#quantity').val('');
-                position = $('#position').val('');
-                vendor_sku = $('#vendor_sku').val('');
-                vendor_quality = $('#vendor_quantity').val('');
-                product_zone_image1 = $('#product_zone_image1').val('');
-                console.log(msg.products_variants);
+                console.log(msg.products_variant);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');
                 $('#addVariante').modal('hide');
