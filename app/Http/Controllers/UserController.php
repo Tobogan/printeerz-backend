@@ -10,6 +10,8 @@ use App\Http\Middleware\isActivate;
 
 use Image;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class UserController extends Controller
@@ -27,7 +29,9 @@ class UserController extends Controller
     public function index()
     {   
         $users = User::all();
-        return view('admin/User.index', ['users' => $users]);
+        $disk = Storage::disk('gcs');
+        $gcs = 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET');
+        return view('admin/User.index', ['users' => $users, 'gcs' => $gcs, 'disk' => $disk]);
     }
 
     /**
@@ -57,12 +61,6 @@ class UserController extends Controller
         ]);
 
         $user = new User;
-        if ($request->hasFile('profile_img')){
-            $photo = time().'.'.request()->profile_img->getClientOriginalExtension();
-            request()->profile_img->move(public_path('uploads'), $photo);
-
-            $user->profile_img = $photo;
-        }
         $user->lastname = $request->lastname;
         $user->firstname = $request->firstname;
         $user->username = $request->username;
@@ -72,14 +70,21 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->is_active = $request->is_active;
         $user->is_deleted = $request->is_deleted;
-
-        /*--~~~~~~~~~~~___________Upload img__________~~~~~~~~~~~~-*/
+        $disk = Storage::disk('gcs');
         if ($request->hasFile('profile_img')){
-            $profile_img = time().'.'.request()->profile_img->getClientOriginalExtension();
-            request()->profile_img->move(public_path('uploads'), $profile_img);
-            $user->profile_img = $profile_img;
+            // Get file
+            $file = $request->file('profile_img');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/users/' . $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img);
+            // Put in database
+            $user->profile_img = $filePath;
         }
-        
         $user->save();
         return redirect('admin/User/index');
     }
@@ -140,16 +145,28 @@ class UserController extends Controller
             $user_id = $request->user_id;
             $user = User::find($user_id);
 
-            /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
+            // Update Profile image
+            $disk = Storage::disk('gcs');
             if ($request->hasFile('profile_img')){
-                $file_path_profile_img = public_path('uploads/'.$user->profile_img);
-                if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
-                    unlink($file_path_profile_img);
+                // Get current image path
+                $oldPath = $user->profile_img;
+                // Get new image
+                $file = $request->file('profile_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/users/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img);
+                // Put in database
+                $user->profile_img = $newFilePath;
+                if(!empty($user->profile_img) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
-                $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
-                request()->profile_img->move(public_path('uploads'), $imageName);
-                $user->profile_img = $imageName;
             }
+
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
@@ -183,18 +200,6 @@ class UserController extends Controller
     
             $user_id = $request->user_id;
             $user = User::find($user_id);
-
-            /*--~~~~~~~~~~~___________Upload img & delete old img__________~~~~~~~~~~~~-*/
-            if ($request->hasFile('profile_img')){
-                $file_path_profile_img = public_path('uploads/'.$user->profile_img);
-                if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
-                    unlink($file_path_profile_img);
-                }
-                $imageName = time().'.'.request()->profile_img->getClientOriginalExtension();
-                request()->profile_img->move(public_path('uploads'), $imageName);
-    
-                $user->profile_img = $imageName;
-            }
             $user->lastname = $request->lastname;
             $user->firstname = $request->firstname;
             $user->username = $request->username;
@@ -204,7 +209,28 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
             $user->role = $request->role;
             $user->is_active = $request->is_active;
-            $user->is_deleted = $request->is_deleted; 
+            $user->is_deleted = $request->is_deleted;
+            // Update Profile image
+            $disk = Storage::disk('gcs');
+            if ($request->hasFile('profile_img')){
+                // Get current image path
+                $oldPath = $user->profile_img;
+                // Get new image
+                $file = $request->file('profile_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/users/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img);
+                // Put in database
+                $user->profile_img = $newFilePath;
+                if(!empty($user->profile_img) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
+                }
+            }
         }
         $user->save();
         return redirect('admin/User/index');
@@ -219,15 +245,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $file_path_profile_img = public_path('uploads/'.$user->profile_img);
-        if(file_exists(public_path('uploads/'.$user->profile_img)) && !empty($user->profile_img)){
-            unlink($file_path_profile_img);
+        // Delete Profile image
+        $disk = Storage::disk('gcs');
+        $filePath = $user->profile_img;
+        if(!empty($user->profile_img) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
         $user->delete();
         return redirect('admin/User/index');
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a user function in index User__________~~~~~~~~~~~~-*/
     public function desactivate($id)
     {
         $user = User::find($id);
