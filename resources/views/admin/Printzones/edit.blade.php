@@ -139,7 +139,7 @@
                     </div>
                 </div>
             </div>
-
+            {!! Form::hidden('printzones_id', $printzone->id) !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
