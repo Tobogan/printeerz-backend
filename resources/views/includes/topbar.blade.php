@@ -20,17 +20,17 @@
                             $disk = Storage::disk('gcs');
                             $gcs = 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET');
                             ?>
-                            @if(!empty($user->profile_img) && $disk->exists($user->profile_img))
+                            @if(!empty(Auth::user()->profile_img) && $disk->exists(Auth::user()->profile_img))
                             <div class="avatar avatar-sm">
-                                <img src="{{$gcs . $user->profile_img}}" class="avatar-img rounded-circle"
+                                <img src="{{$gcs . Auth::user()->profile_img}}" class="avatar-img rounded-circle"
                                     alt="img_profile">
                             </div>
                             @else <!--Initials-->
                             <div class="avatar-sm">
                                 <?php 
-                                $avatarLastName = $user->lastname; 
-                                $avatarFirstName = $user->firstname; 
-                                $avatarInitials = $avatarFirstName[0] . $avatarLastName[0];
+                                    $avatarLastName = Auth::user()->lastname; 
+                                    $avatarFirstName = Auth::user()->firstname; 
+                                    $avatarInitials = $avatarFirstName[0] . $avatarLastName[0];
                                 ?>
                                 <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
                             </div>
