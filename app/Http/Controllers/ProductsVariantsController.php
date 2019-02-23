@@ -130,12 +130,10 @@ class ProductsVariantsController extends Controller
                 'quantity' => $request->vendor_quantity
             );
             $products_variant->quantity = $request->quantity;
-            //  $products_variant->position = $request->position;
             $products_variant->save();
             $printzones_nb = $request->printzones_nb;
-            for($i=1; $i<$printzones_nb;$i++){
+            for($i=1; $i<$printzones_nb; $i++){
                 if ($request->hasFile('printzone'.$i)){
-                    //dd($request->{'printzone'.$i});
                     if(isset($products_variant->{'printzone'.$i}['image'])){
                         $file_path_image = public_path('uploads/'.$products_variant->{'printzone'.$i}['image']);
                         if(file_exists(public_path('uploads/'.$products_variant->{'printzone'.$i}['image']))){
@@ -146,14 +144,13 @@ class ProductsVariantsController extends Controller
                     $request_id =  $request->{'printzone_id_'.$i};
                     $request_name =  $request->{'printzone_name_'.$i};
                     $img = time().$i.'.'.$request_img->getClientOriginalExtension();
-                    //dd($request_img);
                     $request_img->move(public_path('uploads'), $img);
+                    $products_variant->{'printzone'.$i} = array(
+                        'id' => $request_id,
+                        'title' => $request_name,
+                        'image' => $img
+                    );
                 }
-                $products_variant->{'printzone'.$i} = array(
-                    'id' => $request_id,
-                    'title' => $request_name,
-                    'image' => $img
-                );
             }
             
             if ($request->hasFile('image')){
@@ -187,7 +184,7 @@ class ProductsVariantsController extends Controller
             //  $products_variant->position = $request->position;
             $products_variant->save();
             $printzones_nb = $request->printzones_nb;
-            for($i=1; $i<$printzones_nb;$i++){
+            for($i=1; $i<$printzones_nb; $i++){
                 if ($request->hasFile('printzone'.$i)){
                     //dd($request->{'printzone'.$i});
                     if(isset($products_variant->{'printzone'.$i}['image'])){
@@ -202,12 +199,12 @@ class ProductsVariantsController extends Controller
                     $img = time().$i.'.'.$request_img->getClientOriginalExtension();
                     //dd($request_img);
                     $request_img->move(public_path('uploads'), $img);
+                    $products_variant->{'printzone'.$i} = array(
+                        'id' => $request_id,
+                        'title' => $request_name,
+                        'image' => $img
+                    );
                 }
-                $products_variant->{'printzone'.$i} = array(
-                    'id' => $request_id,
-                    'title' => $request_name,
-                    'image' => $img
-                );
             }
             
             if ($request->hasFile('image')){
