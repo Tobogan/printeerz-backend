@@ -216,18 +216,21 @@ Route::get('admin/Templates/activate/{id}', 'TemplatesController@activate')->nam
 Route::get('admin/Templates/desactivate/{id}', 'TemplatesController@desactivate')->name('desactivate_templates');
 
 /*~~~~~~~~~~~__________Templates Components Route__________~~~~~~~~~~~~*/
-Route::get('admin/TemplatesComponents/index', 'TemplatesComponentsController@index')->name('index_templatesComponents');
+Route::get('admin/TemplatesComponents/index', 'TemplateComponentsController@index')->name('index_templatesComponents');
 
-Route::get('admin/TemplatesComponents/create/{id}', 'TemplatesComponentsController@create')->name('create_templatesComponents');
+Route::get('admin/TemplatesComponents/create', 'TemplateComponentsController@create')->name('create_templatesComponents');
 
-Route::post('admin/TemplateComponents/store', 'TemplateComponentsController@store')->name('store_templateComponents');
+Route::post('admin/TemplatesComponents/store', 'TemplateComponentsController@store')->name('store_templatesComponents');
 
-Route::get('admin/TemplateComponents/edit/{id}', 'TemplateComponentsController@edit')->name('edit_templateComponents');
+Route::get('admin/TemplatesComponents/edit/{id}', 'TemplateComponentsController@edit')->name('edit_templatesComponents');
 
-Route::post('admin/TemplateComponents/update', 'TemplateComponentsController@update')->name('update_templateComponents');
+Route::post('admin/TemplatesComponents/update', 'TemplateComponentsController@update')->name('update_templatesComponents');
 
-Route::get('admin/TemplateComponents/destroy/{id}', 'TemplateComponentsController@destroy')->name('destroy_templateComponents');
+Route::get('admin/TemplatesComponents/destroy/{id}', 'TemplateComponentsController@destroy')->name('destroy_templatesComponents');
 
+Route::get('admin/TemplatesComponents/activate/{id}', 'TemplateComponentsController@activate')->name('activate_templatesComponents');
+
+Route::get('admin/TemplatesComponents/desactivate/{id}', 'TemplateComponentsController@desactivate')->name('desactivate_templatesComponents');
 
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 

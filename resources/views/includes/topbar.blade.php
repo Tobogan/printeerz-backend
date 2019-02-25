@@ -53,12 +53,9 @@
                     <div class="col-auto">
 
                         <!-- Dropdown -->
-
                         <a class="text-light">
                             <i class="fe fe-chevron-down"></i>
                         </a>
-
-
                     </div>
                 </div>
 
@@ -114,6 +111,11 @@
             <li class="nav-item px-2">
                 <a class="nav-link {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
                     <i class="fe fe-layers"></i> Gabarits
+                </a>
+            </li>
+            <li class="nav-item px-2">
+                <a class="nav-link {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
+                    <i class="fe fe-layers"></i> Composants
                 </a>
             </li>
         </ul>

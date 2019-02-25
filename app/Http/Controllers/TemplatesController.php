@@ -103,7 +103,8 @@ class TemplatesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $template = Templates::find($id);
+        return view('admin/Templates.edit', ['template' => $template]);
     }
 
     /**
@@ -113,9 +114,81 @@ class TemplatesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if (request('actual_title') == request('title')){
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'category' => 'required|string|max:255'
+            ]);
+            $template = new Templates;
+            $template->category = $request->category;
+            
+            if ($request->hasFile('thumb')){
+                $thumb = time().'.'.request()->thumb->getClientOriginalExtension();
+                request()->thumb->move(public_path('uploads'), $thumb);
+            }
+            if ($request->hasFile('full')){
+                $full = time().'1.'.request()->full->getClientOriginalExtension();
+                request()->full->move(public_path('uploads'), $full);
+            }
+            $template->image = array(
+                'thumb' => $thumb,
+                'full' => $full
+            );
+            $template->size = array(
+                'width' => $request->width,
+                'height' => $request->height
+            );
+            $template->origin = array(
+                'x' => $request->origin_x,
+                'y' => $request->origin_y
+            );
+            $template->components_ids = $request->get('components_ids');
+            $template->position = $request->position;
+            $template->is_active = $request->is_active; 
+            $template->is_deleted = $request->is_deleted;
+            $template->save();
+            $templates = Templates::all();
+            return view('admin/Templates.index', ['templates' => $templates]);
+        }
+        else {
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'category' => 'required|string|max:255'
+            ]);
+            $template = new Templates;
+            $template->title = $request->title;
+            $template->category = $request->category;
+            
+            if ($request->hasFile('thumb')){
+                $thumb = time().'.'.request()->thumb->getClientOriginalExtension();
+                request()->thumb->move(public_path('uploads'), $thumb);
+            }
+            if ($request->hasFile('full')){
+                $full = time().'1.'.request()->full->getClientOriginalExtension();
+                request()->full->move(public_path('uploads'), $full);
+            }
+            $template->image = array(
+                'thumb' => $thumb,
+                'full' => $full
+            );
+            $template->size = array(
+                'width' => $request->width,
+                'height' => $request->height
+            );
+            $template->origin = array(
+                'x' => $request->origin_x,
+                'y' => $request->origin_y
+            );
+            $template->components_ids = $request->get('components_ids');
+            $template->position = $request->position;
+            $template->is_active = $request->is_active; 
+            $template->is_deleted = $request->is_deleted;
+            $template->save();
+            $templates = Templates::all();
+            return view('admin/Templates.index', ['templates' => $templates]);
+        }
     }
 
     /**

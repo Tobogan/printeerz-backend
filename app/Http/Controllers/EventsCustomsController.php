@@ -49,23 +49,16 @@ class EventsCustomsController extends Controller
             'title' => 'required|string|max:255',
             'comments' => 'max:750'
         ]);
-        
-        $events_customs = new Events_customs;
-        
-        $event_product_ids[]=$request->get('event_product_ids');
-        $events_customs->event_product_ids=$event_product_ids;
-
-        $event_product_variants_ids[]=$request->get('event_product_variants_ids');
-        $events_customs->event_product_variants_ids=$event_product_variants_ids;
-
-        $events_customs->position = array(
+        $events_custom = new Events_customs;
+        $events_custom->event_product_ids=$request->get('event_product_ids');
+        $events_custom->event_product_variants_ids=$request->get('event_product_variants_ids');
+        $events_custom->position = array(
             'width' => $request->width,
             'height' => $request->height,
             'origin_x' => $request->origin_x,
             'origin_y' => $request->origin_y
         );
-
-        $events_customs->template = array(
+        $events_custom->template = array(
             'id' => $request->template_id,
             'options' => array(
                 'template_component_id' => $request->template_component_id,
@@ -81,29 +74,22 @@ class EventsCustomsController extends Controller
                 ),
             ),    // tu viens de finir cette partie et on est le 15/01  
         );
-
-        $events_customs->title = $request->title;
-        
+        $events_custom->title = $request->title;
         if ($request->hasFile('thumb')){
-            $photo = time().'.'.request()->thumb->getClientOriginalExtension();
-            request()->thumb->move(public_path('uploads'), $photo);
-
-            $events_customs->thumb = $photo;
+            $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
+            request()->thumb->move(public_path('uploads'), $photo1);
+            $events_custom->thumb = $photo1;
         }
-
         if ($request->hasFile('image')){
             $thumb_name = time().'.1'.request()->image->getClientOriginalExtension();
             request()->image->move(public_path('uploads'), $thumb_name);
-
-            $events_customs->image = $photo;
+            $events_custom->image = $photo;
         }
-
-        $events_customs->comments = $request->comments;
-        $events_customs->is_active = $request->is_active;
-        $events_customs->is_deleted = $request->is_deleted;
-
-        $events_customs->save();
-        return view('admin/Events_customs.show',['events_customs' => $events_customs, 'id' => $events_customs->id])->with('status', 'Le produit a été correctement ajouté.');    
+        $events_custom->comments = $request->comments;
+        $events_custom->is_active = $request->is_active;
+        $events_custom->is_deleted = $request->is_deleted;
+        $events_custom->save();
+        return view('admin/Events_customs.show',['events_custom' => $events_custom, 'id' => $events_custom->id])->with('status', 'Le produit a été correctement ajouté.');    
     }
 
     /**
