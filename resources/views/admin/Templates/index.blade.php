@@ -89,6 +89,11 @@
                                             Hauteur
                                         </a>
                                     </th>
+                                    <th>
+                                        <a href="#" class="text-muted sort" data-sort="templates-components">
+                                            Composants
+                                        </a>
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -107,7 +112,19 @@
                                     @else
                                         <td class="templates-size-height">...</td>
                                     @endif
-
+                                    @if($template->components_ids != null)
+                                        <td class="templates-components">
+                                            @foreach($templates_components as $component)
+                                                @foreach($template->components_ids as $component_id)
+                                                    @if ($component_id == $component->_id)
+                                                        - {{ $component->title }} <br>
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </td>
+                                    @else
+                                        <td class="templates-components">...</td>
+                                    @endif
                                    
                                     <td class="text-right">
                                         <div class="dropdown">
@@ -121,11 +138,11 @@
                                                     Modifier le gabarit
                                                 </a>
                                                 @if ($template->is_active == true)
-                                                <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')"
-                                                    href="{{route('desactivate_templates', $template->id)}}">
-                                                    Désactiver </a>
+                                                    <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')"
+                                                        href="{{route('desactivate_templates', $template->id)}}">
+                                                        Désactiver </a>
                                                 @else
-                                                <a class="dropdown-item" href="{{route('activate_templates', $template->id)}}">Activer</a>
+                                                    <a class="dropdown-item" href="{{route('activate_templates', $template->id)}}">Activer</a>
                                                 @endif
                                                 <hr class="dropdown-divider">
                                                 <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')"

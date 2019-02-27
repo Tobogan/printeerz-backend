@@ -12,11 +12,11 @@
                         <div class="col">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
-                                CREATION
+                                MODIFICATION
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Créer un gabarit
+                                Modifier un gabarit
                             </h1>
                         </div>
                         <div class="col-auto">

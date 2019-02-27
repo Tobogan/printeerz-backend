@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Templates;
+use App\Template_components;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,7 +25,9 @@ class TemplatesController extends Controller
     public function index()
     {
         $templates = Templates::all();
-        return view('admin/Templates.index', ['templates' => $templates]);
+        $templates_components = Template_components::all();
+
+        return view('admin/Templates.index', ['templates' => $templates, 'templates_components' => $templates_components]);
     }
 
     /**
@@ -80,8 +83,7 @@ class TemplatesController extends Controller
         $template->is_deleted = $request->is_deleted;
 
         $template->save();
-        $templates = Templates::all();
-        return view('admin/Templates.index', ['templates' => $templates]);
+        return redirect('admin/Templates/index')->with('status', 'Le gabarit a été correctement ajouté.');
     }
 
     /**
@@ -122,6 +124,7 @@ class TemplatesController extends Controller
                 'category' => 'required|string|max:255'
             ]);
             $template = new Templates;
+            $template->title = $request->title;
             $template->category = $request->category;
             
             if ($request->hasFile('thumb')){
@@ -132,10 +135,22 @@ class TemplatesController extends Controller
                 $full = time().'1.'.request()->full->getClientOriginalExtension();
                 request()->full->move(public_path('uploads'), $full);
             }
-            $template->image = array(
-                'thumb' => $thumb,
-                'full' => $full
-            );
+            if (isset($thumb) && isset($full)) {
+                $template->image = array(
+                    'thumb' => $thumb,
+                    'full' => $full
+                );
+            }
+            else if (isset($thumb) && !isset($full)) {
+                $template->image = array(
+                    'thumb' => $thumb
+                );
+            }
+            else if (!isset($thumb) && isset($full)) {
+                $template->image = array(
+                    'full' => $full
+                );
+            }
             $template->size = array(
                 'width' => $request->width,
                 'height' => $request->height
@@ -149,8 +164,7 @@ class TemplatesController extends Controller
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
             $template->save();
-            $templates = Templates::all();
-            return view('admin/Templates.index', ['templates' => $templates]);
+            return redirect('admin/Templates/index')->with('status', 'Le gabarit a été correctement modifié.');
         }
         else {
             $validatedData = $request->validate([
@@ -169,10 +183,23 @@ class TemplatesController extends Controller
                 $full = time().'1.'.request()->full->getClientOriginalExtension();
                 request()->full->move(public_path('uploads'), $full);
             }
-            $template->image = array(
-                'thumb' => $thumb,
-                'full' => $full
-            );
+            if (isset($thumb) && isset($full)) {
+                $template->image = array(
+                    'thumb' => $thumb,
+                    'full' => $full
+                );
+            }
+            else if (isset($thumb) && !isset($full)) {
+                $template->image = array(
+                    'thumb' => $thumb
+                );
+            }
+            else if (!isset($thumb) && isset($full)) {
+                $template->image = array(
+                    'full' => $full
+                );
+            }
+            
             $template->size = array(
                 'width' => $request->width,
                 'height' => $request->height
@@ -186,8 +213,7 @@ class TemplatesController extends Controller
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
             $template->save();
-            $templates = Templates::all();
-            return view('admin/Templates.index', ['templates' => $templates]);
+            return redirect('admin/Templates/index')->with('status', 'Le gabarit a été correctement modifié.');
         }
     }
 
@@ -209,7 +235,7 @@ class TemplatesController extends Controller
             unlink($file_path_full);
         }
         $template->delete();
-        return redirect('admin/Templates/index')->with('status', 'Le client a été correctement supprimé.');
+        return redirect('admin/Templates/index')->with('status', 'Le gabarit a été correctement supprimé.');
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a template function in index template__________~~~~~~~~~~~~-*/
