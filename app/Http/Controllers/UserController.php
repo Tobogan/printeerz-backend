@@ -29,7 +29,10 @@ class UserController extends Controller
     public function index()
     {   
         $users = User::all();
-        return view('admin/User.index', ['users' => $users, 'gcs' => $gcs, 'disk' => $disk]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        $exists = $disk->exists('file.jpg');
+        return view('admin/User.index', ['users' => $users, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
     }
 
     /**
@@ -68,7 +71,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->is_active = $request->is_active;
         $user->is_deleted = $request->is_deleted;
-        $disk = Storage::disk('gcs');
+        $disk = Storage::disk('s3');
         if ($request->hasFile('profile_img')){
             // Get file
             $file = $request->file('profile_img');
@@ -79,7 +82,9 @@ class UserController extends Controller
             // Resize img
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
             // Upload the file
-            $disk->put($filePath, $img);
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
             // Put in database
             $user->profile_img = $filePath;
         }
@@ -145,7 +150,7 @@ class UserController extends Controller
 
             // Update Profile image
             if ($request->hasFile('profile_img')){
-                $disk = Storage::disk('gcs');
+                $disk = Storage::disk('s3');
                 // Get current image path
                 $oldPath = $user->profile_img;
                 // Get new image
@@ -157,9 +162,10 @@ class UserController extends Controller
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
-                $disk->put($newFilePath, $img);
+                $disk->put($newFilePath, $img, 'public');
                 // Put in database
                 $user->profile_img = $newFilePath;
+                unlink(public_path() . '/' . $name);
                 if(!empty($user->profile_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
@@ -221,8 +227,9 @@ class UserController extends Controller
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
-                $disk = Storage::disk('gcs');
-                $disk->put($newFilePath, $img);
+                $disk = Storage::disk('s3');
+                $disk->put($newFilePath, $img, 'public-read');
+                unlink(public_path() . '/' . $name);
                 // Put in database
                 $user->profile_img = $newFilePath;
                 if(!empty($user->profile_img) && $disk->exists($newFilePath)){
@@ -244,7 +251,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         // Delete Profile image
-        $disk = Storage::disk('gcs');
+        $disk = Storage::disk('s3');
         $filePath = $user->profile_img;
         if(!empty($user->profile_img) && $disk->exists($filePath)){
             $disk->delete($filePath);
