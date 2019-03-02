@@ -111,20 +111,27 @@
                     <i class="fe fe-user"></i> Utilisateurs
                 </a>
             </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
-                    <i class="fe fe-layers"></i> Zones d'impression
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle " href="#" id="topnavDocumentation" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fe fe-settings"></i> Settings
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="topnavDocumentation">
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
+                    Zones d'impression
                 </a>
-            </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
-                    <i class="fe fe-layers"></i> Gabarits
+                </li>
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
+                    Gabarits
                 </a>
-            </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
-                    <i class="fe fe-layers"></i> Composants
+                </li>
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
+                    Composants
                 </a>
+                </li>
+            </ul>
             </li>
         </ul>
     </div>
