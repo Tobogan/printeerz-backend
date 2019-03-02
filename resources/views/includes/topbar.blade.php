@@ -16,16 +16,24 @@
                     <div class="col-auto">
                         <!-- Avatar -->
                         <a class="avatar avatar-sm">
-                            @if(file_exists(public_path('uploads/'.Auth::user()->profile_img)) &&
-                            !empty(Auth::user()->profile_img))
-                            <img src="/uploads/{{ Auth::user()->profile_img }}" alt="..." class="avatar-img rounded-circle">
-                            @else
                             <?php 
-                            $avatarLastName = Auth::user()->lastname; 
-                            $avatarFirstName = Auth::user()->firstname; 
-                            $avatarInitials = $avatarFirstName[0] . $avatarLastName[0] ;
+                            $disk = Storage::disk('gcs');
+                            $gcs = 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET');
                             ?>
-                            <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
+                            @if(!empty(Auth::user()->profile_img) && $disk->exists(Auth::user()->profile_img))
+                            <div class="avatar avatar-sm">
+                                <img src="{{$gcs . Auth::user()->profile_img}}" class="avatar-img rounded-circle"
+                                    alt="img_profile">
+                            </div>
+                            @else <!--Initials-->
+                            <div class="avatar-sm">
+                                <?php 
+                                    $avatarLastName = Auth::user()->lastname; 
+                                    $avatarFirstName = Auth::user()->firstname; 
+                                    $avatarInitials = $avatarFirstName[0] . $avatarLastName[0];
+                                ?>
+                                <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
+                            </div>
                             @endif
                         </a>
 

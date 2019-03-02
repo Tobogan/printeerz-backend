@@ -121,25 +121,17 @@
             <div class="row">
                 <div class="col-12">
                     <p class="h3">Image de profil</p>
-                    <p class="mb-4">Ajouter une image de profil</p>
+                    <p>Ajouter une image de profil</p>
                 </div>
                 <div class="col-12">
                     <!-- First name -->
-                    <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
-                                <div class="custom-file">
-                                    {!! Form::file('profile_img', array('class' => 'custom-file-input', 'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-12">
+                    <!-- First name -->
+                    <div class="custom-file">
+                        {!! Form::file('profile_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                        <label class="custom-file-label" for="photo_profile">Ajouter un fichier</label>
                     </div>
+                </div>  
                 </div>
             </div>
             <hr class="mt-4 mb-5">

@@ -92,10 +92,9 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td class="user-avatar">
-                                    @if(file_exists(public_path('uploads/'.$user->profile_img)) &&
-                                    !empty($user->profile_img))
+                                    @if(!empty($user->profile_img) && $disk->exists($user->profile_img))
                                     <div class="avatar avatar-sm">
-                                        <img src="/uploads/{{$user->profile_img}}" class="avatar-img rounded-circle"
+                                        <img src="{{$gcs . $user->profile_img}}" class="avatar-img rounded-circle"
                                             alt="img_profile">
                                     </div>
                                     @else <!--Initials-->
