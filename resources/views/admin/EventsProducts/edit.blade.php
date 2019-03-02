@@ -23,7 +23,7 @@
 
             <!--~~~~~~~~~~~___________REFERENCE__________~~~~~~~~~~~~-->
             <div class="form-group">
-                {!! Form::label('référence', 'Entrer la référence fournisseur : ') !!}
+                {!! Form::label('reference', 'Entrer la référence fournisseur : ') !!}
                 {!! Form::text('reference', $product->reference, ['class' => 'form-control']) !!}
             </div>
 
@@ -64,16 +64,8 @@
 
             {!! Form::label('description', 'Description : ') !!}
             <textarea class="form-control" name="description" maxlength="350" rows="4" cols="50" placeholder="Vous pouvez ajouter ici une description concernant le produit."></textarea>
-    
     <hr>
-        
-               
-        
-            
-            <!--~~~~~~~~~~~___________DESCRIPTION__________~~~~~~~~~~~~-->
-           
         <div>
-        
         <input type="hidden" class="form-control" name="actual_nom" value= '{{ $product->nom }}'>
 
         {!! Form::submit('Modifier', ['class' => 'btn btn-primary btn-sm', 'style' => 'float: right']) !!}       
@@ -87,77 +79,6 @@
 </div>
 </div>
  @section('javascripts')
-{{-- <script type="text/javascript">
-    $("select[name='select_zone']").change(function(){
-    var value = $(this).val();
-    $("input#optionOutput").val(value);
-    });
-</script>  --}}
 
-    <!--~~~~~~~~~~~___________SCRIPT ANIMATION INPUT IMAGE SELON ZONE SELECT__________~~~~~~~~~~~~-->
-<script>
-    
-/*$(document).ready(function(){
-    for(i=1; i<4; i++) {
-        $('.color' + i + '_FAV_image').fadeOut();
-        $('.color' + i + '_FAR_image').fadeOut();
-        $('.color' + i + '_coeur_image').fadeOut();
-    }
-    $('#checkbox_FAV_color1').change(function(){
-        if(this.checked)
-            $('.color1_FAV_image').fadeIn('slow');
-        else
-            $('.color1_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAV_color2').change(function(){
-        if(this.checked)
-            $('.color2_FAV_image').fadeIn('slow');
-        else
-            $('.color2_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAV_color3').change(function(){
-        if(this.checked)
-            $('.color3_FAV_image').fadeIn('slow');
-        else
-            $('.color3_FAV_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color1').change(function(){
-        if(this.checked)
-            $('.color1_FAR_image').fadeIn('slow');
-        else
-            $('.color1_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color2').change(function(){
-        if(this.checked)
-            $('.color2_FAR_image').fadeIn('slow');
-        else
-            $('.color2_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_FAR_color3').change(function(){
-        if(this.checked)
-            $('.color3_FAR_image').fadeIn('slow');
-        else
-            $('.color3_FAR_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color1').change(function(){
-        if(this.checked)
-            $('.color1_coeur_image').fadeIn('slow');
-        else
-            $('.color1_coeur_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color2').change(function(){
-        if(this.checked)
-            $('.color2_coeur_image').fadeIn('slow');
-        else
-            $('.color2_coeur_image').fadeOut('slow');
-    });
-    $('#checkbox_coeur_color3').change(function(){
-        if(this.checked)
-            $('.color3_coeur_image').fadeIn('slow');
-        else
-            $('.color3_coeur_image').fadeOut('slow');
-    });
-});*/
-</script>
 @endsection
 @endsection

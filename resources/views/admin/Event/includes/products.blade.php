@@ -27,7 +27,7 @@
                                             </ul>
                                         </div>
                                         <div class="col-auto">
-                                            <a class="btn btn-white btn-sm">Voir le produit</a>
+                                            <a class="btn btn-white btn-sm" href="{{route('show_eventsCustoms', $events_product->id)}}">Voir le produit</a>
                                         </div>
                                     </div>
                                 </div>
@@ -82,13 +82,13 @@
                         </p>
                         <!-- Button -->
                         <div><a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEventsProductModal">
-                                Ajouter une variante
+                                Ajouter un produit
                         </a></div>
                     </div>
                 </div>
             @else
             <div><a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEventsProductModal">
-                    Ajouter une variante
+                    Ajouter un produit
             </a></div>
             @endif
 

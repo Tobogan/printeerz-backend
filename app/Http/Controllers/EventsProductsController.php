@@ -114,7 +114,6 @@ class EventsProductsController extends Controller
     {
         $events_product = Events_products::find($id);
         return view('admin/EventsProducts.edit', ['events_products' => $events_products]);
- 
     }
 
     /**
