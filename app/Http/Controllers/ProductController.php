@@ -64,9 +64,9 @@ class ProductController extends Controller
         $product->gender = $request->gender;
         $product->product_type = $request->product_type;
         $product->printzones_id = $request->get('printzones_id'); //les printzones dispo sur ce produit
-        $product->tags = $request->get('tags');
+        $product->tags=$request->get('tags');
         $product->description = $request->description;
-        $variants_id = $request->get('variants_id');
+        $variants_id=$request->get('variants_id');
         $product->variants_id=$variants_id;
         $product->is_active = $request->is_active; //penser à mettre l'input hidden
         $product->is_deleted = $request->is_deleted;

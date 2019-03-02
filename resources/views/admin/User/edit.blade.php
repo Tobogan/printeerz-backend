@@ -34,7 +34,8 @@
             </div>
             @endif
 
-            {!! Form::open(['action' => 'UserController@update', 'id' => $user->id, 'files' => true, 'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => 'UserController@update', 'id' => $user->id, 'files' => true, 'class' =>
+            'mb-4']) !!}
             {{ csrf_field() }}
 
             <div class="row">
@@ -46,7 +47,8 @@
                             Nom d'utilisateur
                         </label>
                         <!-- Input -->
-                        <input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}" required autofocus>
+                        <input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}"
+                            required autofocus>
                         @if ($errors->has('username'))
                         <span class="help-block">
                             <strong>{{ $errors->first('username') }}</strong>
@@ -59,7 +61,8 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
                         <label for="lastname" class="label">Nom</label>
-                        <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}" required autofocus>
+                        <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}"
+                            required autofocus>
 
                         @if ($errors->has('lastname'))
                         <span class="help-block">
@@ -71,7 +74,8 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                         <label for="firstname" class="label">Prénom</label>
-                        <input id="name" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}" required autofocus>
+                        <input id="name" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}"
+                            required autofocus>
 
                         @if ($errors->has('firstname'))
                         <span class="help-block">
@@ -83,7 +87,8 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="label">E-Mail</label>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
+                        <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}"
+                            required>
                         @if ($errors->has('email'))
                         <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -119,26 +124,15 @@
             <div class="row">
                 <div class="col-12">
                     <p class="h3">Image de profil</p>
-                    <p class="mb-4">Ajouter une image de profil</p>
+                    <p>Ajouter une image de profil</p>
                 </div>
                 <div class="col-12">
                     <!-- First name -->
-                    <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
-                                <div class="custom-file">
-                                    {!! Form::file('profile_img', array('class' => 'custom-file-input', 'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="custom-file">
+                        {!! Form::file('profile_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                        <label class="custom-file-label" for="photo_profile">Ajouter un fichier</label>
                     </div>
-                </div>
+                </div>  
             </div>
             <hr class="mt-4 mb-5">
             <div class="row">
@@ -147,35 +141,35 @@
                     <p class="mb-4">Sélectionner le rôle de l'utilisateur</p>
                 </div>
                 @if($user->role == '1')
-                    <div class="col-12">
-                        <div class="form-group">
-                            <select name="role" id="role" class="form-control" data-toggle="select">
-                                <option value="1" selected>Opérateur</option>
-                                <option value="3">Technicien</option>
-                                <option value="2">Administrateur</option>
-                            </select>
-                        </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="role" id="role" class="form-control" data-toggle="select">
+                            <option value="1" selected>Opérateur</option>
+                            <option value="3">Technicien</option>
+                            <option value="2">Administrateur</option>
+                        </select>
                     </div>
+                </div>
                 @elseif($user->role == '2')
-                    <div class="col-12">
-                        <div class="form-group">
-                            <select name="role" id="role" class="form-control" data-toggle="select">
-                                <option value="1">Opérateur</option>
-                                <option value="3">Technicien</option>
-                                <option value="2" selected>Administrateur</option>
-                            </select>
-                        </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="role" id="role" class="form-control" data-toggle="select">
+                            <option value="1">Opérateur</option>
+                            <option value="3">Technicien</option>
+                            <option value="2" selected>Administrateur</option>
+                        </select>
                     </div>
+                </div>
                 @else
-                    <div class="col-12">
-                        <div class="form-group">
-                            <select name="role" id="role" class="form-control" data-toggle="select">
-                                <option value="1">Opérateur</option>
-                                <option value="3" selected>Technicien</option>
-                                <option value="2">Administrateur</option>
-                            </select>
-                        </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="role" id="role" class="form-control" data-toggle="select">
+                            <option value="1">Opérateur</option>
+                            <option value="3" selected>Technicien</option>
+                            <option value="2">Administrateur</option>
+                        </select>
                     </div>
+                </div>
                 @endif
                 <input type="hidden" class="form-control" name="is_active" value=true>
                 <input type="hidden" class="form-control" name="is_deleted" value=false>
@@ -187,7 +181,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        <button type="submit" class="btn btn-primary" style="float:right;">
+                        <button type="submit" class="btn btn-primary" style="float:right;" id="submit">
                             Modifier l'utilisateur
                         </button>
                         <a class='btn btn-secondary' style="float: left;" href="/admin/User/index">Annuler</a>
@@ -198,4 +192,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascripts')
+<script>
+
+</script>
 @endsection
