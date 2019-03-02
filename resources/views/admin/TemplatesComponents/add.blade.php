@@ -40,78 +40,92 @@
                 {{csrf_field()}}
                 <div class="col-12">
                     <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Type
-                        </label>
-                        <!-- Input -->
-                        <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="form-group">
-                                <select name="type" id="type" class="form-control" data-toggle="select">
-                                    <option value="input">Input</option>
-                                    <option value="image">Image</option>
-                                </select>
+                                <!-- Label -->
+                                <label>
+                                    Nom du gabarit
+                                </label>
+                                <!-- Input -->
+                                {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                !!}
+                            </div>
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label>
+                                    Type
+                                </label>
+                                <div class="form-group">
+                                    <select name="font-weight" id="type" class="form-control" data-toggle="select">
+                                        <option value="input">Champ de texte</option>
+                                        <option value="text">Texte fixe</option>
+                                        <option value="image">Image</option>
+                                        <option value="instagram" disabled>Instagram</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr class="mt-4 mb-5">
-
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Image
-                        </label>
-                        <!-- Input -->
-                        {!! Form::file('image', null, ['class' => 'form-control']) !!}
-                    </div>
-                </div>                
-
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur de la zone :']) !!}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Image
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        {!! Form::file('image', null, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position X d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position X d\'origine sur le plateau :']) !!}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille du gabarit
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Hauteur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder'
+                                        => '']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Largeur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder'
+                                        => '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,7 +147,8 @@
                                             X (cm)
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>'0']) !!}
+                                        {!! Form::number('origin_x', null, ['class' => 'form-control',
+                                        'placeholder' =>'0']) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -144,7 +159,8 @@
                                             Y (cm)
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' => '0']) !!}
+                                        {!! Form::number('origin_y', null, ['class' => 'form-control',
+                                        'placeholder' => '0']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +186,8 @@
                                             Minimum
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::number('min', null, ['class' => 'form-control', 'placeholder' => '1']) !!} </div>
+                                        {!! Form::number('min', null, ['class' => 'form-control', 'placeholder' =>
+                                        '1']) !!} </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <!-- First name -->
@@ -180,7 +197,8 @@
                                             Maximum
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::number('max', null, ['class' => 'form-control', 'placeholder' => '99']) !!} </div>
+                                        {!! Form::number('max', null, ['class' => 'form-control', 'placeholder' =>
+                                        '99']) !!} </div>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +222,8 @@
                                         Nom
                                     </label>
                                     <!-- Input -->
-                                    {!! Form::text('font_name_1', null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                    {!! Form::text('font_name_1', null, ['class' => 'form-control', 'placeholder'
+                                    => 'Entrer le nom']) !!}
                                 </div>
                             </div>
                             <div class="col-12">
@@ -212,12 +231,13 @@
                                 <div class="custom-file">
                                     {!! Form::file('font_url_1', array('class' => 'form-control custom-file-input',
                                     'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
+                                    <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la
+                                        police</label>
                                 </div>
                             </div>
                             <hr class="mt-4 mb-5">
                             <div class="col-12">
-                               <div class="form-group">
+                                <div class="form-group">
                                     <!-- Label -->
                                     <label>
                                         Epaisseur
@@ -245,7 +265,8 @@
                                         Transformation
                                     </label>
                                     <div class="form-group">
-                                        <select name="text-transform" id="font_transform_1" class="form-control" data-toggle="select">
+                                        <select name="text-transform" id="font_transform_1" class="form-control"
+                                            data-toggle="select">
                                             <option value="none">Aucune</option>
                                             <option value="uppercase">Tout en Majuscules</option>
                                             <option value="capitalize">Première lettre en Majuscule</option>
@@ -263,7 +284,8 @@
                                         Première lettre ou symbole avant le texte
                                     </label>
                                     <!-- Input -->
-                                    {!! Form::text('font_first_letter_1', null, ['class' => 'form-control', 'placeholder' => '#']) !!}
+                                    {!! Form::text('font_first_letter_1', null, ['class' => 'form-control',
+                                    'placeholder' => '#']) !!}
                                 </div>
                             </div>
                         </div>
