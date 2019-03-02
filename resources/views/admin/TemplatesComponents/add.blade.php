@@ -55,11 +55,30 @@
                             Type
                         </label>
                         <!-- Input -->
-                        {!! Form::text('type', null, ['class' => 'form-control', 'placeholder' => 'Type'])
-                        !!}
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select name="type" id="type" class="form-control" data-toggle="select">
+                                    <option value="input">Input</option>
+                                    <option value="image">Image</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr class="mt-4 mb-5">
+
+                <div class="col-12 col-md-6">
+                    <!-- First name -->
+                    <div class="form-group">
+                        <!-- Label -->
+                        <label>
+                            Image
+                        </label>
+                        <!-- Input -->
+                        {!! Form::file('image', null, ['class' => 'form-control']) !!}
+                    </div>
+                </div>                
+
                 <div class="col-12 col-md-6">
                     <!-- First name -->
                     <div class="form-group">

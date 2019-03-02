@@ -53,15 +53,16 @@ class TemplateComponentsController extends Controller
         $template_component = new Template_components;
         $template_component->title = $request->title;
         $template_component->type = $request->type;
-        
-        // if ($request->hasFile('font_url')){
-        //     $font_url = time().'.'.request()->font_url->getClientOriginalExtension();
-        //     request()->font_url->move(public_path('uploads'), $font_url);
-        // }
-        $template_component->characters = array(
-            'min' => $request->min,
-            'max' => $request->max
-        );
+        //  si requête type image j'injecte l'image
+        if($request->type == 'image') {
+            if ($request->hasFile('image')){
+                $image = time().'.'.request()->image->getClientOriginalExtension();
+                request()->image->move(public_path('uploads'), $image);
+    
+                $template_component->image = $image;
+            }
+        }
+        //  data communes aux deux types de component maggle
         $template_component->size = array(
             'width' => $request->width,
             'height' => $request->height
@@ -70,58 +71,71 @@ class TemplateComponentsController extends Controller
             'x' => $request->origin_x,
             'y' => $request->origin_y
         );
-        $template_component->highlight = array(
-            'available' => $request->available,
-            'always' => $request->always
-        );
         $template_component->fonts = array();
-        for($i=1; $i<5; $i++){
-            if ($request->hasFile('font_url_'.$i)){
-                // if(isset($template_component->{'font'.$i}['url'])){
-                //     $file_path_url = public_path('uploads/'.$template_component->{'font'.$i}['url']);
-                //     if(file_exists(public_path('uploads/'.$template_component->{'font'.$i}['url']))){
-                //         unlink($file_path_url);
-                //     }
-                // }
-                $request_font_url =  $request->{'font_url_'.$i};
-                $request_font_id =  $request->{'font_id_'.$i};
-                $request_font_name =  $request->{'font_name_'.$i};
-                $request_font_weight =  $request->{'font_weight_'.$i};
-                $request_font_transform =  $request->{'font_transform_'.$i};
-                $request_font_first_letter =  $request->{'font_first_letter_'.$i};
-                $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
-                $request_font_url->move(public_path('uploads'), $url);
-                $template_component->{'font'.$i} = array(
-                    'id' =>  $request_font_id,
-                    'name' => $request_font_name,
-                    'url' => $url,
-                    'weight' => $request_font_weight,
-                    'transform' => $request_font_transform,
-                    'first_letter' => $request_font_first_letter,
-                );
+        //  si il y a une requête type input je boucle pour chaque police
+        if($request->type == 'input') {
+            $template_component->characters = array(
+                'min' => $request->min,
+                'max' => $request->max
+            );
+            $template_component->highlight = array(
+                'available' => $request->available,
+                'always' => $request->always
+            );
+            $fonts = array();
+            for($i=1; $i<5; $i++){
+                if ($request->hasFile('font_url_'.$i)){
+                    $request_font_url =  $request->{'font_url_'.$i};
+                    $request_font_id =  $request->{'font_id_'.$i};
+                    $request_font_name =  $request->{'font_name_'.$i};
+                    $request_font_weight =  $request->{'font_weight_'.$i};
+                    $request_font_transform =  $request->{'font_transform_'.$i};
+                    $request_font_first_letter =  $request->{'font_first_letter_'.$i};
+                    $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
+                    $request_font_url->move(public_path('uploads'), $url);
+                    $font = array(
+                        'id' =>  $request_font_id,
+                        'name' => $request_font_name,
+                        'url' => $url,
+                        'weight' => $request_font_weight,
+                        'transform' => $request_font_transform,
+                        'first_letter' => $request_font_first_letter,
+                    );
+
+                    array_push($fonts , $font);
+                    
+                    /*$template_component->{'font'.$i} = array(
+                        'id' =>  $request_font_id,
+                        'name' => $request_font_name,
+                        'url' => $url,
+                        'weight' => $request_font_weight,
+                        'transform' => $request_font_transform,
+                        'first_letter' => $request_font_first_letter,
+                    );*/
+                }
+                /*else {
+                    $request_font_id =  $request->{'font_id_'.$i};
+                    $request_font_name =  $request->{'font_name_'.$i};
+                    $request_font_weight =  $request->{'font_weight_'.$i};
+                    $request_font_transform =  $request->{'font_transform_'.$i};
+                    $request_font_first_letter =  $request->{'font_first_letter_'.$i};
+                    $template_component->{'font'.$i} = array(
+                        'id' =>  $request_font_id,
+                        'name' => $request_font_name,
+                        'weight' => $request_font_weight,
+                        'transform' => $request_font_transform,
+                        'first_letter' => $request_font_first_letter,
+                    );
+                }*/
             }
-            else {
-                $request_font_id =  $request->{'font_id_'.$i};
-                $request_font_name =  $request->{'font_name_'.$i};
-                $request_font_weight =  $request->{'font_weight_'.$i};
-                $request_font_transform =  $request->{'font_transform_'.$i};
-                $request_font_first_letter =  $request->{'font_first_letter_'.$i};
-                $template_component->{'font'.$i} = array(
-                    'id' =>  $request_font_id,
-                    'name' => $request_font_name,
-                    'url' => $request_font_url,
-                    'weight' => $request_font_weight,
-                    'transform' => $request_font_transform,
-                    'first_letter' => $request_font_first_letter,
-                );
-            }
+            $template_component->fonts = $fonts;
         }
+
         $template_component->is_customizable = $request->is_customizable;
         $template_component->is_active = $request->is_active; 
         $template_component->is_deleted = $request->is_deleted;
         $template_component->save();
-        $template_components = Template_components::all();
-        return view('admin/TemplatesComponents.index', ['template_components' => $template_components]);
+        return redirect('admin/TemplatesComponents.index')->with('status', 'Le composant a été correctement crée.');
     }
 
     /**
