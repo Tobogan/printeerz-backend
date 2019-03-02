@@ -72,7 +72,7 @@ class PrintzonesController extends Controller
 
         $printzone->save();
 
-        return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement créee.');
+        return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement créee.');
     }
 
     /**
@@ -117,7 +117,7 @@ class PrintzonesController extends Controller
                 'description' => 'max:750'
             ]);
             
-            $id = $request->id;
+            $id = $request->printzones_id;
             $printzone = Printzones::find($id);
     
             $printzone->name = $request->name;
@@ -129,13 +129,11 @@ class PrintzonesController extends Controller
             $printzone->origin_y = $request->origin_y;
             $printzone->tray_width = $request->tray_width;
             $printzone->tray_height = $request->tray_height;
-            $printzone->is_active = $request->is_active;
-            $printzone->is_deleted = $request->is_deleted;
             $printzone->description = $request->description;
     
             $printzone->save();
     
-            return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement modifié.');
+            return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement modifiée.');
         }
 
         else {
@@ -147,9 +145,8 @@ class PrintzonesController extends Controller
                 'description' => 'max:750'
             ]);
             
-            $id = $request->id;
+            $id = $request->printzones_id;
             $printzone = Printzones::find($id);
-    
             $printzone->name = $request->name;
             $printzone->zone = $request->zone;
             $printzone->printer_id = $request->printer_id;
@@ -165,7 +162,7 @@ class PrintzonesController extends Controller
     
             $printzone->save();
     
-            return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement modifié.');
+            return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement modifiée.');
         }
     }
 

@@ -198,37 +198,10 @@ Route::get('admin/ProductsVariants/activate/{id}', 'ProductsVariantsController@a
 
 Route::get('admin/ProductsVariants/desactivate/{id}', 'ProductsVariantsController@desactivate')->name('desactivate_productsVariants');
 
-
-/*~~~~~~~~~~~___________Events Products Route__________~~~~~~~~~~~~*/
-Route::get('admin/EventProducts/index', 'EventProductsController@index')->name('index_eventProducts');
-
-Route::get('admin/EventProducts/create/{id}', 'EventProductsController@create')->name('create_eventProducts');
-
-Route::post('admin/EventProducts/store', 'EventProductsController@store')->name('store_eventProducts');
-
-Route::get('admin/EventProducts/edit/{id}', 'EventProductsController@edit')->name('edit_eventProducts');
-
-Route::post('admin/EventProducts/update', 'EventProductsController@update')->name('update_eventProducts');
-
-Route::get('admin/EventProducts/destroy/{id}', 'EventProductsController@destroy')->name('destroy_eventProducts');
-
-/*~~~~~~~~~~~___________Events Customs Route__________~~~~~~~~~~~~*/
-Route::get('admin/EventCustoms/index', 'EventCustomsController@index')->name('index_eventCustoms');
-
-Route::get('admin/EventCustoms/create/{id}', 'EventCustomsController@create')->name('create_eventCustoms');
-
-Route::post('admin/EventCustoms/store', 'EventCustomsController@store')->name('store_eventCustoms');
-
-Route::get('admin/EventCustoms/edit/{id}', 'EventCustomsController@edit')->name('edit_eventCustoms');
-
-Route::post('admin/EventCustoms/update', 'EventCustomsController@update')->name('update_eventCustoms');
-
-Route::get('admin/EventCustoms/destroy/{id}', 'EventCustomsController@destroy')->name('destroy_eventCustoms');
-
 /*~~~~~~~~~~~__________Templates Route__________~~~~~~~~~~~~*/
 Route::get('admin/Templates/index', 'TemplatesController@index')->name('index_templates');
 
-Route::get('admin/Templates/create/{id}', 'TemplatesController@create')->name('create_templates');
+Route::get('admin/Templates/create', 'TemplatesController@create')->name('create_templates');
 
 Route::post('admin/Templates/store', 'TemplatesController@store')->name('store_templates');
 
@@ -238,19 +211,26 @@ Route::post('admin/Templates/update', 'TemplatesController@update')->name('updat
 
 Route::get('admin/Templates/destroy/{id}', 'TemplatesController@destroy')->name('destroy_templates');
 
+Route::get('admin/Templates/activate/{id}', 'TemplatesController@activate')->name('activate_templates');
+
+Route::get('admin/Templates/desactivate/{id}', 'TemplatesController@desactivate')->name('desactivate_templates');
+
 /*~~~~~~~~~~~__________Templates Components Route__________~~~~~~~~~~~~*/
-Route::get('admin/TemplatesComponents/index', 'TemplatesComponentsController@index')->name('index_templatesComponents');
+Route::get('admin/TemplatesComponents/index', 'TemplateComponentsController@index')->name('index_templatesComponents');
 
-Route::get('admin/TemplatesComponents/create/{id}', 'TemplatesComponentsController@create')->name('create_templatesComponents');
+Route::get('admin/TemplatesComponents/create', 'TemplateComponentsController@create')->name('create_templatesComponents');
 
-Route::post('admin/TemplateComponents/store', 'TemplateComponentsController@store')->name('store_templateComponents');
+Route::post('admin/TemplatesComponents/store', 'TemplateComponentsController@store')->name('store_templatesComponents');
 
-Route::get('admin/TemplateComponents/edit/{id}', 'TemplateComponentsController@edit')->name('edit_templateComponents');
+Route::get('admin/TemplatesComponents/edit/{id}', 'TemplateComponentsController@edit')->name('edit_templatesComponents');
 
-Route::post('admin/TemplateComponents/update', 'TemplateComponentsController@update')->name('update_templateComponents');
+Route::post('admin/TemplatesComponents/update', 'TemplateComponentsController@update')->name('update_templatesComponents');
 
-Route::get('admin/TemplateComponents/destroy/{id}', 'TemplateComponentsController@destroy')->name('destroy_templateComponents');
+Route::get('admin/TemplatesComponents/destroy/{id}', 'TemplateComponentsController@destroy')->name('destroy_templatesComponents');
 
+Route::get('admin/TemplatesComponents/activate/{id}', 'TemplateComponentsController@activate')->name('activate_templatesComponents');
+
+Route::get('admin/TemplatesComponents/desactivate/{id}', 'TemplateComponentsController@desactivate')->name('desactivate_templatesComponents');
 
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 

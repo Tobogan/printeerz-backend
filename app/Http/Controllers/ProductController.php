@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Product;
 use App\Products_variants;
+use App\Printzones;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -53,9 +54,7 @@ class ProductController extends Controller
             'product_type' => 'required|string|max:255',
             'description' => 'max:750'
         ]);
-        
         $product = new Product;
-        
         $product->title = $request->title;
         $product->vendor = array(
             'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
@@ -65,10 +64,9 @@ class ProductController extends Controller
         $product->gender = $request->gender;
         $product->product_type = $request->product_type;
         $product->printzones_id = $request->get('printzones_id'); //les printzones dispo sur ce produit
-        $tags[]=$request->get('tags');
-        $product->tags=$tags;
+        $product->tags = $request->get('tags');
         $product->description = $request->description;
-        $variants_id[]=$request->get('variants_id');
+        $variants_id = $request->get('variants_id');
         $product->variants_id=$variants_id;
         $product->is_active = $request->is_active; //penser à mettre l'input hidden
         $product->is_deleted = $request->is_deleted;
@@ -83,10 +81,9 @@ class ProductController extends Controller
         }
 
         $product->save();
-        // $product = Product::find($id);
-        $products_variants = Products_variants::all();
-        return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $product->id])->with('status', 'Le produit a été correctement ajouté.');    
-    }
+        $products = Product::all();
+        return view('admin/Product.index', ['products' => $products]);
+        }
     
 
     /**
@@ -99,7 +96,8 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $products_variants = Products_variants::all();
-        return view('admin/Product.show', ['product' => $product, 'products_variants' => $products_variants]);
+        $printzones = Printzones::all();
+        return view('admin/Product.show', ['printzones' => $printzones,'product' => $product, 'products_variants' => $products_variants]);
     }
 
     /**
@@ -167,7 +165,7 @@ class ProductController extends Controller
 
             $product->save();
             }        
-            else{
+            else {
                 $validatedData = $request->validate([
                     'title' => 'required|string|max:255',
                     'gender' => 'required|string|max:255',
@@ -204,10 +202,8 @@ class ProductController extends Controller
                     }
                     $photo = time().'.'.request()->image->getClientOriginalExtension();
                     request()->image->move(public_path('uploads'), $photo);
-
                     $product->image = $photo;
                 }
-
                 $product->save();
             }
             return redirect('admin/Product/index')->with('status', 'Le produit a été correctement modifié.');

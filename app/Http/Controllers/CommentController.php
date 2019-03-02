@@ -37,7 +37,7 @@ class CommentController extends Controller
                 'status' => 'success',
                 'msg' => 'Setting created successfully',
             );
-            return response()->json($response);  // <<<<<<<<< see this line
+            return response()->json($response);
         } 
         else{
             return 'no';
@@ -53,7 +53,7 @@ class CommentController extends Controller
     public function destroy($id) {
         $comment = Comment::find($id);
         $comment->delete();
-        return response()->json();  // <<<<<<<<< see this line
+        return response()->json();
 
     }
 }

@@ -92,13 +92,8 @@ class EventController extends Controller
         $event->end_datetime = $request->end_datetime;
         $event->type = $request->type;
         $event->description = $request->description;
-
-        $event_products_id[]=$request->get('event_products_id');
-        $event->event_products_id=$event_products_id;
-
-        $employees[]=$request->get('employees');
-        $event->employees=$employees;
-
+        $event->event_products_id=$request->get('event_products_id');
+        $event->employee=$request->get('employees');
         $event->comments = array(
             'id' => $request->comment_id,
             'employee_id' => $request->employee_id,

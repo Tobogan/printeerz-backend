@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Product;
 use App\Products_variants;
+use App\Printzones;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -102,7 +103,9 @@ class ProductsVariantsController extends Controller
     public function edit($id)
     {
         $products_variant = Products_variants::find($id);
-        return view('admin/ProductsVariants.edit', ['products_variant' => $products_variant]);
+        $printzones = Printzones::all();
+        $product = Product::find($products_variant->product_id);
+        return view('admin/ProductsVariants.edit', ['product' => $product, 'printzones' => $printzones,'products_variant' => $products_variant]);
     }
 
     /**
@@ -114,7 +117,7 @@ class ProductsVariantsController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_name') == request('name')){
+        if (request('actual_color') == request('color')){
             $validatedData = $request->validate([
                 'color' => 'required|string|max:255',
                 'size' => 'required|string|max:255',
@@ -122,21 +125,33 @@ class ProductsVariantsController extends Controller
             ]);
             $pv_id = $request->products_variant_id;
             $products_variant = Products_variants::find($pv_id);
-            $products_variant->name = $request->name;
             $products_variant->vendor = array(
                 'sku' => $request->vendor_sku,
                 'quantity' => $request->vendor_quantity
             );
             $products_variant->quantity = $request->quantity;
-            $products_variant->position = $request->position;
-            $products_variant->product_zones = array(
-                'id' => $request->product_zone_id,
-                'title' => $request->product_zone_title,
-                'image' => $request->product_zone_image
-            );
-            $products_variant->is_active = $request->is_active;
-            $products_variant->is_deleted = $request->is_deleted;
             $products_variant->save();
+            $printzones_nb = $request->printzones_nb;
+            for($i=1; $i<$printzones_nb; $i++){
+                if ($request->hasFile('printzone'.$i)){
+                    if(isset($products_variant->{'printzone'.$i}['image'])){
+                        $file_path_image = public_path('uploads/'.$products_variant->{'printzone'.$i}['image']);
+                        if(file_exists(public_path('uploads/'.$products_variant->{'printzone'.$i}['image']))){
+                            unlink($file_path_image);
+                        }
+                    }
+                    $request_img =  $request->{'printzone'.$i};
+                    $request_id =  $request->{'printzone_id_'.$i};
+                    $request_name =  $request->{'printzone_name_'.$i};
+                    $img = time().$i.'.'.$request_img->getClientOriginalExtension();
+                    $request_img->move(public_path('uploads'), $img);
+                    $products_variant->{'printzone'.$i} = array(
+                        'id' => $request_id,
+                        'title' => $request_name,
+                        'image' => $img
+                    );
+                }
+            }
             
             if ($request->hasFile('image')){
                 $file_path_image = public_path('uploads/'.$products_variant->image);
@@ -150,8 +165,9 @@ class ProductsVariantsController extends Controller
             $products_variant->save();
             $products_variants = Products_variants::all();
             $product = Product::find($products_variant->product_id);
-            return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
-        }
+            $printzones = Printzones::all();
+            return view('admin/Product.show',['printzones' => $printzones,'products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
+         }
         else {
             $validatedData = $request->validate([
                 'color' => 'required|string|max:255',
@@ -160,21 +176,36 @@ class ProductsVariantsController extends Controller
             ]);
             $pv_id = $request->products_variant_id;
             $products_variant = Products_variants::find($pv_id);
-            $products_variant->name = $request->name;
             $products_variant->vendor = array(
                 'sku' => $request->vendor_sku,
                 'quantity' => $request->vendor_quantity
             );
             $products_variant->quantity = $request->quantity;
-            $products_variant->position = $request->position;
-            $products_variant->product_zones = array(
-                'id' => $request->product_zone_id,
-                'title' => $request->product_zone_title,
-                'image' => $request->product_zone_image
-            );
-            $products_variant->is_active = $request->is_active;
-            $products_variant->is_deleted = $request->is_deleted;
+            //  $products_variant->position = $request->position;
             $products_variant->save();
+            $printzones_nb = $request->printzones_nb;
+            for($i=1; $i<$printzones_nb; $i++){
+                if ($request->hasFile('printzone'.$i)){
+                    //dd($request->{'printzone'.$i});
+                    if(isset($products_variant->{'printzone'.$i}['image'])){
+                        $file_path_image = public_path('uploads/'.$products_variant->{'printzone'.$i}['image']);
+                        if(file_exists(public_path('uploads/'.$products_variant->{'printzone'.$i}['image']))){
+                            unlink($file_path_image);
+                        }
+                    }
+                    $request_img =  $request->{'printzone'.$i};
+                    $request_id =  $request->{'printzone_id_'.$i};
+                    $request_name =  $request->{'printzone_name_'.$i};
+                    $img = time().$i.'.'.$request_img->getClientOriginalExtension();
+                    //dd($request_img);
+                    $request_img->move(public_path('uploads'), $img);
+                    $products_variant->{'printzone'.$i} = array(
+                        'id' => $request_id,
+                        'title' => $request_name,
+                        'image' => $img
+                    );
+                }
+            }
             
             if ($request->hasFile('image')){
                 $file_path_image = public_path('uploads/'.$products_variant->image);
@@ -188,8 +219,9 @@ class ProductsVariantsController extends Controller
             $products_variant->save();
             $products_variants = Products_variants::all();
             $product = Product::find($products_variant->product_id);
-            return view('admin/Product.show',['products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
-         }
+            $printzones = Printzones::all();
+            return view('admin/Product.show',['printzones' => $printzones,'products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
+          }
     }
 
     /**
@@ -236,3 +268,30 @@ class ProductsVariantsController extends Controller
         return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement activée.');
     }
 }
+
+           /* for($i=1; $i<10; $i++) {
+                if ($request->hasFile('{{ $i }}')){
+                    $file_path_image = public_path('uploads/'.$products_variant->{$i});
+                    if(file_exists(public_path('uploads/'.$products_variant->{$i})) && !empty($products_variant->{$i})){
+                        unlink($file_path_image);
+                    }
+                    $photo.$i = time().'.'.request()->{$i}->getClientOriginalExtension();
+                    request()->image->move(public_path('uploads'), $photo.$i);
+                    $products_variant->product_zones = array(
+                        'id' => $request->product_zone_id1,
+                        'title' => $request->product_zone_title1,
+                        'image' => $photo1
+                    );
+                }
+            }*/
+            
+            // $product = Product::find($products_variant->product_id);
+            // if($product->printzones_id) {
+            //     foreach($product->printzones_id as $print) {
+            //         if ($request->hasFile('{{$print}}')){
+            //             $photo = time().'.'.request()->{$print}->getClientOriginalExtension();
+            //             request()->{$print}->move(public_path('uploads'), $photo);
+            //             $products_variant->{$print} = $photo;
+            //         }
+            //     }
+            // }

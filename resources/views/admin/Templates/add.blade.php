@@ -12,11 +12,11 @@
                         <div class="col">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
-                                MODIFICATION
+                                CREATION
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                {{$printzone->name}}
+                                Créer un gabarit
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -34,27 +34,28 @@
                 </ul>
             </div>
             @endif
-            {!! Form::open(['action' => array('PrintzonesController@update'), 'id' => $printzone->id, 'files' => true, 'class' => 'mb-4']) !!}
-            {{csrf_field()}}
+            {!! Form::open(['action' => array('TemplatesController@store'), 'files' => true,
+            'class' => 'mb-4']) !!}
             <div class="row">
+                {{csrf_field()}}
                 <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Nom de la zone
+                            Nom du gabarit
                         </label>
                         <!-- Input -->
-                        {!! Form::text('name', $printzone->name, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
                         !!}
                     </div>
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Zone
+                            Catégorie
                         </label>
                         <!-- Input -->
-                        {!! Form::text('zone', $printzone->zone, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                        {!! Form::text('category', null, ['class' => 'form-control', 'placeholder' => 'Catégorie'])
                         !!}
                     </div>
                 </div>
@@ -64,11 +65,11 @@
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Largeur de la zone
+                            Largeur du gabarit
                         </label>
                         <!-- Input -->
-                        {!! Form::number('width', $printzone->width, ['class' => 'form-control', 'placeholder'
-                        =>'Largeur de la zone :']) !!}
+                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
+                        'Largeur de la zone :']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -76,11 +77,10 @@
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Hauteur de la zone
+                            Hauteur du gabarit
                         </label>
                         <!-- Input -->
-                        {!! Form::number('height', $printzone->height, ['class' => 'form-control', 'placeholder' =>
-                        'Hauteur de la zone']) !!}
+                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -91,7 +91,7 @@
                             Position X d'origine sur le plateau
                         </label>
                         <!-- Input -->
-                        {!! Form::number('origin_x', $printzone->origin_x, ['class' => 'form-control', 'placeholder' =>
+                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
                         'Position X d\'origine sur le plateau :']) !!}
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                             Position Y d'origine sur le plateau
                         </label>
                         <!-- Input -->
-                        {!! Form::number('origin_y', $printzone->origin_y, ['class' => 'form-control', 'placeholder' =>
+                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
                         'Position y d\'origine sur le plateau :']) !!}
                     </div>
                 </div>
@@ -112,40 +112,24 @@
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Largeur du plateau
+                            Composants
                         </label>
                         <!-- Input -->
-                        {!! Form::number('tray_width', $printzone->tray_width, ['class' => 'form-control',
-                        'placeholder' => 'Largeur du plateau :']) !!}
+                        {!! Form::select('components_ids[]', App\Template_components::pluck('title','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('tray_height', $printzone->tray_height, ['class' => 'form-control',
-                        'placeholder' => 'Hauteur du plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <label>Description de la zone</label>
-                        {!! Form::hidden('description', $printzone->description) !!}
-                        <div id="printzone_description_edit" name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
-                    </div>
-                </div>
+                {!! Form::file('thumb', array('id' => 'thumb', 'name' => 'thumb')) !!}
+                {!! Form::file('full', array('id' => 'full', 'name' => 'full')) !!}
             </div>
-            {!! Form::hidden('printzones_id', $printzone->id) !!}
+
+            {!! Form::hidden('is_active', "true") !!}
+            {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Modifier la zone', ['class' => 'btn btn-primary', 'style' => 'float: right'])
+                        {!! Form::submit('Créer le gabarit', ['class' => 'btn btn-primary', 'style' => 'float: right'])
                         !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('index_printzones')}}">Annuler</a>
+                        <a class='btn btn-secondary' style="float: left" href="{{route('index_templates')}}">Annuler</a>
                     </div>
                 </div>
             </div>
@@ -153,31 +137,4 @@
         </div>
     </div>
 </div>
-
-@section('javascripts')
-
-<script>
-    var form = document.querySelector('form');
-    var description = document.querySelector('input[name=description]');
-    
-    function editDesc(){
-        var desc = new Quill('#printzone_description_edit');
-    };
-
-    editDesc();
-
-    form.onsubmit = function() {
-    // Populate hidden form on submit
-    description.value = JSON.stringify(quill.getContents());
-    
-    console.log("Submitted", $(form).serialize(), $(form).serializeArray());
-    
-    // No back end to actually submit to!
-    alert('Open the console to see the submit data!')
-    return false;
-    };
-</script>
-
-@endsection
-
 @endsection
