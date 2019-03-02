@@ -37,7 +37,9 @@ class EventsProductsController extends Controller
     public function create()
     {
         $events_products = Events_products::all();
-        return view('admin/EventsProducts.add', ['events_products' => $events_products]);
+        $products = Product::all();
+
+        return view('admin/EventsProducts.add', ['events_products' => $events_products, 'products' => $products]);
     }
 
     /**
@@ -48,35 +50,45 @@ class EventsProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'product_id' => 'required|string|max:255',
-            'description' => 'max:750'
-        ]);
-        $events_product = new Events_products;
-        $events_product->title = $request->title;
-        $events_product->product_id = $request->product_id;
-        $events_product->price = $request->price;
-        $events_product->description = $request->description;
-
-        $events_product->variants = array(
-            'id' => $request->vendor_id, 
-            'product_variant_id' => $request->product_variant_id,
-            'quantity' => $request->quantity
-        );
-
-        $events_product->customs = array(
-            'id' => $request->custom_id,
-            'event_customs_id' => $request->event_customs_id,
-            'variants_id' => $request->variants_id,
-            'quantity' => $request->quantity
-        );
-        $events_product->position = $request->position;
-        $events_product->is_active = $request->is_active;
-        $events_product->is_deleted = $request->is_deleted;
-        $events_product->save();
-        $events_products = Events_products::all();
-        return view('admin/EventsProducts.index', ['events_products' => $events_products]);
+        if($request->ajax()) {
+            $validatedData = $request->validate([
+                'product_id' => 'required|string|max:255'
+            ]);
+            $events_product = new Events_products;
+            $events_product->title = $request->title;
+            $events_product->event_id = $request->event_id;
+            $events_product->product_id = $request->product_id;
+            $events_product->price = $request->price;
+            $events_product->description = $request->description;
+    
+            $events_product->variants = array(
+                'id' => $request->vendor_id, 
+                'product_variant_id' => $request->product_variant_id,
+                'quantity' => $request->quantity
+            );
+    
+            $events_product->customs = array(
+                'id' => $request->custom_id,
+                'event_customs_id' => $request->event_customs_id,
+                'variants_id' => $request->variants_id,
+                'quantity' => $request->quantity
+            );
+            $events_product->position = $request->position;
+            $events_product->is_active = $request->is_active;
+            $events_product->is_deleted = $request->is_deleted;
+            $events_product->save();
+            //$events_products = Events_products::all();
+            //return view('admin/EventsProducts.index', ['events_products' => $events_products]);
+            $response = array(
+                'status' => 'success',
+                'msg' => 'EventsProduct created successfully',
+                'events_product' => $events_product
+            );
+            return response()->json($response);
+        }
+        else {
+            return 'no';
+        }
     }
 
     /**

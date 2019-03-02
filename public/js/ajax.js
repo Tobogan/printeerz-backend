@@ -114,4 +114,32 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#AddEventsProduct').on('submit', function (e) {
+        e.preventDefault();
+        $('#submit_modal_EP').hide();
+        $('#loading_modal_EP').removeClass('d-none');
+        $.ajax({
+            type: "POST",
+            url: '/admin/EventsProducts/store',
+            data: $(this).serialize(),
+            success: function (msg) {
+                product_id = $('#product_id').val('');
+                event_id = $('#event_id').val('');
+                is_active = $('#is_active').val('');
+                is_delete = $('#is_delete').val('');
+                console.log(msg.events_product);
+                $(this).removeClass('btn-primary');
+                $(this).addClass('btn-success');
+                $('#addEventsProductModal').modal('hide');
+                $('#submit_modal_EP').show();
+                $('#loading_modal_EP').addClass('d-none');
+                location.reload();
+            },
+            error: function (request, status, error) {
+                $('#submit_modal_EP').show();
+                $('#loading_modal_EP').addClass('d-none');
+            }
+        });
+    });
 });

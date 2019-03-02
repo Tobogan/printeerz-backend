@@ -7,6 +7,7 @@ use DB;
 use App\Event;
 use App\Customer;
 use App\Product;
+use App\Events_products;;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -136,7 +137,9 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        return view('admin/Event.show', ['event' => $event]);
+        $products = Product::all();
+        $events_products = Events_products::all();
+        return view('admin/Event.show', ['events_products' => $events_products, 'products' => $products, 'event' => $event]);
     }
 
     /**

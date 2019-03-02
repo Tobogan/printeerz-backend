@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events_products;
+
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
@@ -13,6 +15,10 @@ class Product extends Eloquent
     protected $fillable = [
         'id', 'title', 'vendor', 'gender', 'product_type', 'printzones_id[]', 'image', 'tags[]', 'description', 'variants_id[]', 'is_active', 'is_deleted', 'created_at', 'updated_at'
     ];
+
+    public function event_products() {
+        return $this->hasMany('App\Events_products');
+    }
 
     /*~~~~~~~~~~~_____Relation Many to Many avec les tailles dispo____~~~~~~~~~~~~*/
 

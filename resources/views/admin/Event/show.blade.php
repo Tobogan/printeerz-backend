@@ -8,6 +8,8 @@
     @include('admin.Event.includes.infos')
     @include('admin.Event.includes.feed')
     @include('admin.Event.includes.users')
+    @include('admin.Event.includes.addEventsProducts')
+
 </div>
 
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="element" data-autohide="false">

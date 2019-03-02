@@ -152,6 +152,10 @@ Route::post('admin/EventsCustoms/update', 'EventsCustomsController@update')->nam
 
 Route::get('admin/EventsCustoms/destroy/{id}', 'EventsCustomsController@destroy')->name('destroy_eventsCustoms');
 
+Route::get('admin/EventsCustoms/desactivate/{id}', 'EventsCustomsController@desactivate')->name('desactivate_eventsCustoms');
+
+Route::get('admin/Printzones/activate/{id}', 'PrintzonesController@activate')->name('activate_eventsCustoms');
+
 /*~~~~~~~~~~~___________Printzones Route__________~~~~~~~~~~~~*/
 Route::get('admin/Printzones/index', 'PrintzonesController@index')->name('index_printzones');
 

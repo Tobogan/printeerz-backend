@@ -14,7 +14,7 @@
 @endif
     <div class="row">
         <div class="col">
-            {!! Form::open(['action' => 'EventVariantsController@store', 'files' => true]) !!}
+            {!! Form::open(['action' => 'EventsProductsController@store', 'files' => true]) !!}
                 {{csrf_field()}}
 
                 <div class="form-group">
@@ -35,14 +35,6 @@
                         @endforeach
                     </select>
                 </div>
-
-                <!--    <label for="variant">Choisissez les tailles disponibles :</label>
-                    <select class="select2 form-control " multiple="multiple" id="taille_id" multiple data-placeholder="Choose ..." name="taille_id[]" style="width: 50%">
-                        @foreach ($productVariants as $taille)
-                        <option value="{{$taille->id}}">{{$taille->nom}}</option>
-                        @endforeach
-                    </select>
-                </div> -->
 
             <input type="hidden" id="event_id" name="event_id" value='{{ $event_id }}'>
 
