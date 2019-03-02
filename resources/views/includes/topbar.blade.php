@@ -17,12 +17,12 @@
                         <!-- Avatar -->
                         <a class="avatar avatar-sm">
                             <?php 
-                            $disk = Storage::disk('gcs');
-                            $gcs = 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET');
+                            $disk = Storage::disk('s3');
+                            $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
                             ?>
                             @if(!empty(Auth::user()->profile_img) && $disk->exists(Auth::user()->profile_img))
                             <div class="avatar avatar-sm">
-                                <img src="{{$gcs . Auth::user()->profile_img}}" class="avatar-img rounded-circle"
+                                <img src="{{$s3 . Auth::user()->profile_img}}" class="avatar-img rounded-circle"
                                     alt="img_profile">
                             </div>
                             @else <!--Initials-->
@@ -111,20 +111,27 @@
                     <i class="fe fe-user"></i> Utilisateurs
                 </a>
             </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
-                    <i class="fe fe-layers"></i> Zones d'impression
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle " href="#" id="topnavDocumentation" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fe fe-settings"></i> Settings
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="topnavDocumentation">
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
+                    Zones d'impression
                 </a>
-            </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
-                    <i class="fe fe-layers"></i> Gabarits
+                </li>
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
+                    Gabarits
                 </a>
-            </li>
-            <li class="nav-item px-2">
-                <a class="nav-link {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
-                    <i class="fe fe-layers"></i> Composants
+                </li>
+                <li>
+                <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
+                    Composants
                 </a>
+                </li>
+            </ul>
             </li>
         </ul>
     </div>
