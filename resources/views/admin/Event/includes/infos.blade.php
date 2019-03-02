@@ -32,7 +32,7 @@
                         <div class="col-auto">
 
                             <span class="small text-muted">
-                                {{ date('d-m-Y', strtotime($event->start_endtime)) }}
+                                {{ date('d-m-Y', strtotime($event->end_datetime)) }}
                             </span>
 
                         </div>

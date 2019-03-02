@@ -29,8 +29,6 @@ class UserController extends Controller
     public function index()
     {   
         $users = User::all();
-        $disk = Storage::disk('gcs');
-        $gcs = 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET');
         return view('admin/User.index', ['users' => $users, 'gcs' => $gcs, 'disk' => $disk]);
     }
 
@@ -146,8 +144,8 @@ class UserController extends Controller
             $user = User::find($user_id);
 
             // Update Profile image
-            $disk = Storage::disk('gcs');
             if ($request->hasFile('profile_img')){
+                $disk = Storage::disk('gcs');
                 // Get current image path
                 $oldPath = $user->profile_img;
                 // Get new image
@@ -211,7 +209,6 @@ class UserController extends Controller
             $user->is_active = $request->is_active;
             $user->is_deleted = $request->is_deleted;
             // Update Profile image
-            $disk = Storage::disk('gcs');
             if ($request->hasFile('profile_img')){
                 // Get current image path
                 $oldPath = $user->profile_img;
@@ -224,6 +221,7 @@ class UserController extends Controller
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
+                $disk = Storage::disk('gcs');
                 $disk->put($newFilePath, $img);
                 // Put in database
                 $user->profile_img = $newFilePath;
