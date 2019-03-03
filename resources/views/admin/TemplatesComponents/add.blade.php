@@ -57,12 +57,8 @@
                                     Type
                                 </label>
                                 <div class="form-group">
-<<<<<<< HEAD
-                                    <select name="type" id="type" class="form-control" data-toggle="select">
-=======
                                     <select name="type" id="componentElementType" class="form-control" data-toggle="select">
                                         <option value="none">Aucun</option>
->>>>>>> 9f1ee12526f9024e9069c4448dfa647852f5517f
                                         <option value="input">Champ de texte</option>
                                         <option value="image">Image</option>
                                         <option value="text" disabled>Texte fixe</option>
