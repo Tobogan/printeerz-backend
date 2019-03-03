@@ -34,112 +34,161 @@
                 </ul>
             </div>
             @endif
-            {!! Form::open(['action' => array('PrintzonesController@store'), 'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('PrintzonesController@store'), 'files' => true, 'class' => 'mb-4']) !!}
+            {{csrf_field()}}
             <div class="row">
-                {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom de la zone
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Zone
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('zone', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                </div>
-                <hr class="mt-4 mb-5">
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur de la zone
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur de la zone :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur de la zone
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position X d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position X d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position Y d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position y d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur du plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('tray_width', null, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur du plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('tray_height', null, ['class' => 'form-control', 'placeholder' =>
-                        'Hauteur du plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <label>Description de la zone</label>
-                        {!! Form::hidden('description', null) !!}
-                        <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Nom de la zone
+                                        </label>
+                                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                        !!}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Zone
+                                        </label>
+                                        {!! Form::text('zone', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                        !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille de la zone d'impression
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Largeur (cm)
+                                        </label>
+                                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Largeur de la zone :']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Hauteur (cm)
+                                        </label>
+                                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Hauteur de la zone']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille du plateau
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Largeur (cm)
+                                        </label>
+                                        {!! Form::number('tray_width', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Hauteur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('tray_height', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Position du plateau
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            X (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Position X d\'origine sur le plateau :']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Y (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Position y d\'origine sur le plateau :']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Description
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {!! Form::hidden('description', null) !!}
+                                        <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {!! Form::hidden('is_active', "true") !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
@@ -151,8 +200,7 @@
                     </div>
                 </div>
             </div>
-            {!! Form::close() !!}
-        </div>
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection
