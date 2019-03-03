@@ -68,10 +68,14 @@
                     </th>
                 </tr>
             </thead>
+
             <tbody class="list">
                 @foreach($products_variants as $products_variant)
-                    @foreach($events_product->variants[0] as $key => $value)
-                        @if($products_variant->id == $value)                            
+
+                    @foreach($events_product->variants as $key => $value)
+                    <?php //var_dump($value) ?>
+                        @if($products_variant->id == $value)   
+                
                             <tr>
                                 <td class="products_variant-color"><a href="{{route('edit_productsVariants', $products_variant->id)}}"><b>{{ $products_variant->color }}</b></a></td>
                                 <td class="products_variant-size">{{ $products_variant->size }}</td>
@@ -98,6 +102,7 @@
                                 </tr>
                             @endif
                     @endforeach
+
                 @endforeach
             </tbody>
         </table>
