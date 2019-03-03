@@ -58,6 +58,9 @@ class EventsProductsController extends Controller
             $events_product = new Events_products;
             $events_product->event_id = $request->event_id;
             $events_product->product_id = $request->product_id;
+            $product = Product::find($events_product->product_id);
+            $events_product->title = $product->title;
+            $events_product->variants = array();
             $events_product->description = $request->description;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
@@ -83,16 +86,19 @@ class EventsProductsController extends Controller
     public function addVarianteEP(Request $request)
     {
         if($request->ajax()) {
-            if (request('actual_title') == request('title')){
+            if ($request->actual_titleEP == $request->title){
                 $validatedData = $request->validate([
                     'products_variant_id' => 'required|string|max:255'
                 ]);
                 $id = $request->events_product_id;
                 $events_product = Events_products::find($id);
-                $events_product->variants = array(
-                    'product_variant_id' => $request->product_variant_id,
+                $variants = array(
+                    'products_variant_id' => $request->products_variant_id,
                     'quantity' => $request->quantity
                 );
+                $array = $events_product->variants;
+                array_push($array, $variants);
+                $events_product->variants = $array;
                 $events_product->save();
                 $response = array(
                     'status' => 'success',
@@ -107,10 +113,14 @@ class EventsProductsController extends Controller
                 ]);
                 $id = $request->events_product_id;
                 $events_product = Events_products::find($id);
-                $events_product->variants = array(
-                    'product_variant_id' => $request->product_variant_id,
+                $events_product->title == $request->title;
+                $variants = array(
+                    'products_variant_id' => $request->products_variant_id,
                     'quantity' => $request->quantity
                 );
+                $array = $events_product->variants;
+                array_push($array, $variants);
+                $events_product->variants = $array;
                 $events_product->save();
                 $response = array(
                     'status' => 'success',
@@ -120,7 +130,6 @@ class EventsProductsController extends Controller
                 return response()->json($response);
             }
         }
-        
         else {
             return 'no';
         }

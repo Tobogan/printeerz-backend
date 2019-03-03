@@ -17,12 +17,9 @@
                 {!! Form::open(['id' => 'AddVarianteEP', 'files' => true, 'class' => 'mt-5']) !!}
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
-                    <input type="hidden" name="actual_title" id="actual_title" value="{{$events_product->title}}">
-                    <input type="hidden" name="events_product_id" id="events_product_id" value="{{$events_product->id}}">
-                    <input type="hidden" name="is_active" id="is_active" value="true">
-                    <input type="hidden" name="is_deleted" id="is_deleted" value="false">
-                </div>
-                <div class="form-group">
+                    <input type="hidden" name="actual_titleEP" id="actual_titleEP" value="{{$events_product->title}}">
+                    <input type="hidden" name="events_product_id" id="events_product_id" value="{{$events_product->_id}}">
+                    {{ Form::text('title', $events_product->title, array('id' => 'title')) }}
                     <!-- Label -->
                     <label>
                         Variantes
@@ -31,7 +28,7 @@
                         <select name="products_variant_id" id="products_variant_id" class="form-control" data-toggle="select">
                             @foreach($products_variants as $products_variant)
                                 @if($products_variant->product_id == $product->id)
-                                    <option value="{{$products_variant->id}}">{{$products_variant->color.' - '.$products_variant->size}}</option>
+                                    <option value="{{$products_variant->_id}}">{{$products_variant->color.' - '.$products_variant->size}}</option>
                                 @endif
                             @endforeach
                         </select>

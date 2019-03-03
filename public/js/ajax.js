@@ -154,7 +154,6 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/addVarianteEP',
             data: $(this).serialize(),
             success: function (msg) {
-                products_variant_id = $('#products_variant_id').val('');
                 console.log(msg.events_product);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');

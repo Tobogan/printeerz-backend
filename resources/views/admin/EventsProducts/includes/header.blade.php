@@ -6,7 +6,7 @@
         <div class="header-body">
             <div class="row align-items-center">
                 <div class="col mb-3 ml--3 ml-md--2">
-                    <a class="btn btn-white btn-sm" href="{{route('show_event', $events_product->event_id)}}">Retour</a>
+                    <a class="btn btn-white btn-sm mb-3" href="{{route('show_event', $events_product->event_id)}}">Retour</a>
 
                     <!-- Pretitle -->
                     <h6 class="header-pretitle">
