@@ -128,7 +128,7 @@
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                                        '']) !!}
+                                        '0']) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -140,7 +140,7 @@
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                                        '']) !!}
+                                        '0']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -161,14 +161,12 @@
                                 <div class="col-12">
                                     <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Sélectionner les composants de ce template
-                                        </label>
                                         <!-- Input -->
                                         {!! Form::select('components_ids[]',
-                                        App\Template_components::pluck('title','_id'), null, ['class' =>
-                                        'form-control', 'multiple', 'data-toggle' =>'select']) !!}
+                                        App\Template_components::pluck('title','_id'), null, ['id' =>
+                                        'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
+                                    </div>
+                                    <div id="templateComponentsList" data-type='sortable'>
                                     </div>
                                 </div>
                             </div>
@@ -189,14 +187,16 @@
                                 <div class="col-12 col-md-6">
                                     <!-- First name -->
                                     <div class="custom-file">
-                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id' => 'thumb', 'name' => 'thumb')) !!}
+                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id'
+                                        => 'thumb', 'name' => 'thumb')) !!}
                                         <label class="custom-file-label" for="thumb">Ajouter la miniature</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <!-- First name -->
                                     <div class="custom-file">
-                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id' => 'full', 'name' => 'full')) !!}
+                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id'
+                                        => 'full', 'name' => 'full')) !!}
                                         <label class="custom-file-label" for="full">Ajouter l'image</label>
                                     </div>
                                 </div>
