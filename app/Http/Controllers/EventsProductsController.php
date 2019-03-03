@@ -119,8 +119,8 @@ class EventsProductsController extends Controller
                 );
                 return response()->json($response);
             }
-            }
         }
+        
         else {
             return 'no';
         }
