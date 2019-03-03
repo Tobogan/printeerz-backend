@@ -42,3 +42,19 @@ $('input[data-role="tagsinput"]').tagsinput({
 });
 
 $(".bootstrap-tagsinput").addClass('form-control');
+
+$(function () {
+  // Get an element
+  var componentElement = $('[data-root="componentElement"]');
+  // Hide all elements 
+  componentElement.hide();
+  // When the type changed
+  $('#componentElementType').change(function () {
+    // Get type value
+    var value = $(this).val();
+    // Hide all elements when changed type
+    componentElement.hide();
+    // Show elements who matched the type 
+    $('div[type *= '+ value +']').fadeIn();
+  });
+});
