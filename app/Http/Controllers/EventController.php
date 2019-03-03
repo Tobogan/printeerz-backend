@@ -139,7 +139,11 @@ class EventController extends Controller
         $event = Event::find($id);
         $products = Product::all();
         $events_products = Events_products::all();
-        return view('admin/Event.show', ['events_products' => $events_products, 'products' => $products, 'event' => $event]);
+        $select_products = [];
+        foreach($products as $product) {
+            $select_products[$product->id] = $product->title;
+        }
+        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
     }
 
     /**

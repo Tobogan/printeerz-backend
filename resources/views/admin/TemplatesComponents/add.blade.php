@@ -57,7 +57,7 @@
                                     Type
                                 </label>
                                 <div class="form-group">
-                                    <select name="font-weight" id="type" class="form-control" data-toggle="select">
+                                    <select name="type" id="type" class="form-control" data-toggle="select">
                                         <option value="input">Champ de texte</option>
                                         <option value="text">Texte fixe</option>
                                         <option value="image">Image</option>

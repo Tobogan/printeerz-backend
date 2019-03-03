@@ -124,10 +124,12 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/store',
             data: $(this).serialize(),
             success: function (msg) {
+                title = $('#title').val('');
+                description = $('#description').val('');
                 product_id = $('#product_id').val('');
                 event_id = $('#event_id').val('');
                 is_active = $('#is_active').val('');
-                is_delete = $('#is_delete').val('');
+                is_deleted = $('#is_deleted').val('');
                 console.log(msg.events_product);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');
@@ -139,6 +141,31 @@ $(document).ready(function () {
             error: function (request, status, error) {
                 $('#submit_modal_EP').show();
                 $('#loading_modal_EP').addClass('d-none');
+            }
+        });
+    });
+
+    $('#AddVarianteEP').on('submit', function (e) {
+        e.preventDefault();
+        $('#submit_modalVarianteEP').hide();
+        $('#loading_modalVarianteEP').removeClass('d-none');
+        $.ajax({
+            type: "POST",
+            url: '/admin/EventsProducts/addVarianteEP',
+            data: $(this).serialize(),
+            success: function (msg) {
+                products_variant_id = $('#products_variant_id').val('');
+                console.log(msg.events_product);
+                $(this).removeClass('btn-primary');
+                $(this).addClass('btn-success');
+                $('#addVarianteEPModal').modal('hide');
+                $('#submit_modalVarianteEP').show();
+                $('#loading_modalVarianteEP').addClass('d-none');
+                location.reload();
+            },
+            error: function (request, status, error) {
+                $('#submit_modalVarianteEP').show();
+                $('#loading_modalVarianteEP').addClass('d-none');
             }
         });
     });

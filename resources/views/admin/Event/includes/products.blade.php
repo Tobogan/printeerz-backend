@@ -27,7 +27,7 @@
                                             </ul>
                                         </div>
                                         <div class="col-auto">
-                                            <a class="btn btn-white btn-sm" href="{{route('show_eventsCustoms', $events_product->id)}}">Voir le produit</a>
+                                            <a class="btn btn-white btn-sm" href="{{route('show_eventsProducts', $events_product->id)}}">Voir le produit</a>
                                         </div>
                                     </div>
                                 </div>

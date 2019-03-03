@@ -17,11 +17,11 @@
                 {!! Form::open(['id' => 'AddEventsProduct', 'class' => 'mt-5']) !!}
                 <input type="hidden" name="event_id" id="event_id" value="{{$event->id}}">
                 <div class="form-group">
-                    <select name="product_id" id="product_id" class="form-control" data-toggle="select">
-                        @foreach($products as $product)
-                            <option value="{{$product->id}}">{{$product->title}}</option>
-                        @endforeach
-                    </select>
+                    {{ Form::select('product_id', $select_products, array('class'=>'btn btn-primary', 'id' => 'product_id')) }}
+                </div>
+                <div class="form-group">
+                    <label>Description du produit</label>
+                    <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez le produit"></div>
                 </div>
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="is_active" id="is_active" value="true">

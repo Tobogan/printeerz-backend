@@ -126,6 +126,8 @@ Route::get('admin/EventsProducts/createAdmin', 'EventsProductsController@createA
 
 Route::post('admin/EventsProducts/store', 'EventsProductsController@store')->name('store_eventsProducts');
 
+Route::post('admin/EventsProducts/addVarianteEP', 'EventsProductsController@addVarianteEP')->name('addVarianteEP_eventsProducts');
+
 Route::post('admin/EventsProducts/storeAdmin', 'EventsProductsController@storeAdmin')->name('storeAdmin_eventsProducts');
 
 Route::get('admin/EventsProducts/show/{id}', 'EventsProductsController@show')->name('show_eventsProducts');

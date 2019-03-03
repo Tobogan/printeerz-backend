@@ -6,6 +6,8 @@ use DB;
 use App\Product;
 use App\Event;
 use App\Events_products;
+use App\Products_variants;
+use App\Printzones;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -38,7 +40,6 @@ class EventsProductsController extends Controller
     {
         $events_products = Events_products::all();
         $products = Product::all();
-
         return view('admin/EventsProducts.add', ['events_products' => $events_products, 'products' => $products]);
     }
 
@@ -55,36 +56,70 @@ class EventsProductsController extends Controller
                 'product_id' => 'required|string|max:255'
             ]);
             $events_product = new Events_products;
-            $events_product->title = $request->title;
             $events_product->event_id = $request->event_id;
             $events_product->product_id = $request->product_id;
-            $events_product->price = $request->price;
             $events_product->description = $request->description;
-    
-            $events_product->variants = array(
-                'id' => $request->vendor_id, 
-                'product_variant_id' => $request->product_variant_id,
-                'quantity' => $request->quantity
-            );
-    
-            $events_product->customs = array(
-                'id' => $request->custom_id,
-                'event_customs_id' => $request->event_customs_id,
-                'variants_id' => $request->variants_id,
-                'quantity' => $request->quantity
-            );
-            $events_product->position = $request->position;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            //$events_products = Events_products::all();
-            //return view('admin/EventsProducts.index', ['events_products' => $events_products]);
             $response = array(
                 'status' => 'success',
                 'msg' => 'EventsProduct created successfully',
                 'events_product' => $events_product
             );
             return response()->json($response);
+        }
+        else {
+            return 'no';
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addVarianteEP(Request $request)
+    {
+        if($request->ajax()) {
+            if (request('actual_title') == request('title')){
+                $validatedData = $request->validate([
+                    'products_variant_id' => 'required|string|max:255'
+                ]);
+                $id = $request->events_product_id;
+                $events_product = Events_products::find($id);
+                $events_product->variants = array(
+                    'product_variant_id' => $request->product_variant_id,
+                    'quantity' => $request->quantity
+                );
+                $events_product->save();
+                $response = array(
+                    'status' => 'success',
+                    'msg' => 'EventsProduct created successfully',
+                    'events_product' => $events_product
+                );
+                return response()->json($response);
+            }
+            else {
+                $validatedData = $request->validate([
+                    'products_variant_id' => 'required|string|max:255'
+                ]);
+                $id = $request->events_product_id;
+                $events_product = Events_products::find($id);
+                $events_product->variants = array(
+                    'product_variant_id' => $request->product_variant_id,
+                    'quantity' => $request->quantity
+                );
+                $events_product->save();
+                $response = array(
+                    'status' => 'success',
+                    'msg' => 'EventsProduct created successfully',
+                    'events_product' => $events_product
+                );
+                return response()->json($response);
+            }
+            }
         }
         else {
             return 'no';
@@ -101,7 +136,10 @@ class EventsProductsController extends Controller
     {
         $events_product = Events_products::find($id);
         $events_products = Events_products::all();
-        return view('admin/EventsProducts.show', ['$events_product' => $events_product, '$events_products' => $events_products]);
+        $products_variants = Products_variants::all();
+        $printzones = Printzones::all();
+        $product = Product::find($events_product->product_id);
+        return view('admin/EventsProducts.show', ['printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
     }
 
     /**
