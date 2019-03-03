@@ -36,92 +36,175 @@
             @endif
             {!! Form::open(['action' => array('TemplatesController@store'), 'files' => true,
             'class' => 'mb-4']) !!}
+            {{csrf_field()}}
             <div class="row">
-                {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Catégorie
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('category', null, ['class' => 'form-control', 'placeholder' => 'Catégorie'])
-                        !!}
-                    </div>
-                </div>
-                <hr class="mt-4 mb-5">
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur de la zone :']) !!}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Nom du gabarit
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Nom'])
+                                        !!}
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Catégorie
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::text('category', null, ['class' => 'form-control', 'placeholder' =>
+                                        'Catégorie'])
+                                        !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position X d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position X d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position Y d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position y d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Composants
-                        </label>
-                        <!-- Input -->
-                        {!! Form::select('components_ids[]', App\Template_components::pluck('title','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
-                    </div>
-                </div>
-                {!! Form::file('thumb', array('id' => 'thumb', 'name' => 'thumb')) !!}
-                {!! Form::file('full', array('id' => 'full', 'name' => 'full')) !!}
             </div>
-
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille du template
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Largeur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Hauteur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Position du template
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            X (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Y (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Composants
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Sélectionner les composants de ce template
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::select('components_ids[]',
+                                        App\Template_components::pluck('title','_id'), null, ['class' =>
+                                        'form-control', 'multiple', 'data-toggle' =>'select']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Image d'illustration
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="custom-file">
+                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id' => 'thumb', 'name' => 'thumb')) !!}
+                                        <label class="custom-file-label" for="thumb">Ajouter la miniature</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="custom-file">
+                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id' => 'full', 'name' => 'full')) !!}
+                                        <label class="custom-file-label" for="full">Ajouter l'image</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {!! Form::hidden('is_active', "true") !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">

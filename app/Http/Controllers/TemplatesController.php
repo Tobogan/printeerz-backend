@@ -65,10 +65,12 @@ class TemplatesController extends Controller
             $full = time().'1.'.request()->full->getClientOriginalExtension();
             request()->full->move(public_path('uploads'), $full);
         }
-        $template->image = array(
-            'thumb' => $thumb,
-            'full' => $full
-        );
+        if (!empty($full) && !empty($thumb)){
+            $template->image = array(
+                'thumb' => $thumb,
+                'full' => $full
+            );
+        }
         $template->size = array(
             'width' => $request->width,
             'height' => $request->height
