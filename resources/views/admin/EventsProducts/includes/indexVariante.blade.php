@@ -1,14 +1,16 @@
 <!-- Card -->
 
 <?php $i = 0 ?>
-
-@foreach($products_variants as $products_variant)
-    @foreach($events_product->variants[0] as $key => $value)
-        @if($products_variant->id == $value)
-            <?php $i++; ?>
-        @endif
+@if($events_product->variants != null)
+    @foreach($products_variants as $products_variant)
+        @foreach($events_product->variants as $variant1)
+        <?php $first1 = reset($variant1); ?>
+            @if($products_variant->id == $first1)
+                <?php $i++; ?>
+            @endif
+        @endforeach
     @endforeach
-@endforeach
+@endif
 @if($i == 0)
 <div class="card card-inactive">
     <div class="card-body text-center">
@@ -72,6 +74,7 @@
             <tbody class="list">
                 @foreach($products_variants as $products_variant)
                     @foreach($events_product->variants as $variant)
+                    {{-- La je vais chercher la première valeur de mon array et je le compare à l'ID d'un PdtVariante--}}
                     <?php $first = reset($variant); ?>
                         @if($products_variant->id == $first)
                             <tr>

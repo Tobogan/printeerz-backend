@@ -131,7 +131,7 @@ class ProductController extends Controller
                 'description' => 'max:750'
             ]);
             
-            $id = $request->id;
+            $id = $request->product_id;
             $product = Product::find($id);
             $product->title = $request->title;
             $product->vendor = array(
@@ -142,11 +142,9 @@ class ProductController extends Controller
             $product->gender = $request->gender;
             $product->product_type = $request->product_type;
             $product->printzones_id = $request->get('printzones_id');
-            $tags[]=$request->get('tags');
-            $product->tags=$tags;
+            $product->tag = $request->get('tags');
             $product->description = $request->description;
-            $variants_id[]=$request->get('variants_id');
-            $product->variants_id=$variants_id;
+            $product->variants_id=$request->get('variants_id');
             $product->is_active = $request->is_active; //penser à mettre l'input hidden
             $product->is_deleted = $request->is_deleted;
             $product->save();
