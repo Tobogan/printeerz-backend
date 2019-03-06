@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">Ajouter une variantes</h2>
+                <h2 class="modal-title" id="exampleModalLabel">Ajouter une variante</h2>
                 @if (session('status'))
                 <div class="alert alert-success mt-1 mb-2">
                     {{ session('status') }}
@@ -19,20 +19,18 @@
                 <div class="form-group">
                     <input type="hidden" name="actual_titleEP" id="actual_titleEP" value="{{$events_product->title}}">
                     <input type="hidden" name="events_product_id" id="events_product_id" value="{{$events_product->_id}}">
-                    {{ Form::text('title', $events_product->title, array('id' => 'title')) }}
+                    {{ Form::text('title', $events_product->title, array('class' => 'form-control mb-3','id' => 'title')) }}
                     <!-- Label -->
                     <label>
                         Variantes
                     </label>
-                    <div class="form-group">
-                        <select name="products_variant_id" id="products_variant_id" class="form-control" data-toggle="select">
-                            @foreach($products_variants as $products_variant)
-                                @if($products_variant->product_id == $product->id)
-                                    <option value="{{$products_variant->_id}}">{{$products_variant->color.' - '.$products_variant->size}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+                    <select name="products_variant_id" id="products_variant_id" class="form-control" data-toggle="select">
+                        @foreach($products_variants as $products_variant)
+                            @if($products_variant->product_id == $product->id)
+                                <option value="{{$products_variant->_id}}">{{$products_variant->color.' - '.$products_variant->size}}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
