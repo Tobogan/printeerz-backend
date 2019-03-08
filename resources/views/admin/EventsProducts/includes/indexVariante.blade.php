@@ -75,12 +75,16 @@
                 @foreach($products_variants as $products_variant)
                     @foreach($events_product->variants as $variant)
                     {{-- La je vais chercher la première valeur de mon array et je le compare à l'ID d'un PdtVariante--}}
-                    <?php $first = reset($variant); ?>
+                    <?php $first = reset($variant); 
+                    $second = next($variant);
+                    array_values($variant);
+                    //dd($events_product->id);
+                    ?>
                         @if($products_variant->id == $first)
                             <tr>
                                 <td class="products_variant-color"><a href="{{route('edit_productsVariants', $products_variant->id)}}"><b>{{ $products_variant->color }}</b></a></td>
                                 <td class="products_variant-size">{{ $products_variant->size }}</td>
-                                <td class="products_variant-quantity">{{ $products_variant->quantity }}</td>
+                                <td class="products_variant-quantity">{{ $second }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
@@ -88,14 +92,7 @@
                                             <i class="fe fe-more-vertical"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            @if ($products_variant->is_active == true)
-                                                <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_productsVariants', $products_variant->id)}}">
-                                                Désactiver </a>
-                                            @else
-                                                <a class="dropdown-item" href="{{route('activate_productsVariants', $products_variant->id)}}">Activer</a>
-                                            @endif
-                                                <hr class="dropdown-divider">
-                                                <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_productsVariants', $products_variant->id)}}">
+                                                <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{ url('admin/EventsProducts/deleteVariant/' . $events_product->id . '/' . $products_variant->id)}}">
                                                 Supprimer </a>
                                             </div>
                                         </div>

@@ -1,6 +1,8 @@
 @extends('layouts/templateAdmin')
 
 @section('content')
+@include('admin.Event.includes.modalDelete')
+
 
 <div id="tabs" class="mb-6">
     @include('admin.Event.includes.header')
@@ -9,7 +11,6 @@
     @include('admin.Event.includes.feed')
     @include('admin.Event.includes.users')
     @include('admin.Event.includes.addEventsProducts')
-
 </div>
 
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="element" data-autohide="false">

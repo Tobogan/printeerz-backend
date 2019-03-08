@@ -138,6 +138,8 @@ Route::post('admin/EventsProducts/update', 'EventsProductsController@update')->n
 
 Route::get('admin/EventsProducts/destroy/{id}', 'EventsProductsController@destroy')->name('destroy_eventsProducts');
 
+Route::get('admin/EventsProducts/deleteVariant/{id}/{products_variant_id}', 'EventsProductsController@deleteVariant')->name('deleteVariant_eventsProducts');
+
 /*~~~~~~~~~~~___________EventsCustoms Route__________~~~~~~~~~~~~*/
 
 Route::get('admin/EventsCustoms/index', 'EventsCustomsController@index')->name('index_eventsCustoms');

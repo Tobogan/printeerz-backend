@@ -19,18 +19,26 @@
                 <div class="form-group">
                     <input type="hidden" name="actual_titleEP" id="actual_titleEP" value="{{$events_product->title}}">
                     <input type="hidden" name="events_product_id" id="events_product_id" value="{{$events_product->_id}}">
-                    {{ Form::text('title', $events_product->title, array('class' => 'form-control mb-3','id' => 'title')) }}
+                    <input type="hidden" name="title" id="title" value="{{$events_product->title}}">
                     <!-- Label -->
                     <label>
                         Variantes
                     </label>
-                    <select name="products_variant_id" id="products_variant_id" class="form-control" data-toggle="select">
+                    <select name="products_variant_id" id="products_variant_id" class="form-control mb-2" data-toggle="select">
                         @foreach($products_variants as $products_variant)
                             @if($products_variant->product_id == $product->id)
-                                <option value="{{$products_variant->_id}}">{{$products_variant->color.' - '.$products_variant->size}}</option>
+                                <option value="{{$products_variant->_id}}">
+                                    {{'Couleur: '.$products_variant->color.' | Taille: '.$products_variant->size.' | Stock: '.$products_variant->quantity}}
+                                </option>
                             @endif
                         @endforeach
                     </select>
+                    <label>
+                        Quantité pour l'événement
+                    </label>
+                    {{ Form::number('quantity', null, array('class' => 'form-control mb-3','id' => 'quantity')) }}
+
+                    
                 </div>
             </div>
             <div class="modal-footer">

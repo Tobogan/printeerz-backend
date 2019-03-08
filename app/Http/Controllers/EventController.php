@@ -125,7 +125,6 @@ class EventController extends Controller
 
         $event->save();
         return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
-        //return view('admin/Event.show',['event' => $event, 'id' => $event->id])->with('status', 'Le produit a été correctement ajouté.');
     }
 
     /**
@@ -335,7 +334,7 @@ class EventController extends Controller
             }
             $event->save();
         }
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement modifié.');
     }
 
     /**
@@ -360,7 +359,7 @@ class EventController extends Controller
             unlink($file_path_BAT);
         }
         $event->delete();
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement supprimé.');
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a event function in index event__________~~~~~~~~~~~~-*/
@@ -369,7 +368,7 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_active = false;
         $event->update();
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement désactivé.');
     }
 
     public function delete($id)
@@ -377,7 +376,7 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_deleted = true;
         $event->update();
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement supprimé.');
     }
 
     public function activate($id)
@@ -385,6 +384,6 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_active = true;
         $event->update();
-        return redirect('admin/Event/index');
+        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement activé.');
     }
 }

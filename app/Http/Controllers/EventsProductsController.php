@@ -93,8 +93,8 @@ class EventsProductsController extends Controller
                 $id = $request->events_product_id;
                 $events_product = Events_products::find($id);
                 $variants = array(
-                    'products_variant_id' => $request->products_variant_id,
-                    'quantity' => $request->quantity
+                    $request->products_variant_id,
+                    $request->quantity
                 );
                 $array = $events_product->variants;
                 array_push($array, $variants);
@@ -115,8 +115,8 @@ class EventsProductsController extends Controller
                 $events_product = Events_products::find($id);
                 $events_product->title == $request->title;
                 $variants = array(
-                    'products_variant_id' => $request->products_variant_id,
-                    'quantity' => $request->quantity
+                    $request->products_variant_id,
+                    $request->quantity
                 );
                 $array = $events_product->variants;
                 array_push($array, $variants);
@@ -134,6 +134,40 @@ class EventsProductsController extends Controller
             return 'no';
         }
     }
+
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteVariant($id, $products_variant_id)
+    {
+        $events_product = Events_products::find($id);
+        //dd($products_variant_id);
+        $array = $events_product->variants;
+        foreach($events_product->variants as $variant) {
+            foreach($variant as $value) {
+                if($value == $products_variant_id) {
+                    //dd($value);
+                    unset($value);
+                }
+            }
+        }
+        //unset($to_delete);
+        // foreach($events_product->variants as $variant) {
+        //     $array_delete = array_search($toDelete, $variant);
+
+        //     }
+        // }
+
+        $events_products = Events_products::all();
+        $products_variants = Products_variants::all();
+        $printzones = Printzones::all();
+        $product = Product::find($events_product->product_id);
+        return view('admin/EventsProducts.show', ['printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+    }
+
 
     /**
      * Display the specified resource.
@@ -223,7 +257,6 @@ class EventsProductsController extends Controller
                 'product_variant_id' => $request->product_variant_id,
                 'quantity' => $request->quantity
             );
-    
             $events_product->customs = array(
                 'id' => $request->custom_id,
                 'event_customs_id' => $request->event_customs_id,
@@ -249,8 +282,14 @@ class EventsProductsController extends Controller
     {
         $events_product = Events_products::find($id);
         $events_product->delete();
-        return redirect('admin/EventsProducts/index')->with('status', 'Le produit a été correctement supprimée.');
-
+        $event = Event::find($events_product->event_id);
+        $products = Product::all();
+        $events_products = Events_products::all();
+        $select_products = [];
+        foreach($products as $product) {
+            $select_products[$product->id] = $product->title;
+        }
+        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
@@ -267,7 +306,14 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $events_product->is_deleted = true;
         $events_product->update();
-        return redirect('admin/EventsProducts/index')->with('status', 'Le produit a été correctement effacée.');
+        $event = Event::find($events_product->event_id);
+        $products = Product::all();
+        $events_products = Events_products::all();
+        $select_products = [];
+        foreach($products as $product) {
+            $select_products[$product->id] = $product->title;
+        }
+        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);    
     }
 
     public function activate($id)
@@ -275,6 +321,13 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $events_product->is_active = true;
         $events_product->update();
-        return redirect('admin/EventsProducts/index')->with('status', 'Le produit a été correctement activée.');
+        $event = Event::find($events_product->event_id);
+        $products = Product::all();
+        $events_products = Events_products::all();
+        $select_products = [];
+        foreach($products as $product) {
+            $select_products[$product->id] = $product->title;
+        }
+        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);    
     }
 }
