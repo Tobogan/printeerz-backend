@@ -16,14 +16,14 @@
     <div class="card-body text-center">
         <img src="/img/svg/team_spirit.svg" alt="..." class="img-fluid" style="max-width: 182px;">
         <h1>
-            Pas de variantes.
+            Pas de personnalisation.
         </h1>
         <p class="text-muted">
-            Ajouter la première variante du produit
+            Ajouter la première personnalisation
         </p>
         <!-- Button -->
-        <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addVarianteEPModal">
-            Ajouter une variante
+        <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addVarianteEPModal"> {{-- là modal personnalisation inc --}}
+            Ajouter une personnalisation
         </a>
     </div>
 </div>
@@ -35,13 +35,13 @@
                 <div class="col">
                     <!-- Title -->
                     <h4 class="card-header-title">
-                        Variantes
+                        Personnalisations
                     </h4>
                 </div>
                 <div class="col-auto">
                     <!-- Button -->
                     <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addVarianteEPModal">
-                        Ajouter une variante
+                        Ajouter une personnalisation
                     </a>
                 </div>
             </div>

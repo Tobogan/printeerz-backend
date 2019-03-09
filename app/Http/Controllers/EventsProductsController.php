@@ -135,6 +135,8 @@ class EventsProductsController extends Controller
         }
     }
 
+
+
         /**
      * Store a newly created resource in storage.
      *
@@ -143,29 +145,28 @@ class EventsProductsController extends Controller
      */
     public function deleteVariant($id, $products_variant_id)
     {
+        function removeElement($array,$value) {
+            if (($key = array_search($value, $array)) !== false) {
+              unset($array[$key]);
+            }
+           return $array;
+         }
+
         $events_product = Events_products::find($id);
-        //dd($products_variant_id);
-        $array = $events_product->variants;
         foreach($events_product->variants as $variant) {
             foreach($variant as $value) {
                 if($value == $products_variant_id) {
-                    //dd($value);
-                    unset($value);
+                    $variant_to_delete = $variant;
                 }
             }
         }
-        //unset($to_delete);
-        // foreach($events_product->variants as $variant) {
-        //     $array_delete = array_search($toDelete, $variant);
-
-        //     }
-        // }
-
-        $events_products = Events_products::all();
-        $products_variants = Products_variants::all();
-        $printzones = Printzones::all();
-        $product = Product::find($events_product->product_id);
-        return view('admin/EventsProducts.show', ['printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        $result = removeElement($events_product->variants, $variant_to_delete);
+        $arr = $events_product->variants;
+        $arr = $result;
+        $events_product->variants = $arr;
+        $events_product->save();
+        //dd($result);
+        return redirect('admin/EventsProducts/show/'.$events_product->id);
     }
 
 

@@ -7,6 +7,7 @@ use DB;
 use App\Event;
 use App\Customer;
 use App\Product;
+use App\Printzones;
 use App\Events_products;;
 use App\User;
 
@@ -138,11 +139,12 @@ class EventController extends Controller
         $event = Event::find($id);
         $products = Product::all();
         $events_products = Events_products::all();
+        $printzones = Printzones::all();
         $select_products = [];
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
+        return view('admin/Event.show', ['printzones' => $printzones, 'select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
     }
 
     /**
