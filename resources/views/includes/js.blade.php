@@ -17,4 +17,4 @@
 <script src="{{ asset('js/ajax.js') }}"></script>
 <script src="{{ asset('js/js.js') }}"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD04MPgj9SYFzVlwQhn6R5u1_PuzmAvaHw&libraries=places&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD04MPgj9SYFzVlwQhn6R5u1_PuzmAvaHw&libraries=places"></script>

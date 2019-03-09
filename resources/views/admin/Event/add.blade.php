@@ -119,7 +119,7 @@
               <small class="form-text text-muted">
                 Où se déroule l'événement?
               </small>
-              <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false">
+              <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
               <input class="form-control mt-2" name="address" id="address" type="hidden">
               <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
               <input class="form-control mt-2" name="city" id="city" type="hidden">
