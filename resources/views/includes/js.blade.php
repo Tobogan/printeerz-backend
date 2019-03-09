@@ -12,7 +12,9 @@
 <script src="{{ asset('libs/dropzone/dist/min/dropzone.min.js') }}"></script>
 <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
 <script src="{{ asset('libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js') }}"></script>
-<script src="{{ asset('js/theme.min.js') }}"></script>
 
+<script src="{{ asset('js/theme.min.js') }}"></script>
 <script src="{{ asset('js/ajax.js') }}"></script>
 <script src="{{ asset('js/js.js') }}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD04MPgj9SYFzVlwQhn6R5u1_PuzmAvaHw&libraries=places&callback=initMap"></script>
