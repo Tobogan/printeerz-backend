@@ -89,27 +89,9 @@
                                         <div class="col-12">
                                             <!-- First name -->
                                             <div class="form-group">
-<<<<<<< HEAD
                                                 {!! Form::file('printzone'.$i, array('class' => 'form-group')) !!}
                                                 <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
                                                 <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
-=======
-                                                {{-- <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="printzone_event_upload"> --}}
-                                                    {{-- <div class="fallback"> --}}
-                                                        {{-- <div class="custom-file">    --}}
-                                                            {!! Form::file('printzone'.$i, array('class' => 'form-group')) !!}
-                                                            <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
-                                                            <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
-                                                            {{-- <label class="custom-file-label" for="projectCoverUploads">Choose file</label> --}}
-                                                        {{-- </div> --}}
-                                                    {{-- </div> --}}
-                                                    {{-- <div class="dz-preview dz-preview-single">
-                                                        <div class="dz-preview-cover">
-                                                            <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                                        </div>
-                                                    </div> --}}
-                                                {{-- </div> --}}
->>>>>>> features/gcdisk
                                             </div>
                                         </div>
                                     </div>
@@ -128,19 +110,8 @@
                 <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
-                        {{-- <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
-                                <div class="custom-file">    --}}
-                                    {!! Form::file('image', array('class' => '', 'id' => 'logo_img')) !!}
-                                    {{-- <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div> --}}
-                        </div>
+                        {!! Form::file('image', array('class' => '', 'id' => 'logo_img')) !!}
+                    </div>
                     </div>
                     <div class="row">
                             <div class="col-12">

@@ -80,13 +80,13 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         @if ($products_variant->is_active == true)
-                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')" href="{{route('desactivate_productsVariants', $products_variant->id)}}">
+                                            <a class="dropdown-item" href="{{route('desactivate_productsVariants', $products_variant->id)}}">
                                             Désactiver </a>
                                         @else
                                             <a class="dropdown-item" href="{{route('activate_productsVariants', $products_variant->id)}}">Activer</a>
                                         @endif
                                             <hr class="dropdown-divider">
-                                            <a class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr?')" href="{{route('destroy_productsVariants', $products_variant->id)}}">
+                                            <a class="dropdown-item text-danger" href="{{route('destroy_productsVariants', $products_variant->id)}}">
                                             Supprimer </a>
                                     </div>
                                 </div>

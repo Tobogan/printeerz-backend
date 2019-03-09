@@ -157,7 +157,7 @@
                             Zones d'impression disponible(s)
                         </label>
                         <!-- Input -->
-                        {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                        {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'), $product->printzones_id, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
                     </div>
                 </div>
             </div>
