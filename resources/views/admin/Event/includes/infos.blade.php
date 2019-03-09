@@ -73,15 +73,16 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <span class="small">
-                                {{ $event->location['address'] }}, {{ $event->location['postal_code'] }}, {{ $event->location['city'] }}, {{ $event->location['country'] }}
+                                {{ $event->location['address'] }}, {{ $event->location['postal_code'] }}, {{
+                                $event->location['city'] }}, {{ $event->location['country'] }}
                             </span>
                         </div>
                     </div> <!-- / .row -->
                 </div>
                 @if($event->location['lattitude'] && $event->location['longitude'])
-                    <div style="position:relative; display: block; width: 100%; height: 300px;">
-                            <div id="map"></div>
-                    </div>
+                <div style="position:relative; display: block; width: 100%; height: 300px;">
+                    <div id="map"></div>
+                </div>
                 @endif
             </div>
 
@@ -112,18 +113,61 @@
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
 <style>
-#map { position:absolute; top:0; bottom:0; width:100%; }
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
 </style>
 <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoicmVkam9yIiwiYSI6ImNqaTFzajJmbjFoOXkzcG55anRjaGIxcHIifQ.Yea7bd-MCJYIOs8tKcrb9Q';
-        var map = new mapboxgl.Map({
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmVkam9yIiwiYSI6ImNqaTFzajJmbjFoOXkzcG55anRjaGIxcHIifQ.Yea7bd-MCJYIOs8tKcrb9Q';
+    var map = new mapboxgl.Map({
         container: 'map', // container id
         style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-        center: [{{ $event->location['longitude'] }}, {{ $event->location['lattitude'] }}], // starting position [lng, lat]
+        center: [
+            '{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}'
+        ], // starting position [lng, lat]
         zoom: 15 // starting zoom
+    });
+
+    map.on("load", function () {
+        /* Image: An image is loaded and added to the map. */
+        map.loadImage("https://i.imgur.com/MK4NUzI.png", function(error, image) {
+            if (error) throw error;
+            map.addImage("custom-marker", image);
+            /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
+            map.addLayer({
+                id: "markers",
+                type: "symbol",
+                /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
+                source: {
+                type: "geojson",
+                data: {
+                    type: 'FeatureCollection',
+                    features: [
+                    {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: {
+                        type: "Point",
+                        coordinates: ['{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}']
+                        }
+                    }
+                    ]
+                }
+                },
+                layout: {
+                "icon-image": "custom-marker",
+                }
+            });
         });
-        
-        marker = new mapboxgl.Marker()
-        .setLngLat([{{ $event->location['longitude'] }}, {{ $event->location['lattitude'] }}])
-        .addTo(map);</script>
+    });
+   
+</script>
 @endif
+
+
+
+
+

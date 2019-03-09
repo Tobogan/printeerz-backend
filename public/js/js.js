@@ -55,7 +55,7 @@ $(function () {
     // Hide all elements when changed type
     componentElement.hide();
     // Show elements who matched the type 
-    $('div[type *= '+ value +']').fadeIn();
+    $('div[type *= ' + value + ']').fadeIn();
   });
 });
 
@@ -73,10 +73,10 @@ $(function () {
         console.log('start: ' + ui.item.index())
       },
       update: function (event, ui) {
-          console.log('end ' + ui.item.index())
-        }
-      });
-      
+        console.log('end ' + ui.item.index())
+      }
+    });
+
   $("div[data-type='sortable']").disableSelection();
 });
 
@@ -111,3 +111,26 @@ $(function () {
     $(this).val(null).trigger('change.select2')
   });
 });
+
+// --------------------------------
+// Initialise Google Address autocomplete
+// --------------------------------
+
+function initMap() {
+  var input = document.getElementById('formPlacesAuto');
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener('place_changed', function () {
+    var place = autocomplete.getPlace();
+    var addressComponents = place.address_components;
+
+    console.log(addressComponents);
+    document.getElementById('address').value = addressComponents[0]["long_name"] + ' ' + addressComponents[1]["long_name"];
+    document.getElementById('postal_code').value = addressComponents[6]["long_name"];
+    document.getElementById('city').value = addressComponents[2]["long_name"];
+    document.getElementById('country').value = addressComponents[5]["long_name"];
+    document.getElementById('latitude').value = place.geometry.location.lat();
+    document.getElementById('longitude').value = place.geometry.location.lng();
+  });
+}

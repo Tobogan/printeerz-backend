@@ -119,7 +119,13 @@
               <small class="form-text text-muted">
                 Où se déroule l'événement?
               </small>
-              {!! Form::text('address', null, ['class' => 'form-control mt-2', 'placeholder' => 'Renseigner l\'adresse']) !!}
+              <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false">
+              <input class="form-control mt-2" name="address" id="address" type="hidden">
+              <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
+              <input class="form-control mt-2" name="city" id="city" type="hidden">
+              <input class="form-control mt-2" name="country" id="country" type="hidden">
+              <input class="form-control mt-2" name="lattitude" id="latitude" type="hidden">
+              <input class="form-control mt-2" name="longitude" id="longitude" type="hidden">
             </div>
 
             <!-- Event type -->
@@ -146,22 +152,10 @@
               <small class="form-text text-muted">
                 Utilisez une image au format 1:1 avec une taille 400x400 maximum
               </small>
-              <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-
-                <div class="fallback">
                   <div class="custom-file">
                     {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
+                    <label class="custom-file-label" for="logo_img">Choose file</label>
                   </div>
-                </div>
-
-                <div class="dz-preview dz-preview-single">
-                  <div class="dz-preview-cover">
-                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                  </div>
-                </div>
-
-              </div>
             </div>
 
             <!-- Event cover -->
@@ -170,24 +164,12 @@
                 Cover de l'événement
               </label>
               <small class="form-text text-muted">
-                ...
+                Utilisez une image au format 1:1 avec une taille 400x400 maximum
               </small>
-              <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://">
-
-                <div class="fallback">
                   <div class="custom-file">
                     {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img')) !!}
-                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
+                    <label class="custom-file-label" for="cover_img">Choose file</label>
                   </div>
-                </div>
-
-                <div class="dz-preview dz-preview-single">
-                  <div class="dz-preview-cover">
-                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                  </div>
-                </div>
-
-              </div>
             </div>
 
             <div class="form-group">
@@ -211,5 +193,4 @@
     </div>
   </div>
 </div>
-
 @endsection
