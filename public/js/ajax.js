@@ -126,10 +126,6 @@ $(document).ready(function () {
             success: function (msg) {
                 title = $('#title').val('');
                 description = $('#description').val('');
-                product_id = $('#product_id').val('');
-                event_id = $('#event_id').val('');
-                is_active = $('#is_active').val('');
-                is_deleted = $('#is_deleted').val('');
                 console.log(msg.events_product);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');

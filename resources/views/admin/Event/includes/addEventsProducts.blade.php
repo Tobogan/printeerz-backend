@@ -15,7 +15,6 @@
             <div class="modal-body">
                 <p>Vous pouvez ajouter un produit existant à cet événement.</p>
                 {!! Form::open(['id' => 'AddEventsProduct', 'class' => 'mt-5']) !!}
-                <input type="hidden" name="event_id" id="event_id" value="{{$event->id}}">
                 <div class="form-group">
                     {{ Form::select('product_id', $select_products, array('class'=>'btn btn-primary', 'id' => 'product_id')) }}
                 </div>
@@ -26,6 +25,7 @@
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="is_active" id="is_active" value="true">
                 <input type="hidden" name="is_deleted" id="is_deleted" value="false">
+                <input type="hidden" name="event_id" id="event_id" value="{{$event->id}}">
             </div>
             <div class="modal-footer">
                 <button id="close_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
