@@ -59,7 +59,7 @@ class EventsProductsController extends Controller
             $events_product->event_id = $request->event_id;
             $events_product->product_id = $request->product_id;
             $product = Product::find($events_product->product_id);
-            $events_product->title = $product->title;
+            $events_product->title = $request->title;
             $events_product->variants = array();
             $events_product->description = $request->description;
             $events_product->is_active = $request->is_active;
@@ -284,13 +284,7 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $events_product->delete();
         $event = Event::find($events_product->event_id);
-        $products = Product::all();
-        $events_products = Events_products::all();
-        $select_products = [];
-        foreach($products as $product) {
-            $select_products[$product->id] = $product->title;
-        }
-        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
+        return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
@@ -299,7 +293,8 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $events_product->is_active = false;
         $events_product->update();
-        return redirect('admin/EventsProducts/index')->with('status', 'Le produit a été correctement désactivée.');
+        $event = Event::find($events_product->event_id);
+        return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement désactivée.');
     }
 
     public function delete($id)
@@ -308,13 +303,7 @@ class EventsProductsController extends Controller
         $events_product->is_deleted = true;
         $events_product->update();
         $event = Event::find($events_product->event_id);
-        $products = Product::all();
-        $events_products = Events_products::all();
-        $select_products = [];
-        foreach($products as $product) {
-            $select_products[$product->id] = $product->title;
-        }
-        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);    
+        return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }
 
     public function activate($id)
@@ -323,12 +312,6 @@ class EventsProductsController extends Controller
         $events_product->is_active = true;
         $events_product->update();
         $event = Event::find($events_product->event_id);
-        $products = Product::all();
-        $events_products = Events_products::all();
-        $select_products = [];
-        foreach($products as $product) {
-            $select_products[$product->id] = $product->title;
-        }
-        return view('admin/Event.show', ['select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);    
+        return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement activée.');
     }
 }

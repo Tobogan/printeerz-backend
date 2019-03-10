@@ -18,7 +18,7 @@
                                             </div>
                                             <div class="col ml-n2">
                                                 <h4 class="card-title mb-1 name">
-                                                    <a href="team-overview.html">{{ $product->title }}</a>
+                                                    <a href="team-overview.html">{{ $events_product->title }}</a>
                                                 </h4>
                                                 <ul class="event_product_colors mt-2 d-inline-flex">
                                                     <li class="event_product_color d-block rounded border border-light mr-1" style="background-color: #578393;"></li>

@@ -276,30 +276,3 @@ class ProductsVariantsController extends Controller
         return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement activée.');
     }
 }
-
-           /* for($i=1; $i<10; $i++) {
-                if ($request->hasFile('{{ $i }}')){
-                    $file_path_image = public_path('uploads/'.$products_variant->{$i});
-                    if(file_exists(public_path('uploads/'.$products_variant->{$i})) && !empty($products_variant->{$i})){
-                        unlink($file_path_image);
-                    }
-                    $photo.$i = time().'.'.request()->{$i}->getClientOriginalExtension();
-                    request()->image->move(public_path('uploads'), $photo.$i);
-                    $products_variant->product_zones = array(
-                        'id' => $request->product_zone_id1,
-                        'title' => $request->product_zone_title1,
-                        'image' => $photo1
-                    );
-                }
-            }*/
-            
-            // $product = Product::find($products_variant->product_id);
-            // if($product->printzones_id) {
-            //     foreach($product->printzones_id as $print) {
-            //         if ($request->hasFile('{{$print}}')){
-            //             $photo = time().'.'.request()->{$print}->getClientOriginalExtension();
-            //             request()->{$print}->move(public_path('uploads'), $photo);
-            //             $products_variant->{$print} = $photo;
-            //         }
-            //     }
-            // }
