@@ -27,8 +27,6 @@
             {{-- Body --}}
             {!! Form::open(['action' => array('CustomerController@update', 'id' => $customer->id), 'files' => true, 'class' => 'mb-4']) !!}
             {{csrf_field()}}
-            <div class="card">
-                <div class="card-body">
                     <div class="row">
                         {{csrf_field()}}
                         <div class="col-12">
@@ -72,12 +70,13 @@
                     <div class="row">
                         <div class="col-12">
                             <p class="h3">Adresse de la société</p>
+                            <p class="text-muted mb-4">L'adresse va s'autocompléter directement</p>
                         </div>
                         <div class="col-12">
                             <!-- Address  -->
                             <div class="form-group">
                                 <!-- Input -->
-                                <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();" value="{{ $customer->location['address'] }}">
+                                <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();" value="{{ $customer->location['address'] }} {{ $customer->location['postal_code'] }} {{ $customer->location['city'] }} {{ $customer->location['country'] }}">
                                 <input class="form-control mt-2" name="address" id="address" type="hidden">
                                 <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
                                 <input class="form-control mt-2" name="city" id="city" type="hidden">
@@ -91,7 +90,7 @@
                     <div class="row">
                         <div class="col-12">
                             <p class="h3">Nom du contact</p>
-                            <p class="mb-4">Entrez les informations de la personne avec laquelle vous êtes en contact.</p>
+                            <p class="text-muted mb-4">Entrez les informations de la personne avec laquelle vous êtes en contact.</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <!-- First name -->
@@ -124,7 +123,7 @@
                                     Email
                                 </label>
                                 <!-- Input -->
-                                {!! Form::email('email', $customer->contact_person['email'], ['class' => 'form-control', 'placeholder' => 'Email']) !!}
+                                {!! Form::email('email', $customer->contact_person['email'], ['class' => 'form-control', 'placeholder' => 'user@email.com']) !!}
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
@@ -134,7 +133,7 @@
                                 <label>
                                     Téléphone
                                 </label>
-                                {!! Form::text('phone', $customer->contact_person['phone'], ['class' => 'form-control', 'placeholder' => 'Téléphone',
+                                {!! Form::text('phone', $customer->contact_person['phone'], ['class' => 'form-control', 'placeholder' => '0123456789',
                                 'data-mask' => '00 00 00 00 00']) !!}
                             </div>
                         </div>
@@ -154,7 +153,7 @@
                     <div class="row">
                         <div class="col-12">
                             <p class="h3">Logo</p>
-                            <p class="mb-4">Ajouter le logo du client en format 1:1</p>
+                            <p class="text-muted mb-4">Ajouter le logo du client de préférence en format 1:1</p>
                         </div>
                         <div class="col-12">
                             <!-- First name -->
@@ -172,10 +171,8 @@
                         <div class="col-12">
                             <!-- First name -->
                             <div class="form-group">
-                                <!-- Label -->
-                                <label>
-                                    Evénements déjà organisés
-                                </label>
+                                 <p class="h3">Evénements déjà organisés</p>
+                                <p class="text-muted mb-4">Seulement si vous souhaitez ajouter des événements passés avec ce nouveau client</p>
                                 <!-- Input -->
                                 {!! Form::select('shows_id[]', App\Event::pluck('name','_id'), $customer->description, ['class' =>
                                 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
@@ -184,9 +181,8 @@
                     </div>
                     {!! Form::hidden('is_active', "true") !!}
                     {!! Form::hidden('is_deleted', "false") !!}
-                </div>
-            </div>
-                
+
+
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">

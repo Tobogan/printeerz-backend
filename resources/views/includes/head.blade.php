@@ -51,5 +51,10 @@
         .custom-file-label:after {
             content: "Parcourir";
         }
+        .alerts .alert{
+            border: 0;
+            margin: 0;
+            text-align: center;
+        }
     </style>
 </head>

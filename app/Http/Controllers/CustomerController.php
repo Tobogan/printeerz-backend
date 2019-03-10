@@ -10,6 +10,10 @@ use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 use Illuminate\Support\Facades\Input;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 
 class CustomerController extends Controller
 {
@@ -87,16 +91,29 @@ class CustomerController extends Controller
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
 
-        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
+        $disk = Storage::disk('s3');
         if ($request->hasFile('image')){
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
-
-            $customer->image = $imageName;
-        } 
+            // Get file
+            $file = $request->file('image');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/customers/' . $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $customer->image = $filePath;
+        }
         $customer->save();
-
-        return redirect('admin/Customer/index')->with('status', 'Le client a été correctement ajouté.');
+        $notification = array(
+            'status' => 'Le client a été correctement ajouté',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Customer/index')->with($notification);
     }
 
     /**
@@ -109,7 +126,10 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
         $events = Event::all();
-        return view('admin/Customer.show', ['events' => $events, 'customer' => $customer]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        $exists = $disk->exists('file.jpg');
+return view('admin/Customer.show', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'customer' => $customer]);
     }
 
     /**
@@ -133,6 +153,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request)
     {
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
@@ -168,17 +190,28 @@ class CustomerController extends Controller
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
 
-        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
-        if ($request->hasFile('image')) {
-            $file_path = public_path('uploads/'.$customer->image);
-            if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
-                unlink($file_path);
+        // Update Profile image
+        if ($request->hasFile('image')){
+            // Get current image path
+            $oldPath = $customer->image;
+            // Get new image
+            $file = $request->file('image');
+            // Create image name
+            $name = time() . $file->getClientOriginalName();
+            // Define the new path to image
+            $newFilePath = '/customers/' . $name;
+            // Resize new image
+            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+            // Upload the new image
+            $disk = Storage::disk('s3');
+            $disk->put($newFilePath, $img, 'public');
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $customer->image = $newFilePath;
+            if(!empty($customer->image) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
             }
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
-
-            $customer->image = $imageName;
-        } 
+        }
         $customer->save();
         }        
         else {
@@ -213,23 +246,38 @@ class CustomerController extends Controller
             'lattitude' => $request->lattitude
         );
         $customer->events_id = $request->get('shows_id');
-        $customer->is_active = $request->is_active; //penser à mettre l'input hidden
+        $customer->is_active = $request->is_active; 
         $customer->is_deleted = $request->is_deleted;
 
-        /*~~~~~~~~~~~___________UPLOAD IMAGE CUSTOMER__________~~~~~~~~~~~~*/
+        // Update Profile image
         if ($request->hasFile('image')){
-            $file_path = public_path('uploads/').$customer->image;
-            if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
-                unlink($file_path);
+            // Get current image path
+            $oldPath = $customer->image;
+            // Get new image
+            $file = $request->file('image');
+            // Create image name
+            $name = time() . $file->getClientOriginalName();
+            // Define the new path to image
+            $newFilePath = '/customers/' . $name;
+            // Resize new image
+            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+            // Upload the new image
+            $disk = Storage::disk('s3');
+            $disk->put($newFilePath, $img, 'public');
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $customer->image = $newFilePath;
+            if(!empty($customer->image) && $disk->exists($newFilePath)){
+            $disk->delete($oldPath);
             }
-            $imageName = time().'.'.request()->image->getClientOriginalExtension();           
-            request()->image->move(public_path('uploads'), $imageName);
-
-            $customer->image = $imageName;
-        } 
+        }
         $customer->save();
         }     
-        return view('admin/Customer.show', ['customer' => $customer])->with('status', 'Le client a été correctement modifié.');    }
+        $notification = array(
+            'status' => 'Le client a été correctement modifié',
+            'alert-type' => 'success'
+        );
+        return view('admin/Customer.show', ['customer' => $customer, 'disk' => $disk, 's3' => $s3])->with($notification); }
 
     /**
      * Remove the specified resource from storage.
@@ -240,13 +288,20 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find($id);
-        $file_path = public_path('uploads/').$customer->image;
-        if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image)){
-            unlink($file_path);
+        // Delete Profile image
+        $disk = Storage::disk('s3');
+        $filePath = $customer->image;
+        if(!empty($customer->image) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
         $customer->delete();
-        return redirect('admin/Customer/index')->with('status', 'Le client a été correctement supprimé.');
-    }
+        $notification = array(
+        'status' => 'Le client a été correctement été effacé',
+        'alert-type' => 'success'
+        );
+        
+        return redirect('admin/Customer/index')->with($notification);
+        }
 
         /*--~~~~~~~~~~~___________activate and desactivate a customer function in index Customer__________~~~~~~~~~~~~-*/
         public function desactivate($id)

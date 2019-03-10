@@ -9,8 +9,8 @@
     
                         <!-- Avatar -->
                         <div class="avatar avatar-xl header-avatar-top">
-                            @if(file_exists(public_path('uploads/'.$customer->image)) && !empty($customer->image))
-                                <img src="{{ $customer->image }}" alt="" class="avatar-img rounded-circle border border-4 border-body">
+                             @if(!empty($customer->image) && $disk->exists($customer->image))
+                                <img src="{{$s3 . $customer->image}}" alt="" class="avatar-img rounded-circle border border-4 border-body">
                             @else
                                 <?php 
                                     $customerInitials = $customer->title[0];

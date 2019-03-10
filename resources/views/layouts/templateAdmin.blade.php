@@ -4,6 +4,9 @@
 
 <body>
     <div id="root">
+        <div class="alerts">
+            @yield('alerts')
+        </div>
         <div class="main-content">
             @include('includes.topbar')
             @yield('content')
