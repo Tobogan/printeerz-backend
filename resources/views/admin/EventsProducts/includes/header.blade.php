@@ -38,6 +38,11 @@
                     </div>
                 </div>
             </div> <!-- / .row -->
+            <div class="row align-items-center">
+                <div class="col">
+                    @include('admin.EventsProducts.includes.tabs')
+                </div>
+            </div>
         </div> <!-- / .header-body -->
     </div>
 </div>

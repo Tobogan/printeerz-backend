@@ -13,8 +13,7 @@
                                         <div class="row align-items-center py-2">
                                             <div class="col-auto">
                                                 <a href="project-team-overview.html" class="avatar avatar-lg">
-                                                    <img src="https://dashkit.goodthemes.co/assets/img/avatars/teams/team-logo-1.jpg" alt="..."
-                                                        class="avatar-img rounded">
+                                                <img src="/uploads/{{ $product->image }}" alt="..." class="avatar-img rounded">
                                                 </a>
                                             </div>
                                             <div class="col ml-n2">

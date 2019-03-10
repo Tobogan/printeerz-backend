@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="event_product_informations">
     <div class="row">
         <div class="col-12 col-xl-8">
             @include('admin.EventsProducts.includes.indexVariante')
