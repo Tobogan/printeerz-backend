@@ -72,8 +72,7 @@
                             Nom du fournisseur
                         </label>
                         <!-- Input -->
-                        {!! Form::text('vendor_name', null, ['class' => 'form-control', 'placeholder' =>
-                        'Nom :']) !!}
+                        {!! Form::text('vendor_name', null, ['class' => 'form-control', 'placeholder' => 'Nom']) !!}
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -84,19 +83,19 @@
                             Référence produit
                         </label>
                         <!-- Input -->
-                        {!! Form::text('vendor_reference', null, ['class' => 'form-control', 'placeholder' => 'Référence :']) !!}
+                        {!! Form::text('vendor_reference', null, ['class' => 'form-control', 'placeholder' => 'Référence']) !!}
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <p class="mb-4">Sélectionner le genre</p>
-                </div>
-                <div class="col-12">
                     <div class="form-group">
+                        <label>Sélectionner le genre</label>
                         <select name="gender" id="gender" class="form-control" data-toggle="select">
                             <option value="male">Homme</option>
                             <option value="female">Femme</option>
+                            <option value="unisex">Unisex</option>
+                            <option value="accessories">Accessoires</option>
                         </select>
                     </div>
                 </div>
@@ -111,18 +110,9 @@
                 <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
-                                <div class="custom-file">
-                                    {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
+                        <div class="custom-file">
+                            {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
+                            <label class="custom-file-label" for="logo_img">Télécharger l'image du produit</label>
                         </div>
                     </div>
                 </div>
@@ -141,9 +131,10 @@
                     </div>
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="form-group">
                 <label>Description du produit</label>
-                <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez le produit"></div>
+                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
             </div>
             {!! Form::hidden('is_active', "true") !!}
             {!! Form::hidden('is_deleted', "false") !!}

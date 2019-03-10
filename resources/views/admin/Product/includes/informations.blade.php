@@ -7,7 +7,7 @@
                     <h4 class="card-header-title">Description</h4>
                 </div>
                 <div class="card-body">
-                    {{ $product->description}}
+                    {!! $product->description !!}
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
             @if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="img-thumbnail" src="/uploads/{{$product->image}}"
+                    <img width="100%" title="image principale" class="" src="/uploads/{{$product->image}}"
                         alt="Image produit">
                 </div>
             </div>

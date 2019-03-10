@@ -38,7 +38,5 @@
 </div>
 
     @section('javascripts')
-
-
-@endsection
+    @endsection
 @endsection

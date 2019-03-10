@@ -6,7 +6,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#informationsCustomer" class="nav-link">
+        <a href="#informationsCustomers" class="nav-link">
             Informations
         </a>
     </li>

@@ -52,9 +52,7 @@
                                         !empty($event->logoName))
                                         <img src="{{ $event->logoName }}" alt="" class="avatar-img rounded">
                                         @else
-                                        <?php 
-                                                            $eventInitials = $event->name[0];
-                                                        ?>
+                                        <?php $eventInitials = $event->name[0]; ?>
                                         <span class="avatar-title rounded text-uppercase">{{ $eventInitials }}</span>
                                         @endif
                                     </a>

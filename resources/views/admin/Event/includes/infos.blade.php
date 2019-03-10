@@ -6,14 +6,13 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Title -->
                             <h5 class="mb-0">
                                 Date de début
                             </h5>
                         </div>
                         <div class="col-auto">
                             <time class="small text-muted">
-                                {{ date('d-m-Y', strtotime($event->start_datetime)) }}
+                                {{ date('d/m/y', strtotime($event->start_datetime)) }}
                             </time>
                         </div>
                     </div> <!-- / .row -->
@@ -23,7 +22,6 @@
                     <div class="row align-items-center">
                         <div class="col">
 
-                            <!-- Title -->
                             <h5 class="mb-0">
                                 Date de fin
                             </h5>
@@ -32,7 +30,7 @@
                         <div class="col-auto">
 
                             <span class="small text-muted">
-                                {{ date('d-m-Y', strtotime($event->end_datetime)) }}
+                                {{ date('d/m/y', strtotime($event->end_datetime)) }}
                             </span>
 
                         </div>
@@ -44,7 +42,6 @@
                     <div class="row align-items-center">
                         <div class="col">
 
-                            <!-- Title -->
                             <h5 class="mb-0">
                                 Type d'événement
                             </h5>
@@ -55,6 +52,23 @@
                             <small class="text-muted">
                                 {{ $event->type }}
                             </small>
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Description
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <span class="small">
+                                {!! $event->description !!}
+                            </span>
                         </div>
                     </div> <!-- / .row -->
                 </div>
@@ -73,9 +87,18 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <span class="small">
-                                {{ $event->location['address'] }}, {{ $event->location['postal_code'] }}, {{
-                                $event->location['city'] }}, {{ $event->location['country'] }}
+                                {{ $event->location['address'] }}
                             </span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">    
+                          <div class="col">
+                            <span class="small">{{ $event->location['postal_code'] }} {{ $event->location['city'] }}</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">    
+                          <div class="col">
+                            <span class="small">{{ $event->location['country'] }}</span>
                         </div>
                     </div> <!-- / .row -->
                 </div>
@@ -84,25 +107,6 @@
                     <div id="map"></div>
                 </div>
                 @endif
-            </div>
-
-            <!-- Card -->
-            <div class="card">
-                <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Description
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <span class="small">
-                                {{ $event->description }}
-                            </span>
-                        </div>
-                    </div> <!-- / .row -->
-                </div>
             </div>
         </div>
     </div> <!-- / .row -->
@@ -133,7 +137,7 @@
 
     map.on("load", function () {
         /* Image: An image is loaded and added to the map. */
-        map.loadImage("https://i.imgur.com/MK4NUzI.png", function(error, image) {
+        map.loadImage("https://i.imgur.com/MK4NUzI.png", function (error, image) {
             if (error) throw error;
             map.addImage("custom-marker", image);
             /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
@@ -142,32 +146,25 @@
                 type: "symbol",
                 /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
                 source: {
-                type: "geojson",
-                data: {
-                    type: 'FeatureCollection',
-                    features: [
-                    {
-                        type: 'Feature',
-                        properties: {},
-                        geometry: {
-                        type: "Point",
-                        coordinates: ['{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}']
-                        }
+                    type: "geojson",
+                    data: {
+                        type: 'FeatureCollection',
+                        features: [{
+                            type: 'Feature',
+                            properties: {},
+                            geometry: {
+                                type: "Point",
+                                coordinates: ['{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}'
+                                ]
+                            }
+                        }]
                     }
-                    ]
-                }
                 },
                 layout: {
-                "icon-image": "custom-marker",
+                    "icon-image": "custom-marker",
                 }
             });
         });
     });
-   
 </script>
 @endif
-
-
-
-
-

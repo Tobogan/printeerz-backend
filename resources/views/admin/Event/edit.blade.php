@@ -24,7 +24,7 @@
 
         <div class="form-group">
         {!! Form::label('customer_id', 'Sélectionner le client : ', ['class' => 'control-label']) !!}
-        {!! Form::select('customer_id', $select, null, ['class' => 'form-control']) !!}
+        {!! Form::select('customer_id', $select_customers, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

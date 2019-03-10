@@ -57,7 +57,7 @@ class CustomerController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'activity_type' => 'required|string|max:255',
-            'SIREN' => 'string|max:255',
+            'SIREN' => 'string|max:9',
             'location' => 'string|max:255',
             'contact_person' => 'string|max:255',
             'comments' => 'max:750'

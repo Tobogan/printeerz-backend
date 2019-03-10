@@ -119,7 +119,8 @@
               <small class="form-text text-muted">
                 Où se déroule l'événement?
               </small>
-              <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
+              <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress"
+                type="text" autocomplete="false" onFocus="initMap();">
               <input class="form-control mt-2" name="address" id="address" type="hidden">
               <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
               <input class="form-control mt-2" name="city" id="city" type="hidden">
@@ -152,10 +153,10 @@
               <small class="form-text text-muted">
                 Utilisez une image au format 1:1 avec une taille 400x400 maximum
               </small>
-                  <div class="custom-file">
-                    {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                    <label class="custom-file-label" for="logo_img">Choose file</label>
-                  </div>
+              <div class="custom-file">
+                {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
+                <label class="custom-file-label" for="logo_img">Charger une image</label>
+              </div>
             </div>
 
             <!-- Event cover -->
@@ -166,15 +167,17 @@
               <small class="form-text text-muted">
                 Utilisez une image au format 1:1 avec une taille 400x400 maximum
               </small>
-                  <div class="custom-file">
-                    {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img')) !!}
-                    <label class="custom-file-label" for="cover_img">Choose file</label>
-                  </div>
+              <div class="custom-file">
+                {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img' )) !!}
+                <label class="custom-file-label" for="cover_img">Charger une image</label>
+              </div>
             </div>
+            <!-- Divider -->
+            <hr class="mt-4 mb-5">
 
             <div class="form-group">
               <label>Description de l'événement</label>
-              <div data-toggle="quill" data-quill-placeholder="Décrivez l'événement"></div>
+              <input id="textDescription" type="textarea" class="description" name="description" rows="3">
             </div>
 
             <!-- Divider -->

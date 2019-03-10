@@ -31,5 +31,25 @@
             width: 24px;
             height: 24px;
         }
+        .tox-tinymce{
+            border: 1px solid #d2ddec !important;
+            border-radius: .5rem !important;
+        }
+        .tox-statusbar{
+            border-color: #d2ddec !important;
+            display: none;
+        }
+        .tox-statusbar__branding{
+            display: none; 
+        }
+        .tox-edit-area{
+            border-top: 1px solid #d2ddec !important;
+        }
+        .tox-toolbar__group:not(:last-of-type) {
+            border-right: 1px solid #d2ddec !important;
+        }
+        .custom-file-label:after {
+            content: "Parcourir";
+        }
     </style>
 </head>

@@ -13,14 +13,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Vous pouvez ajouter un produit existant à cet événement.</p>
-                {!! Form::open(['id' => 'AddEventsProduct', 'class' => 'mt-5']) !!}
+                {!! Form::open(['id' => 'AddEventsProduct']) !!}
                 <div class="form-group">
-                    {{ Form::select('product_id', $select_products, array('class'=>'btn btn-primary', 'id' => 'product_id')) }}
+                    <label>Nom du produit</label>
+                    {!! Form::text('product_title', null, ['class' => 'form-control', 'placeholder' => 'Nom du produit']) !!}
+                </div>
+                <div class="form-group">
+                    <label>Sélectionner le produit vierge</label>
+                    {{ Form::select('product_id', $select_products, null, array('id' => 'addEventProductSelect', 'data-toggle' => 'select')) }}
                 </div>
                 <div class="form-group">
                     <label>Description du produit</label>
-                    <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez le produit"></div>
+                    <input type="textarea" id="textDescription" name="product_description" rows="3">
                 </div>
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="is_active" id="is_active" value="true">

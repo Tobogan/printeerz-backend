@@ -1,5 +1,5 @@
 <!-- #INFORMATIONS -->
-<div class="container" id="informations">
+<div class="container" id="informationsCustomers">
     <div class="row">
         <div class="col-12 col-lg-8">
 
@@ -22,10 +22,6 @@
                             <time class="small text-muted">
                                 {{ $customer->location["address"] .' '. $customer->location["postal_code"] .' '.
                                 $customer->location["city"] }}
-                                <?php //dd($customer->events_id ?>
-                                @foreach($customer->events as $event)
-                                {{ $event->name }}
-                                @endforeach
                             </time>
 
                         </div>

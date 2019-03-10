@@ -131,20 +131,11 @@
                 <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
                                 <div class="custom-file">
                                     {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
+                                    <label class="custom-file-label" for="projectCoverUploads">Télécharger l'image du produit</label>
                                 </div>
                             </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <hr class="mt-4 mb-5">
@@ -163,7 +154,7 @@
             </div>
             <div class="form-group">
                 <label>Description du produit</label>
-                <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez le produit"></div>
+                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
             </div>
 
             <div class="row">

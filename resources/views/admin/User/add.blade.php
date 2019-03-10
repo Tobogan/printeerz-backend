@@ -36,7 +36,8 @@
 
             {!! Form::open(['action' => 'UserController@store', 'files' => true, 'class' => 'mb-4']) !!}
             {{ csrf_field() }}
-
+            <div class="card">
+                <div class="card-body">
             <div class="row">
                 <div class="col-12">
                     <!-- First name -->
@@ -55,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
@@ -94,29 +96,26 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="phone">Téléphone</label>
-                    {!! Form::text('phone', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('phone', null, ['class' => 'form-control', 'data-mask' =>'0000000000']) !!}
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <div class="form-group">
                         <label for="password" class="label">Mot de passe</label>
-                        <input id="password" type="password" class="form-control" name="password" required>
-                        @if ($errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                        @endif
+                        <input id="password" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                        @if($errors->has('password'))<div class="invalid-feedback">Veuillez renseigner le nom du client</div>@endif
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="password-confirm" class="label">Confirmation du mot de passe</label>
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                        <input id="password-confirm" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password_confirmation" required>
+                        @if($errors->has('password'))<div class="invalid-feedback">Veuillez renseigner le nom du client</div>@endif
                     </div>
                 </div>
             </div>
-
             <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12">
@@ -125,14 +124,11 @@
                 </div>
                 <div class="col-12">
                     <!-- First name -->
-                    <div class="col-12">
-                    <!-- First name -->
                     <div class="custom-file">
                         {!! Form::file('profile_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                         <label class="custom-file-label" for="photo_profile">Ajouter un fichier</label>
                     </div>
                 </div>  
-                </div>
             </div>
             <hr class="mt-4 mb-5">
             <div class="row">
@@ -152,7 +148,9 @@
                 <input type="hidden" class="form-control" name="is_active" value=true>
                 <input type="hidden" class="form-control" name="is_deleted" value=false>
             </div>
-            <hr class="mt-4 mb-5">
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">

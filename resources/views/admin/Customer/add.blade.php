@@ -52,7 +52,7 @@
                                     Activité
                                 </label>
                                 <!-- Input -->
-                                {!! Form::text('activity_type', null, ['class' => 'form-control'. $errors->first('activity_type', ' is-invalid'), 'placeholder' =>'']) !!}
+                                {!! Form::text('activity_type', null, ['class' => 'form-control'. $errors->first('activity_type', ' is-invalid'), 'placeholder' =>'Activité']) !!}
                                 @if($errors->has('activity_type'))<div class="invalid-feedback">Veuillez renseigner une activité</div>@endif
                             </div>
                         </div>
@@ -72,16 +72,11 @@
                     <hr class="mt-4 mb-5">
                     <div class="row">
                         <div class="col-12">
-                            <p class="h3">Adresse</p>
-                            <p class="mb-4">Entrez les informations de la personne avec laquelle vous êtes en contact.</p>
+                            <p class="h3">Adresse de la société</p>
                         </div>
                         <div class="col-12">
                             <!-- Address  -->
                             <div class="form-group">
-                                <!-- Label -->
-                                <label>
-                                    Adresse
-                                </label>
                                 <!-- Input -->
                                 <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
                                 <input class="form-control mt-2" name="address" id="address" type="hidden">
@@ -119,8 +114,7 @@
                                     Prénom
                                 </label>
                                 <!-- Input -->
-                                {!! Form::text('firstname', null, ['class' => 'form-control', 'placeholder' =>
-                                'Prénom']) !!}
+                                {!! Form::text('firstname', null, ['class' => 'form-control', 'placeholder' => 'Prénom']) !!}
                             </div>
                         </div>
                         <div class="col-12 col-md-6">

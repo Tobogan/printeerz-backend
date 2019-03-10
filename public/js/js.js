@@ -12,6 +12,9 @@ $.ajaxSetup({
   }
 });
 
+// --------------------------------
+// Tabs
+// --------------------------------
 $("#tabs").tabs({
   classes: {
     "ui-tabs-tab": "nav-item",
@@ -86,7 +89,7 @@ $(function () {
 
 $(document).on('click', '.deleteComponent', function (event) {
   var a = event.target;
-  a.closest('li').remove();
+  a.closest('ul').remove();
 });
 
 // --------------------------------
@@ -134,3 +137,48 @@ function initMap() {
     document.getElementById('longitude').value = place.geometry.location.lng();
   });
 }
+
+// --------------------------------
+// Filename to Upload label
+// --------------------------------
+$('.custom-file-input').on('change', function () {
+  let fileName = $(this).val().split('\\').pop();
+  $(this).next('.custom-file-label').addClass("selected").html(fileName);
+});
+
+// --------------------------------
+// TinyMCE initialization
+// --------------------------------
+$(function () {
+  tinymce.init({
+    selector: '#textDescription',
+    height: 300,
+    menubar: false,
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor textcolor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code'
+    ],
+    toolbar: 'formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify',
+  });
+});
+
+// --------------------------------
+// Make checkboxes values TRUE/FALSE
+// --------------------------------
+$(function () {
+  var isActive = $('#isActive');
+  var formActive = $('#formActive');
+  // Active the checkbox if his value is True
+  if ($(formActive).val() == "true") {
+    $(isActive).attr('checked', true);
+  };
+  // Trigger True/False when click on the checkbox
+  $(isActive).on('click', function () {
+    if ($(this).is(":checked")) {
+      $(formActive).val(true)
+    } else {
+      $(formActive).val(false)
+    }
+  });
+});

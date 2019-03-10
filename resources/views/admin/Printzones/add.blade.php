@@ -25,15 +25,6 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('PrintzonesController@store'), 'files' => true, 'class' => 'mb-4']) !!}
             {{csrf_field()}}
             <div class="row">
@@ -46,15 +37,15 @@
                                         <label>
                                             Nom de la zone
                                         </label>
-                                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                                        !!}
+                                        {!! Form::text('name', null, ['class' => 'form-control'. $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             Zone
                                         </label>
-                                        {!! Form::text('zone', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                                        !!}
+                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -77,8 +68,8 @@
                                         <label>
                                             Largeur (cm)
                                         </label>
-                                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Largeur de la zone :']) !!}
+                                        {!! Form::number('width', null, ['class' => 'form-control'. $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone ']) !!}
+                                        @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -86,8 +77,8 @@
                                         <label>
                                             Hauteur (cm)
                                         </label>
-                                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Hauteur de la zone']) !!}
+                                        {!! Form::number('height', null, ['class' => 'form-control'. $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone']) !!}
+                                        @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +139,7 @@
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Position X d\'origine sur le plateau :']) !!}
+                                        'Position X d\'origine sur le plateau']) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -160,7 +151,7 @@
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Position y d\'origine sur le plateau :']) !!}
+                                        'Position Y d\'origine sur le plateau']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -180,8 +171,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        {!! Form::hidden('description', null) !!}
-                                        <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez la zone"></div>
+                                        <input id="textDescription" type="textarea" class="description" name="description" rows="3">
                                     </div>
                                 </div>
                             </div>
@@ -189,13 +179,28 @@
                     </div>
                 </div>
             </div>
-            {!! Form::hidden('is_active', "true") !!}
+            <div class="row" >
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                <div class="custom-control custom-switch">
+                                    <input name="is_active" type="checkbox" class="custom-control-input" id="isActive">
+                                    <label class="custom-control-label" for="isActive">Ce composant est-il actif ?</label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {!! Form::hidden('is_active', 'false', [ 'id'=>'formActive']) !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Créer la zone', ['class' => 'btn btn-primary', 'style' => 'float: right'])
-                        !!}
+                        {!! Form::submit('Créer la zone', ['class' => 'btn btn-primary', 'style' => 'float: right']) !!}
                         <a class='btn btn-secondary' style="float: left" href="{{route('index_printzones')}}">Annuler</a>
                     </div>
                 </div>

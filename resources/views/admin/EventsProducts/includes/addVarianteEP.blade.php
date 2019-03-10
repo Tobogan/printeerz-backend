@@ -1,5 +1,5 @@
 <div class="modal fade" id="addVarianteEPModal" tabindex="-1" role="dialog" aria-labelledby="addVarianteEPModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Ajouter une variante</h2>
@@ -33,12 +33,12 @@
                             @endif
                         @endforeach
                     </select>
+                </div>
+                <div class="form-group">
                     <label>
                         Quantité pour l'événement
                     </label>
                     {{ Form::number('quantity', null, array('class' => 'form-control mb-3','id' => 'quantity')) }}
-
-                    
                 </div>
             </div>
             <div class="modal-footer">

@@ -105,7 +105,7 @@
                                     <td class="printzones-width">{{ $printzone->width }}x{{ $printzone->height }}</td>
                                     <td class="printzones-tray_width">{{ $printzone->tray_width }}x{{ $printzone->tray_height }}</td>
                                     <td class="printzones-is_active">
-                                        @if($printzone->is_active == true)
+                                        @if($printzone->is_active === 'true')
                                         <span class="badge badge-soft-success">Activée</span>
                                         @else
                                         <span class="badge badge-soft-secondary">Désactivée</span>
@@ -122,7 +122,7 @@
                                                 <a href="{{route('show_printzones', $printzone->id)}}" class="dropdown-item">
                                                     Modifier la zone d'impression
                                                 </a>
-                                                @if ($printzone->is_active == true)
+                                                @if ($printzone->is_active === "true")
                                                 <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')"
                                                     href="{{route('desactivate_printzones', $printzone->id)}}">
                                                     Désactiver </a>

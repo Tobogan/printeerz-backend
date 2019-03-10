@@ -78,7 +78,6 @@ class EventController extends Controller
         ]);
 
         $event = new Event;
-
         $event->name = $request->name;
         $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
@@ -222,6 +221,13 @@ class EventController extends Controller
                 'created_at' => $request->created_at
             );
 
+            $select_customers = [];
+            foreach($customers as $customer) {
+            $select_customers[$customer->id] = $customer->title;
+            }
+            return view('admin/Event.edit', ['events' => $events, 'select_customers' => $select_customers, 'products' =>
+            $products]);
+
             $event->save();
 
             /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
@@ -298,6 +304,12 @@ class EventController extends Controller
                 'comment' => $request->comment,
                 'created_at' => $request->created_at
             );
+            $select_customers = [];
+            foreach($customers as $customer) {
+            $select_customers[$customer->id] = $customer->title;
+            }
+            return view('admin/Event.edit', ['events' => $events, 'select_customers' => $select_customers, 'products' =>
+            $products]);
 
             $event->save();
 
