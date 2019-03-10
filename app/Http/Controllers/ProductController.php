@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 class ProductController extends Controller
 {
     public function __construct(){
@@ -26,7 +30,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('admin/Product.index', ['products' => $products]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/Product.index', ['products' => $products, 'disk' => $disk, 's3' => $s3]);
     }
 
     /**
@@ -70,18 +76,31 @@ class ProductController extends Controller
         $product->is_active = $request->is_active; //penser à mettre l'input hidden
         $product->is_deleted = $request->is_deleted;
         $product->save();
-
-        /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
+        $disk = Storage::disk('s3');
         if ($request->hasFile('image')){
-            $photo = time().'.'.request()->image->getClientOriginalExtension();
-            request()->image->move(public_path('uploads'), $photo);
-
-            $product->image = $photo;
+            // Get file
+            $file = $request->file('image');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/products/'. $product->id . '/'. $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $product->image = $filePath;
         }
 
         $product->save();
         $products = Product::all();
-        return view('admin/Product.index', ['products' => $products]);
+        $notification = array(
+            'status' => 'Le produit a été correctement ajouté',
+            'alert-type' => 'success'
+        );
+            return redirect('admin/Product/index')->with($notification);
         }
     
 
@@ -96,7 +115,9 @@ class ProductController extends Controller
         $product = Product::find($id);
         $products_variants = Products_variants::all();
         $printzones = Printzones::all();
-        return view('admin/Product.show', ['printzones' => $printzones,'product' => $product, 'products_variants' => $products_variants]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/Product.show', ['printzones' => $printzones,'product' => $product, 'products_variants' => $products_variants, 'disk' => $disk, 's3' => $s3]);
     }
 
     /**
@@ -109,7 +130,6 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $products = Product::all();
-
         return view('admin/Product.edit', ['product' => $product, 'products' => $products]);
     }
 
@@ -146,18 +166,27 @@ class ProductController extends Controller
             $product->variants_id=$request->get('variants_id');
             $product->is_active = $request->is_active; //penser à mettre l'input hidden
             $product->is_deleted = $request->is_deleted;
-            $product->save();
-
-            /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
-            if ($request->hasFile('image')){
-                $file_path_image = public_path('uploads/'.$product->image);
-                if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
-                    unlink($file_path_image);
+            // Update Profile image
+                if ($request->hasFile('image')){
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $product->image;
+                // Get new image
+                $file = $request->file('image');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/products/' . $product->id . '/'. $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img, 'public');
+                // Put in database
+                $product->image = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($product->image) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
-                $photo = time().'.'.request()->image->getClientOriginalExtension();
-                request()->image->move(public_path('uploads'), $photo);
-
-                $product->image = $photo;
             }
 
             $product->save();
@@ -185,23 +214,37 @@ class ProductController extends Controller
                 $product->variants_id=$request->get('variants_id');
                 $product->is_active = $request->is_active; //penser à mettre l'input hidden
                 $product->is_deleted = $request->is_deleted;
-                $product->save();
-
-                /*~~~~~~~~~~~___________Photo Illustration__________~~~~~~~~~~~~*/
+                // Update Profile image
                 if ($request->hasFile('image')){
-                    $file_path_image = public_path('uploads/'.$product->image);
-                    if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
-                        unlink($file_path_image);
+                    $disk = Storage::disk('s3');
+                    // Get current image path
+                    $oldPath = $product->image;
+                    // Get new image
+                    $file = $request->file('image');
+                    // Create image name
+                    $name = time() . $file->getClientOriginalName();
+                    // Define the new path to image
+                    $newFilePath = '/products/' . $product->id . '/'. $name;
+                    // Resize new image
+                    $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                    // Upload the new image
+                    $disk->put($newFilePath, $img, 'public');
+                    // Put in database
+                    $product->image = $newFilePath;
+                    unlink(public_path() . '/' . $name);
+                    if(!empty($product->image) && $disk->exists($newFilePath)){
+                        $disk->delete($oldPath);
                     }
-                    $photo = time().'.'.request()->image->getClientOriginalExtension();
-                    request()->image->move(public_path('uploads'), $photo);
-
-                    $product->image = $photo;
                 }
-
                 $product->save();
+
+                
             }
-            return redirect('admin/Product/index')->with('status', 'Le produit a été correctement modifié.');
+            $notification = array(
+                'status' => 'Le produit a été correctement modifié',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/Product/index')->with($notification);
         }
 
     /**
@@ -213,9 +256,11 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        $file_path_image = public_path('uploads/'.$product->image);
-        if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image)){
-            unlink($file_path_image);
+        // Delete Profile image
+        $disk = Storage::disk('s3');
+        $filePath = $product->image;
+        if(!empty($product->image) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
         $products_variants = Products_variants::all();
         foreach($products_variants as $products_variant) {
@@ -224,10 +269,14 @@ class ProductController extends Controller
             }
         }
         $product->delete();
-        return redirect('admin/Product/index')->with('status', 'Le produit et ses variantes ont été correctement supprimés.');
+        $notification = array(
+            'status' => 'Le produit a été correctement supprimé',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Product/index')->with($notification);
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a product function in index product__________~~~~~~~~~~~~-*/
+
     public function desactivate($id)
     {
         $product = Product::find($id);

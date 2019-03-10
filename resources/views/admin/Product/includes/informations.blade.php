@@ -13,10 +13,10 @@
         </div>
         <div class="col-12 col-xl-4">
             {{-- Image --}}
-            @if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image))
+            @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="" src="/uploads/{{$product->image}}"
+                    <img width="100%" title="image principale" class="" src="{{$s3 . $product->image}}"
                         alt="Image produit">
                 </div>
             </div>
