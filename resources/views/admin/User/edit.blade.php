@@ -57,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
@@ -101,6 +102,7 @@
                     {!! Form::text('phone', $user->phone, ['class' => 'form-control']) !!}
                 </div>
             </div>
+            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -124,7 +126,7 @@
             <div class="row">
                 <div class="col-12">
                     <p class="h3">Image de profil</p>
-                    <p>Ajouter une image de profil</p>
+                    <p class="text-muted">Ajouter une image de profil</p>
                 </div>
                 <div class="col-12">
                     <!-- First name -->
@@ -138,7 +140,7 @@
             <div class="row">
                 <div class="col-12">
                     <p class="h3">Rôle</p>
-                    <p class="mb-4">Sélectionner le rôle de l'utilisateur</p>
+                    <p class="text-muted">Sélectionner le rôle de l'utilisateur</p>
                 </div>
                 @if($user->role == '1')
                 <div class="col-12">
