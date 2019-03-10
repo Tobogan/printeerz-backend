@@ -154,7 +154,7 @@
             </div>
             <div class="form-group">
                 <label>Description du produit</label>
-                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+            <input id="textDescription" type="textarea" class="description" name="description" rows="3" value="{{ $product->description }}">
             </div>
 
             <div class="row">
