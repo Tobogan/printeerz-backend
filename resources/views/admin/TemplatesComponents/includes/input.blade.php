@@ -53,13 +53,13 @@
                                 Nom
                             </label>
                             <!-- Input -->
-                            {!! Form::text('font_name_0', null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                            {!! Form::text('font_name', null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                         </div>
                     </div>
                     <div class="col-12">
                         <!-- First name -->
                         <div class="custom-file">
-                            {!! Form::file('font_url_0', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                            {!! Form::file('font_url', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                             <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 Epaisseur
                             </label>
                             <div class="form-group">
-                                <select name="font_weight_0" id="font_weight_0" class="form-control" data-toggle="select">
+                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
                                     <option value="100">Thin (100)</option>
                                     <option value="200">Extra Light (200)</option>
                                     <option value="300">Light (300)</option>
@@ -93,7 +93,7 @@
                                 Transformation
                             </label>
                             <div class="form-group">
-                                <select name="font_transform_0" id="font_transform_0" class="form-control" data-toggle="select">
+                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
                                     <option value="none">Aucune</option>
                                     <option value="uppercase">Tout en Majuscules</option>
                                     <option value="capitalize">Première lettre en Majuscule</option>
@@ -111,7 +111,7 @@
                                 Première lettre ou symbole avant le texte
                             </label>
                             <!-- Input -->
-                            {!! Form::text('font_first_letter_1', null, ['class' => 'form-control',
+                            {!! Form::text('font_first_letter', null, ['class' => 'form-control',
                             'placeholder' => '#']) !!}
                         </div>
                     </div>

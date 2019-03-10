@@ -125,7 +125,8 @@ class TemplatesController extends Controller
                 'title' => 'required|string|max:255',
                 'category' => 'required|string|max:255'
             ]);
-            $template = new Templates;
+            $id = $request->template_id;
+            $template = Templates::find($id);
             $template->title = $request->title;
             $template->category = $request->category;
             
@@ -173,7 +174,8 @@ class TemplatesController extends Controller
                 'title' => 'required|string|max:255',
                 'category' => 'required|string|max:255'
             ]);
-            $template = new Templates;
+            $id = $request->template_id;
+            $template = Templates::find($id);
             $template->title = $request->title;
             $template->category = $request->category;
             

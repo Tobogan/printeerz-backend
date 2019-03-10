@@ -136,7 +136,7 @@
                             Composants
                         </label>
                         <!-- Input -->
-                        {!! Form::select('components_ids[]', App\Template_components::pluck('title','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                        {!! Form::select('components_ids[]', App\Template_components::pluck('title','_id'), $template->components_ids, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
                     </div>
                 </div>
                 {!! Form::file('thumb', array('id' => 'thumb', 'name' => 'thumb')) !!}

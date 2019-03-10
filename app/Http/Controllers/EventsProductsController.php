@@ -195,7 +195,7 @@ class EventsProductsController extends Controller
     public function edit($id)
     {
         $events_product = Events_products::find($id);
-        return view('admin/EventsProducts.edit', ['events_products' => $events_products]);
+        return view('admin/EventsProducts.edit', ['events_product' => $events_product]);
     }
 
     /**
