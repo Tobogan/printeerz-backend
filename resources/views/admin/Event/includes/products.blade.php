@@ -7,69 +7,7 @@
                 @if($event->id == $events_product->event_id)
                     @foreach($products as $product)
                         @if($events_product->product_id == $product->id)
-                            @if(!empty($product->printzones_id))
-                            @foreach($product->printzones_id as $printzone_id)
-                                @foreach($printzones as $printzone)
-                                    @if($printzone_id == $printzone->id)
-                                    <?php $i++; ?>
-                                    <div class="card">
-                                            <div class="card-header">
-                                                <div class="row align-items-center py-2">
-                                                    <div class="col-auto">
-                                                        <a href="project-team-overview.html" class="avatar avatar-lg">
-                                                            <img src="https://dashkit.goodthemes.co/assets/img/avatars/teams/team-logo-1.jpg" alt="..."
-                                                                class="avatar-img rounded">
-                                                        </a>
-                                                    </div>
-                                                    <div class="col ml-n2">
-                                                        <h4 class="card-title mb-1 name">
-                                                            <a href="team-overview.html">{{ $product->title }}</a>
-                                                        </h4>
-                                                        <ul class="event_product_colors mt-2 d-inline-flex">
-                                                            <li class="event_product_color d-block rounded border border-light mr-1" style="background-color: #578393;"></li>
-                                                            <li class="event_product_color d-block rounded border border-light mr-1" style="background-color: #533322;"></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a class="btn btn-white btn-sm" href="{{route('show_eventsProducts', $events_product->id)}}">Voir le produit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table class="table table-sm card-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>
-                                                                Nom
-                                                            </th>
-                                                            <th>
-                                                                Emplacement
-                                                            </th>
-                                                            <th>
-                                                                Gabarit ID
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <code>{{$printzone->name}}</code>
-                                                            </td>
-                                                            <td>
-                                                                {{$printzone->zone}}
-                                                            </td>
-                                                            <td>
-                                                                5
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endforeach
-                            @else
+                            <?php $i++; ?>
                             <div class="card">
                                     <div class="card-header">
                                         <div class="row align-items-center py-2">
@@ -108,29 +46,48 @@
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <code>Pas de zone</code>
-                                                    </td>
-                                                    <td>
-                                                        ...
-                                                    </td>
-                                                    <td>
-                                                        ...
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                            @if(!empty($product->printzones_id))
+                                                @foreach($product->printzones_id as $printzone_id)
+                                                    @foreach($printzones as $printzone)
+                                                        @if($printzone_id == $printzone->id)
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <code>{{$printzone->name}}</code>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$printzone->zone}}
+                                                                    </td>
+                                                                    <td>
+                                                                        5
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach
+                                            @else
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <code>Pas de zone</code>
+                                                        </td>
+                                                        <td>
+                                                            ...
+                                                        </td>
+                                                        <td>
+                                                            ...
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            @endif
                                         </table>
                                     </div>
                                 </div>
-
-
                             @endif
-                        @endif
-                    @endforeach
-                @endif
-            @endforeach
+                        @endforeach
+                    @endif
+                @endforeach
 
             @if($i == 0)
                 <div class="card card-inactive">
