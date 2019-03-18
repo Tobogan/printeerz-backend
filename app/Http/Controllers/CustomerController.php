@@ -277,7 +277,7 @@ class CustomerController extends Controller
             'status' => 'Le client a été correctement modifié',
             'alert-type' => 'success'
         );
-        return view('admin/Customer.show', ['customer' => $customer, 'disk' => $disk, 's3' => $s3])->with($notification); }
+        return redirect('admin/Customer/show/' . $customer->id)->with($notification); }
 
     /**
      * Remove the specified resource from storage.
