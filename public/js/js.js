@@ -84,15 +84,6 @@ $(function () {
 });
 
 // --------------------------------
-// Remove Component form list
-// --------------------------------
-
-$(document).on('click', '.deleteComponent', function (event) {
-  var a = event.target;
-  a.closest('ul').remove();
-});
-
-// --------------------------------
 // Tweak Template form with capabilites for Components to be add in list, sortable
 // --------------------------------
 
@@ -102,6 +93,13 @@ $(function () {
     placeholder: "Selectionner un composant pour l'ajouter",
     allowClear: true
   });
+  // Get hidden form
+  var componentFormList = $("#templateComponentsList");
+  var componentFormListHidden = $("#templateComponentsListHidden");
+  var componentList = [];
+  // --------------
+  // Add Items
+  // -------------
   componentsSelect.on('select2:close', function (e) {
     // Get option value
     var value = $(this).val();
@@ -109,9 +107,30 @@ $(function () {
     var name = $("#componentsSelect option:selected").text();
     // Add new selected option in list
     var list = $('#templateComponentsList');
-    list.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
+    list.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
+    componentList.push(value);
+    newList = $.makeArray(componentList);
+    componentFormListHidden.attr('value', newList);
     // Reset Select2 value
     $(this).val(null).trigger('change.select2')
+  });
+  // --------------
+  // Remove Items
+  // -------------
+  $(document).on('click', '.deleteComponent', function (event) {
+    var a = event.target;
+    // Get element id
+    var componentId = $(this).data('id');
+    // Remove id from array
+    componentList = $.grep(componentList, function (value) {
+      return value != componentId;
+    });
+    var newComponentList = $.makeArray(componentList);
+    // Update new array to input value
+    componentFormListHidden.attr('value', newComponentList);
+    console.log(newComponentList);
+    // Remove ul element
+    a.closest('ul').remove();
   });
 });
 

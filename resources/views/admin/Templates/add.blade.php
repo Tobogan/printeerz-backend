@@ -25,15 +25,6 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('TemplatesController@store'), 'files' => true,
             'class' => 'mb-4']) !!}
             {{csrf_field()}}
@@ -50,9 +41,8 @@
                                             Nom du gabarit
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Nom'])
-                                        !!}
+                                        {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du gabarit</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <!-- Label -->
@@ -60,9 +50,8 @@
                                             Catégorie
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::text('category', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Catégorie'])
-                                        !!}
+                                        {!! Form::text('category', null, ['class' => 'form-control' . $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
+                                        @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner la catégorie du gabarit</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -170,6 +159,7 @@
                                     </div>
                                     <div id="templateComponentsList" data-type='sortable'>
                                     </div>
+                                    {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>
                             </div>
                         </div>
