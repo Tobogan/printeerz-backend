@@ -25,15 +25,6 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('TemplateComponentsController@store'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
@@ -48,8 +39,8 @@
                                     Nom du composant
                                 </label>
                                 <!-- Input -->
-                                {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                                !!}
+                                {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom']) !!}
+                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du composant</div>@endif
                             </div>
                             <div class="form-group">
                                 <!-- Label -->

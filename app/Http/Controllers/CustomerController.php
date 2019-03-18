@@ -129,7 +129,7 @@ class CustomerController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
-return view('admin/Customer.show', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'customer' => $customer]);
+        return view('admin/Customer.show', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'customer' => $customer]);
     }
 
     /**
