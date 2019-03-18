@@ -81,6 +81,7 @@ class TemplateComponentsController extends Controller
                 'available' => $request->available,
                 'always' => $request->always
             );
+<<<<<<< Updated upstream
             $template_component->font = array(
                 'id' =>  $request->font_id,
                 'name' => $request->font_name,
@@ -89,12 +90,51 @@ class TemplateComponentsController extends Controller
                 'transform' => $request->font_transform,
                 'first_letter' => $request->font_first_letter,
             );
+=======
+            $fonts = array();
+            for($i=1; $i<5; $i++){
+                if ($request->hasFile('font_url_'.$i)){
+                    $request_font_url =  $request->{'font_url_'.$i};
+                    $request_font_id =  $request->{'font_id_'.$i};
+                    $request_font_name =  $request->{'font_name_'.$i};
+                    $request_font_weight =  $request->{'font_weight_'.$i};
+                    $request_font_transform =  $request->{'font_transform_'.$i};
+                    $request_font_first_letter =  $request->{'font_first_letter_'.$i};
+                    $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
+                    $request_font_url->move(public_path('uploads'), $url);
+                    $font = array(
+                        'id' =>  $request_font_id,
+                        'name' => $request_font_name,
+                        'url' => $url,
+                        'weight' => $request_font_weight,
+                        'transform' => $request_font_transform,
+                        'first_letter' => $request_font_first_letter,
+                    );
+                    array_push($fonts , $font);
+                }
+            }
+            $template_component->fonts = $fonts;
+>>>>>>> Stashed changes
         }
         $template_component->is_customizable = $request->is_customizable;
         $template_component->is_active = $request->is_active; 
         $template_component->is_deleted = $request->is_deleted;
         $template_component->save();
         return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement crée.');
+<<<<<<< Updated upstream
+=======
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+>>>>>>> Stashed changes
     }
 
     /**

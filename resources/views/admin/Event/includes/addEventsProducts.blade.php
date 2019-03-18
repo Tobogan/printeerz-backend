@@ -16,7 +16,7 @@
                 {!! Form::open(['id' => 'AddEventsProduct']) !!}
                 <div class="form-group">
                     <label>Nom du produit</label>
-                    {!! Form::text('product_title', null, ['class' => 'form-control', 'placeholder' => 'Nom du produit']) !!}
+                    {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom du produit']) !!}
                 </div>
                 <div class="form-group">
                     <label>Sélectionner le produit vierge</label>

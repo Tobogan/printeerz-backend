@@ -62,7 +62,7 @@ class EventsProductsController extends Controller
             $product = Product::find($events_product->product_id);
             $events_product->title = $request->title;
             $events_product->variants = array();
-            $events_product->description = $request->description;
+            $events_product->description = $request->product_description;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
