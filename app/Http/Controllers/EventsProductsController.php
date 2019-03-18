@@ -6,6 +6,7 @@ use DB;
 use App\Product;
 use App\Event;
 use App\Events_products;
+use App\Events_customs;
 use App\Products_variants;
 use App\Printzones;
 
@@ -151,7 +152,6 @@ class EventsProductsController extends Controller
             }
            return $array;
          }
-
         $events_product = Events_products::find($id);
         foreach($events_product->variants as $variant) {
             foreach($variant as $value) {
@@ -180,10 +180,11 @@ class EventsProductsController extends Controller
     {
         $events_product = Events_products::find($id);
         $events_products = Events_products::all();
+        $events_customs = Events_customs::all();
         $products_variants = Products_variants::all();
         $printzones = Printzones::all();
         $product = Product::find($events_product->product_id);
-        return view('admin/EventsProducts.show', ['printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        return view('admin/EventsProducts.show', ['events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
     }
 
     /**
@@ -219,13 +220,11 @@ class EventsProductsController extends Controller
             $events_product->product_id = $request->product_id;
             $events_product->price = $request->price;
             $events_product->description = $request->description;
-    
             $events_product->variants = array(
                 'id' => $request->vendor_id, 
                 'product_variant_id' => $request->product_variant_id,
                 'quantity' => $request->quantity
             );
-    
             $events_product->customs = array(
                 'id' => $request->custom_id,
                 'event_customs_id' => $request->event_customs_id,

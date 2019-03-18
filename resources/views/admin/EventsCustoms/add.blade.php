@@ -16,7 +16,7 @@
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Créer un composant
+                                Créer une personnalisation
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -34,193 +34,74 @@
                 </ul>
             </div>
             @endif
-            {!! Form::open(['action' => array('TemplateComponentsController@store'), 'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('EventsCustomsController@store'), 'files' => true,'class' =>
+            'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
+                    
                     <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Type
-                        </label>
-                        <!-- Input -->
-                        <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-header-title">
+                                Paramètres
+                            </h4>
+                            <hr>
                             <div class="form-group">
-                                <select name="type" id="type" class="form-control" data-toggle="select">
-                                    <option value="input">Input</option>
-                                    <option value="image">Image</option>
-                                </select>
+                                <!-- Label -->
+                                <label>
+                                    Nom de la personnalisation
+                                </label>
+                                <!-- Input text title-->
+                                {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                !!}
+                            </div>
+
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label>
+                                    Sélectionner la zone d'impression
+                                </label>
+                                <!-- Input -->
+                                {!! Form::select('printzone_id', $select_printzones, null, ['id' => 'printzone', 'class' => 'form-control'])
+                                !!}
+                            </div>
+                            
+                            <!-- Input select template-->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label>
+                                    Sélectionner le gabarit
+                                </label>
+                                <!-- Input -->
+                                {!! Form::select('template_id', $select_templates, null, ['id' => 'templateComponentType', 'class' => 'form-control'])
+                                !!}
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Ajouter l'image d'illustration
+                                </label>
+                                <div class="custom-file">
+                                    <!-- Input -->
+                                    {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                    <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <hr class="mt-4 mb-5">
-
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Image
-                        </label>
-                        <!-- Input -->
-                        {!! Form::file('image', null, ['class' => 'form-control']) !!}
-                    </div>
-                </div>                
-
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                        'Largeur de la zone :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => 'Hauteur de la zone']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position X d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position X d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position Y d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                        'Position y d\'origine sur le plateau :']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nombre minimum de caractères
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('min', null, ['class' => 'form-control', 'placeholder' =>
-                        'Nombre minimum de caractères :']) !!}                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nombre maximum de caractères
-                        </label>
-                        <!-- Input -->
-                        {!! Form::number('max', null, ['class' => 'form-control', 'placeholder' =>
-                        'Nombre maximum de caractères :']) !!}                    </div>
+                    </div><!-- /Card paramètres -->
+                    <div id="components"></div>
                 </div>
             </div>
-            @for($i=1;$i<=5;$i++)
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Fichier de la police n° {{$i}}
-                            </label>
-                            <!-- Input -->
-                            {!! Form::file('font_url_'.$i, null, ['class' => 'form-control']) !!}
-                        </div>
-                    </div>                
-                    <div class="col-12 col-md-6">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Nom de la police n° {{$i}}
-                            </label>
-                            <!-- Input -->
-                            {!! Form::text('font_name_'.$i, null, ['class' => 'form-control', 'placeholder' =>
-                            'Entrer le nom de la police :']) !!}
-                        </div>
-                    </div>                
-                    <div class="col-12 col-md-6">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Epaisseur de la police n° {{$i}}
-                            </label>
-                            <!-- Input -->
-                            {!! Form::text('font_weight_'.$i, null, ['class' => 'form-control', 'placeholder' =>
-                            'Entrer l\'épaisseur de la police :']) !!}
-                        </div>
-                    </div>                
-                    <div class="col-12 col-md-6">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Transformation de la police n° {{$i}}
-                            </label>
-                            <!-- Input -->
-                            {!! Form::text('font_transform_'.$i, null, ['class' => 'form-control', 'placeholder' =>
-                            'Entrer le transform de la police :']) !!}
-                        </div>
-                    </div>                
-                    <div class="col-12 col-md-6">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Première lettre 
-                            </label>
-                            <!-- Input -->
-                            {!! Form::text('font_first_letter_'.$i, null, ['class' => 'form-control', 'placeholder' =>
-                            'Entrer la 1ère lettre :']) !!}
-                        </div>
-                    </div>
-                </div>
-            @endfor
-
-            {!! Form::hidden('is_active', "true") !!}
-            {!! Form::hidden('is_deleted', "false") !!}
+            <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
+            <input type="hidden" class="form-control" name="event_id" value="{{$events_product->event_id}}">
+            {{-- hidden for edit --}}
+            {{-- <input type="hidden" class="form-control" name="actual_title" value="{{$template_component->title}}">
+            <input type="hidden" class="form-control" name="template_component_id" value="{{$template_component->id}}"> --}}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Créer le composant', ['class' => 'btn btn-primary', 'style' => 'float: right'])
-                        !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('index_templatesComponents')}}">Annuler</a>
+                        {!! Form::submit('Ajouter', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
+                        <a class='btn btn-secondary' style="float: left" href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
                     </div>
                 </div>
             </div>
@@ -229,3 +110,59 @@
     </div>
 </div>
 @endsection
+
+@section('javascripts')
+<script type="text/Javascript">
+    // $('#templateComponentType').change(function () {
+    //     var value = $(this).val();
+    //     $.ajax({
+    //         type: 'GET', //THIS NEEDS TO BE GET
+    //         url: '/templates',
+    //         success: function (data) {
+    //             console.log(data);
+    //             $('#components').append('yo');
+    //         },
+    //         error:function() { 
+    //             console.log(data);
+    //         }
+    //     });
+    // });
+</script>
+@endsection
+
+{{-- $('#components').append(
+    '@foreach($templates as $template)
+        @if($template->id==' + value + ')
+            @if($templage->components_ids != null)
+                @foreach($template_components as $template_component)
+                    @foreach($template->components_ids as $component_id)
+                        @if($template_component->id == $component_id)
+                            @if($template_component->type =="input")
+                                <div class="form-group">
+                                    <select name="type" class="form-control" data-toggle="select">
+                                        <option value="none">Aucun</option>
+                                        <option value="input" selected>Champ de texte</option>
+                                        <option value="image">Image</option>
+                                        <option value="text" disabled>Texte fixe</option>
+                                        <option value="instagram" disabled>Instagram</option>
+                                    </select>
+                                </div>
+                            @endif
+                            @if($template_component->type=="image")
+                                <div class="form-group">
+                                    <select name="type" class="form-control" data-toggle="select">
+                                        <option value="none">Aucun</option>
+                                        <option value="input">Champ de texte</option>
+                                        <option value="image" selected>Image</option>
+                                        <option value="text" disabled>Texte fixe</option>
+                                        <option value="instagram" disabled>Instagram</option>
+                                    </select>
+                                </div>
+                            @endif
+                        @endif
+                    @endforeach
+                @endforeach
+            @endif
+        @endif
+    @endforeach'
+); --}}

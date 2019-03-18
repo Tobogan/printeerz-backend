@@ -58,27 +58,27 @@
                                 </label>
 
                                 @if($template_component->type == 'input')
-                                <div class="form-group">
-                                    <select name="type" id="componentElementType" class="form-control" data-toggle="select">
-                                        <option value="none">Aucun</option>
-                                        <option value="input" selected>Champ de texte</option>
-                                        <option value="image">Image</option>
-                                        <option value="text" disabled>Texte fixe</option>
-                                        <option value="instagram" disabled>Instagram</option>
-                                    </select>
-                                </div>
+                                    <div class="form-group">
+                                        <select name="type" id="componentElementType" class="form-control" data-toggle="select">
+                                            <option value="none">Aucun</option>
+                                            <option value="input" selected>Champ de texte</option>
+                                            <option value="image">Image</option>
+                                            <option value="text" disabled>Texte fixe</option>
+                                            <option value="instagram" disabled>Instagram</option>
+                                        </select>
+                                    </div>
                                 @endif
 
                                 @if($template_component->type == 'image')
-                                <div class="form-group">
-                                    <select name="type" id="componentElementType" class="form-control" data-toggle="select">
-                                        <option value="none">Aucun</option>
-                                        <option value="input">Champ de texte</option>
-                                        <option value="image" selected>Image</option>
-                                        <option value="text" disabled>Texte fixe</option>
-                                        <option value="instagram" disabled>Instagram</option>
-                                    </select>
-                                </div>
+                                    <div class="form-group">
+                                        <select name="type" id="componentElementType" class="form-control" data-toggle="select">
+                                            <option value="none">Aucun</option>
+                                            <option value="input">Champ de texte</option>
+                                            <option value="image" selected>Image</option>
+                                            <option value="text" disabled>Texte fixe</option>
+                                            <option value="instagram" disabled>Instagram</option>
+                                        </select>
+                                    </div>
                                 @endif
 
                             </div>

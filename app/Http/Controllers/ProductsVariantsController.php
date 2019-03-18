@@ -171,7 +171,7 @@ class ProductsVariantsController extends Controller
             $products_variants = Products_variants::all();
             $product = Product::find($products_variant->product_id);
             $printzones = Printzones::all();
-            return view('admin/Product.show',['printzones' => $printzones,'products_variants' => $products_variants, 'product' => $product, 'id' => $products_variant->product_id])->with('status', 'La variante a bien été correctement modifiée.');
+            return redirect('admin/Product/show/'.$product->id)->with('status', 'La variante a bien été correctement modifiée.');
          }
         else {
             $validatedData = $request->validate([

@@ -1,5 +1,6 @@
 <?php
 use App\ProductVariants;
+use App\Templates;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Auth\Middleware\Authenticate;
 /*
@@ -144,7 +145,7 @@ Route::get('admin/EventsProducts/deleteVariant/{id}/{products_variant_id}', 'Eve
 
 Route::get('admin/EventsCustoms/index', 'EventsCustomsController@index')->name('index_eventsCustoms');
 
-Route::get('admin/EventsCustoms/create', 'EventsCustomsController@create')->name('create_eventsCustoms');
+Route::get('admin/EventsCustoms/create/{id}', 'EventsCustomsController@create')->name('create_eventsCustoms');
 
 Route::post('admin/EventsCustoms/store', 'EventsCustomsController@store')->name('store_eventsCustoms');
 
@@ -256,6 +257,11 @@ Route::get('/colors',function(){
     // $productVariants = ProductVariants::all()->get();
     // return Response::json($couleurs, $productVariants);
     return Response::json($couleurs);
+});
+
+Route::get('/templates',function(){
+    $templates = Templates::all();
+    return Response::json($templates);
 });
 
 

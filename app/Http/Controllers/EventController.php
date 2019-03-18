@@ -41,7 +41,7 @@ class EventController extends Controller
     public function create(){
         $events = Event::all();
         $products = Product::all();
-        $customers =Customer::all();
+        $customers = Customer::all();
         $select_customers = [];
         foreach($customers as $customer) {
             $select_customers[$customer->id] = $customer->title;
