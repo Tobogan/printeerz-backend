@@ -25,15 +25,6 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('TemplateComponentsController@update'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
@@ -43,44 +34,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <!-- Label -->
-                                <label>
-                                    Nom du composant
-                                </label>
-                                <!-- Input -->
-                                {!! Form::text('title', $template_component->title, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                                !!}
+                                <label>Nom du composant</label>
+                                {!! Form::text('title', $template_component->title, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom']) !!}
+                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du composant</div>@endif
                             </div>
                             <div class="form-group">
-                                <!-- Label -->
-                                <label>
-                                    Type
-                                </label>
-
-                                @if($template_component->type == 'input')
-                                    <div class="form-group">
-                                        <select name="type" id="componentElementType" class="form-control" data-toggle="select">
-                                            <option value="none">Aucun</option>
-                                            <option value="input" selected>Champ de texte</option>
-                                            <option value="image">Image</option>
-                                            <option value="text" disabled>Texte fixe</option>
-                                            <option value="instagram" disabled>Instagram</option>
-                                        </select>
-                                    </div>
-                                @endif
-
-                                @if($template_component->type == 'image')
-                                    <div class="form-group">
-                                        <select name="type" id="componentElementType" class="form-control" data-toggle="select">
-                                            <option value="none">Aucun</option>
-                                            <option value="input">Champ de texte</option>
-                                            <option value="image" selected>Image</option>
-                                            <option value="text" disabled>Texte fixe</option>
-                                            <option value="instagram" disabled>Instagram</option>
-                                        </select>
-                                    </div>
-                                @endif
-
+                                <label>Type</label>
+                                {!! Form::text('Type', $template_component->type, ['class' => 'form-control', 'placeholder' => 'Type', 'disabled' => ''])!!}
                             </div>
                         </div>
                     </div>
@@ -437,34 +397,10 @@
                     </div>
                 </div>
             </div>
-
             @endif
             {{-- Input Image --}}
             @if($template_component->type == 'image')
-            <div data-root="componentElement" type="image">
-                <div class="row" >
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-header-title">
-                                    Image
-                                </h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                        <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                @include('admin.TemplatesComponents.includes.edit.image')
             @endif
 
             {{-- hidden for edit --}}

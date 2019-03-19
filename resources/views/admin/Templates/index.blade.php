@@ -2,18 +2,6 @@
 
 @section('content')
 
-@if (session('status'))
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -89,11 +77,6 @@
                                             Hauteur
                                         </a>
                                     </th>
-                                    <th>
-                                        <a href="#" class="text-muted sort" data-sort="templates-components">
-                                            Composants
-                                        </a>
-                                    </th>
                                 </tr>
                             </thead>
 
@@ -103,29 +86,15 @@
                                     <td class="tamplates-title"><a href="{{route('edit_templates', $template->id)}}"><b>{{$template->title}}</b></a></td>
                                     <td class="templates-category">{{ $template->category }}</td>
                                     @if(isset($template->size["width"]))
-                                        <td class="templates-size-width">{{ $template->size["width"] }}</td>
+                                        <td class="templates-size-width">{{ $template->size["width"] }} cm</td>
                                     @else
                                         <td class="templates-size-width">...</td>
                                     @endif
                                     @if(isset($template->size["height"]))
-                                        <td class="templates-size-height">{{ $template->size["height"] }}</td>
+                                        <td class="templates-size-height">{{ $template->size["height"] }} cm</td>
                                     @else
                                         <td class="templates-size-height">...</td>
                                     @endif
-                                    @if($template->components_ids != null)
-                                        <td class="templates-components">
-                                            @foreach($templates_components as $component)
-                                                @foreach($template->components_ids as $component_id)
-                                                    @if ($component_id == $component->_id)
-                                                        - {{ $component->title }} <br>
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
-                                        </td>
-                                    @else
-                                        <td class="templates-components">...</td>
-                                    @endif
-                                   
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"

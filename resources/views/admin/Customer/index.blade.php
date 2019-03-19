@@ -1,11 +1,4 @@
 @extends('layouts/templateAdmin')
-@section('alerts')
-@if (session('status'))
-    <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert" data-dismiss="alert" >
-        {{ session('status') }}
-    </div>
-@endif    
-@endsection
 
 @section('content')
 <div class="container-fluid">
@@ -145,17 +138,4 @@
         </div>
     </div> <!-- / .row -->
 </div>
-@endsection
-
-@section('javascripts')
-@parent
-@if (session('status'))
-    <script>
-        $('#Alert').alert();
-        var closeAlert = function(){
-            $('#Alert').alert('close')
-        };
-        setTimeout(closeAlert, 5000);
-    </script>
-@endif
 @endsection

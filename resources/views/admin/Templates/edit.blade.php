@@ -25,122 +25,178 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-            {!! Form::open(['action' => array('TemplatesController@update'), 'id' => $template->id, 'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('TemplatesController@update'), 'id' => $template->id, 'files' => true, 'class' => 'mb-4']) !!}
+            {{csrf_field()}}
             <div class="row">
-                {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom du gabarit
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('title', $template->title, ['class' => 'form-control', 'placeholder' => 'Nom'])
-                        !!}
-                    </div>
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Catégorie
-                        </label>
-                        <!-- Input -->
-                        {!! Form::text('category', $template->category, ['class' => 'form-control', 'placeholder' => 'Catégorie'])
-                        !!}
-                    </div>
-                </div>
-                <hr class="mt-4 mb-5">
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Largeur du gabarit
-                        </label>
-                        <!-- Input -->
-                        @if(isset($template->size["width"]))
-                            {!! Form::number('width', $template->size["width"], ['class' => 'form-control', 'placeholder' =>
-                            'Largeur de la zone :']) !!}
-                        @else
-                            {!! Form::number('width', $template->size["width"], ['class' => 'form-control', 'placeholder' =>
-                            'Largeur de la zone :']) !!}
-                        @endif
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Nom du gabarit
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::text('title', $template->title, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du gabarit</div>@endif
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Catégorie
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::text('category', $template->category, ['class' => 'form-control' . $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
+                                        @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner la catégorie du gabarit</div>@endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Hauteur du gabarit
-                        </label>
-                        <!-- Input -->
-                        @if(isset($template->size["height"]))
-                            {!! Form::number('height', $template->size["height"], ['class' => 'form-control', 'placeholder' =>
-                            'Hauteur de la zone :']) !!}
-                        @else
-                            {!! Form::number('height', $template->size["height"], ['class' => 'form-control', 'placeholder' =>
-                            'Hauteur de la zone :']) !!}
-                        @endif
+            </div>
+            {{-- Largeur/hauteur --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille du template
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Largeur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('width', $template->size["width"], ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Hauteur (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('height', $template->size["height"], ['class' => 'form-control', 'placeholder' =>
+                                        '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position X d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        @if(isset($template->origin["x"]))
-                            {!! Form::number('origin_x', $template->origin["x"], ['class' => 'form-control', 'placeholder' =>
-                            'Origine x du plateau :']) !!}
-                        @else
-                            {!! Form::number('origin_x', $template->origin["x"], ['class' => 'form-control', 'placeholder' =>
-                            'Origine x du plateau :']) !!}
-                        @endif
+            </div>
+            {{-- Position --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Position du template
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            X (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_x', $template->origin["x"], ['class' => 'form-control', 'placeholder' =>
+                                        '0']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label>
+                                            Y (cm)
+                                        </label>
+                                        <!-- Input -->
+                                        {!! Form::number('origin_y', $template->origin["y"], ['class' => 'form-control', 'placeholder' =>
+                                        '0']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Position Y d'origine sur le plateau
-                        </label>
-                        <!-- Input -->
-                        @if(isset($template->origin["y"]))
-                            {!! Form::number('origin_y', $template->origin["y"], ['class' => 'form-control', 'placeholder' =>
-                            'Origine y du plateau :']) !!}
-                        @else
-                            {!! Form::number('origin_y', $template->origin["y"], ['class' => 'form-control', 'placeholder' =>
-                            'Origine y du plateau :']) !!}
-                        @endif
+            </div>
+            {{-- Composants --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Composants
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- First name -->
+                                    <div class="form-group">
+                                        <!-- Input -->
+                                        {!! Form::select('components_ids[]',
+                                        App\Template_components::pluck('title','_id'), $template->components_ids, ['id' =>
+                                        'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
+                                    </div>
+                                    <div id="templateComponentsList" data-type='sortable'>
+                                    </div>
+                                    {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Composants
-                        </label>
-                        <!-- Input -->
-                        {!! Form::select('components_ids[]', App\Template_components::pluck('title','_id'), $template->components_ids, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+            </div>
+            {{-- Images --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Image d'illustration
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="custom-file">
+                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id'
+                                        => 'thumb', 'name' => 'thumb')) !!}
+                                        <label class="custom-file-label" for="thumb">Ajouter la miniature</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- First name -->
+                                    <div class="custom-file">
+                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id'
+                                        => 'full', 'name' => 'full')) !!}
+                                        <label class="custom-file-label" for="full">Ajouter l'image</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {!! Form::file('thumb', array('id' => 'thumb', 'name' => 'thumb')) !!}
-                {!! Form::file('full', array('id' => 'full', 'name' => 'full')) !!}
             </div>
 
             {!! Form::hidden('template_id', $template->id) !!}

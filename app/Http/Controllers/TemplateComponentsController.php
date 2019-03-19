@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 class TemplateComponentsController extends Controller
 {
     public function __construct(){
@@ -54,13 +58,22 @@ class TemplateComponentsController extends Controller
         $template_component->title = $request->title;
         $template_component->type = $request->type;
         //  si requête type image j'injecte l'image
-        if($request->type == 'image') {
-            if ($request->hasFile('image')){
-                $image = time().'.'.request()->image->getClientOriginalExtension();
-                request()->image->move(public_path('uploads'), $image);
-    
-                $template_component->image = $image;
-            }
+        $disk = Storage::disk('s3');
+        if ($request->hasFile('image')){
+            // Get file
+            $file = $request->file('image');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/templatesComponents/' . $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $template_component->image = $filePath;
         }
         //  data communes aux deux types de component maggle
         $template_component->size = array(
@@ -81,20 +94,58 @@ class TemplateComponentsController extends Controller
                 'available' => $request->available,
                 'always' => $request->always
             );
-            $template_component->font = array(
-                'id' =>  $request->font_id,
-                'name' => $request->font_name,
-                'url' => $request->font_url,
-                'weight' => $request->font_weight,
-                'transform' => $request->font_transform,
-                'first_letter' => $request->font_first_letter,
-            );
+            $fonts = array();
+            for($i=1; $i<5; $i++){
+                if ($request->hasFile('font_url_'.$i)){
+                    $request_font_url =  $request->{'font_url_'.$i};
+                    $request_font_id =  $request->{'font_id_'.$i};
+                    $request_font_name =  $request->{'font_name_'.$i};
+                    $request_font_weight =  $request->{'font_weight_'.$i};
+                    $request_font_transform =  $request->{'font_transform_'.$i};
+                    $request_font_first_letter =  $request->{'font_first_letter_'.$i};
+                    $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
+                    $request_font_url->move(public_path('uploads'), $url);
+                    $font = array(
+                        'id' =>  $request_font_id,
+                        'name' => $request_font_name,
+                        'url' => $url,
+                        'weight' => $request_font_weight,
+                        'transform' => $request_font_transform,
+                        'first_letter' => $request_font_first_letter,
+                    );
+                    array_push($fonts , $font);
+                }
+            }
+            $template_component->fonts = $fonts;
         }
         $template_component->is_customizable = $request->is_customizable;
         $template_component->is_active = $request->is_active; 
         $template_component->is_deleted = $request->is_deleted;
         $template_component->save();
-        return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement crée.');
+
+        $notification = array(
+            'status' => 'Le composant a été correctement crée',
+            'alert-type' => 'success'
+        );
+
+        return redirect('admin/TemplatesComponents/index')->with($notification);
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $notification = array(
+            'status' => 'Le gabarit a été correctement supprimé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/TemplatesComponents/index')->with($notification);
+
     }
 
     /**
@@ -106,7 +157,10 @@ class TemplateComponentsController extends Controller
     public function edit($id)
     {
         $template_component = Template_components::find($id);
-        return view('admin/TemplatesComponents.edit', ['template_component' => $template_component]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        $exists = $disk->exists('file.jpg');
+        return view('admin/TemplatesComponents.edit', ['template_component' => $template_component, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
     }
 
     /**
@@ -120,19 +174,31 @@ class TemplateComponentsController extends Controller
     {
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'type' => 'required|string|max:255'
+                'title' => 'required|string|max:255'
             ]);
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
             $template_component->type = $request->type;
             //  si requête type image j'injecte l'image
-            if($request->type == 'image') {
-                if ($request->hasFile('image')){
-                    $image = time().'.'.request()->image->getClientOriginalExtension();
-                    request()->image->move(public_path('uploads'), $image);
-        
-                    $template_component->image = $image;
+            if ($request->hasFile('image')){
+                // Get current image path
+                $oldPath = $template_component->image;
+                // Get new image
+                $file = $request->file('image');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/templatesComponents/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
+                // Upload the new image
+                $disk = Storage::disk('s3');
+                $disk->put($newFilePath, $img, 'public-read');
+                unlink(public_path() . '/' . $name);
+                // Put in database
+                $template_component->image = $newFilePath;
+                if(!empty($template_component->image) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
             }
             //  data communes aux deux types de component maggle
@@ -167,7 +233,11 @@ class TemplateComponentsController extends Controller
             $template_component->is_active = $request->is_active; 
             $template_component->is_deleted = $request->is_deleted;
             $template_component->save();
-            return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement modifié.');
+            $notification = array(
+                'status' => 'Le gabarit a été correctement modifié.',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/TemplatesComponents/index')->with($notification);
         }
         else {
             $validatedData = $request->validate([
@@ -179,12 +249,25 @@ class TemplateComponentsController extends Controller
             $template_component->title = $request->title;
             $template_component->type = $request->type;
             //  si requête type image j'injecte l'image
-            if($request->type == 'image') {
-                if ($request->hasFile('image')){
-                    $image = time().'.'.request()->image->getClientOriginalExtension();
-                    request()->image->move(public_path('uploads'), $image);
-        
-                    $template_component->image = $image;
+            if ($request->hasFile('image')){
+                // Get current image path
+                $oldPath = $template_component->image;
+                // Get new image
+                $file = $request->file('image');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/templatesComponents/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
+                // Upload the new image
+                $disk = Storage::disk('s3');
+                $disk->put($newFilePath, $img, 'public-read');
+                unlink(public_path() . '/' . $name);
+                // Put in database
+                $template_component->image = $newFilePath;
+                if(!empty($template_component->image) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
             }
             //  data communes aux deux types de component maggle
@@ -219,7 +302,11 @@ class TemplateComponentsController extends Controller
             $template_component->is_active = $request->is_active; 
             $template_component->is_deleted = $request->is_deleted;
             $template_component->save();
-            return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement modifié.');
+            $notification = array(
+                'status' => 'Le gabarit a été correctement modifié.',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/TemplatesComponents/index')->with($notification);
         }
     }
 
@@ -231,22 +318,31 @@ class TemplateComponentsController extends Controller
      */
     public function destroy($id)
     {
-        $template = Template_components::find($id);
-            $file_path_thumb = public_path('uploads/').$template->image;
-            if(file_exists(public_path('uploads/'.$template->image)) && !empty($template->image)){
-                unlink($file_path_thumb);
-            }
-        $template->delete();
-        return redirect('admin/TemplatesComponents/index')->with('status', 'Le client a été correctement supprimé.');
+        $template_component = Template_components::find($id);
+        $disk = Storage::disk('s3');
+        $filePath = $template_component->image;
+        if(!empty($template_component->image) && $disk->exists($filePath)){
+            $disk->delete($filePath);
+        }
+        $template_component->delete();
+        $notification = array(
+            'status' => 'Le composant a été correctement supprimé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 
     /*--~~~~~~~~~~~___________activate and desactivate a template function in index template__________~~~~~~~~~~~~-*/
     public function desactivate($id)
     {
-        $template = Template_components::find($id);
-        $template->is_active = false;
-        $template->update();
-        return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement désactivé.');
+        $template_component = Template_components::find($id);
+        $template_component->is_active = false;
+        $template_component->update();
+        $notification = array(
+            'status' => 'Le composant a été correctement désactivé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 
     public function delete($id)
@@ -254,7 +350,11 @@ class TemplateComponentsController extends Controller
         $template = Template_components::find($id);
         $template->is_deleted = true;
         $template->update();
-        return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement effacé.');
+        $notification = array(
+            'status' => 'Le composant a été correctement supprimé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 
     public function activate($id)
@@ -262,30 +362,10 @@ class TemplateComponentsController extends Controller
         $template = Template_components::find($id);
         $template->is_active = true;
         $template->update();
-        return redirect('admin/TemplatesComponents/index')->with('status', 'Le composant a été correctement activé.');
+        $notification = array(
+            'status' => 'Le composant a été activé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 }
-
-    // $fonts = array();
-    // for($i=1; $i<5; $i++){
-    //     if ($request->hasFile('font_url_'.$i)){
-    //         $request_font_url =  $request->{'font_url_'.$i};
-    //         $request_font_id =  $request->{'font_id_'.$i};
-    //         $request_font_name =  $request->{'font_name_'.$i};
-    //         $request_font_weight =  $request->{'font_weight_'.$i};
-    //         $request_font_transform =  $request->{'font_transform_'.$i};
-    //         $request_font_first_letter =  $request->{'font_first_letter_'.$i};
-    //         $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
-    //         $request_font_url->move(public_path('uploads'), $url);
-    //         $font = array(
-    //             'id' =>  $request_font_id,
-    //             'name' => $request_font_name,
-    //             'url' => $url,
-    //             'weight' => $request_font_weight,
-    //             'transform' => $request_font_transform,
-    //             'first_letter' => $request_font_first_letter,
-    //         );
-    //         array_push($fonts , $font);
-    //     }
-    // }
-    // $template_component->fonts = $fonts;
