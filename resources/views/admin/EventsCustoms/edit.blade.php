@@ -34,11 +34,13 @@
                 </ul>
             </div>
             @endif
+            <?php $i=0; ?>
             {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
                 {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
+
                 <div class="col-12">
                     @foreach($templates as $template)
                     <?php $array_template = $events_custom->template ?>
@@ -47,9 +49,70 @@
                                 @foreach($template->components_ids as $component_id)
                                     @if($template_component->id == $component_id)
                                         @if($template_component->type = 'input')
+                                        <?php $i++; ?>
                                         <div class="row">
                                             {{csrf_field()}}
-                                            <input type="hidden" class="form-control" name="template_component_id" value="{{$template_component->id}}">
+                                            <input type="hidden" class="form-control" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="card-header">
+                                                        <h4 class="card-header-title">
+                                                            Taille du composant
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <!-- First name -->
+                                                        <div class="form-group">
+                                                            <!-- Label -->
+                                                            <label>
+                                                                Hauteur (cm)
+                                                            </label>
+                                                            <!-- Input -->
+                                                            {!! Form::number('height'.$i, $template_component->size["height"], ['class' => 'form-control', 'placeholder' => '']) !!}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <!-- First name -->
+                                                        <div class="form-group">
+                                                            <!-- Label -->
+                                                            <label>
+                                                                Largeur (cm)
+                                                            </label>
+                                                            <!-- Input -->
+                                                            {!! Form::number('width'.$i,  $template_component->size["width"], ['class' => 'form-control', 'placeholder' => '']) !!}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="card-header">
+                                                        <h4 class="card-header-title">
+                                                            Position du composant
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <!-- First name -->
+                                                        <div class="form-group">
+                                                            <!-- Label -->
+                                                            <label>
+                                                                X (cm)
+                                                            </label>
+                                                            <!-- Input -->
+                                                            {!! Form::number('origin_x'.$i,  $template_component->origin["x"], ['class' => 'form-control', 'placeholder' =>'0']) !!}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <!-- First name -->
+                                                        <div class="form-group">
+                                                            <!-- Label -->
+                                                            <label>
+                                                                Y (cm)
+                                                            </label>
+                                                            <!-- Input -->
+                                                            {!! Form::number('origin_y'.$i, $template_component->origin["y"], ['class' => 'form-control', 'placeholder' => '0']) !!}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -57,68 +120,24 @@
                                                             {{$template_component->title}}
                                                         </h3>
                                                     </div>
-                                                    <div class="card-header">
-                                                        <h4 class="card-header-title">
-                                                            Taille du composant
-                                                        </h4>
-                                                    </div>
                                                     <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-12 col-md-6">
-                                                                <!-- First name -->
-                                                                <div class="form-group">
-                                                                    <!-- Label -->
-                                                                    <label>
-                                                                        Hauteur (cm)
-                                                                    </label>
-                                                                    <!-- Input -->
-                                                                    {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => '']) !!}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 col-md-6">
-                                                                <!-- First name -->
-                                                                <div class="form-group">
-                                                                    <!-- Label -->
-                                                                    <label>
-                                                                        Largeur (cm)
-                                                                    </label>
-                                                                    <!-- Input -->
-                                                                    {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' => '']) !!}
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                         <div class="card-header">
                                                             <h4 class="card-header-title">
-                                                                Position du composant
+                                                                Nom de l'option
                                                             </h4>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-12 col-md-6">
-                                                                    <!-- First name -->
-                                                                    <div class="form-group">
-                                                                        <!-- Label -->
-                                                                        <label>
-                                                                            X (cm)
-                                                                        </label>
-                                                                        <!-- Input -->
-                                                                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>'0']) !!}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12 col-md-6">
-                                                                    <!-- First name -->
-                                                                    <div class="form-group">
-                                                                        <!-- Label -->
-                                                                        <label>
-                                                                            Y (cm)
-                                                                        </label>
-                                                                        <!-- Input -->
-                                                                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' => '0']) !!}
-                                                                    </div>
-                                                                </div>
+                                                        <div class="form-group">
+                                                                <!-- Label -->
+                                                                <label>
+                                                                    Nom
+                                                                </label>
+                                                                <!-- Input -->
+                                                                @if(isset($template_component->font["name"]))
+                                                                    {!! Form::text('font_title'.$i, $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                                                @else
+                                                                    {!! Form::text('font_title'.$i, null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                                                @endif
                                                             </div>
-                                                        </div>
-
                                                         <div class="card-header">
                                                             <h4 class="card-header-title">
                                                                 Nombre de caractères
@@ -134,7 +153,7 @@
                                                                             Minimum
                                                                         </label>
                                                                         <!-- Input -->
-                                                                        {!! Form::number('min', $template_component->characters["min"], ['class' => 'form-control', 'placeholder' => '1']) !!} </div>
+                                                                        {!! Form::number('min'.$i, $template_component->characters["min"], ['class' => 'form-control', 'placeholder' => '1']) !!} </div>
                                                                 </div>
                                                                 <div class="col-12 col-md-6">
                                                                     <!-- First name -->
@@ -144,7 +163,7 @@
                                                                             Maximum
                                                                         </label>
                                                                         <!-- Input -->
-                                                                        {!! Form::number('max', $template_component->characters["max"], ['class' => 'form-control', 'placeholder' =>
+                                                                        {!! Form::number('max'.$i, $template_component->characters["max"], ['class' => 'form-control', 'placeholder' =>
                                                                         '99']) !!} </div>
                                                                 </div>
                                                             </div>
@@ -164,13 +183,13 @@
                                                                         Nom
                                                                     </label>
                                                                     <!-- Input -->
-                                                                    {!! Form::text('font_title', $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                                                    {!! Form::text('font_title'.$i, $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                                                                 </div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <!-- First name -->
                                                                 <div class="custom-file">
-                                                                    {!! Form::file('font_url', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                                                    {!! Form::file('font_url'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                                                                     <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
                                                                 </div>
                                                             </div>
@@ -182,7 +201,7 @@
                                                                         Epaisseur    {{$template_component->font["weight"]}}
                                                                     </label>
                                                                     <div class="form-group">
-                                                                        <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
+                                                                        <select name="{{'font_weight'.$i}}" id="font_weight" class="form-control" data-toggle="select">
                                                                             <option value="100">Thin (100)</option>
                                                                             <option value="200">Extra Light (200)</option>
                                                                             <option value="300">Light (300)</option>
@@ -205,7 +224,7 @@
                                                                     </label>
                                                                     {{-- choix de transformation --}}
                                                                     <div class="form-group">
-                                                                        <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
+                                                                        <select name="{{'font_transform'.$i}}" id="font_transform" class="form-control" data-toggle="select">
                                                                             <option value="none">Aucune</option>
                                                                             <option value="uppercase">Tout en Majuscules</option>
                                                                             <option value="capitalize">Première lettre en Majuscule</option>
@@ -223,12 +242,37 @@
                                                                         Première lettre ou symbole avant le texte
                                                                     </label>
                                                                     <!-- Input -->
-                                                                    {!! Form::text('font_first_letter', $template_component->font["first_letter"], ['class' => 'form-control',
+                                                                    {!! Form::text('font_first_letter'.$i, $template_component->font["first_letter"], ['class' => 'form-control',
                                                                     'placeholder' => '#']) !!}
+                                                                </div>
+
+                                                                <hr>
+                                                                <div class="form-group">
+                                                                    <!-- Label -->
+                                                                    <label>
+                                                                        Couleur
+                                                                    </label>
+                                                                    <a href="#" style="float:right" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#addColorModal">
+                                                                        Ajouter une couleur
+                                                                    </a>
+
+                                                                    <!-- Input text title-->
+                                                                    {!! Form::text('color'.$i, null, ['class' => 'form-control', 'placeholder' => 'Couleur'])
+                                                                    !!}
+                                                                </div>
+
+                                                                <hr>
+                                                                <div class="form-group">
+                                                                    <!-- Label -->
+                                                                    <label>
+                                                                        Code hex
+                                                                    </label>
+                                                                    <!-- Input text title-->
+                                                                    {!! Form::text('code_hex'.$i, null, ['class' => 'form-control', 'placeholder' => '00000'])
+                                                                    !!}
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -257,6 +301,53 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLabel">Ajouter une variante</h2>
+                    @if (session('status'))
+                    <div class="alert alert-success mt-1 mb-2">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Vous pouvez une couleur et son code hex.</p>
+                    {!! Form::open(['id' => 'AddColor', 'files' => true, 'class' => 'mt-5']) !!}
+                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="events_custom_id" id="events_custom_id" value="{{$events_custom->id}}">
+                    <div class="form-group">
+                        <label>
+                            Couleur
+                        </label>
+                        {{ Form::text('color', null, array('class' => 'form-control mb-3','id' => 'color')) }}
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Code hex
+                        </label>
+                        {{ Form::text('code_hex', null, array('class' => 'form-control mb-3','id' => 'code_hex')) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="close_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    {{ Form::submit('Ajouter', array('class'=>'btn btn-primary', 'id' => 'submit_modalAddColor')) }}
+                    <button class="btn btn-primary d-none" type="button" disabled id="loading_modalAddColor">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Génération...
+                    </button>
+                    {{ Form::close() }}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 {{-- $('#components').append(

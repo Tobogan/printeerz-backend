@@ -164,4 +164,29 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#AddColor').on('submit', function (e) {
+        e.preventDefault();
+        $('#submit_modalAddColor').hide();
+        $('#loading_modalAddColor').removeClass('d-none');
+        $.ajax({
+            type: "POST",
+            url: '/admin/EventsCustoms/addColor',
+            data: $(this).serialize(),
+            success: function (msg) {
+                console.log(msg.events_custom);
+                $(this).removeClass('btn-primary');
+                $(this).addClass('btn-success');
+                $('#addColorModal').modal('hide');
+                $('#submit_modalAddColor').show();
+                $('#loading_modalAddColor').addClass('d-none');
+                location.reload();
+            },
+            error: function (request, status, error) {
+                $('#submit_modalAddColor').show();
+                $('#loading_modalAddColor').addClass('d-none');
+            }
+        });
+    });
+
 });

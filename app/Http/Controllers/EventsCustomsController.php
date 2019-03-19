@@ -97,7 +97,41 @@ class EventsCustomsController extends Controller
         $events_custom->is_active = $request->is_active;
         $events_custom->is_deleted = $request->is_deleted;
         $events_custom->save();
-        return redirect('admin/Event/show/'.$events_custom->event_id);
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+    }
+
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addColor(Request $request)
+    {
+        if($request->ajax()) {
+            $validatedData = $request->validate([
+                'events_custom_id' => 'required|string|max:255'
+            ]);
+            $id = $request->events_custom_id;
+            $events_custom = Events_customs::find($id);
+            $color = array(
+                'title' => $request->color,
+                'code_hex' => $request->code_hex
+            );
+            $array = $events_custom->components["font_colors"];
+            array_push($array, $color);
+            $events_custom->components["font_colors"] = $array;
+            $events_custom->save();
+            $response = array(
+                'status' => 'success',
+                'msg' => 'Events custom created successfully',
+                'events_custom' => $events_custom
+            );
+            return response()->json($response);
+        }
+        else {
+            return 'no';
+        }
     }
 
     /**
@@ -165,42 +199,69 @@ class EventsCustomsController extends Controller
                 'origin_x' => $request->origin_x,
                 'origin_y' => $request->origin_y
             );
-            $templates = Templates::all();
-            $template_components = Templates_components::all();
-            $options = array(
-                'template_component_id' => $request->template_component_id,
-                'title' => $request->option_title,
-                'position' => $request->option_position,
-                'settings' => array(
-                    'input_min' => $request->min,
-                    'input_max' => $request->max,
-                    'font_first_letter' => $request->font_first_letter,
-                    'font_transform' => $request->font_transform,
-                    'font_weight' => $request->font_weight,
-                    'fonts' => array(
-                        'title' => $request->font_title,
-                        'font_url' => $request->font_url
+            $events_custom->components = array(
+                array(
+                    'template_component_id' =>$request->template_component_id1,
+                    'title' => $request->option_title1,
+                    'position' => $request->option_position1,
+                    'settings' => array(
+                        'input_min' => $request->min1,
+                        'input_max' => $request->max1,
+                        'font_first_letter' => $request->font_first_letter1,
+                        'font_transform' => $request->font_transform1,
+                        'font_weight' => $request->font_weight1,
+                        'fonts' => array(
+                            'title' => $request->font_title1,
+                            'font_url' => $request->font_url1
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color1,
+                            'code_hex' => $request->code_hex1
+                        ),
                     ),
                 ),
-            );
-            foreach($templates as $template){
-                if($template->id == $events_custom->template["template_id"]){
-                    foreach($template->components_ids as $component){
-                        foreach($template_components as $template_component){
-                            if($template_component->id == $component){
-                                if($template_component->type = 'input'){
-                                    $array = $events_custom->template;
-                                    array_push($array, $options);
-                                }
-                                else{
-                                    $array = $events_custom->template;
-                                    array_push($array, $options);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+                array(
+                    'template_component_id' =>$request->template_component_id2,
+                    'title' => $request->option_title2,
+                    'position' => $request->option_position2,
+                    'settings' => array(
+                        'input_min' => $request->min2,
+                        'input_max' => $request->max2,
+                        'font_first_letter' => $request->font_first_letter2,
+                        'font_transform' => $request->font_transform2,
+                        'font_weight' => $request->font_weight2,
+                        'fonts' => array(
+                            'title' => $request->font_title2,
+                            'font_url' => $request->font_url2
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color2,
+                            'code_hex' => $request->code_hex2
+                        ),
+                    ),
+                ),
+                array(
+                    'template_component_id' =>$request->template_component_id3,
+                    'title' => $request->option_title3,
+                    'position' => $request->option_position3,
+                    'settings' => array(
+                        'input_min' => $request->min3,
+                        'input_max' => $request->max3,
+                        'font_first_letter' => $request->font_first_letter3,
+                        'font_transform' => $request->font_transform3,
+                        'font_weight' => $request->font_weight3,
+                        'fonts' => array(
+                            'title' => $request->font_title3,
+                            'font_url' => $request->font_url3
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color3,
+                            'code_hex' => $request->code_hex3
+                        ),
+                    ),
+                ),
+            );  
+            
             if ($request->hasFile('thumb')){
                 $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
                 request()->thumb->move(public_path('uploads'), $photo1);
@@ -215,15 +276,12 @@ class EventsCustomsController extends Controller
             $events_custom->is_active = $request->is_active;
             $events_custom->is_deleted = $request->is_deleted;
             $events_custom->save();
-            return redirect('admin/Event/show/'.$events_custom->event_id);
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
         else {
             $validatedData = $request->validate([
                 'title' => 'string|max:255'
             ]);
-            // dd($request->events_custom_id);
-            $templates = Templates::all();
-            $template_components = Template_components::all();
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->title = $request->title;
@@ -233,24 +291,69 @@ class EventsCustomsController extends Controller
                 'origin_x' => $request->origin_x,
                 'origin_y' => $request->origin_y
             );
-            // while($request->template_component_id){
-            //     $events_custom->templates = array(
-            //         'template_component_id' =>$request->template_component_id,
-            //         'title' => $request->option_title,
-            //         'position' => $request->option_position,
-            //         'settings' => array(
-            //             'input_min' => $request->min,
-            //             'input_max' => $request->max,
-            //             'font_first_letter' => $request->font_first_letter,
-            //             'font_transform' => $request->font_transform,
-            //             'font_weight' => $request->font_weight,
-            //             'fonts' => array(
-            //                 'title' => $request->font_title,
-            //                 'font_url' => $request->font_url
-            //             ),
-            //         ),
-            //     );
-            // }
+            $events_custom->components = array(
+                array(
+                    'template_component_id' =>$request->template_component_id1,
+                    'title' => $request->option_title1,
+                    'position' => $request->option_position1,
+                    'settings' => array(
+                        'input_min' => $request->min1,
+                        'input_max' => $request->max1,
+                        'font_first_letter' => $request->font_first_letter1,
+                        'font_transform' => $request->font_transform1,
+                        'font_weight' => $request->font_weight1,
+                        'fonts' => array(
+                            'title' => $request->font_title1,
+                            'font_url' => $request->font_url1
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color1,
+                            'code_hex' => $request->code_hex1
+                        ),
+                    ),
+                ),
+                array(
+                    'template_component_id' =>$request->template_component_id2,
+                    'title' => $request->option_title2,
+                    'position' => $request->option_position2,
+                    'settings' => array(
+                        'input_min' => $request->min2,
+                        'input_max' => $request->max2,
+                        'font_first_letter' => $request->font_first_letter2,
+                        'font_transform' => $request->font_transform2,
+                        'font_weight' => $request->font_weight2,
+                        'fonts' => array(
+                            'title' => $request->font_title2,
+                            'font_url' => $request->font_url2
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color2,
+                            'code_hex' => $request->code_hex2
+                        ),
+                    ),
+                ),
+                array(
+                    'template_component_id' =>$request->template_component_id3,
+                    'title' => $request->option_title3,
+                    'position' => $request->option_position3,
+                    'settings' => array(
+                        'input_min' => $request->min3,
+                        'input_max' => $request->max3,
+                        'font_first_letter' => $request->font_first_letter3,
+                        'font_transform' => $request->font_transform3,
+                        'font_weight' => $request->font_weight3,
+                        'fonts' => array(
+                            'title' => $request->font_title3,
+                            'font_url' => $request->font_url3
+                        ),
+                        'font_colors' => array(
+                            'title' => $request->color3,
+                            'code_hex' => $request->code_hex3
+                        ),
+                    ),
+                ),
+            ); 
+
             if ($request->hasFile('thumb')){
                 $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
                 request()->thumb->move(public_path('uploads'), $photo1);
@@ -265,7 +368,7 @@ class EventsCustomsController extends Controller
             $events_custom->is_active = $request->is_active;
             $events_custom->is_deleted = $request->is_deleted;
             $events_custom->save();
-            return redirect('admin/Event/show/'.$events_custom->event_id);
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
     }
 
@@ -277,7 +380,34 @@ class EventsCustomsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $events_custom = Events_customs::find($id);
+        $events_custom->delete();
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
     }
+
+        /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
+        public function desactivate($id)
+        {
+            $events_custom = Events_customs::find($id);
+            $events_custom->is_active = false;
+            $events_custom->update();
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        }
+    
+        public function delete($id)
+        {
+            $events_custom = Events_customs::find($id);
+            $events_custom->is_deleted = true;
+            $events_custom->update();
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        }
+    
+        public function activate($id)
+        {
+            $events_custom = Events_customs::find($id);
+            $events_custom->is_active = true;
+            $events_custom->update();
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        }
 }
 
