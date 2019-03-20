@@ -6,9 +6,15 @@
 /vendor
 /.idea
 /.vagrant
+/.ebextensions
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 .env
 service-account.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
