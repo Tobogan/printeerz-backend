@@ -6,7 +6,6 @@
 /vendor
 /.idea
 /.vagrant
-/.ebextensions
 Homestead.json
 Homestead.yaml
 npm-debug.log
