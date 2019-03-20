@@ -83,6 +83,7 @@ class EventsCustomsController extends Controller
             $request->printzone_id,
         );
         $events_custom->title = $request->title;
+        $events_custom->colors = array();
         if ($request->hasFile('thumb')){
             $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
             request()->thumb->move(public_path('uploads'), $photo1);
@@ -106,21 +107,22 @@ class EventsCustomsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function addColor(Request $request)
+   public function addColor(Request $request)
     {
         if($request->ajax()) {
             $validatedData = $request->validate([
-                'events_custom_id' => 'required|string|max:255'
+                'events_custom_id' => 'string|max:255'
             ]);
-            $id = $request->events_custom_id;
-            $events_custom = Events_customs::find($id);
+            $events_custom_id = $request->events_custom_id;
+            $events_custom = Events_customs::find($events_custom_id);
             $color = array(
+                'template_component_id' => $request->template_component_id,
                 'title' => $request->color,
                 'code_hex' => $request->code_hex
             );
-            $array = $events_custom->components["font_colors"];
+            $array = $events_custom->colors;
             array_push($array, $color);
-            $events_custom->components["font_colors"] = $array;
+            $events_custom->colors = $array;
             $events_custom->save();
             $response = array(
                 'status' => 'success',

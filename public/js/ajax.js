@@ -177,6 +177,8 @@ $(document).ready(function () {
                 console.log(msg.events_custom);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');
+                $('#color').val('');
+                $('#code_hex').val('');
                 $('#addColorModal').modal('hide');
                 $('#submit_modalAddColor').show();
                 $('#loading_modalAddColor').addClass('d-none');
@@ -188,5 +190,7 @@ $(document).ready(function () {
             }
         });
     });
+
+    
 
 });

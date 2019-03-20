@@ -167,7 +167,7 @@ class EventsProductsController extends Controller
         $events_product->save();
         //dd($result);
         return redirect('admin/EventsProducts/show/'.$events_product->id);
-    }
+   }
 
 
     /**
