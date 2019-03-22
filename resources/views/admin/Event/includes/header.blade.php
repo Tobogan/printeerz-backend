@@ -1,40 +1,43 @@
 <div class="header">
-     <!-- Image -->
-    <img src="https://dashkit.goodthemes.co/assets/img/covers/profile-cover-1.jpg" class="header-img-top" alt="...">
-        <div class="container">
+  <!-- Image -->
+  @if(!empty($event->cover_img) && $disk->exists($event->cover_img))
+    <img width="100%" title="image principale" class="" src="{{$s3 . $event->cover_img}}" alt="Cover event">
+  @else
+  
+  @endif
+
+    <div class="container">
       <!-- Body -->
-      <div class="header-body mt-n5 mt-md-n6">
-        <div class="row align-items-end">
+      <div class="header-body @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mt-n5 mt-md-n6 @endif">
+        <div class="row @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) align-items-end @else align-items-center @endif">
           <div class="col-auto">
             
             <!-- Avatar -->
             <div class="avatar avatar-xxl header-avatar-top">
-              <img src="https://pbs.twimg.com/profile_images/992035867169579008/79tW0OHn_400x400.jpg" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+               @if(!empty($event->logoName) && $disk->exists($event->logoName))
+                 <img src="{{$s3 . $event->logoName}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+              @else
+               <img src="https://pbs.twimg.com/profile_images/992035867169579008/79tW0OHn_400x400.jpg" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+              @endif
             </div>
 
           </div>
-          <div class="col mb-3 ml-n3 ml-md-n2">
-            
-            <!-- Pretitle -->
+          <div class="col @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mb-3 ml-n3 ml-md-n2 @endif">
             <h6 class="header-pretitle">
-            @if($event->customer)
-                {{ $event->customer->title}}
-            @else
-                Inconnu
-            @endif
+              @if($event->customer)
+                  {{ $event->customer->title}}
+              @else
+                  Inconnu
+              @endif
             </h6>
-
-            <!-- Title -->
             <h1 class="header-title">
                 {{ $event->name }}
                 <span class="small" >by {{ $event->advertiser }}</span>
             </h1>
-            
-
           </div>
+
           <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
             
-            <!-- Button -->
             <div class="dropdown">
                 <a href="#" class="dropdown-ellipses dropdown-toggle btn btn-rounded-circle btn-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fe fe-more-vertical"></i>
@@ -50,7 +53,7 @@
               </div>
 
           </div>
-        </div> <!-- / .row -->
+        </div>
         <div class="row align-items-center">
           <div class="col">
             
@@ -58,7 +61,7 @@
             <ul class="nav nav-tabs nav-overflow header-tabs">
               <li class="nav-item">
                 <a class="nav-link active" href="#event_products">
-                  Products
+                  Produits
                 </a>
               </li>
               <li class="nav-item">

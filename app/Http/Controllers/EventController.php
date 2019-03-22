@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 class EventController extends Controller
 {
     public function __construct(){
@@ -30,7 +34,10 @@ class EventController extends Controller
      */
     public function index(){
         $events = Event::all();
-        return view('admin/Event.index', ['events' => $events]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        $exists = $disk->exists('file.jpg');
+        return view('admin/Event.index', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
     }
 
     /**
@@ -74,7 +81,7 @@ class EventController extends Controller
             'advertiser' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'description' => 'max:750'
+            'description' => 'max:2750'
         ]);
 
         $event = new Event;
@@ -104,27 +111,62 @@ class EventController extends Controller
 
         $event->save();
 
-/*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
+        $disk = Storage::disk('s3');
         if ($request->hasFile('logo_img')){
-            $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
-            request()->logo_img->move(public_path('uploads'), $logoName);
-            $event->logoName = $logoName;
-        } 
-
+            // Get file
+            $file = $request->file('logo_img');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/events/' . $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $event->logoName = $filePath;
+        }
         if ($request->hasFile('cover_img')){
-            $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
-            request()->cover_img->move(public_path('uploads'), $cover);
-            $event->cover_img = $cover;
-        } 
+            // Get file
+            $file = $request->file('cover_img');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/events/' . $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $event->cover_img = $filePath;
+        }
 
         if ($request->hasFile('BAT')){
-            $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
-            request()->BAT->move(public_path('uploads'), $bat_file);
-            $event->BAT = $bat_file;
+            // Get file
+            $file = $request->file('cover_img');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/events/' . $name;
+            // Upload the file
+            $disk->put($filePath, $file, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $event->BAT = $filePath;
         } 
 
         $event->save();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement ajouté.');
+
+        $notification = array(
+            'status' => 'L\'événement a été correctement ajouté.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 
     /**
@@ -139,11 +181,15 @@ class EventController extends Controller
         $products = Product::all();
         $events_products = Events_products::all();
         $printzones = Printzones::all();
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_products = [];
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['printzones' => $printzones, 'select_products' => $select_products, 'events_products' => $events_products, 'products' => $products, 'event' => $event]);
+        return view('admin/Event.show', ['printzones' => $printzones, 'select_products' => $select_products,
+        'events_products' => $events_products, 'products' => $products, 'event' => $event, 'disk' => $disk, 's3' =>
+        $s3]);
     }
 
     /**
@@ -157,7 +203,10 @@ class EventController extends Controller
         $event = Event::find($id);
         $eventVariants = EventVariants::all();
         $productVariants = ProductVariants::all();
-        return view('admin/Event.show_eventVariants', ['event' => $event, 'productVariants' => $productVariants, 'eventVariants' => $eventVariants]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/Event.show_eventVariants', ['event' => $event, 'productVariants' => $productVariants,
+        'eventVariants' => $eventVariants, 'disk' => $disk, 's3' => $s3]);
     }
 
     /**
@@ -230,39 +279,72 @@ class EventController extends Controller
 
             $event->save();
 
-            /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
-            if ($request->hasFile('logo_img')){
-            $file_path_logo_img = public_path('uploads/'.$event->logo_img);
-            if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
-                unlink($file_path_logo_img);
+        // Update logo image
+           if ($request->hasFile('logo_img')){
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->logoName;
+                // Get new image
+                $file = $request->file('logo_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img, 'public');
+                // Put in database
+                $event->logoName = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->logoName ) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
+                }
+           }
+
+        // Update Cover image
+           if ($request->hasFile('cover_img')){
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->logo_img;
+                // Get new image
+                $file = $request->file('cover_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img, 'public');
+                // Put in database
+                $event->cover_img = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->cover_img) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
+                }
+           }
+
+        //  Update BAT File
+            if ($request->hasFile('BAT')){
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->BAT;
+                // Get new image
+                $file = $request->file('BAT');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Upload the new image
+                $disk->put($newFilePath, $file, 'public');
+                // Put in database
+                $event->BAT = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->BAT) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
+                }
             }
-            $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
-            request()->logo_img->move(public_path('uploads'), $logoName);
-
-            $event->logoName = $logoName;
-        } 
-
-        if ($request->hasFile('cover_img')){
-            $file_path_cover_img = public_path('uploads/'.$event->cover_img);
-            if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
-                unlink($file_path_cover_img);
-            }
-            $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
-            request()->cover_img->move(public_path('uploads'), $cover);
-
-            $event->cover_img = $cover;
-        }
-
-        if ($request->hasFile('BAT')){
-            $file_path_BAT = public_path('uploads/'.$event->BAT);
-            if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
-                unlink($file_path_BAT);
-            }
-            $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
-            request()->BAT->move(public_path('uploads'), $bat_file);
-
-            $event->BAT = $bat_file;
-        }
 
             $event->save();
         }        
@@ -312,43 +394,80 @@ class EventController extends Controller
             $products]);
 
             $event->save();
-
-    /*~~~~~~~~~~~___________UPLOADS IMAGES__________~~~~~~~~~~~~*/
+            // Update logo image
             if ($request->hasFile('logo_img')){
-                $file_path_logo_img = public_path('uploads/'.$event->logo_img);
-                if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
-                    unlink($file_path_logo_img);
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->logoName;
+                // Get new image
+                $file = $request->file('logo_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img, 'public');
+                // Put in database
+                $event->logoName = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->logoName) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
-                $logoName = time().'.'.request()->logo_img->getClientOriginalExtension();           
-                request()->logo_img->move(public_path('uploads'), $logoName);
+            }
 
-                $event->logoName = $logoName;
-            } 
-
+            // Update Cover image
             if ($request->hasFile('cover_img')){
-                $file_path_cover_img = public_path('uploads/'.$event->cover_img);
-                if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
-                    unlink($file_path_cover_img);
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->logo_img;
+                // Get new image
+                $file = $request->file('cover_img');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                // Upload the new image
+                $disk->put($newFilePath, $img, 'public');
+                // Put in database
+                $event->cover_img = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->cover_img) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
-                $cover = time().'1.'.request()->cover_img->getClientOriginalExtension();           
-                request()->cover_img->move(public_path('uploads'), $cover);
-
-                $event->cover_img = $cover;
             }
 
+            // Update BAT File
             if ($request->hasFile('BAT')){
-                $file_path_BAT = public_path('uploads/'.$event->BAT);
-                if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
-                    unlink($file_path_BAT);
+                $disk = Storage::disk('s3');
+                // Get current image path
+                $oldPath = $event->BAT;
+                // Get new image
+                $file = $request->file('BAT');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/events/' . $product->id . '/'. $name;
+                // Upload the new image
+                $disk->put($newFilePath, $file, 'public');
+                // Put in database
+                $event->BAT = $newFilePath;
+                unlink(public_path() . '/' . $name);
+                if(!empty($event->BAT) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
                 }
-                $bat_file = time().'2.'.request()->BAT->getClientOriginalExtension();           
-                request()->BAT->move(public_path('uploads'), $bat_file);
-
-                $event->BAT = $bat_file;
             }
+    
             $event->save();
         }
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement modifié.');
+        $notification = array(
+        'status' => 'L\'événement a été correctement modifié.',
+        'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 
     /**
@@ -360,29 +479,44 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::find($id);
-        $file_path_logo_img = public_path('uploads/'.$event->logo_img);
-        if(file_exists(public_path('uploads/'.$event->logo_img)) && !empty($event->logo_img)){
-            unlink($file_path_logo_img);
+        // Delete logo image
+        $disk = Storage::disk('s3');
+        $filePath = $event->logoName;
+        if(!empty($event->logoName) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
-        $file_path_cover_img = public_path('uploads/'.$event->cover_img);
-        if(file_exists(public_path('uploads/'.$event->cover_img)) && !empty($event->cover_img)){
-            unlink($file_path_cover_img);
+        // Delete cover image
+        $filePath = $event->cover_img;
+        if(!empty($event->cover_img) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
-        $file_path_BAT = public_path('uploads/'.$event->BAT);
-        if(file_exists(public_path('uploads/'.$event->BAT)) && !empty($event->BAT)){
-            unlink($file_path_BAT);
+        // Delete BAT file
+        $filePath = $event->BAT;
+            if(!empty($event->BAT) && $disk->exists($filePath)){
+        $disk->delete($filePath);
         }
+
+        // Delete file
         $event->delete();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement supprimé.');
+
+        $notification = array(
+            'status' => 'L\'événement a été correctement supprimé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a event function in index event__________~~~~~~~~~~~~-*/
+    
     public function desactivate($id)
     {
         $event = Event::find($id);
         $event->is_active = false;
         $event->update();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement désactivé.');
+        $notification = array(
+            'status' => 'L\'événement a été correctement désactivé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 
     public function delete($id)
@@ -390,7 +524,11 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_deleted = true;
         $event->update();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement supprimé.');
+        $notification = array(
+            'status' => 'L\'événement a été correctement supprimé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 
     public function activate($id)
@@ -398,6 +536,10 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_active = true;
         $event->update();
-        return redirect('admin/Event/index')->with('status', 'L\'événement a été correctement activé.');
+        $notification = array(
+            'status' => 'L\'événement a été correctement activé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
     }
 }
