@@ -195,75 +195,46 @@ class EventsCustomsController extends Controller
             ]);
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
-            $events_custom->position = array(
-                'width' => $request->width,
-                'height' => $request->height,
-                'origin_x' => $request->origin_x,
-                'origin_y' => $request->origin_y
-            );
-            $events_custom->components = array(
-                array(
-                    'template_component_id' =>$request->template_component_id1,
-                    'title' => $request->option_title1,
-                    'position' => $request->option_position1,
-                    'settings' => array(
-                        'input_min' => $request->min1,
-                        'input_max' => $request->max1,
-                        'font_first_letter' => $request->font_first_letter1,
-                        'font_transform' => $request->font_transform1,
-                        'font_weight' => $request->font_weight1,
-                        'fonts' => array(
-                            'title' => $request->font_title1,
-                            'font_url' => $request->font_url1
+            $events_custom->title = $request->title;
+            $events_custom->components = array();
+            for($i=0;$i<5;$i++){
+                if($request->{'template_component_id'.$i} != null){
+                    $component = array(
+                        'template_component_id' =>$request->{'template_component_id'.$i},
+                        'title' => $request->{'option_title'.$i},
+                        'position' => $request->{'option_position'.$i},
+                        'settings' => array(
+                            'input_min' => $request->{'min'.$i},
+                            'input_max' => $request->{'max'.$i},
+                            'font_first_letter' => $request->{'font_first_letter'.$i},
+                            'font_transform' => $request->{'font_transform'.$i},
+                            'font_weight' => $request->{'font_weight'.$i},
+                            'fonts' => array(
+                                'title' => $request->{'font_title'.$i},
+                                'font_url' => $request->{'font_url'.$i}
+                            ),
+                            'font_colors' => array(
+                            ),
+                            'position' => array(
+                                'width' => $request->{'width'.$i},
+                                'height' => $request->{'height'.$i},
+                                'origin_x' => $request->{'origin_x'.$i},
+                                'origin_y' => $request->{'origin_y'.$i}
+                            ),
                         ),
-                        'font_colors' => array(
-                            'title' => $request->color1,
-                            'code_hex' => $request->code_hex1
-                        ),
-                    ),
-                ),
-                array(
-                    'template_component_id' =>$request->template_component_id2,
-                    'title' => $request->option_title2,
-                    'position' => $request->option_position2,
-                    'settings' => array(
-                        'input_min' => $request->min2,
-                        'input_max' => $request->max2,
-                        'font_first_letter' => $request->font_first_letter2,
-                        'font_transform' => $request->font_transform2,
-                        'font_weight' => $request->font_weight2,
-                        'fonts' => array(
-                            'title' => $request->font_title2,
-                            'font_url' => $request->font_url2
-                        ),
-                        'font_colors' => array(
-                            'title' => $request->color2,
-                            'code_hex' => $request->code_hex2
-                        ),
-                    ),
-                ),
-                array(
-                    'template_component_id' =>$request->template_component_id3,
-                    'title' => $request->option_title3,
-                    'position' => $request->option_position3,
-                    'settings' => array(
-                        'input_min' => $request->min3,
-                        'input_max' => $request->max3,
-                        'font_first_letter' => $request->font_first_letter3,
-                        'font_transform' => $request->font_transform3,
-                        'font_weight' => $request->font_weight3,
-                        'fonts' => array(
-                            'title' => $request->font_title3,
-                            'font_url' => $request->font_url3
-                        ),
-                        'font_colors' => array(
-                            'title' => $request->color3,
-                            'code_hex' => $request->code_hex3
-                        ),
-                    ),
-                ),
-            );  
-            
+                    );
+                    $array = $events_custom->components;
+                    array_push($array, $component);
+                    $events_custom->components = $array;
+                }
+            }
+            $events_custom->save();
+            $arr = $events_custom->components;
+            foreach($events_custom->colors as $color){
+                array_push($arr, $color);
+            }
+            $events_custom->components = $arr;
+
             if ($request->hasFile('thumb')){
                 $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
                 request()->thumb->move(public_path('uploads'), $photo1);
@@ -287,75 +258,51 @@ class EventsCustomsController extends Controller
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->title = $request->title;
-            $events_custom->position = array(
-                'width' => $request->width,
-                'height' => $request->height,
-                'origin_x' => $request->origin_x,
-                'origin_y' => $request->origin_y
-            );
-            $events_custom->components = array(
-                array(
-                    'template_component_id' =>$request->template_component_id1,
-                    'title' => $request->option_title1,
-                    'position' => $request->option_position1,
-                    'settings' => array(
-                        'input_min' => $request->min1,
-                        'input_max' => $request->max1,
-                        'font_first_letter' => $request->font_first_letter1,
-                        'font_transform' => $request->font_transform1,
-                        'font_weight' => $request->font_weight1,
-                        'fonts' => array(
-                            'title' => $request->font_title1,
-                            'font_url' => $request->font_url1
-                        ),
-                        'font_colors' => array(
-                            'title' => $request->color1,
-                            'code_hex' => $request->code_hex1
-                        ),
-                    ),
-                ),
-                array(
-                    'template_component_id' =>$request->template_component_id2,
-                    'title' => $request->option_title2,
-                    'position' => $request->option_position2,
-                    'settings' => array(
-                        'input_min' => $request->min2,
-                        'input_max' => $request->max2,
-                        'font_first_letter' => $request->font_first_letter2,
-                        'font_transform' => $request->font_transform2,
-                        'font_weight' => $request->font_weight2,
-                        'fonts' => array(
-                            'title' => $request->font_title2,
-                            'font_url' => $request->font_url2
-                        ),
-                        'font_colors' => array(
-                            'title' => $request->color2,
-                            'code_hex' => $request->code_hex2
-                        ),
-                    ),
-                ),
-                array(
-                    'template_component_id' =>$request->template_component_id3,
-                    'title' => $request->option_title3,
-                    'position' => $request->option_position3,
-                    'settings' => array(
-                        'input_min' => $request->min3,
-                        'input_max' => $request->max3,
-                        'font_first_letter' => $request->font_first_letter3,
-                        'font_transform' => $request->font_transform3,
-                        'font_weight' => $request->font_weight3,
-                        'fonts' => array(
-                            'title' => $request->font_title3,
-                            'font_url' => $request->font_url3
-                        ),
-                        'font_colors' => array(
-                            'title' => $request->color3,
-                            'code_hex' => $request->code_hex3
-                        ),
-                    ),
-                ),
-            ); 
 
+            $events_custom->components = array();
+            for($i=0;$i<6;$i++){
+                if($request->{'template_component_id'.$i} != null){
+                    $component = array(
+                        'template_component_id' => $request->{'template_component_id'.$i},
+                        'title' => $request->{'option_title'.$i},
+                        'position' => $request->{'option_position'.$i},
+                        'settings' => array(
+                            'input_min' => $request->{'min'.$i},
+                            'input_max' => $request->{'max'.$i},
+                            'font_first_letter' => $request->{'font_first_letter'.$i},
+                            'font_transform' => $request->{'font_transform'.$i},
+                            'font_weight' => $request->{'font_weight'.$i},
+                            'fonts' => array(
+                                'title' => $request->{'font_title'.$i},
+                                'font_url' => $request->{'font_url'.$i}
+                            ),
+                            'position' => array(
+                                'width' => $request->{'width'.$i},
+                                'height' => $request->{'height'.$i},
+                                'origin_x' => $request->{'origin_x'.$i},
+                                'origin_y' => $request->{'origin_y'.$i}
+                            ),
+                        ),
+                    );
+                    $array = $events_custom->components;
+                    array_push($array, $component);
+                    $events_custom->components = $array;
+                    $events_custom->save();
+
+                    foreach($events_custom->colors as $color){
+                        foreach($events_custom->components as $component){
+                            if(reset($component) == reset($color)){
+                                $comp = $component;
+                                array_push($comp, $color);
+                                $component = $comp;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            $events_custom->save();
+            
             if ($request->hasFile('thumb')){
                 $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
                 request()->thumb->move(public_path('uploads'), $photo1);
