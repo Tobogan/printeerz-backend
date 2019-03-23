@@ -260,10 +260,13 @@
                                                                     {!! Form::text('color'.$i, null, ['class' => 'form-control', 'placeholder' => 'Couleur'])
                                                                     !!}
                                                                     {{--<input type="hidden" name="hiddenTemplate_component_id" id="{{'hiddenTemplate_component_id'.$id}}" value="{{ $template_component->id }}">--}}
-                                                                    <div id="newsColors"></div>
+                                                                    <div id="newsColors">
+                                                                        <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}">
+                                                                    </div>
                                                                 </div>
 
                                                                 <hr>
+                                                            {{--<input type="hidden" name="tp_id" id="{{'tp_id'.$i}}" value="{{$template_component->id}}">--}}
                                                                 <div class="form-group">
                                                                     <!-- Label -->
                                                                     <label>
@@ -329,15 +332,16 @@
                     <label>
                         Couleur
                     </label>
-                    {{ Form::text('color', null, array('class' => 'form-control mb-3','id' => 'color')) }}
+                    {{ Form::text('color', null, array('class' => 'form-control mb-3','id' => 'ep_color')) }}
                 </div>
                 <div class="form-group">
                     <label>
                         Code hex
                     </label>
-                    {{ Form::text('code_hex', null, array('class' => 'form-control mb-3','id' => 'code_hex')) }}
+                    {{ Form::text('code_hex', null, array('class' => 'form-control mb-3','id' => 'ep_code_hex')) }}
                 </div>
-                <div id="idTP"></div>
+                <div id="idTP">
+                </div>
 
             </div>
             <div class="modal-footer">
@@ -357,44 +361,7 @@
 <script type="text/Javascript">
         $('.buttonColor').on('click', function(e) {
         var id = $(this).attr('data-id');
-        $('#idTP').html('<input type="hidden" name="template_component_id" id="template_component_id" value="'+id+'">');
+        $('#idTP').html('<input type="hidden" name="tp_id" id="tp_id" value="'+id+'">');
     });
 </script>
 @endsection
-
-{{-- $('#components').append(
-    '@foreach($templates as $template)
-        @if($template->id==' + value + ')
-            @if($templage->components_ids != null)
-                @foreach($template_components as $template_component)
-                    @foreach($template->components_ids as $component_id)
-                        @if($template_component->id == $component_id)
-                            @if($template_component->type =="input")
-                                <div class="form-group">
-                                    <select name="type" class="form-control" data-toggle="select">
-                                        <option value="none">Aucun</option>
-                                        <option value="input" selected>Champ de texte</option>
-                                        <option value="image">Image</option>
-                                        <option value="text" disabled>Texte fixe</option>
-                                        <option value="instagram" disabled>Instagram</option>
-                                    </select>
-                                </div>
-                            @endif
-                            @if($template_component->type=="image")
-                                <div class="form-group">
-                                    <select name="type" class="form-control" data-toggle="select">
-                                        <option value="none">Aucun</option>
-                                        <option value="input">Champ de texte</option>
-                                        <option value="image" selected>Image</option>
-                                        <option value="text" disabled>Texte fixe</option>
-                                        <option value="instagram" disabled>Instagram</option>
-                                    </select>
-                                </div>
-                            @endif
-                        @endif
-                    @endforeach
-                @endforeach
-            @endif
-        @endif
-    @endforeach'
-); --}}

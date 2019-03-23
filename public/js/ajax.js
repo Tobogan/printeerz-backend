@@ -177,12 +177,24 @@ $(document).ready(function () {
                 console.log(msg.events_custom);
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-success');
-                $('#color').val('');
-                $('#code_hex').val('');
+                var color = $('#ep_color').val();
+                var code_hex = $('#ep_code_hex').val();
+                var id = $('#tp_id').val();
+                var colorsList = $('#colorsList'+id).val();
+                console.log(colorsList);
+                var colors = [];
+                colors.push(colorsList);
+                //var color1 = color.toString();
+                colors.push(color);
+                //console.log(colors);
+                document.getElementById("colorsList"+id).value = colors;
+                console.log(document.getElementById("colorsList"+id).value);
                 $('#addColorModal').modal('hide');
                 $('#submit_modalAddColor').show();
                 $('#loading_modalAddColor').addClass('d-none');
-                location.reload();
+                $('#ep_color').val('');
+                $('#ep_code_hex').val('');
+                //location.reload();
             },
             error: function (request, status, error) {
                 $('#submit_modalAddColor').show();
