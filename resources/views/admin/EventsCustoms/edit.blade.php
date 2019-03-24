@@ -193,7 +193,6 @@
                                                                     <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
                                                                 </div>
                                                             </div>
-                                                            <hr class="mt-4 mb-5">
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <!-- Label -->
@@ -245,8 +244,6 @@
                                                                     {!! Form::text('font_first_letter'.$i, $template_component->font["first_letter"], ['class' => 'form-control',
                                                                     'placeholder' => '#']) !!}
                                                                 </div>
-
-                                                                <hr>
                                                                 <div class="form-group">
                                                                     <!-- Label -->
                                                                     <label>
@@ -261,11 +258,10 @@
                                                                     !!}
                                                                     {{--<input type="hidden" name="hiddenTemplate_component_id" id="{{'hiddenTemplate_component_id'.$id}}" value="{{ $template_component->id }}">--}}
                                                                     <div id="newsColors">
-                                                                        <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}">
+                                                                        <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
+                                                                        <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
                                                                     </div>
                                                                 </div>
-
-                                                                <hr>
                                                             {{--<input type="hidden" name="tp_id" id="{{'tp_id'.$i}}" value="{{$template_component->id}}">--}}
                                                                 <div class="form-group">
                                                                     <!-- Label -->
@@ -342,7 +338,6 @@
                 </div>
                 <div id="idTP">
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button id="close_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -359,9 +354,46 @@
 
 @section('javascripts')
 <script type="text/Javascript">
-        $('.buttonColor').on('click', function(e) {
+    $('.buttonColor').on('click', function(e) {
         var id = $(this).attr('data-id');
         $('#idTP').html('<input type="hidden" name="tp_id" id="tp_id" value="'+id+'">');
     });
+
+    $('#AddColor').on('submit', function (e) {
+        e.preventDefault();
+        $('#submit_modalAddColor').hide();
+        $('#loading_modalAddColor').removeClass('d-none');
+        //console.log(msg.events_custom);
+        $(this).removeClass('btn-primary');
+        $(this).addClass('btn-success');
+        var color = $('#ep_color').val();
+        var code_hex = $('#ep_code_hex').val();
+        var id = $('#tp_id').val();
+        var colorsList = $('#colorsList'+id).val();
+        var hexaList = $('#hexaList'+id).val();
+        console.log(colorsList);
+        var colors = [];
+        var hexa = [];
+        colors.push(colorsList);
+        hexa.push(hexaList)
+        var array_colors = [color];
+        var array_hexas = [code_hex]
+        colors.push([array_colors]);
+        hexa.push([array_hexas]);
+        //colors.push(color);
+        //colors.push(code_hex);
+        //console.log(colors);
+        document.getElementById("colorsList"+id).value = colors;
+        document.getElementById("hexaList"+id).value = hexa;
+        console.log(document.getElementById("colorsList"+id).value);
+        console.log(document.getElementById("hexaList"+id).value);
+        $('#addColorModal').modal('hide');
+        $('#submit_modalAddColor').show();
+        $('#loading_modalAddColor').addClass('d-none');
+        $('#ep_color').val('');
+        $('#ep_code_hex').val('');
+        //location.reload();
+    });
+
 </script>
 @endsection

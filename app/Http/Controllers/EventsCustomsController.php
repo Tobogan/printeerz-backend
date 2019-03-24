@@ -107,7 +107,7 @@ class EventsCustomsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   public function addColor(Request $request)
+   /*public function addColor(Request $request)
     {
         if($request->ajax()) {
             $validatedData = $request->validate([
@@ -134,7 +134,7 @@ class EventsCustomsController extends Controller
         else {
             return 'no';
         }
-    }
+    }*/
 
     /**
      * Display the specified resource.
@@ -262,9 +262,24 @@ class EventsCustomsController extends Controller
 
             for($i=1;$i<6;$i++){
                 $template_component_id= $request->{'template_component_id'.$i};
-                //dd(gettype($request->{'colorsList'.$template_component_id}));
+
                 if($request->{'template_component_id'.$i}){
                     if(!empty($request->{'colorsList'.$template_component_id})){
+                        $array_colors = array();
+                        $colors = array();
+                        foreach($request->{'colorsList'.$template_component_id} as $colcode){
+                            foreach($request->{'hexaList'.$template_component_id} as $hexa){
+                                $col = explode(",", $colcode);
+                                $hex = explode(",", $hexa);
+                            }
+                        }
+                        for($j=0;$j<count($col);$j++){
+                            $array = array(
+                                'title' => $col[$j],
+                                'code_hexa' => $hex[$j]
+                            );
+                            array_push($array_colors, $array);
+                        }
                         $component = array(
                             'template_component_id' => $request->{'template_component_id'.$i},
                             'title' => $request->{'option_title'.$i},
@@ -279,7 +294,7 @@ class EventsCustomsController extends Controller
                                     'title' => $request->{'font_title'.$i},
                                     'font_url' => $request->{'font_url'.$i}
                                 ),
-                                'font_colors' => $request->{'colorsList'.$template_component_id},
+                                'font_colors' => $array_colors,
                                 'position' => array(
                                     'width' => $request->{'width'.$i},
                                     'height' => $request->{'height'.$i},
@@ -291,16 +306,6 @@ class EventsCustomsController extends Controller
                         $array = $events_custom->components;
                         array_push($array, $component);
                         $events_custom->components = $array;
-    
-                        /*foreach($events_custom->colors as $color){
-                            foreach($events_custom->components as $component){
-                                if(reset($component) == reset($color)){
-                                    $comp = $component;
-                                    array_push($comp, $color);
-                                    $component = $comp;
-                                }
-                            }
-                        }*/
                     }
                     else {
                         $component = array(
@@ -327,16 +332,7 @@ class EventsCustomsController extends Controller
                         );
                         $array = $events_custom->components;
                         array_push($array, $component);
-                        $events_custom->components = $array;    
-                        /*foreach($events_custom->colors as $color){
-                            foreach($events_custom->components as $component){
-                                if(reset($component) == reset($color)){
-                                    $comp = $component;
-                                    array_push($comp, $color);
-                                    $component = $comp;
-                                }
-                            }
-                        }*/
+                        $events_custom->components = $array;
                     }
                 }
             }

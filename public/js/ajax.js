@@ -165,7 +165,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#AddColor').on('submit', function (e) {
+    /*$('#AddColor').on('submit', function (e) {
         e.preventDefault();
         $('#submit_modalAddColor').hide();
         $('#loading_modalAddColor').removeClass('d-none');
@@ -184,8 +184,10 @@ $(document).ready(function () {
                 console.log(colorsList);
                 var colors = [];
                 colors.push(colorsList);
-                //var color1 = color.toString();
-                colors.push(color);
+                var array = [color, code_hex];
+                colors.push(array);
+                //colors.push(color);
+                //colors.push(code_hex);
                 //console.log(colors);
                 document.getElementById("colorsList"+id).value = colors;
                 console.log(document.getElementById("colorsList"+id).value);
@@ -201,7 +203,7 @@ $(document).ready(function () {
                 $('#loading_modalAddColor').addClass('d-none');
             }
         });
-    });
+    });*/
 
     
 
