@@ -151,13 +151,13 @@
                             <div class="row">
                                 <div class="col-12">
                                     <!-- First name -->
-                                    <div class="form-group">
+                                    <div class="form-group m-0">
                                         <!-- Input -->
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), null, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
                                     </div>
-                                    <div id="templateComponentsList" data-type='sortable'>
+                                    <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>
                                     {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>

@@ -151,13 +151,31 @@
                             <div class="row">
                                 <div class="col-12">
                                     <!-- First name -->
-                                    <div class="form-group">
+                                    <div class="form-group m-0">
                                         <!-- Input -->
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), $template->components_ids, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
                                     </div>
-                                    <div id="templateComponentsList" data-type='sortable'>
+                                    <div id="templateComponentsList" data-type='sortable' class="mt-3">
+                                        {{-- Foreach templateComponentID --}}
+                                        {{-- <ul class="list-group py-2">
+                                            <li class="list-group-item ui-state-default" data-id="' + value + '">
+                                                <div class="row align-items-center">
+                                                    <div class="col ml-n2">' + name + '</div>
+                                                    <div class="col-auto">
+                                                        <a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;">
+                                                            <i class="fe fe-trash-2"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a class="handle" style="cursor:grab;">
+                                                            <i class="fe fe-more-vertical"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> --}}
                                     </div>
                                     {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>
@@ -206,7 +224,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Créer le gabarit', ['class' => 'btn btn-primary', 'style' => 'float: right'])
+                        {!! Form::submit('Modifier le gabarit', ['class' => 'btn btn-primary', 'style' => 'float: right'])
                         !!}
                         <a class='btn btn-secondary' style="float: left" href="{{route('index_templates')}}">Annuler</a>
                     </div>

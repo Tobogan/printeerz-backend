@@ -210,7 +210,7 @@ class TemplatesController extends Controller
                 'x' => $request->origin_x,
                 'y' => $request->origin_y
             );
-            $template->components_ids = $request->get('components_ids');
+            $template->components_ids = $request->get('templateComponentsList');
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
@@ -278,7 +278,7 @@ class TemplatesController extends Controller
                 'x' => $request->origin_x,
                 'y' => $request->origin_y
             );
-            $template->components_ids = $request->get('components_ids');
+            $template->components_ids = $request->get('templateComponentsList');
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;

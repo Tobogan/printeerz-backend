@@ -84,53 +84,64 @@ $(function () {
 });
 
 // --------------------------------
-// Tweak Template form with capabilites for Components to be add in list, sortable
+// Tweak Select2 select 
+// with new items display and position draggable
 // --------------------------------
 
+// Update Form hidden value
+function updateFormHidden(list,hiddenValue){
+  var list = list;
+  var listItem = list.find('li');
+  var componentList = [];
+  // Get each datas in list item
+  $(listItem).each(function(){
+    var id = $(this).data('id');
+    var name = $(this).text();
+    var datas = [];
+    componentList.push({
+      id : id,
+      name: name
+    })
+  });
+  // Format value to json
+  var json = JSON.stringify(componentList, 'true');
+  // Add value to form hidden value
+  $(hiddenValue).attr('value', json);
+};
+
 $(function () {
+  // Get Select2 item
   var componentsSelect = $('#componentsSelect');
+  var componentFormList = $("#templateComponentsList");
+  var componentFormListHidden = $("#templateComponentsListHidden");
+
+  // Prepend clear option & new placeholder
   componentsSelect.prepend('<option selected></option>').select2({
     placeholder: "Selectionner un composant pour l'ajouter",
     allowClear: true
   });
-  // Get hidden form
-  var componentFormList = $("#templateComponentsList");
-  var componentFormListHidden = $("#templateComponentsListHidden");
-  var componentList = [];
-  // --------------
-  // Add Items
-  // -------------
+
+  // Add items
   componentsSelect.on('select2:close', function (e) {
-    // Get option value
-    var value = $(this).val();
-    // Get option name
     var name = $("#componentsSelect option:selected").text();
-    // Add new selected option in list
-    var list = $('#templateComponentsList');
-    list.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
-    componentList.push(value);
-    newList = $.makeArray(componentList);
-    componentFormListHidden.attr('value', newList);
+    var value = $(this).val();
+    if(value) {
+      componentFormList.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
+      // Update Form hidden value
+      updateFormHidden(componentFormList,componentFormListHidden);
+    };
     // Reset Select2 value
     $(this).val(null).trigger('change.select2')
   });
-  // --------------
-  // Remove Items
-  // -------------
+
+  // Remove items
   $(document).on('click', '.deleteComponent', function (event) {
+    event.preventDefault;
     var a = event.target;
-    // Get element id
-    var componentId = $(this).data('id');
-    // Remove id from array
-    componentList = $.grep(componentList, function (value) {
-      return value != componentId;
-    });
-    var newComponentList = $.makeArray(componentList);
-    // Update new array to input value
-    componentFormListHidden.attr('value', newComponentList);
-    console.log(newComponentList);
     // Remove ul element
     a.closest('ul').remove();
+    // Update Form hidden value
+    updateFormHidden(componentFormList,componentFormListHidden);
   });
 });
 
