@@ -15,7 +15,7 @@
                                 {{ date('d/m/y', strtotime($event->start_datetime)) }}
                             </time>
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
 
                     <!-- Divider -->
                     <hr>
@@ -34,7 +34,7 @@
                             </span>
 
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
 
                     <!-- Divider -->
                     <hr>
@@ -53,9 +53,10 @@
                                 {{ $event->type }}
                             </small>
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
                 </div>
             </div>
+            @if($event->description)
             <div class="card">
                 <div class="card-header">
                     <!-- Title -->
@@ -70,9 +71,10 @@
                                 {!! $event->description !!}
                             </span>
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
                 </div>
             </div>
+            @endif
         </div>
         <div class="col-12 col-lg-4">
             <!-- Card -->
@@ -100,7 +102,7 @@
                           <div class="col">
                             <span class="small">{{ $event->location['country'] }}</span>
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
                 </div>
                 @if($event->location['lattitude'] && $event->location['longitude'])
                 <div style="position:relative; display: block; width: 100%; height: 300px;">
@@ -109,7 +111,7 @@
                 @endif
             </div>
         </div>
-    </div> <!-- / .row -->
+    </div>
 </div>
 
 @if($event->location['lattitude'] && $event->location['longitude'])

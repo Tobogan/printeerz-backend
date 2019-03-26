@@ -12,7 +12,7 @@
                                         <div class="row align-items-center py-2">
                                             <div class="col-auto">
                                                  @if(!empty($product->image) && $disk->exists($product->image))
-                                                <a href="project-team-overview.html" class="avatar avatar-lg">
+                                                <a href="{{route('show_eventsProducts', $events_product->id)}}" class="avatar avatar-lg">
                                                     <img src="{{$s3 . $product->image }}" alt="Product image" class="avatar-img rounded">
                                                 </a>
                                                 @else <!--Initials-->
@@ -24,7 +24,7 @@
                                             </div>
                                             <div class="col ml-n2">
                                                 <h4 class="card-title mb-1 name">
-                                                    <a href="team-overview.html">{{ $events_product->title }}</a>
+                                                    <a href="{{route('show_eventsProducts', $events_product->id)}}">{{ $events_product->title }}</a>
                                                 </h4>
                                                 {{-- <ul class="event_product_colors mt-2 d-inline-flex">
                                                     <li class="event_product_color d-block rounded border border-light mr-1" style="background-color: #578393;"></li>
@@ -105,7 +105,7 @@
                         </div>
                         <div class="col ml-n2">
                             <h4 class="card-title mb-1 name">
-                                <a href="team-overview.html">Ajouter un produit</a>
+                                <a href="#" data-toggle="modal" data-target="#addEventsProductModal">Ajouter un produit</a>
                             </h4>
                         </div>
                     </div>
