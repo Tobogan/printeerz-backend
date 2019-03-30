@@ -4,43 +4,29 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-12">
-
-            <!-- Header -->
+        <div class="col-12 col-lg-10 col-xl-8">
             <div class="header mt-md-5">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 Overview
                             </h6>
-
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Gabarits
                             </h1>
-
                         </div>
                         <div class="col-auto">
-
-                            <!-- Button -->
                             <a href="{{action('TemplatesController@create')}}" class="btn btn-primary">
                                 Créer un gabarit
                             </a>
-
                         </div>
                     </div>
                 </div>
-
-                <!-- Card -->
                 <div id="printzonesTable" class="card mt-3" data-toggle="lists" data-lists-values='["templates-title", "templates-category", "printzones-width", "printzones-height", "printzones-tray_width", "printzones-tray_height"]'>
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-
-                                <!-- Search -->
                                 <form class="row align-items-center">
                                     <div class="col-auto pr-0">
                                         <span class="fe fe-search text-muted"></span>
@@ -49,9 +35,8 @@
                                         <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
                                     </div>
                                 </form>
-
                             </div>
-                        </div> <!-- / .row -->
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-nowrap card-table">
@@ -127,7 +112,7 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- / .row -->
+        </div>
     </div>
-
-    @endsection
+</div>
+@endsection

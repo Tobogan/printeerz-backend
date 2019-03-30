@@ -7,7 +7,7 @@
                     <h4 class="card-header-title">Description</h4>
                 </div>
                 <div class="card-body">
-                    {{!! $events_product->description !!}}
+                    {!! $events_product->description !!}
                 </div>
             </div>
         </div>

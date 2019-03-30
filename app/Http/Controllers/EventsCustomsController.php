@@ -144,7 +144,30 @@ class EventsCustomsController extends Controller
      */
     public function show($id)
     {
-        //
+        $events_custom = Events_customs::find($id);
+        $events_customs = Events_customs::all();
+        $templates = Templates::all();
+        $template_components = Template_components::all();
+        $select_templates = [];
+        foreach($templates as $template) {
+            $select_templates[$template->id] = $template->title;
+        }
+        if($events_custom->events_product_id != null){
+            $events_product = Events_products::find($events_custom->events_product_id);
+        }
+        $product = Product::find($events_product->product_id);
+        $printzones = Printzones::all();
+        $select_printzones = [];
+        if($product->printzones_id != null){
+            foreach($printzones as $printzone){
+                foreach($product->printzones_id as $printzone_id){
+                    if($printzone_id == $printzone->id) {
+                        $select_printzones[$printzone->id] = $printzone->zone;
+                    }
+                }
+            }
+        }
+        return view('admin/EventsCustoms.show', ['events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**

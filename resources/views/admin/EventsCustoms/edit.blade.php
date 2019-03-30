@@ -13,7 +13,7 @@
                             <div class="col">
                                 <!-- Pretitle -->
                                 <h6 class="header-pretitle">
-                                    MODIFICATION
+                                    CONFIGURATION
                                 </h6>
                                 <!-- Title -->
                                 <h1 class="header-title">
@@ -56,7 +56,6 @@
                                 @if($template_component->id == $component_id)
                                     @if($template_component->type = 'input')
                                         <?php $i++; ?>
-    
                                         {{-- Store template_composant id --}}
                                         <input type="hidden" class="form-control" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
     
