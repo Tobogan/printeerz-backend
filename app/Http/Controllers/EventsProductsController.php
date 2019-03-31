@@ -196,7 +196,12 @@ class EventsProductsController extends Controller
     public function edit($id)
     {
         $events_product = Events_products::find($id);
-        return view('admin/EventsProducts.edit', ['events_product' => $events_product]);
+        $products = Product::all();
+        $select_products = [];
+        foreach($products as $product) {
+            $select_products[$product->id] = $product->title;
+        }
+        return view('admin/EventsProducts.edit', ['select_products' => $select_products, 'events_product' => $events_product]);
     }
 
     /**
@@ -218,25 +223,11 @@ class EventsProductsController extends Controller
             $events_product = Events_products::find($id);
             $events_product->title = $request->title;
             $events_product->product_id = $request->product_id;
-            $events_product->price = $request->price;
             $events_product->description = $request->description;
-            $events_product->variants = array(
-                'id' => $request->vendor_id, 
-                'product_variant_id' => $request->product_variant_id,
-                'quantity' => $request->quantity
-            );
-            $events_product->customs = array(
-                'id' => $request->custom_id,
-                'event_customs_id' => $request->event_customs_id,
-                'variants_id' => $request->variants_id,
-                'quantity' => $request->quantity
-            );
-            $events_product->position = $request->position;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            $events_products = Events_products::all();
-            return view('admin/EventsProducts.index', ['events_products' => $events_products]);
+            return redirect('admin/Event/show/'.$events_product->event_id);
         }
 
         else {
@@ -249,26 +240,12 @@ class EventsProductsController extends Controller
             $events_product = Events_products::find($id);
             $events_product->title = $request->title;
             $events_product->product_id = $request->product_id;
-            $events_product->price = $request->price;
             $events_product->description = $request->description;
-    
-            $events_product->variants = array(
-                'id' => $request->vendor_id, 
-                'product_variant_id' => $request->product_variant_id,
-                'quantity' => $request->quantity
-            );
-            $events_product->customs = array(
-                'id' => $request->custom_id,
-                'event_customs_id' => $request->event_customs_id,
-                'variants_id' => $request->variants_id,
-                'quantity' => $request->quantity
-            );
             $events_product->position = $request->position;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            $events_products = Events_products::all();
-            return view('admin/EventsProducts.index', ['events_products' => $events_products]);
+            return redirect('admin/Event/show/'.$events_product->event_id);
         }
     }
 

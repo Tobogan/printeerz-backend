@@ -34,7 +34,7 @@
                 </ul>
             </div>
             @endif
-            {!! Form::open(['action' => array('ProductController@update'), 'id' => $product->id, 'files' => true,
+            {!! Form::open(['action' => array('EventsProductsController@update'), 'id' => $events_product->id, 'files' => true,
             'class' => 'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
@@ -46,7 +46,7 @@
                             Nom du produit
                         </label>
                         <!-- Input -->
-                        {!! Form::text('title', $product->title, ['class' => 'form-control', 'placeholder' => 'Nom du produit'])
+                        {!! Form::text('title', $events_product->title, ['class' => 'form-control', 'placeholder' => 'Nom du produit'])
                         !!}
                     </div>
                 </div>
@@ -58,120 +58,32 @@
                                 Type de produit
                             </label>
                             <!-- Input -->
-                            {!! Form::text('product_type', $product->product_type, ['class' => 'form-control', 'placeholder' => 'Type de produit'])
-                            !!}
+                            {{ Form::select('product_id', $select_products, $events_product->product_id, array('id' => 'addEventProductSelect', 'data-toggle' => 'select')) }}
                         </div>
                     </div>
                     <hr class="mt-4 mb-5">
-                <div class="col-12 col-md-6">
-                    <!-- First name -->
-
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Nom du fournisseur
-                        </label>
-                        <!-- Input -->
-                        @if(isset($product->vendor['name']))
-                            {!! Form::text('vendor_name', $product->vendor['name'], ['class' => 'form-control', 'placeholder' =>
-                        'Nom :']) !!}
-                        @else
-                            {!! Form::text('vendor_name', $product->vendor['name'], ['class' => 'form-control', 'placeholder' =>
-                        'Nom :']) !!}
-                        @endif
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                     <!-- First name -->
                     <div class="form-group">
                         <!-- Label -->
                         <label>
-                            Référence produit
+                            Description
                         </label>
                         <!-- Input -->
-                        @if(isset($product->vendor['reference']))
-                        {!! Form::text('vendor_reference', $product->vendor['reference'], ['class' => 'form-control', 'placeholder' =>
-                    'Référence :']) !!}
-                    @else
-                        {!! Form::text('vendor_reference', $product->vendor['reference'], ['class' => 'form-control', 'placeholder' =>
-                    'Référence :']) !!}
-                    @endif                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p class="mb-4">Sélectionner le genre</p>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        @if($product->gender == "male")
-                            <select name="gender" id="gender" class="form-control" data-toggle="select">
-                                <option value="male" selected>Homme</option>
-                                <option value="female">Femme</option>
-                            </select>
-                        @else
-                            <select name="gender" id="gender" class="form-control" data-toggle="select">
-                                <option value="male">Homme</option>
-                                <option value="female" selected>Femme</option>
-                            </select>
-                        @endif
-                    </div>
-                </div>
-                <input type="hidden" class="form-control" name="actual_title" value="{{$product->title}}">
-                <input type="hidden" class="form-control" name="product_id" value="{{$product->id}}">
-
-            </div>
-
-            <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12">
-                    <p class="h3">Image</p>
-                    <p class="mb-4">Modifier l'image du produit en format 1:1</p>
-                </div>
-                <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <div class="dropzone dropzone-single mb-3" data-toggle="dropzone" data-dropzone-url="http://" id="logo_event_upload">
-                            <div class="fallback">
-                                <div class="custom-file">
-                                    {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                                    <label class="custom-file-label" for="projectCoverUploads">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="dz-preview dz-preview-single">
-                                <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <input type="textarea" id="textDescription" name="product_description" rows="3">
                         </div>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        <!-- Label -->
-                        <label>
-                            Zones d'impression disponible(s)
-                        </label>
-                        <!-- Input -->
-                        {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Description du produit</label>
-                <div name="description" data-toggle="quill" data-quill-placeholder="Décrivez le produit"></div>
-            </div>
-
+            <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
+            <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
                         {!! Form::submit('Modifier le produit', ['class' => 'btn btn-primary', 'style' => 'float: right'])
                         !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('index_product')}}">Annuler</a>
+                        <a class='btn btn-secondary' style="float: left" href="{{route('index_event')}}">Annuler</a>
                     </div>
                 </div>
             </div>

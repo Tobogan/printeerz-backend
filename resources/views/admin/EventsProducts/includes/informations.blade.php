@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-auto">
                                 <span class="text-muted">
-                                    {{ $product -> product_type }}
+                                    {{ $product->product_type }}
                                 </span>
                             </div>
                         </div>

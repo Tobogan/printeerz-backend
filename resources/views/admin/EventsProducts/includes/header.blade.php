@@ -10,12 +10,12 @@
 
                     <!-- Pretitle -->
                     <h6 class="header-pretitle">
-                        {{ $product->vendor['name']}}
+                        {{ $product->vendor['name'] }}
                     </h6>
 
                     <!-- Title -->
                     <h1 class="header-title">
-                        {{ $product->title }}
+                        {{ $events_product->title }}
                     </h1>
 
                 </div>
