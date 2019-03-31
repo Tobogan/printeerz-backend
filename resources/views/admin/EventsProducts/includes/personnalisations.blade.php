@@ -64,7 +64,8 @@
                             @foreach($events_customs as $custom)
                                     @if($custom->events_product_id == $events_product->id)
                                     <tr>
-                                        <td class="products_variant-title"><b>{{ $custom->title }}</b></td>
+                                        <td class="products_variant-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">
+                                            <b>{{ $custom->title }}</b></a></td>
                                         <td>
                                             <a href="{{route('edit_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary">
                                             Configurer

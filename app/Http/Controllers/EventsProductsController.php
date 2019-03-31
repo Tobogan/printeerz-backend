@@ -17,8 +17,6 @@ use App\Http\Middleware\isActivate;
 class EventsProductsController extends Controller
 {
     public function __construct(){
-        //$this->middleware(isActivate::class);
-        //$this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
     /**
@@ -165,7 +163,6 @@ class EventsProductsController extends Controller
         $arr = $result;
         $events_product->variants = $arr;
         $events_product->save();
-        //dd($result);
         return redirect('admin/EventsProducts/show/'.$events_product->id);
     }
 
@@ -219,25 +216,29 @@ class EventsProductsController extends Controller
                 'product_id' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
-            $id = $request->events_product_id;
-            $events_product = Events_products::find($id);
+            $events_product_id = $request->events_product_id;
+            $events_product = Events_products::find($events_product_id);
             $events_product->title = $request->title;
             $events_product->product_id = $request->product_id;
             $events_product->description = $request->description;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            return redirect('admin/Event/show/'.$events_product->event_id);
+            $events_products = Events_products::all();
+            $notification = array(
+                'status' => 'Le client a été correctement ajouté',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/EventsProducts/show/'.$events_product->id)->with($notification);
         }
 
         else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'product_id' => 'required|string|max:255',
                 'description' => 'max:750'
             ]);
-            $id = $request->events_product_id;
-            $events_product = Events_products::find($id);
+            $events_product_id = $request->events_product_id;
+            $events_product = Events_products::find($events_product_id);
             $events_product->title = $request->title;
             $events_product->product_id = $request->product_id;
             $events_product->description = $request->description;
@@ -245,7 +246,12 @@ class EventsProductsController extends Controller
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            return redirect('admin/Event/show/'.$events_product->event_id);
+            $events_products = Events_products::all();
+            $notification = array(
+                'status' => 'Le client a été correctement ajouté',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/EventsProducts/show/'.$events_product->id)->with($notification);
         }
     }
 

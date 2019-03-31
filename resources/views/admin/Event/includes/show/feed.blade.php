@@ -1,4 +1,4 @@
-<div class="container" id="event_feed">
+<div id="event_feed">
     <!-- Add a comment -->
     <div class="row">
         <div class="col-12">

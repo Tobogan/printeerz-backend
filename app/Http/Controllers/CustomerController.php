@@ -165,7 +165,6 @@ class CustomerController extends Controller
                 'comments' => 'max:750'
         ]);
         $id = $request->id;
-
         $customer = Customer::find($id);
         $customer->title = $request->title;
         $customer->activity_type = $request->activity_type;
@@ -277,7 +276,8 @@ class CustomerController extends Controller
             'status' => 'Le client a été correctement modifié',
             'alert-type' => 'success'
         );
-        return redirect('admin/Customer/show/' . $customer->id)->with($notification); }
+        return redirect('admin/Customer/show/' . $customer->id)->with($notification);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -299,32 +299,30 @@ class CustomerController extends Controller
         'status' => 'Le client a été correctement été effacé',
         'alert-type' => 'success'
         );
-        
         return redirect('admin/Customer/index')->with($notification);
-        }
+    }
 
-        /*--~~~~~~~~~~~___________activate and desactivate a customer function in index Customer__________~~~~~~~~~~~~-*/
-        public function desactivate($id)
-        {
-            $customer = Customer::find($id);
-            $customer->is_active = false;
-            $customer->update();
-            return redirect('admin/Customer/index');
-        }
-    
-        public function delete($id)
-        {
-            $customer = Customer::find($id);
-            $customer->is_deleted = true;
-            $customer->update();
-            return redirect('admin/Customer/index');
-        }
-    
-        public function activate($id)
-        {
-            $customer = Customer::find($id);
-            $customer->is_active = true;
-            $customer->update();
-            return redirect('admin/Customer/index');
-        }
+    public function desactivate($id)
+    {
+        $customer = Customer::find($id);
+        $customer->is_active = false;
+        $customer->update();
+        return redirect('admin/Customer/index');
+    }
+
+    public function delete($id)
+    {
+        $customer = Customer::find($id);
+        $customer->is_deleted = true;
+        $customer->update();
+        return redirect('admin/Customer/index');
+    }
+
+    public function activate($id)
+    {
+        $customer = Customer::find($id);
+        $customer->is_active = true;
+        $customer->update();
+        return redirect('admin/Customer/index');
+    }
 }

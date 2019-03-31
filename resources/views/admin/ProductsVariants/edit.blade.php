@@ -5,16 +5,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
-            <!-- Header -->
-            <div class="header">
+            <div class="header mt-md-5">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 CONFIGURATION
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Configurer une variante
                             </h1>
@@ -24,16 +21,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('ProductsVariantsController@update'), 'id' => $products_variant->id, 'files' => true,
             'class' => 'mb-4']) !!}
             <div class="row">

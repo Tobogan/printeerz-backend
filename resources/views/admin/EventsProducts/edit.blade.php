@@ -16,7 +16,7 @@
                             </h6>
                             <!-- Title -->
                             <h1 class="header-title">
-                                Modifier un produit
+                                {{$events_product->title}}
                             </h1>
                         </div>
                         <div class="col-auto">
@@ -24,24 +24,11 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-            {!! Form::open(['action' => array('EventsProductsController@update'), 'id' => $events_product->id, 'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('EventsProductsController@update'), 'id' => $events_product->id, 'files' => true, 'class' => 'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
                     <div class="form-group">
-                        <!-- Label -->
                         <label>
                             Nom du produit
                         </label>
@@ -63,7 +50,6 @@
                     </div>
                     <hr class="mt-4 mb-5">
                 <div class="col-12">
-                    <!-- First name -->
                     <div class="form-group">
                         <!-- Label -->
                         <label>

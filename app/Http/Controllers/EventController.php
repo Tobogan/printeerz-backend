@@ -63,9 +63,7 @@ class EventController extends Controller
      */
     public function ajax(){
         $prod_id = Input::get('product_id');
-
         $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
-
         return Response::json($productVariants);
     }
 
@@ -218,8 +216,13 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = Event::find($id);
-        
-        return view('admin/Event.edit', ['event' => $event]);
+        $products = Product::all();
+        $customers = Customer::all();
+        $select_customers = [];
+        foreach($customers as $customer) {
+            $select_customers[$customer->id] = $customer->title;
+        }
+        return view('admin/Event.edit', ['event' => $event, 'select_customers' => $select_customers, 'products' => $products]);
     }
 
     /**
@@ -240,7 +243,7 @@ class EventController extends Controller
             ]);
             $id = $request->id;
             $event = Event::find($id);
-
+            $events = Event::all();
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
             $event->customer_id = $request->customer_id;
@@ -269,14 +272,13 @@ class EventController extends Controller
                 'comment' => $request->comment,
                 'created_at' => $request->created_at
             );
-
+            $products = Product::all();
+            $customers = Customer::all();
             $select_customers = [];
             foreach($customers as $customer) {
-            $select_customers[$customer->id] = $customer->title;
+                $select_customers[$customer->id] = $customer->title;
             }
-            return view('admin/Event.edit', ['events' => $events, 'select_customers' => $select_customers, 'products' =>
-            $products]);
-
+            
             $event->save();
 
         // Update logo image
@@ -357,7 +359,6 @@ class EventController extends Controller
             ]);
             $id = $request->id;
             $event = Event::find($id);
-
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
             $event->customer_id = $request->customer_id;
@@ -373,27 +374,26 @@ class EventController extends Controller
             $event->end_datetime = $request->end_datetime;
             $event->type = $request->type;
             $event->description = $request->description;
-
-            $event_products_id[]=$request->get('event_products_id');
-            $event->event_products_id=$event_products_id;
-
-            $employees[]=$request->get('employees');
-            $event->employees=$employees;
-
+            $event_products_id[] = $request->get('event_products_id');
+            $event->event_products_id = $event_products_id;
+            $employees[] = $request->get('employees');
+            $event->employees = $employees;
             $event->comments = array(
                 'id' => $request->comment_id,
                 'employee_id' => $request->employee_id,
                 'comment' => $request->comment,
                 'created_at' => $request->created_at
             );
+            $events = Event::all();
+            $products = Product::all();
+            $customers = Customer::all();
             $select_customers = [];
             foreach($customers as $customer) {
-            $select_customers[$customer->id] = $customer->title;
+                $select_customers[$customer->id] = $customer->title;
             }
-            return view('admin/Event.edit', ['events' => $events, 'select_customers' => $select_customers, 'products' =>
-            $products]);
 
             $event->save();
+
             // Update logo image
             if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
@@ -463,10 +463,12 @@ class EventController extends Controller
     
             $event->save();
         }
+        
         $notification = array(
         'status' => 'L\'événement a été correctement modifié.',
         'alert-type' => 'success'
         );
+
         return redirect('admin/Event/index')->with($notification);
     }
 

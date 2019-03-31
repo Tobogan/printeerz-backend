@@ -1,7 +1,6 @@
-<div class="container" id="event_infos">
+<div id="event_infos">
     <div class="row">
         <div class="col-12 col-lg-8">
-            <!-- Card -->
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -16,39 +15,28 @@
                             </time>
                         </div>
                     </div>
-
-                    <!-- Divider -->
                     <hr>
                     <div class="row align-items-center">
                         <div class="col">
-
                             <h5 class="mb-0">
                                 Date de fin
                             </h5>
-
                         </div>
                         <div class="col-auto">
 
                             <span class="small text-muted">
                                 {{ date('d/m/y', strtotime($event->end_datetime)) }}
                             </span>
-
                         </div>
                     </div>
-
-                    <!-- Divider -->
                     <hr>
-
                     <div class="row align-items-center">
                         <div class="col">
-
                             <h5 class="mb-0">
                                 Type d'événement
                             </h5>
-
                         </div>
                         <div class="col-auto">
-
                             <small class="text-muted">
                                 {{ $event->type }}
                             </small>
@@ -59,7 +47,6 @@
             @if($event->description)
             <div class="card">
                 <div class="card-header">
-                    <!-- Title -->
                     <h4 class="card-header-title">
                         Description
                     </h4>
@@ -77,10 +64,8 @@
             @endif
         </div>
         <div class="col-12 col-lg-4">
-            <!-- Card -->
             <div class="card" style="overflow:hidden">
                 <div class="card-header">
-                    <!-- Title -->
                     <h4 class="card-header-title">
                         Adresse
                     </h4>
@@ -93,13 +78,14 @@
                             </span>
                         </div>
                     </div>
-                    <div class="row align-items-center">    
-                          <div class="col">
-                            <span class="small">{{ $event->location['postal_code'] }} {{ $event->location['city'] }}</span>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <span class="small">{{ $event->location['postal_code'] }}
+                                {{ $event->location['city'] }}</span>
                         </div>
                     </div>
-                    <div class="row align-items-center">    
-                          <div class="col">
+                    <div class="row align-items-center">
+                        <div class="col">
                             <span class="small">{{ $event->location['country'] }}</span>
                         </div>
                     </div>

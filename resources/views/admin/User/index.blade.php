@@ -1,32 +1,35 @@
 @extends('layouts/templateAdmin')
-
+@section('title', 'Utilisateurs')
+@section('alerts')
+    @if (session('status'))
+        <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert" data-dismiss="alert">
+            {{ session('status') }}
+        </div>
+    @endif
+@endsection
 @section('content')
-
 
 @if (session('status'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{ session('status') }}
 </div>
 @endif
+
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-12">
-            <!-- Header -->
+        <div class="col-12 col-lg-10 col-xl-8">
             <div class="header mt-md-5">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 Overview
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Utilisateurs
                             </h1>
                         </div>
                         <div class="col-auto">
-                            <!-- Button -->
                             <a href="{{action('UserController@create')}}" class="btn btn-primary">
                                 Créer un utilisateur
                             </a>
@@ -34,8 +37,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Card -->
             <div id="userTable" class="card mt-3" data-toggle="lists" data-lists-values='["user-id", "user-lastname", "user-firstname", "user-email", "user-role","user-status", "user-date"]'>
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -91,7 +92,7 @@
                         <tbody class="list">
                             @foreach ($users as $user)
                             <tr>
-                                <td class="user-avatar">
+                                <td class="align-middle user-avatar">
                                     @if(!empty($user->profile_img) && $disk->exists($user->profile_img))
                                     <div class="avatar avatar-sm">
                                         <img src="{{$s3 . $user->profile_img}}" class="avatar-img rounded-circle"
@@ -108,22 +109,22 @@
                                     </div>
                                     @endif
                                 </td>
-                                <td class="user-lastname">{{ $user->lastname }}</td>
-                                <td class="user-firstname">{{ $user->firstname }}</td>
-                                <td class="user-email">{{ $user->email }}</td>
-                                <td class="user-role">
+                                <td class="align-middle user-lastname">{{ $user->lastname }}</td>
+                                <td class="align-middle user-firstname">{{ $user->firstname }}</td>
+                                <td class="align-middle user-email">{{ $user->email }}</td>
+                                <td class="align-middle user-role">
                                     @if ($user->role == 2) Administrateur
                                     @elseif ($user->role == 1)Opérateur
                                     @else Technicien
                                     @endif
                                 </td>
-                                <td class="user-status">
+                                <td class="align-middle user-status">
                                     @if ($user->is_active == true)<span class="badge badge-soft-success">Activé</span>
                                     @else <span class="badge badge-soft-secondary">Désactivé</span>
                                     @endif
                                 </td>
                                 {{-- Menu --}}
-                                <td class="text-right">
+                                <td class="align-middle text-right">
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false" data-boundary="window">

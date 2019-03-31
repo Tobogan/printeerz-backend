@@ -1,55 +1,54 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Evénements')
+@section('alerts')
+@if (session('status'))
+<div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+    data-dismiss="alert">
+    {{ session('status') }}
+</div>
+@endif
+@endsection
 
 @section('content')
 
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-12">
-
-            <!-- Header -->
+        <div class="col-12 col-lg-10 col-xl-8">
             <div class="header mt-md-5">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 Overview
                             </h6>
-
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Evénements
                             </h1>
-
                         </div>
                         <div class="col-auto">
-                            <!-- Button -->
                             <a href="{{action('EventController@create')}}" class="btn btn-primary">
                                 Créer un événement
                             </a>
                         </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Card -->
-            <div id="eventTable" class="card mt-3" data-toggle="lists" data-lists-values='["event-name", "event-annonceur", "event-customer", "event-place","event-type", "event-date"]'>
+            <div id="eventTable" class="card mt-3" data-toggle="lists"
+                data-lists-values='["event-name", "event-annonceur", "event-customer", "event-place","event-type", "event-date"]'>
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
-
-                            <!-- Search -->
                             <form class="row align-items-center">
                                 <div class="col-auto pr-0">
                                     <span class="fe fe-search text-muted"></span>
                                 </div>
                                 <div class="col">
-                                    <input type="search" class="form-control form-control-flush search" placeholder="Recherche">
+                                    <input type="search" class="form-control form-control-flush search"
+                                        placeholder="Recherche">
                                 </div>
                             </form>
-
                         </div>
-                    </div> <!-- / .row -->
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm table-nowrap card-table">
@@ -80,7 +79,7 @@
                                         Type
                                     </a>
                                 </th>
-                                <th colspan="2">
+                                <th>
                                     <a href="#" class="text-muted sort" data-sort="event-date">
                                         Date
                                     </a>
@@ -110,20 +109,6 @@
                                     <div class="badge badge-soft-primary">{{ $event->type }}</div>
                                 </td>
                                 <td class="event-date">{{ date('d/m/y', strtotime($event->start_datetime)) }} </td>
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            data-boundary="window">
-                                            <i class="fe fe-more-vertical"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="{{route('show_event', $event->id)}}" class="dropdown-item">
-                                                Voir l'événement
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -132,7 +117,6 @@
             </div>
 
         </div>
-    </div> <!-- / .row -->
+    </div>
 </div>
-
 @endsection

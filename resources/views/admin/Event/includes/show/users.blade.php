@@ -1,4 +1,4 @@
-<div class="container" id="event_users">
+<div id="event_users">
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card card-inactive">

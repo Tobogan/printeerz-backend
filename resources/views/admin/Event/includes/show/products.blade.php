@@ -1,4 +1,4 @@
-<div class="container" id="event_products">
+<div id="event_products">
     <div class="row justify-content-center">
         <div class="col-12">
             <?php $i = 0; ?>
