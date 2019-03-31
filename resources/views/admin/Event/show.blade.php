@@ -1,16 +1,22 @@
 @extends('layouts/templateAdmin')
+@section('title', $event->name)
 
 @section('content')
-@include('admin.Event.includes.modalDelete')
+@include('admin.Event.includes.show.modalDelete')
 
-
-<div id="tabs" class="mb-6">
-    @include('admin.Event.includes.header')
-    @include('admin.Event.includes.products')
-    @include('admin.Event.includes.infos')
-    @include('admin.Event.includes.feed')
-    @include('admin.Event.includes.users')
-    @include('admin.Event.includes.addEventsProducts')
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div id="tabs" class="mb-6">
+                @include('admin.Event.includes.show.header')
+                @include('admin.Event.includes.show.products')
+                @include('admin.Event.includes.show.infos')
+                @include('admin.Event.includes.show.feed')
+                @include('admin.Event.includes.show.users')
+                @include('admin.Event.includes.show.addEventsProducts')
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection

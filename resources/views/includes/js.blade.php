@@ -7,7 +7,6 @@
 <script src="{{ asset('libs/highlightjs/highlight.pack.min.js') }}"></script>
 <script src="{{ asset('libs/flatpickr/dist/flatpickr.min.js') }}"></script>
 <script src="{{ asset('libs/jquery-mask-plugin/dist/jquery.mask.min.js') }}"></script>
-<script src="{{ asset('libs/quill/dist/quill.min.js') }}"></script>
 <script src="{{ asset('libs/list.js/dist/list.min.js') }}"></script>
 <script src="{{ asset('libs/dropzone/dist/min/dropzone.min.js') }}"></script>
 <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>

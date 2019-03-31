@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Modifier ' . $event->name)
 
 @section('content')
 
@@ -33,7 +34,7 @@
 </div>
 
 
-<div class="container">
+<div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
             {!! Form::open(['action' => array('EventController@update', 'id' => $event->id),'files' => true]) !!}
@@ -177,7 +178,7 @@
                 <!-- Buttons -->
                 {!! Form::submit('Modifier l\'événement', ['class' => 'btn btn-block btn-primary']) !!}
 
-                <a href="{{route('index_event')}}" class="btn btn-block btn-link text-muted">
+                <a href="{{route('show_event', $event->id)}}" class="btn btn-block btn-link text-muted">
                     Annuler
                 </a>
                 {!! Form::close() !!}

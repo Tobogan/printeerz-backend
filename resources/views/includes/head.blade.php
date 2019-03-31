@@ -3,7 +3,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charSet="utf-8" />
-    <title>{{ config('Printeerz', 'Printeerz') }}</title>
+    <title>{{ config('Printeerz', 'Printeerz') }} - @yield('title')</title>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     {{-- Libs CSS --}}
     <link rel="stylesheet" href="{{ asset ('fonts/feather/feather.min.css') }}">
