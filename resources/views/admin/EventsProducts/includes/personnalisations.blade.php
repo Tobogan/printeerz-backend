@@ -50,8 +50,13 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="#" class="text-muted sort" data-sort="products_variant-color">
+                                    <a href="#" class="text-muted sort" data-sort="events_custom-title">
                                         Nom
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" class="text-muted sort" data-sort="events_custom-template">
+                                        Gabarit
                                     </a>
                                 </th>
                                 <th></th>
@@ -62,29 +67,35 @@
 
                         <tbody class="list">
                             @foreach($events_customs as $custom)
-                                    @if($custom->events_product_id == $events_product->id)
-                                    <tr>
-                                        <td class="products_variant-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">
-                                            <b>{{ $custom->title }}</b></a></td>
-                                        <td>
-                                            <a href="{{route('edit_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary">
-                                            Configurer
-                                            </a>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false" data-boundary="window">
-                                                    <i class="fe fe-more-vertical"></i>
+                                @foreach($templates as $template)
+                                    <?php //dd($custom->template[0]) ?>
+                                    @if($custom->template[0] == $template->id)
+                                        @if($custom->events_product_id == $events_product->id)
+                                        <tr>
+                                            <td class="events_custom-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">
+                                                <b>{{ $custom->title }}</b></a></td>
+                                            <td>{{ $template->title }}</td>
+                                            <td>
+                                                <a href="{{route('edit_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary" style="float:right">
+                                                Configurer
                                                 </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item text-danger" href="{{ url('admin/EventsCustoms/destroy/' . $custom->id)}}">
-                                                        Supprimer </a>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="dropdown">
+                                                    <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-boundary="window">
+                                                        <i class="fe fe-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item text-danger" href="{{ url('admin/EventsCustoms/destroy/' . $custom->id)}}">
+                                                            Supprimer </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                        @endif
                                     @endif
+                                @endforeach
                             @endforeach
                         </tbody>
                     </table>

@@ -141,6 +141,36 @@ class EventsCustomsController extends Controller
     }*/
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    /*public function delete($events_custom_id, $string)
+    {
+        function removeElement($array,$value) {
+            if (($key = array_search($value, $array)) !== false) {
+              unset($array[$key]);
+            }
+           return $array;
+        }
+        $events_custom = Events_customs::find($events_custom_id);
+        foreach($events_custom->variants as $variant) {
+            foreach($variant as $value) {
+                if($value == $string) {
+                    $variant_to_delete = $variant;
+                }
+            }
+        }
+        $result = removeElement($events_custom->variants, $variant_to_delete);
+        $arr = $events_custom->variants;
+        $arr = $result;
+        $events_custom->variants = $arr;
+        $events_custom->save();
+        return redirect('admin/EventsProducts/show/'.$events_custom->id);
+    }*/
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -249,10 +279,7 @@ class EventsCustomsController extends Controller
                         foreach($request->{'font_urlList'.$template_component_id} as $font_url){
                             $font = explode(",", $font_title);
                             $url = explode(",", $font_url);
-                            //dd($_REQUEST);
                             $disk = Storage::disk('s3');
-                            // Get current image path
-                            //$oldPath = $events_custom->BAT;
                             // Get new image
                             $file = ($request->hasFile($font_url));
                             // Create image name
@@ -263,12 +290,7 @@ class EventsCustomsController extends Controller
                             $disk->put($newFilePath, $file, 'public');
                             // Put in database
                             $font_url = $newFilePath;
-                            // unlink(public_path() . '/' . $name);
-                            // if(!empty($event->BAT) && $disk->exists($newFilePath)){
-                            // $disk->delete($oldPath);
                         }
-                            //$url_to = $font_url->getClientOriginalExtension();
-                            //$font_url->move(public_path('uploads'), $font_url);
                     }
                     for($k=0;$k<count($font);$k++){
                         $array_ft = array(
@@ -347,43 +369,37 @@ class EventsCustomsController extends Controller
                         );
                         array_push($array_colors, $array);
                     }
+                    
                     $array_fonts = array();
                     $fonts = array();
                     foreach($request->{'fontsList'.$template_component_id} as $font_title){
-                        foreach($request->{'font_urlList'.$template_component_id} as $font_url){
-                            $font = explode(",", $font_title);
-                            $url = explode(",", $font_url);
-                            foreach($url as $font_file){
-                                $disk = Storage::disk('s3');
-                                // Get current image path
-                                //dd($font_file);
-                                //$oldPath = $events_custom->BAT;
-                                // Get new image
-                                if($request->file($font_file) != null){
-                                    $file = $request->file($font_file);
-                                    // Create image name
-                                    $name = time() . $file->getClientOriginalName();
-                                    // Define the new path to image
-                                    $newFilePath = '/eventsCustom/' . $events_custom->id . '/'. $name;
-                                    // Upload the new image
-                                    $disk->put($newFilePath, $file, 'public');
-                                    // Put in database
-                                    $font_url = $newFilePath;
-                                }
-                                
-                                // unlink(public_path() . '/' . $name);
-                                // if(!empty($event->BAT) && $disk->exists($newFilePath)){
-                                // $disk->delete($oldPath);
+                        if($request->{'url_'.$template_component_id}){
+                            foreach($request->{'url_'.$template_component_id} as $font_url){
+                                $font = explode(",", $font_title);
+                                //dd($font_url);
+                                array_push($fonts, $font_url);
+                                // $disk = Storage::disk('s3');
+                                // if($request->file($font_url) != null){
+                                //     //dd($font_file);
+                                //     $file = $request->file($font_url);
+                                //     // Create image name
+                                //     $name = time() . $file->getClientOriginalName();
+                                //     // Define the new path to image
+                                //     $newFilePath = '/EventsCustoms/' . $events_custom->id . '/'. $name;
+                                //     // Upload the new image
+                                //     $disk->put($newFilePath, $file, 'public');
+                                //     // Put in database
+                                //     $font_url = $newFilePath;
+                                // }
                             }
                         }
-                            //$url_to = $font_url->getClientOriginalExtension();
-                            //$font_url->move(public_path('uploads'), $font_url);
+
                     }
                 }
                 for($k=0;$k<count($font);$k++){
                     $array_ft = array(
                         'title' => $font[$k],
-                        'font_url' => $url[$k]
+                        'font_url' => $fonts[$k]
                     );
                     array_push($array_fonts, $array_ft);
                 }
@@ -444,29 +460,67 @@ class EventsCustomsController extends Controller
         return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
     }
 
-        /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
-        public function desactivate($id)
-        {
-            $events_custom = Events_customs::find($id);
-            $events_custom->is_active = false;
-            $events_custom->update();
-            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+    /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
+    public function desactivate($id)
+    {
+        $events_custom = Events_customs::find($id);
+        $events_custom->is_active = false;
+        $events_custom->update();
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+    }
+
+    public function delete($id)
+    {
+        $events_custom = Events_customs::find($id);
+        $events_custom->is_deleted = true;
+        $events_custom->update();
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+    }
+
+    public function activate($id)
+    {
+        $events_custom = Events_customs::find($id);
+        $events_custom->is_active = true;
+        $events_custom->update();
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+    }
+
+    /**
+     * Upload a new file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadFile(Request $request)
+    {
+        if($request){
+            $validatedData = $request->validate([
+                'ec_font_url' => 'required|mimes:ttf,otf|max:2048'
+            ]);
+            $disk = Storage::disk('s3'); 
+            if($request->hasFile('ec_font_url')){
+                $title = $request->title;
+                $events_custom_id = $request->events_custom_id;
+                $template_component_id = $request->template_component_id;
+                // Create image name
+                $font_file = $request->file('ec_font_url');
+                $name = $font_file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/EventsCustoms/'.$template_component_id.'/'.$events_custom_id;
+                // Upload the new image
+                $disk->put($newFilePath, $font_file, 'public');
+                // Put in database
+                $font_file = $newFilePath;
+            }
+            $response = array(
+                'status' => 'success',
+                'msg' => 'Font file send to the server'
+            );
+            return response()->json($response);
         }
-    
-        public function delete($id)
-        {
-            $events_custom = Events_customs::find($id);
-            $events_custom->is_deleted = true;
-            $events_custom->update();
-            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        else {
+            return 'no';
         }
-    
-        public function activate($id)
-        {
-            $events_custom = Events_customs::find($id);
-            $events_custom->is_active = true;
-            $events_custom->update();
-            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
-        }
+    }
 }
 

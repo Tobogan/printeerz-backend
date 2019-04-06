@@ -99,6 +99,7 @@ Route::get('admin/EventsCustoms/destroy/{id}', 'EventsCustomsController@destroy'
 Route::get('admin/EventsCustoms/desactivate/{id}', 'EventsCustomsController@desactivate')->name('desactivate_eventsCustoms');
 Route::get('admin/EventsCustoms/activate/{id}', 'EventsCustomsController@activate')->name('activate_eventsCustoms');
 Route::post('admin/EventsCustoms/addColor', 'EventsCustomsController@addColor')->name('addColor_eventsCustoms');
+Route::post('admin/EventsCustoms/uploadFile', 'EventsCustomsController@uploadFile')->name('uploadFile_eventsCustoms');
 
 /*~~~~~~~~~~~___________Printzones Route__________~~~~~~~~~~~~*/
 Route::get('admin/Printzones/index', 'PrintzonesController@index')->name('index_printzones');

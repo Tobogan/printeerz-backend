@@ -142,7 +142,6 @@ class EventController extends Controller
             // Put in database
             $event->cover_img = $filePath;
         }
-
         if ($request->hasFile('BAT')){
             // Get file
             $file = $request->file('cover_img');

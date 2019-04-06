@@ -202,9 +202,10 @@
                                                                         <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
                                                                     </div>
                                                                 </div>
-                                                                <div id="newsFonts">
+                                                                <div id="{{'newsFonts'.$template_component->id}}">
                                                                     <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto">
                                                                     <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/uploads/Roboto-Black.ttf">
+                                                                    <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Black">
                                                                 </div>
                                                                 <hr class="mt-4 mb-5">
                                                                 <div class="col-12">
@@ -252,35 +253,68 @@
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <div class="form-group">
+                                                                        <div>
+                                                                            <a href="#" style="float:right" class="buttonColor btn btn-sm btn-primary mb-2"
+                                                                                data-toggle="modal" data-target="#addColorModal"
+                                                                                data-id="{{$template_component->id}}">
+                                                                                Ajouter une couleur
+                                                                            </a>
+                                                                        </div>
                                                                         <!-- Label -->
                                                                         <label>
-                                                                            Couleur
+                                                                            Couleurs de police
                                                                         </label>
-                                                                        <a href="#" style="float:right" class="buttonColor btn btn-sm btn-primary mb-2"
-                                                                            data-toggle="modal" data-target="#addColorModal"
-                                                                            data-id="{{$template_component->id}}">
-                                                                            Ajouter une couleur
-                                                                        </a>
-                                                                        <!-- Input text title-->
-                                                                        {!! Form::text('color'.$i, null, ['class' => 'form-control',
-                                                                        'placeholder' => 'Couleur'])
-                                                                        !!}
-                                                                    </div>
-    
-                                                                    <hr>
+                                                                        
+                                                                        <div id="colorTable" class="card mt-3" data-toggle="lists"
+                                                                        data-lists-values='["color-name", "color-code_hex"]'>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-sm table-nowrap card-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            <a href="#" class="text-muted" data-sort="color-name">
+                                                                                                Nom
+                                                                                            </a>
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            <a href="#" class="text-muted" data-sort="color-code_hex">
+                                                                                                Code hexa
+                                                                                            </a>
+                                                                                        </th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                        
+                                                                                <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
+                                                                                    {{-- <tr >
+                                                                                        <td id="{{'color_name_list'.$template_component->id}}" class="color-name"></td>
+                                                                                        <td id="{{'color_hexa_list'.$template_component->id}}" class="color-code_hexa"></td>--}}
+                                                                                    <tr>
+                                                                                        <td class="color-name">
+                                                                                            Black
+                                                                                        </td>
+                                                                                        <td class="color-code_hex">
+                                                                                            000000
+                                                                                        </td>
+                                                                                        <td class="text-right">
+                                                                                            <div class="dropdown">
+                                                                                                <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false" data-boundary="window">
+                                                                                                    <i class="fe fe-more-vertical"></i>
+                                                                                                </a>
+                                                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                                                    <a class="dropdown-item text-danger" href="#">
+                                                                                                        Supprimer 
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
                                                                     <div id="newsColors">
                                                                         <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
                                                                         <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <!-- Label -->
-                                                                        <label>
-                                                                            Code hex
-                                                                        </label>
-                                                                        <!-- Input text title-->
-                                                                        {!! Form::text('code_hex'.$i, null, ['class' => 'form-control',
-                                                                        'placeholder' => '00000'])
-                                                                        !!}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -352,7 +386,7 @@
         colors.push(colorsList);
         hexa.push(hexaList);
         var array_colors = [color];
-        var array_hexas = [code_hex]
+        var array_hexas = [code_hex];
         colors.push([array_colors]);
         hexa.push([array_hexas]);
         document.getElementById("colorsList"+id).value = colors;
@@ -362,6 +396,11 @@
         $('#addColorModal').modal('hide');
         $('#submit_modalAddColor').show();
         $('#loading_modalAddColor').addClass('d-none');
+        //console.log(gettype(colors));
+        colors_str = document.getElementById("colorsList"+id).value;
+        var color_name = colors_str.split(",");
+        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><div class="dropdown"><a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false" data-boundary="window"><i class="fe fe-more-vertical"></i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item text-danger" href="{{}}">Supprimer </a></div></div></td></tr>');
+        //$('#color_hexa_list'+id).append('<td class="color-code_hexa">'+hexa+'</td>');
         $('#ep_color').val('');
         $('#ep_code_hex').val('');
     });
@@ -378,28 +417,29 @@
         $(this).removeClass('btn-primary');
         $(this).addClass('btn-success');
         var font_tile = $('#ec_font_title').val();
-        var font_url = $('#ec_font_url').val();
+        //var font_url = $('#ec_font_url').val();
         var id = $('#tp_id_font').val();
         var fontsList = $('#fontsList'+id).val();
-        var font_urlList = document.getElementById("font_urlList"+id).value;
+        //var font_urlList = document.getElementById("font_urlList"+id).value;
         //console.log(fontsList);
         var fonts = [];
-        var url = [];
+       // var url = [];
         fonts.push(fontsList);
-        url.push(font_urlList)
+        //url.push(font_urlList);
         var array_fonts = [font_tile];
-        var array_urls = [font_url]
+        //var array_urls = [font_url]
         fonts.push([array_fonts]);
-        url.push([array_urls]);
+        //url.push([array_urls]);
         document.getElementById("fontsList"+id).value = fonts;
-        document.getElementById("font_urlList"+id).value = url;
+        //document.getElementById("font_urlList"+id).value = url;
+        //$('#newsFonts'+id).append('<input type="hidden" name="url_'+id+'[]" value="'+font_url+'">');
         console.log(document.getElementById("fontsList"+id).value);
-        console.log(document.getElementById("font_urlList"+id).value);
+        //console.log(document.getElementById("font_urlList"+id).value);
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
         $('#ec_font_title').val('');
-        $('#ec_font_url').val('');
+        //$('#ec_font_url').val('');
     });
 
 </script>

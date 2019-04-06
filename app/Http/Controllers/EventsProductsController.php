@@ -9,6 +9,7 @@ use App\Events_products;
 use App\Events_customs;
 use App\Products_variants;
 use App\Printzones;
+use App\Templates;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -181,7 +182,8 @@ class EventsProductsController extends Controller
         $products_variants = Products_variants::all();
         $printzones = Printzones::all();
         $product = Product::find($events_product->product_id);
-        return view('admin/EventsProducts.show', ['events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        $templates = Templates::all();
+        return view('admin/EventsProducts.show', ['templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
     }
 
     /**

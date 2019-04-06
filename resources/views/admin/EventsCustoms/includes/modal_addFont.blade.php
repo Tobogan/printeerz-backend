@@ -18,6 +18,7 @@
                     {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-5']) !!}
                     <input type="hidden" id="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="events_custom_id" id="events_custom_id" value="{{$events_custom->id}}">
+                    <input type="hidden" name="template_component_id" id="template_component_id" value="{{$template_component->id}}">
                     <div class="form-group">
                         <label>
                             Nom
@@ -29,7 +30,8 @@
                             Fichier
                         </label>
                         {{--{{ Form::file('ec_font_url', null, array('class' => 'form-control mb-3','id' => 'ec_font_url')) }}--}}
-                        <input type="file" name="ec_font_url" id="ec_font_url">
+                        {{-- <input type="file" name="ec_font_url" id="ec_font_url"> --}}
+                        {!! Form::file('ec_font_url', array('id' => 'ec_font_url', 'name' => 'ec_font_url', 'class' => 'form-control')) !!}
                     </div>
                     <div id="idTPFont">
                     </div>
