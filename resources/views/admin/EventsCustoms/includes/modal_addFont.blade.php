@@ -18,7 +18,6 @@
                     {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-5']) !!}
                     <input type="hidden" id="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="events_custom_id" id="events_custom_id" value="{{$events_custom->id}}">
-                    <input type="hidden" name="template_component_id" id="template_component_id" value="{{$template_component->id}}">
                     <div class="form-group">
                         <label>
                             Nom
