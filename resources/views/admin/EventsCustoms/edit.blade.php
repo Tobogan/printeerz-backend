@@ -296,17 +296,18 @@
                                                                                         <td class="color-code_hex">
                                                                                             000000
                                                                                         </td>
-                                                                                        <td class="text-right">
-                                                                                            <div class="dropdown">
+                                                                                        <td>
+                                                                                            {{-- <div class="dropdown">
                                                                                                 <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false" data-boundary="window">
                                                                                                     <i class="fe fe-more-vertical"></i>
-                                                                                                </a>
-                                                                                                <div class="dropdown-menu dropdown-menu-right">
-                                                                                                    <a class="dropdown-item text-danger" href="#">
+                                                                                                </a> --}}
+                                                                                                {{-- <div class="dropdown-menu dropdown-menu-right"> --}}
+                                                                                                    {{-- <a class="colorsDeleteRow dropdown-item text-danger" onclick="deleteRow(this);" href="#"> --}}
+                                                                                                    <a class="colorsDeleteRow" onclick="$(this).closest('tr').remove()" href="#">
                                                                                                         Supprimer 
                                                                                                     </a>
-                                                                                                </div>
-                                                                                            </div>
+                                                                                                {{-- </div> --}}
+                                                                                            {{-- </div> --}}
                                                                                         </td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -399,7 +400,7 @@
         //console.log(gettype(colors));
         colors_str = document.getElementById("colorsList"+id).value;
         var color_name = colors_str.split(",");
-        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><div class="dropdown"><a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false" data-boundary="window"><i class="fe fe-more-vertical"></i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item text-danger" href="{{}}">Supprimer </a></div></div></td></tr>');
+        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a class="colorsDeleteRow" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
         //$('#color_hexa_list'+id).append('<td class="color-code_hexa">'+hexa+'</td>');
         $('#ep_color').val('');
         $('#ep_code_hex').val('');
@@ -441,6 +442,9 @@
         $('#ec_font_title').val('');
         //$('#ec_font_url').val('');
     });
+    // $('.colorsDeleteRow').on('click', function(e){
+    //     document.getElementById("colorTable").deleteRow(0);
+    // });
 
 </script>
 @endsection

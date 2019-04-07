@@ -29,8 +29,6 @@
                         <label>
                             Fichier
                         </label>
-                        {{--{{ Form::file('ec_font_url', null, array('class' => 'form-control mb-3','id' => 'ec_font_url')) }}--}}
-                        {{-- <input type="file" name="ec_font_url" id="ec_font_url"> --}}
                         {!! Form::file('ec_font_url', array('id' => 'ec_font_url', 'name' => 'ec_font_url', 'class' => 'form-control')) !!}
                     </div>
                     <div id="idTPFont">
