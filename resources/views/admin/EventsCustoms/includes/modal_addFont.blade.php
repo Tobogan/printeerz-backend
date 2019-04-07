@@ -17,13 +17,12 @@
                     <p>Meci d'ajouter le fichier de la police et de préciser son nom.</p>
                     {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-5']) !!}
                     <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="events_custom_id" id="events_custom_id" value="{{$events_custom->id}}">
-                    <input type="hidden" name="template_component_id" id="template_component_id" value="{{$template_component->id}}">
+                    <input type="hidden" name="events_custom_event_id" id="events_custom_event_id" value="{{$events_custom->event_id}}">
                     <div class="form-group">
                         <label>
                             Nom
                         </label>
-                        {{ Form::text('title', null, array('class' => 'form-control mb-3','id' => 'ec_font_title')) }}
+                        {{ Form::text('ec_font_title', null, array('name' => 'ec_font_title', 'class' => 'form-control mb-3','id' => 'ec_font_title')) }}
                     </div>
                     <div class="form-group">
                         <label>

@@ -184,22 +184,47 @@
     
                                                             <p class="h3">Police de caractère par défault</p>
                                                             <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Nom</label>
+                                                                <div class="col-12 mt-3">
+                                                                    <div>
                                                                         <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary mb-2"
                                                                             data-toggle="modal" data-target="#addFontModal"
                                                                             data-id="{{$template_component->id}}">
                                                                             Ajouter une police
                                                                         </a>
-                                                                        {!! Form::text('font_title'.$i, $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <!-- First name -->
-                                                                    <div class="custom-file">
-                                                                        {!! Form::file('font_url'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                                                        <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
+                                                                    <!-- Label -->
+                                                                    <label>
+                                                                        Polices du composant
+                                                                    </label>
+                                                                    <div id="fontTable" class="card mt-3" data-toggle="lists"
+                                                                    data-lists-values='["font-name"]'>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-sm table-nowrap card-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            <a href="#" class="text-muted" data-sort="font-name">
+                                                                                                Nom
+                                                                                            </a>
+                                                                                        </th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                        
+                                                                                <tbody class="list" id="{{'font_name_list'.$template_component->id}}">
+                                                                                    <tr>
+                                                                                        <td class="font-name">
+                                                                                            Roboto-Black
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <a class="fontsDeleteRow" style="float:right" onclick="$(this).closest('tr').remove()" href="#">
+                                                                                                Supprimer 
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div id="{{'newsFonts'.$template_component->id}}">
@@ -267,96 +292,86 @@
                                                                         
                                                                         <div id="colorTable" class="card mt-3" data-toggle="lists"
                                                                         data-lists-values='["color-name", "color-code_hex"]'>
-                                                                        <div class="table-responsive">
-                                                                            <table class="table table-sm table-nowrap card-table">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>
-                                                                                            <a href="#" class="text-muted" data-sort="color-name">
-                                                                                                Nom
-                                                                                            </a>
-                                                                                        </th>
-                                                                                        <th>
-                                                                                            <a href="#" class="text-muted" data-sort="color-code_hex">
-                                                                                                Code hexa
-                                                                                            </a>
-                                                                                        </th>
-                                                                                        <th></th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                        
-                                                                                <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
-                                                                                    {{-- <tr >
-                                                                                        <td id="{{'color_name_list'.$template_component->id}}" class="color-name"></td>
-                                                                                        <td id="{{'color_hexa_list'.$template_component->id}}" class="color-code_hexa"></td>--}}
-                                                                                    <tr>
-                                                                                        <td class="color-name">
-                                                                                            Black
-                                                                                        </td>
-                                                                                        <td class="color-code_hex">
-                                                                                            000000
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            {{-- <div class="dropdown">
-                                                                                                <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false" data-boundary="window">
-                                                                                                    <i class="fe fe-more-vertical"></i>
-                                                                                                </a> --}}
-                                                                                                {{-- <div class="dropdown-menu dropdown-menu-right"> --}}
-                                                                                                    {{-- <a class="colorsDeleteRow dropdown-item text-danger" onclick="deleteRow(this);" href="#"> --}}
-                                                                                                    <a class="colorsDeleteRow" onclick="$(this).closest('tr').remove()" href="#">
-                                                                                                        Supprimer 
-                                                                                                    </a>
-                                                                                                {{-- </div> --}}
-                                                                                            {{-- </div> --}}
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-sm table-nowrap card-table">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                <a href="#" class="text-muted" data-sort="color-name">
+                                                                                                    Nom
+                                                                                                </a>
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                <a href="#" class="text-muted" data-sort="color-code_hex">
+                                                                                                    Code hexa
+                                                                                                </a>
+                                                                                            </th>
+                                                                                            <th></th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                            
+                                                                                    <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
+                                                                                        <tr>
+                                                                                            <td class="color-name">
+                                                                                                Black
+                                                                                            </td>
+                                                                                            <td class="color-code_hex">
+                                                                                                000000
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <a class="colorsDeleteRow" onclick="$(this).closest('tr').remove()" href="#">
+                                                                                                    Supprimer 
+                                                                                                </a>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div id="newsColors">
+                                                                                <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
+                                                                                <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
+                                                                            </div>
                                                                         </div>
-                                                                    <div id="newsColors">
-                                                                        <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
-                                                                        <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                     </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endif
-                            @endforeach
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            @endif
                         @endforeach
-                    @endif
-                @endforeach
-    
-                {{-- Store Event custom id --}}
-                <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
-    
-                {{-- Store Event product id --}}
-                <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
-    
-                {{-- Store Event product title --}}
-                <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
+            
+                        {{-- Store Event custom id --}}
+                        <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
+            
+                        {{-- Store Event product id --}}
+                        <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
+            
+                        {{-- Store Event product title --}}
+                        <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
 
-                <input type="hidden" id="countJS" value="{{$i}}">
-    
-                {{-- Custom actions --}}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="buttons">
-                            {!! Form::submit('Configurer', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
-                            <a class='btn btn-secondary' style="float: left"
-                                href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
+                        <input type="hidden" id="countJS" value="{{$i}}">
+            
+                        {{-- Custom actions --}}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="buttons">
+                                    {!! Form::submit('Configurer', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
+                                    <a class='btn btn-secondary' style="float: left"
+                                        href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
+                                </div>
+                            </div>
                         </div>
+            
+                        {!! Form::close() !!}
                     </div>
                 </div>
-    
-                {!! Form::close() !!}
             </div>
         </div>
-    </div>
-
+    </div>{{-- /container --}}
 @endsection
 
 @include('admin.EventsCustoms.includes.modal_addColor')
@@ -400,7 +415,7 @@
         //console.log(gettype(colors));
         colors_str = document.getElementById("colorsList"+id).value;
         var color_name = colors_str.split(",");
-        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a class="colorsDeleteRow" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
+        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a class="colorsDeleteRow" style="float:right" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
         //$('#color_hexa_list'+id).append('<td class="color-code_hexa">'+hexa+'</td>');
         $('#ep_color').val('');
         $('#ep_code_hex').val('');
@@ -417,34 +432,34 @@
         $('#loading_modalAddFont').removeClass('d-none');
         $(this).removeClass('btn-primary');
         $(this).addClass('btn-success');
-        var font_tile = $('#ec_font_title').val();
-        //var font_url = $('#ec_font_url').val();
+        var font_title = $('#ec_font_title').val();
+        var font_url = $('#ec_font_url').val();
         var id = $('#tp_id_font').val();
         var fontsList = $('#fontsList'+id).val();
-        //var font_urlList = document.getElementById("font_urlList"+id).value;
-        //console.log(fontsList);
+        var font_urlList = document.getElementById("font_urlList"+id).value;
+        console.log(fontsList);
         var fonts = [];
-       // var url = [];
+        var url = [];
         fonts.push(fontsList);
-        //url.push(font_urlList);
-        var array_fonts = [font_tile];
-        //var array_urls = [font_url]
+        url.push(font_urlList);
+        var array_fonts = [font_title];
+        var array_urls = [font_url]
         fonts.push([array_fonts]);
-        //url.push([array_urls]);
+        url.push([array_urls]);
         document.getElementById("fontsList"+id).value = fonts;
-        //document.getElementById("font_urlList"+id).value = url;
-        //$('#newsFonts'+id).append('<input type="hidden" name="url_'+id+'[]" value="'+font_url+'">');
+        document.getElementById("font_urlList"+id).value = url;
+        $('#newsFonts'+id).append('<input type="hidden" name="url_'+id+'[]" value="'+font_url+'">');
         console.log(document.getElementById("fontsList"+id).value);
-        //console.log(document.getElementById("font_urlList"+id).value);
+        console.log(document.getElementById("font_urlList"+id).value);
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
+        fonts_str = document.getElementById("fontsList"+id).value;
+        var font_name = fonts_str.split(",");
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
         $('#ec_font_title').val('');
         //$('#ec_font_url').val('');
     });
-    // $('.colorsDeleteRow').on('click', function(e){
-    //     document.getElementById("colorTable").deleteRow(0);
-    // });
 
 </script>
 @endsection

@@ -219,7 +219,7 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data.msg);
+                console.log(data.font_filename);
             }
         });
     });

@@ -273,68 +273,49 @@ class EventsCustomsController extends Controller
                         );
                         array_push($array_colors, $array);
                     }
+                    
                     $array_fonts = array();
                     $fonts = array();
                     foreach($request->{'fontsList'.$template_component_id} as $font_title){
-                        foreach($request->{'font_urlList'.$template_component_id} as $font_url){
-                            $font = explode(",", $font_title);
-                            $url = explode(",", $font_url);
-                            $disk = Storage::disk('s3');
-                            // Get new image
-                            $file = ($request->hasFile($font_url));
-                            // Create image name
-                            $name = time() . $file->getClientOriginalName();
-                            // Define the new path to image
-                            $newFilePath = '/eventsCustom/' . $events_custom->id . '/'. $name;
-                            // Upload the new image
-                            $disk->put($newFilePath, $file, 'public');
-                            // Put in database
-                            $font_url = $newFilePath;
+                        if($request->{'url_'.$template_component_id}){
+                            foreach($request->{'url_'.$template_component_id} as $font_url){
+                                $font = explode(",", $font_title);
+                                array_push($fonts, $font_url);
+                            }
                         }
+
                     }
-                    for($k=0;$k<count($font);$k++){
-                        $array_ft = array(
-                            'title' => $font[$k],
-                            'font_url' => $url[$k]
-                        );
-                        array_push($array_fonts, $array_ft);
-                    }
-                    $component = array(
-                        'template_component_id' => $request->{'template_component_id'.$i},
-                        'title' => $request->{'option_title'.$i},
-                        'position' => $request->{'option_position'.$i},
-                        'settings' => array(
-                            'input_min' => $request->{'min'.$i},
-                            'input_max' => $request->{'max'.$i},
-                            'font_first_letter' => $request->{'font_first_letter'.$i},
-                            'font_transform' => $request->{'font_transform'.$i},
-                            'font_weight' => $request->{'font_weight'.$i},
-                            'fonts' => $array_fonts,
-                            'font_colors' => $array_colors,
-                            'position' => array(
-                                'width' => $request->{'width'.$i},
-                                'height' => $request->{'height'.$i},
-                                'origin_x' => $request->{'origin_x'.$i},
-                                'origin_y' => $request->{'origin_y'.$i}
-                            ),
-                        ),
-                    );
-                    $array = $events_custom->components;
-                    array_push($array, $component);
-                    $events_custom->components = $array;
                 }
-            }
-            $events_custom->save();
-            
-            if ($request->hasFile('thumb')){
-                $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
-                request()->thumb->move(public_path('uploads'), $photo1);
-                $events_custom->thumb = $photo1;
-            }
-            if ($request->hasFile('image')){
-                $thumb_name = time().'.1'.request()->image->getClientOriginalExtension();
-                request()->image->move(public_path('uploads'), $thumb_name);
-                $events_custom->image = $photo;
+                for($k=0;$k<count($font);$k++){
+                    $array_ft = array(
+                        'title' => $font[$k],
+                        'font_url' => $fonts[$k]
+                    );
+                    array_push($array_fonts, $array_ft);
+                }
+                $component = array(
+                    'template_component_id' => $request->{'template_component_id'.$i},
+                    'title' => $request->{'option_title'.$i},
+                    'position' => $request->{'option_position'.$i},
+                    'settings' => array(
+                        'input_min' => $request->{'min'.$i},
+                        'input_max' => $request->{'max'.$i},
+                        'font_first_letter' => $request->{'font_first_letter'.$i},
+                        'font_transform' => $request->{'font_transform'.$i},
+                        'font_weight' => $request->{'font_weight'.$i},
+                        'fonts' => $array_fonts,
+                        'font_colors' => $array_colors,
+                        'position' => array(
+                            'width' => $request->{'width'.$i},
+                            'height' => $request->{'height'.$i},
+                            'origin_x' => $request->{'origin_x'.$i},
+                            'origin_y' => $request->{'origin_y'.$i}
+                        ),
+                    ),
+                );
+                $array = $events_custom->components;
+                array_push($array, $component);
+                $events_custom->components = $array;
             }
             $events_custom->comments = $request->comments;
             $events_custom->is_active = $request->is_active;
@@ -376,21 +357,7 @@ class EventsCustomsController extends Controller
                         if($request->{'url_'.$template_component_id}){
                             foreach($request->{'url_'.$template_component_id} as $font_url){
                                 $font = explode(",", $font_title);
-                                //dd($font_url);
                                 array_push($fonts, $font_url);
-                                // $disk = Storage::disk('s3');
-                                // if($request->file($font_url) != null){
-                                //     //dd($font_file);
-                                //     $file = $request->file($font_url);
-                                //     // Create image name
-                                //     $name = time() . $file->getClientOriginalName();
-                                //     // Define the new path to image
-                                //     $newFilePath = '/EventsCustoms/' . $events_custom->id . '/'. $name;
-                                //     // Upload the new image
-                                //     $disk->put($newFilePath, $file, 'public');
-                                //     // Put in database
-                                //     $font_url = $newFilePath;
-                                // }
                             }
                         }
 
@@ -427,24 +394,12 @@ class EventsCustomsController extends Controller
                 array_push($array, $component);
                 $events_custom->components = $array;
             }
+            $events_custom->comments = $request->comments;
+            $events_custom->is_active = $request->is_active;
+            $events_custom->is_deleted = $request->is_deleted;
+            $events_custom->save();
+            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
-        $events_custom->save();
-        
-        if ($request->hasFile('thumb')){
-            $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
-            request()->thumb->move(public_path('uploads'), $photo1);
-            $events_custom->thumb = $photo1;
-        }
-        if ($request->hasFile('image')){
-            $thumb_name = time().'.1'.request()->image->getClientOriginalExtension();
-            request()->image->move(public_path('uploads'), $thumb_name);
-            $events_custom->image = $photo;
-        }
-        $events_custom->comments = $request->comments;
-        $events_custom->is_active = $request->is_active;
-        $events_custom->is_deleted = $request->is_deleted;
-        $events_custom->save();
-        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
     }
 
     /**
@@ -495,18 +450,17 @@ class EventsCustomsController extends Controller
     {
         if($request){
             $validatedData = $request->validate([
-                'ec_font_url' => 'required|mimes:ttf,otf|max:2048'
             ]);
             $disk = Storage::disk('s3'); 
+            $title = $request->ec_font_title;
             if($request->hasFile('ec_font_url')){
-                $title = $request->title;
-                $events_custom_id = $request->events_custom_id;
-                $template_component_id = $request->template_component_id;
+                $events_custom_event_id = $request->events_custom_event_id;
+                $template_component_id = $request->tp_id_font;
                 // Create image name
                 $font_file = $request->file('ec_font_url');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/EventsCustoms/'.$template_component_id.'/'.$events_custom_id;
+                $newFilePath = '/event/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
                 // Upload the new image
                 $disk->put($newFilePath, $font_file, 'public');
                 // Put in database
@@ -514,7 +468,8 @@ class EventsCustomsController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Font file send to the server'
+                'msg' => 'Font file send to the server',
+                'font_filename' => $request->ec_font_title
             );
             return response()->json($response);
         }
@@ -523,4 +478,8 @@ class EventsCustomsController extends Controller
         }
     }
 }
-
+/*if ($request->hasFile('thumb')){
+    $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
+    request()->thumb->move(public_path('uploads'), $photo1);
+    $events_custom->thumb = $photo1;
+}*/
