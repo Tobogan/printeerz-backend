@@ -457,8 +457,8 @@
         fonts_str = document.getElementById("fontsList"+id).value;
         var font_name = fonts_str.split(",");
         $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
-        $('#ec_font_title').val('');
-        //$('#ec_font_url').val('');
+        // $('#ec_font_title').val('');
+        // $('#ec_font_url').val('');
     });
 
 </script>

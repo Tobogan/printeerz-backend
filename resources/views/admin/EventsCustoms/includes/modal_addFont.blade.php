@@ -22,7 +22,7 @@
                         <label>
                             Nom
                         </label>
-                        {{ Form::text('ec_font_title', null, array('name' => 'ec_font_title', 'class' => 'form-control mb-3','id' => 'ec_font_title')) }}
+                        {{ Form::text('ec_font_title', null, array('class' => 'form-control mb-3','id' => 'ec_font_title')) }}
                     </div>
                     <div class="form-group">
                         <label>

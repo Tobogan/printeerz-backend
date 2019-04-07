@@ -207,9 +207,6 @@ $(document).ready(function () {
 
     $('#AddFont').on('submit', function (e) {
         e.preventDefault();
-        // var ec_font_url = $('#ec_font_url')[0].files[0];
-        // var events_custom_id = $('#events_custom_id').val();
-        // var template_component_id = $('#tp_id').val();
         var formData = new FormData($(this)[0]);
         $.ajax({
             type: "POST",
@@ -220,6 +217,8 @@ $(document).ready(function () {
             processData: false,
             success: function (data) {
                 console.log(data.font_filename);
+                $('#ec_font_title').val('');
+                $('#ec_font_url').val('');
             }
         });
     });
