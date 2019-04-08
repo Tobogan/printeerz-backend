@@ -360,7 +360,6 @@ class EventsCustomsController extends Controller
                                 array_push($fonts, $font_url);
                             }
                         }
-
                     }
                 }
                 for($k=0;$k<count($font);$k++){

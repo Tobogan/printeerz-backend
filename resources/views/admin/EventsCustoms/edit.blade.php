@@ -217,7 +217,7 @@
                                                                                             Roboto-Black
                                                                                         </td>
                                                                                         <td>
-                                                                                            <a class="fontsDeleteRow" style="float:right" onclick="$(this).closest('tr').remove()" href="#">
+                                                                                            <a class="fontsDeleteRow" data-id="Roboto-Black" style="float:right">
                                                                                                 Supprimer 
                                                                                             </a>
                                                                                         </td>
@@ -319,7 +319,7 @@
                                                                                                 000000
                                                                                             </td>
                                                                                             <td>
-                                                                                                <a class="colorsDeleteRow" onclick="$(this).closest('tr').remove()" href="#">
+                                                                                                <a class="colorsDeleteRow" data-color="Black" style="float:right">
                                                                                                     Supprimer 
                                                                                                 </a>
                                                                                             </td>
@@ -415,10 +415,10 @@
         //console.log(gettype(colors));
         colors_str = document.getElementById("colorsList"+id).value;
         var color_name = colors_str.split(",");
-        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a class="colorsDeleteRow" style="float:right" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
+        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a data-color="'+color+'" onclick="var color=$(this).attr(\'data-color\');deleteColorRow(color);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
         //$('#color_hexa_list'+id).append('<td class="color-code_hexa">'+hexa+'</td>');
-        $('#ep_color').val('');
-        $('#ep_code_hex').val('');
+        // $('#ep_color').val('');
+        // $('#ep_code_hex').val('');
     });
 
     $('.buttonFont').on('click', function(e) {
@@ -443,7 +443,7 @@
         fonts.push(fontsList);
         url.push(font_urlList);
         var array_fonts = [font_title];
-        var array_urls = [font_url]
+        var array_urls = [font_url];
         fonts.push([array_fonts]);
         url.push([array_urls]);
         document.getElementById("fontsList"+id).value = fonts;
@@ -456,10 +456,16 @@
         $('#loading_modalAddFont').addClass('d-none');
         fonts_str = document.getElementById("fontsList"+id).value;
         var font_name = fonts_str.split(",");
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" onclick="$(this).closest(\'tr\').remove()" href="#">Supprimer</a></td></tr>');
-        // $('#ec_font_title').val('');
-        // $('#ec_font_url').val('');
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-id="'+font_title+'" onclick="var font=$(this).attr(\'data-id\');deleteFontRow(font);$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
+
+    function deleteColorRow(color){
+        console.log(color);
+    }
+
+    function deleteFontRow(font){
+        console.log(font);
+    }
 
 </script>
 @endsection

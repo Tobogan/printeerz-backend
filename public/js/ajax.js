@@ -217,8 +217,8 @@ $(document).ready(function () {
             processData: false,
             success: function (data) {
                 console.log(data.font_filename);
-                $('#ec_font_title').val('');
-                $('#ec_font_url').val('');
+                // $('#ec_font_title').val('');
+                // $('#ec_font_url').val('');
             }
         });
     });
