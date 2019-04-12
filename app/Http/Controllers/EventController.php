@@ -493,8 +493,8 @@ class EventController extends Controller
         }
         // Delete BAT file
         $filePath = $event->BAT;
-            if(!empty($event->BAT) && $disk->exists($filePath)){
-        $disk->delete($filePath);
+        if(!empty($event->BAT) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
 
         // Delete file

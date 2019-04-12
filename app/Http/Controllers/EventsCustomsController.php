@@ -461,7 +461,7 @@ class EventsCustomsController extends Controller
                 // Define the new path to image
                 $newFilePath = '/event/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
                 // Upload the new image
-                $disk->put($newFilePath, $font_file, 'public');
+                $disk->put($newFilePath, $name, 'public');
                 // Put in database
                 $font_file = $newFilePath;
             }
@@ -476,6 +476,32 @@ class EventsCustomsController extends Controller
             return 'no';
         }
     }
+
+        /**
+     * Delete a file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteFile(Request $request)
+    {
+        if($request){
+            $filePath = $event->BAT;
+            if(!empty($event->BAT) && $disk->exists($filePath)){
+                $disk->delete($filePath);
+            }
+            $response = array(
+                'status' => 'success',
+                'msg' => 'Font file send to the server',
+                'font_filename' => $request->ec_font_title
+            );
+            return response()->json($response);
+        }
+        else {
+            return 'no';
+        }
+    }
+    
 }
 /*if ($request->hasFile('thumb')){
     $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();

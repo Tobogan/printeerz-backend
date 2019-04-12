@@ -228,9 +228,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div id="{{'newsFonts'.$template_component->id}}">
-                                                                    <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto">
+                                                                    <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto-Black">
                                                                     <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/uploads/Roboto-Black.ttf">
                                                                     <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Black">
+                                                                </div>
+                                                                <div id="fontsToDelete">
+                                                                    <input type="hidden" name="{{'fontsToDeleteList'.$template_component->id.'[]'}}" id="{{'fontsToDeleteList'.$template_component->id}}">
                                                                 </div>
                                                                 <hr class="mt-4 mb-5">
                                                                 <div class="col-12">
@@ -331,6 +334,10 @@
                                                                                 <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
                                                                                 <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
                                                                             </div>
+                                                                            <div id="colorsToDelete">
+                                                                                <input type="hidden" name="{{'colorsToDeleteList'.$template_component->id.'[]'}}" id="{{'colorsToDeleteList'.$template_component->id}}">
+                                                                                <input type="hidden" name="{{'hexasToDeleteList'.$template_component->id.'[]'}}" id="{{'hexasToDeleteList'.$template_component->id}}">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -413,12 +420,12 @@
         $('#submit_modalAddColor').show();
         $('#loading_modalAddColor').addClass('d-none');
         //console.log(gettype(colors));
-        colors_str = document.getElementById("colorsList"+id).value;
-        var color_name = colors_str.split(",");
-        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a data-color="'+color+'" onclick="var color=$(this).attr(\'data-color\');deleteColorRow(color);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
+        // colors_str = document.getElementById("colorsList"+id).value;
+        // var color_name = colors_str.split(",");
+        $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a data-color="'+color+'" data-hexa="'+code_hex+'" onclick="var color=$(this).attr(\'data-color\');var hexa=$(this).attr(\'data-hexa\');deleteColorRow(color);deleteHexaRow(hexa);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
         //$('#color_hexa_list'+id).append('<td class="color-code_hexa">'+hexa+'</td>');
-        // $('#ep_color').val('');
-        // $('#ep_code_hex').val('');
+        $('#ep_color').val('');
+        $('#ep_code_hex').val('');
     });
 
     $('.buttonFont').on('click', function(e) {
@@ -434,6 +441,9 @@
         $(this).addClass('btn-success');
         var font_title = $('#ec_font_title').val();
         var font_url = $('#ec_font_url').val();
+        var events_custom_id = $('#events_custom_id').val();
+        var new_path = '/event/'+events_custom_id+'/fonts/'+font_title+'/';
+        var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
         var id = $('#tp_id_font').val();
         var fontsList = $('#fontsList'+id).val();
         var font_urlList = document.getElementById("font_urlList"+id).value;
@@ -443,28 +453,66 @@
         fonts.push(fontsList);
         url.push(font_urlList);
         var array_fonts = [font_title];
-        var array_urls = [font_url];
+        var array_urls = [font_url_replaced];
         fonts.push([array_fonts]);
         url.push([array_urls]);
         document.getElementById("fontsList"+id).value = fonts;
         document.getElementById("font_urlList"+id).value = url;
-        $('#newsFonts'+id).append('<input type="hidden" name="url_'+id+'[]" value="'+font_url+'">');
+        $('#newsFonts'+id).append('<input type="hidden" name="url_'+id+'[]" value="'+font_url_replaced+'">');
         console.log(document.getElementById("fontsList"+id).value);
         console.log(document.getElementById("font_urlList"+id).value);
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
-        fonts_str = document.getElementById("fontsList"+id).value;
-        var font_name = fonts_str.split(",");
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-id="'+font_title+'" onclick="var font=$(this).attr(\'data-id\');deleteFontRow(font);$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-font="'+font_title+'" onclick="var font=$(this).attr(\'data-font\');deleteFontRow(font);$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
 
     function deleteColorRow(color){
-        console.log(color);
+        var id = $('#tp_id').val();
+        var colorsList = $('#colorsList'+id).val();
+        var colors = [];
+        colors.push(colorsToDeleteList);
+        var array_colors = [color];
+        colors.push([array_colors]);
+        document.getElementById("colorsToDeleteList"+id).value = colors;
+        var colorsToDeleteList = $('#colorsToDeleteList'+id).val();
+        var finalColors = colorsList.replace(colorsToDeleteList, "");
+        document.getElementById("colorsList"+id).value = finalColors;
+        console.log('finalColors= '+document.getElementById("colorsList"+id).value);
+        document.getElementById("colorsToDeleteList"+id).value = "";
+    }
+
+    function deleteHexaRow(hexa){
+        var id = $('#tp_id').val();
+        var hexaList = $('#hexaList'+id).val();
+        var hexas = [];
+        var hexasToDeleteList = $('#hexasToDeleteList'+id).val();
+        hexas.push(hexasToDeleteList);
+        var array_hexas = [hexa];
+        hexas.push([array_hexas]);
+        document.getElementById("hexasToDeleteList"+id).value = hexas;
+        var hexasToDeleteList = $('#hexasToDeleteList'+id).val();
+        var finalHexas = hexaList.replace(hexasToDeleteList, "");
+        document.getElementById("hexaList"+id).value = finalHexas;
+        console.log('finalHexas= '+document.getElementById("hexaList"+id).value);
+        document.getElementById("hexasToDeleteList"+id).value = "";
     }
 
     function deleteFontRow(font){
         console.log(font);
+        var id = $('#tp_id_font').val();
+        var fontsList = $('#fontsList'+id).val();
+        var fonts = [];
+        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+        fonts.push(fontsToDeleteList);
+        var array_fonts = [font];
+        fonts.push([array_fonts]);
+        document.getElementById("fontsToDeleteList"+id).value = fonts;
+        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+        var finalColors = fontsList.replace(fontsToDeleteList, "");
+        document.getElementById("fontsList"+id).value = finalColors;
+        console.log('finalColors= '+document.getElementById("fontsList"+id).value);
+        document.getElementById("fontsToDeleteList"+id).value = "";
     }
 
 </script>
