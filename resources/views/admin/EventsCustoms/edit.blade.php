@@ -350,6 +350,8 @@
                                 @endforeach
                             @endif
                         @endforeach
+                        {{-- Store Event custom event_id --}}
+                        <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id" value="{{$events_custom->event_id}}">
             
                         {{-- Store Event custom id --}}
                         <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
@@ -360,7 +362,7 @@
                         {{-- Store Event product title --}}
                         <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
 
-                        <input type="hidden" id="countJS" value="{{$i}}">
+                        <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
             
                         {{-- Custom actions --}}
                         <div class="row">
@@ -419,7 +421,7 @@
         $('#addColorModal').modal('hide');
         $('#submit_modalAddColor').show();
         $('#loading_modalAddColor').addClass('d-none');
-        //console.log(gettype(colors));
+        // console.log(gettype(colors));
         // colors_str = document.getElementById("colorsList"+id).value;
         // var color_name = colors_str.split(",");
         $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td class="text-right"><a data-color="'+color+'" data-hexa="'+code_hex+'" onclick="var color=$(this).attr(\'data-color\');var hexa=$(this).attr(\'data-hexa\');deleteColorRow(color);deleteHexaRow(hexa);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
@@ -441,6 +443,11 @@
         $(this).addClass('btn-success');
         var font_title = $('#ec_font_title').val();
         var font_url = $('#ec_font_url').val();
+        var font_name = font_url.replace('C:\\fakepath\\','');
+        var events_custom_event_id = $('#events_custom_event_id').val();
+        console.log('event-id=> '+events_custom_event_id);
+        console.log('font_name=>'+font_name);
+        console.log('font_url_val=>'+font_url);
         var events_custom_id = $('#events_custom_id').val();
         var new_path = '/event/'+events_custom_id+'/fonts/'+font_title+'/';
         var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
@@ -464,7 +471,8 @@
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-font="'+font_title+'" onclick="var font=$(this).attr(\'data-font\');deleteFontRow(font);$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+        console.log('font_url= '+font_url_replaced);
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-url="'+font_url_replaced+'" data-font="'+font_title+'" onclick="var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(font);deleteFile('+'\''+font_title+'\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
 
     function deleteColorRow(color){
@@ -513,6 +521,37 @@
         document.getElementById("fontsList"+id).value = finalColors;
         console.log('finalColors= '+document.getElementById("fontsList"+id).value);
         document.getElementById("fontsToDeleteList"+id).value = "";
+    }
+
+    function deleteFile(font_title, font_name, events_custom_event_id) {
+        //console.log('font_url=>'+font_url);
+        $.ajaxSetup({
+            beforeSend: function (xhr, type) {
+                if (!type.crossDomain) {
+                    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                }
+            },
+        });
+        $.ajax({
+            type: 'delete',
+            url: "/admin/EventsCustoms/deleteFile/event/"+events_custom_event_id+'/fonts/'+font_title+'/'+font_name,
+            dataType: "JSON",
+            data: {
+                "events_custom_event_id": events_custom_event_id,
+                "font_name": font_name,
+                "font_title": font_title,
+                _token: '{!! csrf_token() !!}',
+            },
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response.msg);
+                //$('#' + id).remove();
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
     }
 
 </script>

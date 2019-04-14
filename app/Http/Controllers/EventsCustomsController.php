@@ -331,8 +331,9 @@ class EventsCustomsController extends Controller
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->title = $request->title;
             $events_custom->components = array();
+            $count_component = $request->countJS;
 
-            for($i=1;$i<6;$i++){
+            for($i=1;$i<=$count_component;$i++){
                 $template_component_id= $request->{'template_component_id'.$i};
                 if($request->{'template_component_id'.$i}){
                     $array_colors = array();
@@ -480,26 +481,21 @@ class EventsCustomsController extends Controller
         /**
      * Delete a file.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  string $font_url
      * @return \Illuminate\Http\Response
      */
-    public function deleteFile(Request $request)
+    public function deleteFile($events_custom_id, $font_title, $font_name)
     {
-        if($request){
-            $filePath = $event->BAT;
-            if(!empty($event->BAT) && $disk->exists($filePath)){
-                $disk->delete($filePath);
-            }
-            $response = array(
-                'status' => 'success',
-                'msg' => 'Font file send to the server',
-                'font_filename' => $request->ec_font_title
-            );
-            return response()->json($response);
-        }
-        else {
-            return 'no';
-        }
+        //dd($font_url);
+        $disk = Storage::disk('s3'); 
+        $font_url = '/event/'.$events_custom_id.'/fonts/'.$font_title.'/'.$font_name;
+        //dd($font_url);
+        $disk->delete($font_url);
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Font file has been deleted'
+        );
+        return response()->json($response);
     }
     
 }
