@@ -448,12 +448,12 @@ class EventsCustomsController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        if($request){
+        if($request) {
             $validatedData = $request->validate([
             ]);
             $disk = Storage::disk('s3'); 
             $title = $request->ec_font_title;
-            if($request->hasFile('ec_font_url')){
+            if($request->hasFile('ec_font_url')) {
                 $events_custom_event_id = $request->events_custom_event_id;
                 $template_component_id = $request->tp_id_font;
                 // Create image name
@@ -462,7 +462,7 @@ class EventsCustomsController extends Controller
                 // Define the new path to image
                 $newFilePath = '/event/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
                 // Upload the new image
-                $disk->put($newFilePath, $name, 'public');
+                $disk->put($newFilePath, $font_file, 'public');
                 // Put in database
                 $font_file = $newFilePath;
             }
@@ -478,7 +478,7 @@ class EventsCustomsController extends Controller
         }
     }
 
-        /**
+    /**
      * Delete a file.
      *
      * @param  string $font_url
@@ -486,10 +486,8 @@ class EventsCustomsController extends Controller
      */
     public function deleteFile($events_custom_id, $font_title, $font_name)
     {
-        //dd($font_url);
         $disk = Storage::disk('s3'); 
         $font_url = '/event/'.$events_custom_id.'/fonts/'.$font_title.'/'.$font_name;
-        //dd($font_url);
         $disk->delete($font_url);
         $response = array(
             'status' => 'success',
@@ -499,8 +497,3 @@ class EventsCustomsController extends Controller
     }
     
 }
-/*if ($request->hasFile('thumb')){
-    $photo1 = time().'.'.request()->thumb->getClientOriginalExtension();
-    request()->thumb->move(public_path('uploads'), $photo1);
-    $events_custom->thumb = $photo1;
-}*/

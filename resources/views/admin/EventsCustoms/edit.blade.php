@@ -524,7 +524,6 @@
     }
 
     function deleteFile(font_title, font_name, events_custom_event_id) {
-        //console.log('font_url=>'+font_url);
         $.ajaxSetup({
             beforeSend: function (xhr, type) {
                 if (!type.crossDomain) {
