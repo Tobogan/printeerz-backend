@@ -105,7 +105,11 @@ class TemplatesController extends Controller
             'x' => $request->origin_x,
             'y' => $request->origin_y
         );
-        $template->components_ids = $request->get('templateComponentsList');
+        // $template_components_json = str_replace(',\\', "", $request->get('templateComponentsList'));
+        // $template->components_ids = $template_components_json;
+        //dd($request->get('templateComponentsList'));
+        $template_components_json = json_decode($request->get('templateComponentsList'));
+        $template->components_ids = $template_components_json;
         $template->position = $request->position;
         $template->is_active = $request->is_active; 
         $template->is_deleted = $request->is_deleted;
@@ -210,7 +214,9 @@ class TemplatesController extends Controller
                 'x' => $request->origin_x,
                 'y' => $request->origin_y
             );
+            // $template_components_json = str_replace('\""', "", $request->get('templateComponentsList'));
             $template->components_ids = $request->get('templateComponentsList');
+            // $template->components_ids = $template_components_json;
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;

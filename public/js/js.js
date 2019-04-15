@@ -100,11 +100,14 @@ function updateFormHidden(list,hiddenValue){
       id : id,
       name: name
     })
+    console.log(componentList);
   });
   // Format value to json
   var json = JSON.stringify(componentList, 'true');
   // Add value to form hidden value
   $(hiddenValue).attr('value', json);
+  console.log('jsonCompList='+json);
+  console.log('value='+hiddenValue);
 };
 
 $(function () {

@@ -53,7 +53,7 @@
                     @if($template->id == reset($array_template))
                         @foreach($template_components as $template_component)
                             @foreach($template->components_ids as $component_id)
-                                @if($template_component->id == $component_id)
+                                @if($template_component->id == $component_id['id']) {{-- ça ne va plus marcher --}}
                                     @if($template_component->type = 'input')
                                         <?php $i++; ?>
                                         {{-- Store template_composant id --}}
@@ -345,6 +345,8 @@
                                                     </div>
                                                 </div>
                                             @endif
+                                        {{-- @elseif($template_component->type = 'image')
+                                            <p>Hola que tal!</p> --}}
                                         @endif
                                     @endforeach
                                 @endforeach

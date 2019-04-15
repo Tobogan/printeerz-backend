@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-/*~~~~~~~~~~~___________MODELS__________~~~~~~~~~~~~*/
 use DB;
 use App\Event;
 use App\Customer;
@@ -23,7 +22,7 @@ class EventController extends Controller
 {
     public function __construct(){
         //$this->middleware(isActivate::class);
-       // $this->middleware(isAdmin::class);
+        // $this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
 
@@ -78,7 +77,7 @@ class EventController extends Controller
         $validatedData = $request->validate([
             'advertiser' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'string|max:255',
             'description' => 'max:2750'
         ]);
 
@@ -280,7 +279,7 @@ class EventController extends Controller
             
             $event->save();
 
-        // Update logo image
+            // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -303,7 +302,7 @@ class EventController extends Controller
                 }
            }
 
-        // Update Cover image
+            // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -326,7 +325,7 @@ class EventController extends Controller
                 }
            }
 
-        //  Update BAT File
+            // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -459,7 +458,7 @@ class EventController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-    
+
             $event->save();
         }
         

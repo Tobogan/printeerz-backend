@@ -159,7 +159,7 @@
                                     </div>
                                     <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>
-                                    {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
+                                    {!! Form::hidden('templateComponentsList', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>
                             </div>
                         </div>
