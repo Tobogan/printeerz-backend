@@ -38,18 +38,18 @@
                     </div>
                 </div>
                 <div class="col-12">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Taille
-                            </label>
-                            <!-- Input -->
-                            {!! Form::text('size', $products_variant->size, ['class' => 'form-control'])
-                            !!}
-                        </div>
+                    <!-- First name -->
+                    <div class="form-group">
+                        <!-- Label -->
+                        <label>
+                            Taille
+                        </label>
+                        <!-- Input -->
+                        {!! Form::text('size', $products_variant->size, ['class' => 'form-control'])
+                        !!}
                     </div>
-                    <hr class="mt-4 mb-5">
+                </div>
+                <hr class="mt-4 mb-5">
                 <div class="col-12">
                     <!-- First name -->
 
@@ -89,36 +89,33 @@
                     @endif
                     <input type="hidden" class="form-control" name="printzones_nb" value="{{ $i }}">
                     <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12">
-                    <p class="h3">Image</p>
-                    <p class="mb-4">Modifier l'image du produit en format 1:1</p>
-                </div>
-                <div class="col-12">
-                    <!-- First name -->
-                    <div class="form-group">
-                        {!! Form::file('image', array('class' => '', 'id' => 'logo_img')) !!}
-                    </div>
-                    </div>
                     <div class="row">
-                            <div class="col-12">
-                                <div class="buttons">
-                                    {!! Form::submit('Modifier la variante', ['class' => 'btn btn-primary', 'style' => 'float: right'])
-                                    !!}
-                                    <a href="{{route('show_product', $products_variant->product_id)}}"><b>Annuler</b></a>
-                                </div>
+                        <div class="col-12">
+                            <p class="h3">Image</p>
+                            <p class="mb-4">Modifier l'image du produit en format 1:1</p>
+                        </div>
+                        <div class="col-12">
+                            <!-- First name -->
+                            <div class="form-group">
+                                {!! Form::file('image', array('class' => '', 'id' => 'logo_img')) !!}
                             </div>
                         </div>
-                        <input type="hidden" class="form-control" name="actual_color" value="{{$products_variant->color}}">
-                        <input type="hidden" class="form-control" name="products_variant_id" value="{{$products_variant->id}}">
-                        {!! Form::close() !!}
-                </div>
-            </div>
-                </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="buttons">
+                                {!! Form::submit('Modifier', ['style' => 'float: right', 'class' => 'btn btn-primary']) !!}
+                                <a class="btn btn-secondary" style="float: left" class href="{{route('show_product', $products_variant->product_id)}}"><b>Annuler</b></a>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" name="actual_color" value="{{$products_variant->color}}">
+                    <input type="hidden" class="form-control" name="products_variant_id" value="{{$products_variant->id}}">
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

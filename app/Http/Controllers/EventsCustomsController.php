@@ -176,10 +176,10 @@ class EventsCustomsController extends Controller
             ]);
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
-            $events_custom->title = $request->title;
             $events_custom->components = array();
+            $count_component = $request->countJS;
 
-            for($i=1;$i<6;$i++){
+            for($i=1;$i<=$count_component;$i++){
                 $template_component_id= $request->{'template_component_id'.$i};
                 if($request->{'template_component_id'.$i}){
                     $array_colors = array();
@@ -189,7 +189,7 @@ class EventsCustomsController extends Controller
                             $col = explode(",", $colcode);
                             $hex = explode(",", $hexa);
                         }
-                    }// create objects
+                    }
                     for($j=0;$j<count($col);$j++){
                         $array = array(
                             'title' => $col[$j],
@@ -197,20 +197,19 @@ class EventsCustomsController extends Controller
                         );
                         array_push($array_colors, $array);
                     }
-                    // push objects in array
+                    
                     $array_fonts = array();
                     $fonts = array();
-                    foreach($request->{'fontsList'.$template_component_id} as $font_title){
-                        if($request->{'url_'.$template_component_id}){
-                            foreach($request->{'url_'.$template_component_id} as $font_url){
+                    foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
+                        if ($request->{'url_'.$template_component_id}) {
+                            foreach ($request->{'url_'.$template_component_id} as $font_url) {
                                 $font = explode(",", $font_title);
                                 array_push($fonts, $font_url);
                             }
                         }
-
                     }
                 }
-                for($k=0;$k<count($font);$k++){
+                for ($k=0; $k<count($font); $k++) {
                     $array_ft = array(
                         'title' => $font[$k],
                         'font_url' => $fonts[$k]
@@ -383,7 +382,7 @@ class EventsCustomsController extends Controller
                 $font_file = $request->file('ec_font_url');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/event/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
+                $newFilePath = '/events/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
                 // Upload the new image
                 $disk->put($newFilePath, $font_file, 'public');
                 // Put in database
@@ -409,7 +408,7 @@ class EventsCustomsController extends Controller
     public function deleteFile($events_custom_id, $font_title, $font_name)
     {
         $disk = Storage::disk('s3'); 
-        $font_url = '/event/'.$events_custom_id.'/fonts/'.$font_title.'/'.$font_name;
+        $font_url = '/events/'.$events_custom_id.'/fonts/'.$font_title.'/'.$font_name;
         $disk->delete($font_url);
         $response = array(
             'status' => 'success',

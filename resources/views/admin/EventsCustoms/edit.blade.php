@@ -158,9 +158,9 @@
                                                                 </label>
                                                                 <!-- Input -->
                                                                 @if(isset($template_component->font["name"]))
-                                                                {!! Form::text('font_title'.$i, $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                                                    {!! Form::text('font_title'.$i, $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                                                                 @else
-                                                                {!! Form::text('font_title'.$i, null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
+                                                                    {!! Form::text('font_title'.$i, null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                                                                 @endif
                                                             </div>
                                                             <hr class="mt-4 mb-5">
@@ -535,7 +535,7 @@
         });
         $.ajax({
             type: 'delete',
-            url: "/admin/EventsCustoms/deleteFile/event/"+events_custom_event_id+'/fonts/'+font_title+'/'+font_name,
+            url: "/admin/EventsCustoms/deleteFile/events/"+events_custom_event_id+'/fonts/'+font_title+'/'+font_name,
             dataType: "JSON",
             data: {
                 "events_custom_event_id": events_custom_event_id,
@@ -547,7 +547,6 @@
             processData: false,
             success: function (response) {
                 console.log(response.msg);
-                //$('#' + id).remove();
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
