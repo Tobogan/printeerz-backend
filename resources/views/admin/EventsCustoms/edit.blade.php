@@ -43,7 +43,6 @@
                         <div class="tab-content" id="myTabContent">
                             @include('admin.EventsCustoms.includes.edit.tab-content')
                         </div>
-                        
                         {{-- Store Event custom event_id --}}
                         <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id" value="{{$events_custom->event_id}}">
             
@@ -54,9 +53,7 @@
                         <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
             
                         {{-- Store Event product title --}}
-                        <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
-
-                        <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
+                        <input type="hidden" class="form-control" name="actual_title" value="{{$events_custom->title}}">
             
                         {{-- Custom actions --}}
                         <div class="row">
@@ -64,7 +61,7 @@
                                 <div class="buttons">
                                     {!! Form::submit('Configurer', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
                                     <a class='btn btn-secondary' style="float: left"
-                                        href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
+                                        href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a>
                                 </div>
                             </div>
                         </div>

@@ -62,7 +62,7 @@
                     <div class="buttons">
                         {!! Form::submit('Enregistrer', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
                         <a class='btn btn-secondary' style="float: left"
-                            href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
+                        href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a>
                     </div>
                 </div>
             </div>

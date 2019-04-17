@@ -165,46 +165,6 @@ $(document).ready(function () {
         });
     });
 
-    /*$('#AddColor').on('submit', function (e) {
-        e.preventDefault();
-        $('#submit_modalAddColor').hide();
-        $('#loading_modalAddColor').removeClass('d-none');
-        $.ajax({
-            type: "POST",
-            url: '/admin/EventsCustoms/addColor',
-            data: $(this).serialize(),
-            success: function (msg) {
-                console.log(msg.events_custom);
-                $(this).removeClass('btn-primary');
-                $(this).addClass('btn-success');
-                var color = $('#ep_color').val();
-                var code_hex = $('#ep_code_hex').val();
-                var id = $('#tp_id').val();
-                var colorsList = $('#colorsList'+id).val();
-                console.log(colorsList);
-                var colors = [];
-                colors.push(colorsList);
-                var array = [color, code_hex];
-                colors.push(array);
-                //colors.push(color);
-                //colors.push(code_hex);
-                //console.log(colors);
-                document.getElementById("colorsList"+id).value = colors;
-                console.log(document.getElementById("colorsList"+id).value);
-                $('#addColorModal').modal('hide');
-                $('#submit_modalAddColor').show();
-                $('#loading_modalAddColor').addClass('d-none');
-                $('#ep_color').val('');
-                $('#ep_code_hex').val('');
-                //location.reload();
-            },
-            error: function (request, status, error) {
-                $('#submit_modalAddColor').show();
-                $('#loading_modalAddColor').addClass('d-none');
-            }
-        });
-    });*/
-
     $('#AddFont').on('submit', function (e) {
         e.preventDefault();
         var formData = new FormData($(this)[0]);
@@ -218,8 +178,8 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 console.log('Font file in db');
-                // $('#ec_font_title').val('');
-                // $('#ec_font_url').val('');
+                $('#ec_font_title').val('');
+                $('#ec_font_url').val('');
             }
         });
     });
