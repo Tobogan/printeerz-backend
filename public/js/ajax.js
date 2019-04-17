@@ -216,7 +216,8 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data.font_filename);
+                console.log(data);
+                console.log('Font file in db');
                 // $('#ec_font_title').val('');
                 // $('#ec_font_url').val('');
             }

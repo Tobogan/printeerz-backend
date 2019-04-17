@@ -91,7 +91,7 @@ class EventsCustomsController extends Controller
         $events_custom->is_active = $request->is_active;
         $events_custom->is_deleted = $request->is_deleted;
         $events_custom->save();
-        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        return redirect('admin/EventsCustoms/edit/'.$events_custom->id);
     }
 
     /**
