@@ -45,16 +45,12 @@
                         </div>
                         {{-- Store Event custom event_id --}}
                         <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id" value="{{$events_custom->event_id}}">
-            
                         {{-- Store Event custom id --}}
                         <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
-            
                         {{-- Store Event product id --}}
                         <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
-            
                         {{-- Store Event product title --}}
                         <input type="hidden" class="form-control" name="actual_title" value="{{$events_custom->title}}">
-            
                         {{-- Custom actions --}}
                         <div class="row">
                             <div class="col-12">
@@ -65,6 +61,7 @@
                                 </div>
                             </div>
                         </div>
+
             
                         {!! Form::close() !!}
                     </div>

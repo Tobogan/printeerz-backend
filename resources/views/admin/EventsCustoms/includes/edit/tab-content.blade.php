@@ -11,8 +11,13 @@
         <div class="col-4">
             Image
         </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label>Description de l'événement</label>
+                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+            </div>
+        </div>
     </div>
-
 </div>
 <?php $i=0; ?>
 @foreach($templates as $template)
@@ -24,6 +29,7 @@
                     <?php $i++; ?>
                     <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
                     <input type="hidden" name="{{'comp_type_'.$template_component->id}}" value="{{$template_component->comp_type}}">
+                    <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
                     <div class="tab-pane fade show" id="template_component_{{$template_component->id}}" role="tabpanel"
                         aria-labelledby="template_component_{{$template_component->id}}-tab">
                         {{-- Store template_composant id --}}
@@ -133,7 +139,7 @@
                                                                                 Roboto-Black
                                                                             </td>
                                                                             <td>
-                                                                                <a class="fontsDeleteRow" data-id="Roboto-Black" style="float:right">
+                                                                            <a class="fontsDeleteRow" data-url="/" data-font="Roboto-Black"  onclick="var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(font);deleteFile('\{{--sowdfhwmodsgjlwdfglkwlkfgqùdsgShk---}}\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();" style="float:right">
                                                                                     Supprimer 
                                                                                 </a>
                                                                             </td>
@@ -300,7 +306,7 @@
                                                 <div class="card-body">
                                                     <div class="form-group">
                                                         <div class="custom-file">
-                                                            {!! Form::file('comp_image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                                            {!! Form::file('comp_image'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                                                             <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
                                                         </div>
                                                     </div>
@@ -412,7 +418,6 @@
                                     </div>
                                 </div>
                                 @endif
-                                <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
                             </div>
                         </div>
                     </div>

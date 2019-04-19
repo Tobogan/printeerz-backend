@@ -21,7 +21,7 @@
         @foreach($template_components as $template_component)
             @foreach($template->components_ids as $component_id)
                 @if($template_component->id == $component_id['id'])
-                    @if($template_component->type = 'input')
+                    @if($template_component->type == 'input')
                         <?php $i++; ?>
                         <div class="tab-pane fade show" id="template_component_{{$template_component->id}}" role="tabpanel"
                             aria-labelledby="template_component_{{$template_component->id}}-tab">

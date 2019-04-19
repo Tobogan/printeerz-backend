@@ -179,10 +179,9 @@ class EventsCustomsController extends Controller
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
             $count_component = $request->countJS;
-            for($i=1;$i<$count_component;$i++){
-                $template_component_id= $request->{'template_component_id'.$i};
-                dd($request->{'comp_type_'.$template_component_id});
-                if($request->{'template_component_id'.$i}){
+            for($i=1;$i<=$count_component;$i++){
+                $template_component_id = $request->{'template_component_id'.$i};
+                if($template_component_id != null){
                     if($request->{'comp_type_'.$template_component_id} == 'input') {
                         $array_colors = array();
                         $colors = array();
@@ -204,80 +203,92 @@ class EventsCustomsController extends Controller
                         $fonts = array();
                         foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
                             if ($request->{'url_'.$template_component_id}) {
+                                // dd('tes ds le url_');
                                 foreach ($request->{'url_'.$template_component_id} as $font_url) {
                                     $font = explode(",", $font_title);
                                     array_push($fonts, $font_url);
                                 }
                             }
                         }
-                    }
-                }
-                if($request->{'comp_type_'.$template_component_id} == 'input') {
-                    for ($k=0; $k<count($font); $k++) {
-                        $array_ft = array(
-                            'title' => $font[$k],
-                            'font_url' => $fonts[$k]
+                        for ($k=0; $k<count($font); $k++) {
+                            $array_ft = array(
+                                'title' => $font[$k],
+                                'font_url' => $fonts[$k]
+                            );
+                            array_push($array_fonts, $array_ft);
+                        }
+                        $component_input = array(
+                            'template_component_id' => $request->{'template_component_id'.$i},
+                            'title' => $request->{'option_title'.$i},
+                            'position' => $request->{'option_position'.$i},
+                            'settings' => array(
+                                'input_min' => $request->{'min'.$i},
+                                'input_max' => $request->{'max'.$i},
+                                'font_first_letter' => $request->{'font_first_letter'.$i},
+                                'font_transform' => $request->{'font_transform'.$i},
+                                'font_weight' => $request->{'font_weight'.$i},
+                                'fonts' => $array_fonts,
+                                'font_colors' => $array_colors,
+                                'position' => array(
+                                    'width' => $request->{'width'.$i},
+                                    'height' => $request->{'height'.$i},
+                                    'origin_x' => $request->{'origin_x'.$i},
+                                    'origin_y' => $request->{'origin_y'.$i}
+                                ),
+                            ),
                         );
-                        array_push($array_fonts, $array_ft);
+                        $array = $events_custom->components;
+                        array_push($array, $component_input);
+                        $events_custom->components = $array;
                     }
-                    $component = array(
-                        'template_component_id' => $request->{'template_component_id'.$i},
-                        'title' => $request->{'option_title'.$i},
-                        'position' => $request->{'option_position'.$i},
-                        'settings' => array(
-                            'input_min' => $request->{'min'.$i},
-                            'input_max' => $request->{'max'.$i},
-                            'font_first_letter' => $request->{'font_first_letter'.$i},
-                            'font_transform' => $request->{'font_transform'.$i},
-                            'font_weight' => $request->{'font_weight'.$i},
-                            'fonts' => $array_fonts,
-                            'font_colors' => $array_colors,
-                            'position' => array(
-                                'width' => $request->{'width'.$i},
-                                'height' => $request->{'height'.$i},
-                                'origin_x' => $request->{'origin_x'.$i},
-                                'origin_y' => $request->{'origin_y'.$i}
-                            ),
-                        ),
-                    );
-                    $array = $events_custom->components;
-                    array_push($array, $component);
-                    $events_custom->components = $array;
-                }
-                if($request->{'comp_type_'.$template_component_id} == 'image'){
-                    if($request->hasFile('comp_image'.$i)){
-                        $events_custom_event_id = $request->events_custom_event_id;
-                        $image_file = $request->file('comp_image'.$i);
-                        $option_title = $request->{'option_title'.$i};
-                        $image_name = $image_file->getClientOriginalName();
-                        $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
-                        $disk->put($newFilePath, $image_file, 'public');
-                        $image_file = $newFilePath;
+                    if($request->{'comp_type_'.$template_component_id} == 'image'){
+                        if($request->hasFile('comp_image'.$i)){
+                            $events_custom_event_id = $request->events_custom_event_id;
+                            $image_file = $request->file('comp_image'.$i);
+                            $option_title = $request->{'option_title'.$i};
+                            $image_name = $image_file->getClientOriginalName();
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
+                            $disk->put($newFilePath, $image_file, 'public');
+                            $image_file = $newFilePath;
+                            $component = array(
+                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'title' => $request->{'option_title'.$i},
+                                'position' => $request->{'option_position'.$i},
+                                'settings' => array(
+                                    'image_name' => $image_name,
+                                    'image_url' => $newFilePath,
+                                    'position' => array(
+                                        'width' => $request->{'width'.$i},
+                                        'height' => $request->{'height'.$i},
+                                        'origin_x' => $request->{'origin_x'.$i},
+                                        'origin_y' => $request->{'origin_y'.$i}
+                                    ),
+                                ),
+                            );
+                        }
+                        else {
+                            $component = array(
+                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'title' => $request->{'option_title'.$i},
+                                'position' => $request->{'option_position'.$i},
+                                'settings' => array(
+                                    'position' => array(
+                                        'width' => $request->{'width'.$i},
+                                        'height' => $request->{'height'.$i},
+                                        'origin_x' => $request->{'origin_x'.$i},
+                                        'origin_y' => $request->{'origin_y'.$i}
+                                    ),
+                                ),
+                            );
+                        }
+                        $array = $events_custom->components;
+                        array_push($array, $component);
+                        $events_custom->components = $array;
                     }
-                    $component = array(
-                        'template_component_id' => $request->{'template_component_id'.$i},
-                        'title' => $request->{'option_title'.$i},
-                        'position' => $request->{'option_position'.$i},
-                        'settings' => array(
-                            'image_name' => $image_name,
-                            'image_url' => $newFilePath,
-                            'position' => array(
-                                'width' => $request->{'width'.$i},
-                                'height' => $request->{'height'.$i},
-                                'origin_x' => $request->{'origin_x'.$i},
-                                'origin_y' => $request->{'origin_y'.$i}
-                            ),
-                        ),
-                    );
-                    $array = $events_custom->components;
-                    array_push($array, $component);
-                    $events_custom->components = $array;
                 }
             }
             
-            $events_custom->comments = $request->comments;
-            $events_custom->is_active = $request->is_active;
-            $events_custom->is_deleted = $request->is_deleted;
+            $events_custom->description = $request->description;
             $events_custom->save();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
@@ -292,9 +303,9 @@ class EventsCustomsController extends Controller
             $events_custom->components = array();
             $count_component = $request->countJS;
             for($i=1;$i<=$count_component;$i++){
-                $template_component_id= $request->{'template_component_id'.$i};
-                if($request->{'template_component_id'.$i}){
-                    if($request->comp_type == 'input') {
+                $template_component_id = $request->{'template_component_id'.$i};
+                if($template_component_id != null){
+                    if($request->{'comp_type_'.$template_component_id} == 'input') {
                         $array_colors = array();
                         $colors = array();
                         foreach($request->{'colorsList'.$template_component_id} as $colcode){
@@ -315,80 +326,92 @@ class EventsCustomsController extends Controller
                         $fonts = array();
                         foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
                             if ($request->{'url_'.$template_component_id}) {
+                                // dd('tes ds le url_');
                                 foreach ($request->{'url_'.$template_component_id} as $font_url) {
                                     $font = explode(",", $font_title);
                                     array_push($fonts, $font_url);
                                 }
                             }
                         }
-                    }
-                }
-                if($request->comp_type == 'input') {
-                    for ($k=0; $k<count($font); $k++) {
-                        $array_ft = array(
-                            'title' => $font[$k],
-                            'font_url' => $fonts[$k]
+                        for ($k=0; $k<count($font); $k++) {
+                            $array_ft = array(
+                                'title' => $font[$k],
+                                'font_url' => $fonts[$k]
+                            );
+                            array_push($array_fonts, $array_ft);
+                        }
+                        $component_input = array(
+                            'template_component_id' => $request->{'template_component_id'.$i},
+                            'title' => $request->{'option_title'.$i},
+                            'position' => $request->{'option_position'.$i},
+                            'settings' => array(
+                                'input_min' => $request->{'min'.$i},
+                                'input_max' => $request->{'max'.$i},
+                                'font_first_letter' => $request->{'font_first_letter'.$i},
+                                'font_transform' => $request->{'font_transform'.$i},
+                                'font_weight' => $request->{'font_weight'.$i},
+                                'fonts' => $array_fonts,
+                                'font_colors' => $array_colors,
+                                'position' => array(
+                                    'width' => $request->{'width'.$i},
+                                    'height' => $request->{'height'.$i},
+                                    'origin_x' => $request->{'origin_x'.$i},
+                                    'origin_y' => $request->{'origin_y'.$i}
+                                ),
+                            ),
                         );
-                        array_push($array_fonts, $array_ft);
+                        $array = $events_custom->components;
+                        array_push($array, $component_input);
+                        $events_custom->components = $array;
                     }
-                    $component = array(
-                        'template_component_id' => $request->{'template_component_id'.$i},
-                        'title' => $request->{'option_title'.$i},
-                        'position' => $request->{'option_position'.$i},
-                        'settings' => array(
-                            'input_min' => $request->{'min'.$i},
-                            'input_max' => $request->{'max'.$i},
-                            'font_first_letter' => $request->{'font_first_letter'.$i},
-                            'font_transform' => $request->{'font_transform'.$i},
-                            'font_weight' => $request->{'font_weight'.$i},
-                            'fonts' => $array_fonts,
-                            'font_colors' => $array_colors,
-                            'position' => array(
-                                'width' => $request->{'width'.$i},
-                                'height' => $request->{'height'.$i},
-                                'origin_x' => $request->{'origin_x'.$i},
-                                'origin_y' => $request->{'origin_y'.$i}
-                            ),
-                        ),
-                    );
-                    $array = $events_custom->components;
-                    array_push($array, $component);
-                    $events_custom->components = $array;
-                }
-                if($request->comp_type == 'image'){
-                    if($request->hasFile('comp_image'.$i)){
-                        $events_custom_event_id = $request->events_custom_event_id;
-                        $image_file = $request->file('comp_image'.$i);
-                        $option_title = $request->{'option_title'.$i};
-                        $image_name = $image_file->getClientOriginalName();
-                        $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
-                        $disk->put($newFilePath, $image_file, 'public');
-                        $image_file = $newFilePath;
+                    if($request->{'comp_type_'.$template_component_id} == 'image'){
+                        if($request->hasFile('comp_image'.$i)){
+                            $events_custom_event_id = $request->events_custom_event_id;
+                            $image_file = $request->file('comp_image'.$i);
+                            $option_title = $request->{'option_title'.$i};
+                            $image_name = $image_file->getClientOriginalName();
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
+                            $disk->put($newFilePath, $image_file, 'public');
+                            $image_file = $newFilePath;
+                            $component = array(
+                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'title' => $request->{'option_title'.$i},
+                                'position' => $request->{'option_position'.$i},
+                                'settings' => array(
+                                    'image_name' => $image_name,
+                                    'image_url' => $newFilePath,
+                                    'position' => array(
+                                        'width' => $request->{'width'.$i},
+                                        'height' => $request->{'height'.$i},
+                                        'origin_x' => $request->{'origin_x'.$i},
+                                        'origin_y' => $request->{'origin_y'.$i}
+                                    ),
+                                ),
+                            );
+                        }
+                        else {
+                            $component = array(
+                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'title' => $request->{'option_title'.$i},
+                                'position' => $request->{'option_position'.$i},
+                                'settings' => array(
+                                    'position' => array(
+                                        'width' => $request->{'width'.$i},
+                                        'height' => $request->{'height'.$i},
+                                        'origin_x' => $request->{'origin_x'.$i},
+                                        'origin_y' => $request->{'origin_y'.$i}
+                                    ),
+                                ),
+                            );
+                        }
+                        $array = $events_custom->components;
+                        array_push($array, $component);
+                        $events_custom->components = $array;
                     }
-                    $component = array(
-                        'template_component_id' => $request->{'template_component_id'.$i},
-                        'title' => $request->{'option_title'.$i},
-                        'position' => $request->{'option_position'.$i},
-                        'settings' => array(
-                            'image_name' => $image_name,
-                            'image_url' => $newFilePath,
-                            'position' => array(
-                                'width' => $request->{'width'.$i},
-                                'height' => $request->{'height'.$i},
-                                'origin_x' => $request->{'origin_x'.$i},
-                                'origin_y' => $request->{'origin_y'.$i}
-                            ),
-                        ),
-                    );
-                    $array = $events_custom->components;
-                    array_push($array, $component);
-                    $events_custom->components = $array;
                 }
             }
             
-            $events_custom->comments = $request->comments;
-            $events_custom->is_active = $request->is_active;
-            $events_custom->is_deleted = $request->is_deleted;
+            $events_custom->description = $request->description;
             $events_custom->save();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }

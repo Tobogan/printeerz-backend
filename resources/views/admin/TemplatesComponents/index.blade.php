@@ -73,6 +73,7 @@
                                         Hauteur
                                     </a>
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
 
