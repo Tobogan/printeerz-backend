@@ -139,7 +139,7 @@
                                                                                 Roboto-Black
                                                                             </td>
                                                                             <td>
-                                                                            <a class="fontsDeleteRow" data-url="/" data-font="Roboto-Black"  onclick="var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(font);deleteFile('\{{--sowdfhwmodsgjlwdfglkwlkfgqùdsgShk---}}\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();" style="float:right">
+                                                                                <a onclick="deleteFontRow(Roboto-Black);deleteFile(Roboto-Black,Roboto-Black.ttf'+{{$events_custom->event_id}}.');$(this).closest(\'tr\').remove();">
                                                                                     Supprimer 
                                                                                 </a>
                                                                             </td>

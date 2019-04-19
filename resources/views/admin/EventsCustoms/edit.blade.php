@@ -160,7 +160,7 @@
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
         console.log('font_url= '+font_url_replaced);
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td class="text-right"><a class="fontsDeleteRow" style="float:right" data-url="'+font_url_replaced+'" data-font="'+font_title+'" onclick="var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(font);deleteFile('+'\''+font_title+'\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a data-url="'+font_url_replaced+'" data-font="'+font_title+'" onclick="var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(font);deleteFile('+'\''+font_title+'\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
 
     function deleteColorRow(color){
