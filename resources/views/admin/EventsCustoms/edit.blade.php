@@ -118,10 +118,10 @@
         $('#ep_code_hex').val('');
     });
 
-    $('.buttonFont').on('click', function(e) {
-        var id = $(this).attr('data-id');
-        $('#idTPFont').html('<input type="hidden" name="tp_id_font" id="tp_id_font" value="'+id+'">');
-    });
+    // $('.buttonFont').on('click', function(e) {
+    //     var id = $(this).attr('data-id');
+    //     $('#idTPFont').html('<input type="hidden" name="tp_id_font" id="tp_id_font" value="'+id+'">');
+    // });
 
     $('#AddFont').on('submit', function (e) {
         e.preventDefault();
@@ -164,7 +164,7 @@
     });
 
     function deleteColorRow(color){
-        var id = $('#tp_id').val();
+        var id = $('#tp_id_font').val();
         var colorsList = $('#colorsList'+id).val();
         var colors = [];
         colors.push(colorsToDeleteList);
@@ -179,7 +179,7 @@
     }
 
     function deleteHexaRow(hexa){
-        var id = $('#tp_id').val();
+        var id = $('#tp_id_font').val();
         var hexaList = $('#hexaList'+id).val();
         var hexas = [];
         var hexasToDeleteList = $('#hexasToDeleteList'+id).val();
@@ -195,20 +195,22 @@
     }
 
     function deleteFontRow(font){
-        console.log(font);
-        var id = $('#tp_id_font').val();
-        var fontsList = $('#fontsList'+id).val();
-        var fonts = [];
-        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
-        fonts.push(fontsToDeleteList);
-        var array_fonts = [font];
-        fonts.push([array_fonts]);
-        document.getElementById("fontsToDeleteList"+id).value = fonts;
-        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
-        var finalColors = fontsList.replace(fontsToDeleteList, "");
-        document.getElementById("fontsList"+id).value = finalColors;
-        console.log('finalColors= '+document.getElementById("fontsList"+id).value);
-        document.getElementById("fontsToDeleteList"+id).value = "";
+    console.log(font);
+    var id = $('#tp_id_font').val();
+    console.log('tp_id'+id);
+    var fontsList = $('#fontsList'+id).val();
+    var fonts = [];
+    var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+    console.log($('#fontsToDeleteList'+id).val());
+    fonts.push(fontsToDeleteList);
+    var array_fonts = [font];
+    fonts.push([array_fonts]);
+    document.getElementById("fontsToDeleteList"+id).value = fonts;
+    var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+    var finalColors = fontsList.replace(fontsToDeleteList, "");
+    document.getElementById("fontsList"+id).value = finalColors;
+    console.log('finalColors= '+document.getElementById("fontsList"+id).value);
+    document.getElementById("fontsToDeleteList"+id).value = "";
     }
 
     function deleteFile(font_title, font_name, events_custom_event_id) {

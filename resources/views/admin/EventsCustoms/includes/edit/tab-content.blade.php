@@ -139,9 +139,7 @@
                                                                                 Roboto-Black
                                                                             </td>
                                                                             <td>
-                                                                                <a onclick="deleteFontRow(Roboto-Black);deleteFile(Roboto-Black,Roboto-Black.ttf'+{{$events_custom->event_id}}.');$(this).closest(\'tr\').remove();">
-                                                                                    Supprimer 
-                                                                                </a>
+                                                                                <a class="fontsDeleteRow" style="float:right" onclick="var font='Roboto-Black';deleteFontRow(font);$(this).closest('tr').remove();">Supprimer</a>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -151,8 +149,10 @@
                                                     </div>
                                                     <div id="{{'newsFonts'.$template_component->id}}">
                                                         <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto-Black">
-                                                        <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/uploads/Roboto-Black.ttf">
-                                                        <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Black">
+                                                        <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/events/Roboto-Black.ttf">
+                                                        <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Roboto-Black.ttf">
+                                                        <input type="hidden" name="tp_id_font" id="tp_id_font" value="{{$template_component->id}}">
+
                                                     </div>
                                                     <div id="fontsToDelete">
                                                         <input type="hidden" name="{{'fontsToDeleteList'.$template_component->id.'[]'}}" id="{{'fontsToDeleteList'.$template_component->id}}">
@@ -275,7 +275,7 @@
                                                                                 000000
                                                                             </td>
                                                                             <td>
-                                                                                <a class="colorsDeleteRow" data-color="Black" style="float:right">
+                                                                                <a class="colorsDeleteRow" data-color="Black" style="float:right" onclick="var color='Black';var hexa='000000';deleteColorRow(color);deleteHexaRow(hexa);$(this).closest('tr').remove();">
                                                                                     Supprimer 
                                                                                 </a>
                                                                             </td>
