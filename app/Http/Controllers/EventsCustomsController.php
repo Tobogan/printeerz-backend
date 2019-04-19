@@ -497,10 +497,10 @@ class EventsCustomsController extends Controller
      * @param  string $font_url
      * @return \Illuminate\Http\Response
      */
-    public function deleteFile($events_custom_id, $font_title, $font_name)
+    public function deleteFile($events_custom_event_id, $font_title, $font_name)
     {
         $disk = Storage::disk('s3'); 
-        $font_url = '/events/'.$events_custom_id.'/fonts/'.$font_title.'/'.$font_name;
+        $font_url = '/events/'.$events_custom_event_id.'/fonts/'.$font_title.'/'.$font_name;
         $disk->delete($font_url);
         $response = array(
             'status' => 'success',
