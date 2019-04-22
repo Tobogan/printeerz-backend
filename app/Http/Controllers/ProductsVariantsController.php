@@ -245,27 +245,34 @@ class ProductsVariantsController extends Controller
             unlink($file_path_image);
         }
         $products_variants->delete();
-        //$product = Product::find($products_variants->product_id);
-        //$products_variants = Products_variants::all();
-        //return view('admin/Product.show', ['product' => $product, 'products_variants' => $products_variants])->with('status', 'Le variante a été correctement supprimé.');
-        return redirect('admin/Product/show/'.$products_variants->product_id)->with('status', 'Le variante a été correctement supprimé.');
+        $notification = array(
+            'status' => 'La variante a été correctement supprimée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Product/show/'.$products_variants->product_id)->with($notification);
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a products_variants function in index products_variants__________~~~~~~~~~~~~-*/
     public function desactivate($id)
     {
         $products_variants = Products_variants::find($id);
         $products_variants->is_active = false;
         $products_variants->update();
-        return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement supprimé.');
+        $notification = array(
+            'status' => 'La variante a été correctement supprimée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/ProductsVariants/index')->with($notification);
     }
 
     public function delete($id)
     {
         $products_variants = Products_variants::find($id);
         $products_variants->is_deleted = true;
-        $products_variants->update();
-        return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement désactivée.');
+        $products_variants->update();$notification = array(
+            'status' => 'La variante a été correctement supprimée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/ProductsVariants/index')->with($notification);
     }
 
     public function activate($id)
@@ -273,6 +280,10 @@ class ProductsVariantsController extends Controller
         $products_variants = Products_variants::find($id);
         $products_variants->is_active = true;
         $products_variants->update();
-        return redirect('admin/ProductsVariants/index')->with('status', 'Le variante a été correctement activée.');
+        $notification = array(
+            'status' => 'La variante a été correctement activée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/ProductsVariants/index')->with($notification);
     }
 }
