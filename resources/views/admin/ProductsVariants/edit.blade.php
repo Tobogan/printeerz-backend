@@ -1,5 +1,4 @@
-@extends('layouts/templateAdmin')
-
+@extends('layouts/templateAdmin') 
 @section('content')
 
 <div class="container">
@@ -21,8 +20,8 @@
                     </div>
                 </div>
             </div>
-            {!! Form::open(['action' => array('ProductsVariantsController@update'), 'id' => $products_variant->id, 'files' => true,
-            'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('ProductsVariantsController@update'), 'id' => $products_variant->id, 'files' => true, 'class'
+            => 'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
@@ -33,8 +32,7 @@
                             Couleur de la variante
                         </label>
                         <!-- Input -->
-                        {!! Form::text('color', $products_variant->color, ['class' => 'form-control'])
-                        !!}
+                        {!! Form::text('color', $products_variant->color, ['class' => 'form-control']) !!}
                     </div>
                 </div>
                 <div class="col-12">
@@ -45,8 +43,7 @@
                             Taille
                         </label>
                         <!-- Input -->
-                        {!! Form::text('size', $products_variant->size, ['class' => 'form-control'])
-                        !!}
+                        {!! Form::text('size', $products_variant->size, ['class' => 'form-control']) !!}
                     </div>
                 </div>
                 <hr class="mt-4 mb-5">
@@ -59,48 +56,41 @@
                             Quantité stock
                         </label>
                         <!-- Input -->
-                            {!! Form::text('quantity', $products_variant->quantity, ['class' => 'form-control', 'placeholder' =>
-                        'Saisissez la quantité en stock :']) !!}
+                        {!! Form::text('quantity', $products_variant->quantity, ['class' => 'form-control', 'placeholder' => 'Saisissez la quantité
+                        en stock']) !!}
                     </div>
-                    <?php $i = 1; ?>
-                    @if($product->printzones_id)
-                        @foreach($printzones as $printzone)
-                            @foreach($product->printzones_id as $print)
-                                @if($printzone->id == $print)
-                                    <hr class="mt-4 mb-5">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="h3"> {{ $printzone->name }}</p>
-                                            <p class="mb-4">Ajouter l'image du produit en format 1:1</p>
-                                        </div>
-                                        <div class="col-12">
-                                            <!-- First name -->
-                                            <div class="form-group">
-                                                {!! Form::file('printzone'.$i, array('class' => 'form-group')) !!}
-                                                <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
-                                                <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php $i++; ?>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    @endif
+                    <?php $i = 1; ?> @if($product->printzones_id) @foreach($printzones as $printzone) @foreach($product->printzones_id as
+                    $print) @if($printzone->id == $print)
+                    <hr class="mt-4 mb-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="h3"> {{ $printzone->name }}</p>
+                            <p class="mb-4">Ajouter l'image du produit en format 1:1</p>
+                        </div>
+                        <div class="col-12">
+                            <!-- First name -->
+                            <div class="form-group">
+                                {!! Form::file('printzone'.$i, array('class' => 'form-group')) !!}
+                                <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
+                                <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
+                            </div>
+                        </div>
+                    </div>
+                    <?php $i++; ?> @endif @endforeach @endforeach @endif
                     <input type="hidden" class="form-control" name="printzones_nb" value="{{ $i }}">
                     <hr class="mt-4 mb-5">
                     <div class="row">
                         <div class="col-12">
                             <p class="h3">Image</p>
-                            <p class="mb-4">Modifier l'image du produit en format 1:1</p>
                         </div>
                         <div class="col-12">
-                            <!-- First name -->
-                            <div class="form-group">
-                                {!! Form::file('image', array('class' => '', 'id' => 'logo_img')) !!}
+                            <div class="custom-file">
+                                {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
+                                <label class="custom-file-label" for="logo_img">Télécharger l'image de la variante</label>
                             </div>
                         </div>
                     </div>
+                    <hr class="mt-4 mb-5">
                     <div class="row">
                         <div class="col-12">
                             <div class="buttons">
@@ -110,12 +100,10 @@
                         </div>
                     </div>
                     <input type="hidden" class="form-control" name="actual_color" value="{{$products_variant->color}}">
-                    <input type="hidden" class="form-control" name="products_variant_id" value="{{$products_variant->id}}">
-                    {!! Form::close() !!}
+                    <input type="hidden" class="form-control" name="products_variant_id" value="{{$products_variant->id}}">                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
