@@ -289,9 +289,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -312,9 +312,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -402,7 +402,7 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->widen(300)->save($name);
                 // Upload the new image
@@ -425,9 +425,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
