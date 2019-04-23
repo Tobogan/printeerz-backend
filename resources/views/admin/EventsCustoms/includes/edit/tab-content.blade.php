@@ -231,7 +231,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col">
                                                         <h4 class="card-header-title">
-                                                        Couleurs de la police
+                                                        Couleurs de la police yo
                                                         </h4>
                                                     </div>
                                                     <div class="col-auto">
