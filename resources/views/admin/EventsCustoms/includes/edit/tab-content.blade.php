@@ -29,6 +29,7 @@
                     <?php $i++; ?>
                     <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
                     <input type="hidden" name="{{'comp_type_'.$template_component->id}}" value="{{$template_component->comp_type}}">
+                    {{-- <input type="hidden" name="tp_id" id="tp_id" value="{{$template_component->id}}"> --}}
                     <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
                     <div class="tab-pane fade show" id="template_component_{{$template_component->id}}" role="tabpanel"
                         aria-labelledby="template_component_{{$template_component->id}}-tab">
@@ -126,7 +127,7 @@
                                                                         <tr>
                                                                             <th>
                                                                                 <a href="#" class="text-muted" data-sort="font-name">
-                                                                                    Nom
+                                                                                    {{-- Nom --}}
                                                                                 </a>
                                                                             </th>
                                                                             <th></th>
@@ -135,14 +136,14 @@
                                             
                                                                     <tbody class="list" id="{{'font_name_list'.$template_component->id}}">
                                                                         <tr>
-                                                                            <td class="font-name">
+                                                                            {{-- <td class="font-name">
                                                                                 Roboto-Black
                                                                             </td>
                                                                             <td>
-                                                                                <a onclick="deleteFontRow(Roboto-Black);deleteFile(Roboto-Black,Roboto-Black.ttf'+{{$events_custom->event_id}}.');$(this).closest(\'tr\').remove();">
+                                                                            <a style="float:right" data-id="{{$template_component->id}}" onclick="var id=$(this).attr('data-id');var font='Roboto-Black';deleteFontRow(id, font);$(this).closest('tr').remove();">
                                                                                     Supprimer 
                                                                                 </a>
-                                                                            </td>
+                                                                            </td> --}}
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -150,9 +151,9 @@
                                                         </div>
                                                     </div>
                                                     <div id="{{'newsFonts'.$template_component->id}}">
-                                                        <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto-Black">
-                                                        <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/uploads/Roboto-Black.ttf">
-                                                        <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Black">
+                                                        <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" > {{-- removed value="Roboto-Black" --}}
+                                                        <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                                        {{-- <input type="hidden" name="{{'url'.$template_component->id.'[]'}}" id="{{'url'.$template_component->id}}" value="Roboto-Black"> --}}
                                                     </div>
                                                     <div id="fontsToDelete">
                                                         <input type="hidden" name="{{'fontsToDeleteList'.$template_component->id.'[]'}}" id="{{'fontsToDeleteList'.$template_component->id}}">
@@ -231,7 +232,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col">
                                                         <h4 class="card-header-title">
-                                                        Couleurs de la police yo
+                                                        Couleurs de la police
                                                         </h4>
                                                     </div>
                                                     <div class="col-auto">
@@ -268,24 +269,24 @@
                                             
                                                                     <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
                                                                         <tr>
-                                                                            <td class="color-name">
+                                                                            {{-- <td class="color-name">
                                                                                 Black
                                                                             </td>
                                                                             <td class="color-code_hex">
                                                                                 000000
                                                                             </td>
                                                                             <td>
-                                                                                <a class="colorsDeleteRow" data-color="Black" style="float:right">
+                                                                                <a data-id="{{$template_component->id}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa='000000';var color='Black';deleteColorRow(id, color);deleteHexaRow(id, hexa);$(this).closest('tr').remove();">
                                                                                     Supprimer 
                                                                                 </a>
-                                                                            </td>
+                                                                            </td> --}}
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
                                                             <div id="newsColors">
-                                                                <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
-                                                                <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
+                                                                <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}"> {{-- value="Black" --}}
+                                                                <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}"> {{-- value="000000" --}}
                                                             </div>
                                                             <div id="colorsToDelete">
                                                                 <input type="hidden" name="{{'colorsToDeleteList'.$template_component->id.'[]'}}" id="{{'colorsToDeleteList'.$template_component->id}}">
