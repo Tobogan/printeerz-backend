@@ -96,18 +96,19 @@ function updateFormHidden(list,hiddenValue){
     var id = $(this).data('id');
     var name = $(this).text();
     var datas = [];
+    var found = false;
     componentList.push({
       id : id,
       name: name
     })
     console.log(componentList);
   });
+
   // Format value to json
   var json = JSON.stringify(componentList, 'true');
   // Add value to form hidden value
   $(hiddenValue).attr('value', json);
   console.log('jsonCompList='+json);
-  console.log('value='+hiddenValue);
 };
 
 $(function () {
@@ -130,6 +131,7 @@ $(function () {
       componentFormList.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
       // Update Form hidden value
       updateFormHidden(componentFormList,componentFormListHidden);
+      componentsSelect.remove();
     };
     // Reset Select2 value
     $(this).val(null).trigger('change.select2')

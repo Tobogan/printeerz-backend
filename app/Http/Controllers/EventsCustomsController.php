@@ -86,8 +86,6 @@ class EventsCustomsController extends Controller
             $request->template_id,
             $request->printzone_id,
         );
-        $events_custom->title = $request->title;
-        $events_custom->comments = $request->comments;
         $events_custom->is_active = $request->is_active;
         $events_custom->is_deleted = $request->is_deleted;
         $events_custom->save();
@@ -174,7 +172,7 @@ class EventsCustomsController extends Controller
             $validatedData = $request->validate([
                 'title' => 'string|max:255'
             ]);
-            $disk = Storage::disk('s3'); 
+            $disk = Storage::disk('s3'); //ajouter des $i dans les input
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
@@ -182,11 +180,11 @@ class EventsCustomsController extends Controller
             for($i=1;$i<=$count_component;$i++){
                 $template_component_id = $request->{'template_component_id'.$i};
                 if($template_component_id != null){
-                    if($request->{'comp_type_'.$template_component_id} == 'input') {
+                    if($request->{'comp_type_'.$i} == 'input') {
                         $array_colors = array();
                         $colors = array();
-                        foreach($request->{'colorsList'.$template_component_id} as $colcode){
-                            foreach($request->{'hexaList'.$template_component_id} as $hexa){
+                        foreach($request->{'colorsList'.$i} as $colcode){
+                            foreach($request->{'hexaList'.$i} as $hexa){
                                 $col = explode(",", $colcode);
                                 $hex = explode(",", $hexa);
                             }
@@ -201,10 +199,10 @@ class EventsCustomsController extends Controller
                         
                         $array_fonts = array();
                         $fonts = array();
-                        foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
-                            if ($request->{'url_'.$template_component_id}) {
+                        foreach ($request->{'fontsList'.$i} as $font_title) {
+                            if ($request->{'url_'.$i}) {
                                 // dd('tes ds le url_');
-                                foreach ($request->{'url_'.$template_component_id} as $font_url) {
+                                foreach ($request->{'url_'.$i} as $font_url) {
                                     $font = explode(",", $font_title);
                                     array_push($fonts, $font_url);
                                 }
@@ -241,7 +239,7 @@ class EventsCustomsController extends Controller
                         array_push($array, $component_input);
                         $events_custom->components = $array;
                     }
-                    if($request->{'comp_type_'.$template_component_id} == 'image'){
+                    if($request->{'comp_type_'.$i} == 'image'){
                         if($request->hasFile('comp_image'.$i)){
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image'.$i);
@@ -305,11 +303,11 @@ class EventsCustomsController extends Controller
             for($i=1;$i<=$count_component;$i++){
                 $template_component_id = $request->{'template_component_id'.$i};
                 if($template_component_id != null){
-                    if($request->{'comp_type_'.$template_component_id} == 'input') {
+                    if($request->{'comp_type_'.$i} == 'input') {
                         $array_colors = array();
                         $colors = array();
-                        foreach($request->{'colorsList'.$template_component_id} as $colcode){
-                            foreach($request->{'hexaList'.$template_component_id} as $hexa){
+                        foreach($request->{'colorsList'.$i} as $colcode){
+                            foreach($request->{'hexaList'.$i} as $hexa){
                                 $col = explode(",", $colcode);
                                 $hex = explode(",", $hexa);
                             }
@@ -324,10 +322,10 @@ class EventsCustomsController extends Controller
                         
                         $array_fonts = array();
                         $fonts = array();
-                        foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
-                            if ($request->{'url_'.$template_component_id}) {
+                        foreach ($request->{'fontsList'.$i} as $font_title) {
+                            if ($request->{'url_'.$i}) {
                                 // dd('tes ds le url_');
-                                foreach ($request->{'url_'.$template_component_id} as $font_url) {
+                                foreach ($request->{'url_'.$i} as $font_url) {
                                     $font = explode(",", $font_title);
                                     array_push($fonts, $font_url);
                                 }
@@ -364,7 +362,7 @@ class EventsCustomsController extends Controller
                         array_push($array, $component_input);
                         $events_custom->components = $array;
                     }
-                    if($request->{'comp_type_'.$template_component_id} == 'image'){
+                    if($request->{'comp_type_'.$i} == 'image'){
                         if($request->hasFile('comp_image'.$i)){
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image'.$i);

@@ -105,6 +105,11 @@ class TemplatesController extends Controller
             'x' => $request->origin_x,
             'y' => $request->origin_y
         );
+        $i=0;
+        foreach(json_decode($request->get('templateComponentsList')) as $templates_component){
+            $i++;
+            $templates_component->name == $templates_component->name.'(gabarit n°'.$i.')';
+        }
         $template->components_ids = json_decode($request->get('templateComponentsList'));
         $template->position = $request->position;
         $template->is_active = $request->is_active; 

@@ -19,17 +19,18 @@
         </div>
     </div>
 </div>
-<?php $i=0; ?>
+<?php $i=1;?>
 @foreach($templates as $template)
     <?php $array_template = $events_custom->template ?>
     @if($template->id == reset($array_template))
         @foreach($template_components as $template_component)
             @foreach($template->components_ids as $component_id)
                 @if($template_component->id == $component_id['id'])
-                    <?php $i++; ?>
+                <?php $name = $component_id['name']; ?>
                     <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
-                    <input type="hidden" name="{{'comp_type_'.$template_component->id}}" value="{{$template_component->comp_type}}">
-                    <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
+                    <input type="hidden" name="{{'comp_type_'.$i}}" value="{{$template_component->comp_type}}">
+                    <input type="hidden" name="{{$name}}" id="{{$name}}" value="{{$i}}">
+                    <?php  ?>
                     <div class="tab-pane fade show" id="template_component_{{$template_component->id}}" role="tabpanel"
                         aria-labelledby="template_component_{{$template_component->id}}-tab">
                         {{-- Store template_composant id --}}
@@ -47,7 +48,7 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <!-- Input -->
-                                                    {!! Form::text('option_title'.$i, $template_component->title, ['class' => 'form-control','placeholder' => 'Entrer le nom']) !!}
+                                                    {!! Form::text('option_title'.$i, $name, ['class' => 'form-control','placeholder' => 'Entrer le nom']) !!}
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-muted">Vous pouvez changer le nom de ce composant pour cette personnalisation.</p>
@@ -133,7 +134,7 @@
                                                                         </tr>
                                                                     </thead>
                                             
-                                                                    <tbody class="list" id="{{'font_name_list'.$template_component->id}}">
+                                                                    <tbody class="list" id="{{'font_name_list'.$i}}">
                                                                         <tr>
                                                                             <td class="font-name">
                                                                                 Roboto-Black
@@ -147,15 +148,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="{{'newsFonts'.$template_component->id}}">
-                                                        <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="Roboto-Black">
-                                                        <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="/events/Roboto-Black.ttf">
-                                                        <input type="hidden" name="{{'url_'.$template_component->id.'[]'}}" id="{{'url_'.$template_component->id}}" value="Roboto-Black.ttf">
+                                                    <div id="{{'newsFonts'.$i}}">
+                                                        <input type="hidden" name="{{'fontsList'.$i.'[]'}}" id="{{'fontsList'.$i}}" value="Roboto-Black">
+                                                        <input type="hidden" name="{{'font_urlList'.$i.'[]'}}" id="{{'font_urlList'.$i}}" value="/events/Roboto-Black.ttf">
+                                                        <input type="hidden" name="{{'url_'.$i.'[]'}}" id="{{'url_'.$i}}" value="Roboto-Black.ttf">
                                                         <input type="hidden" name="tp_id_font" id="tp_id_font" value="{{$template_component->id}}">
 
                                                     </div>
                                                     <div id="fontsToDelete">
-                                                        <input type="hidden" name="{{'fontsToDeleteList'.$template_component->id.'[]'}}" id="{{'fontsToDeleteList'.$template_component->id}}">
+                                                        <input type="hidden" name="{{'fontsToDeleteList'.$i.'[]'}}" id="{{'fontsToDeleteList'.$i}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -266,7 +267,7 @@
                                                                         </tr>
                                                                     </thead>
                                             
-                                                                    <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
+                                                                    <tbody class="list" id="{{'color_name_list'.$i}}">
                                                                         <tr>
                                                                             <td class="color-name">
                                                                                 Black
@@ -284,12 +285,12 @@
                                                                 </table>
                                                             </div>
                                                             <div id="newsColors">
-                                                                <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="Black">
-                                                                <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="000000">
+                                                                <input type="hidden" name="{{'colorsList'.$i.'[]'}}" id="{{'colorsList'.$i}}" value="Black">
+                                                                <input type="hidden" name="{{'hexaList'.$i.'[]'}}" id="{{'hexaList'.$i}}" value="000000">
                                                             </div>
                                                             <div id="colorsToDelete">
-                                                                <input type="hidden" name="{{'colorsToDeleteList'.$template_component->id.'[]'}}" id="{{'colorsToDeleteList'.$template_component->id}}">
-                                                                <input type="hidden" name="{{'hexasToDeleteList'.$template_component->id.'[]'}}" id="{{'hexasToDeleteList'.$template_component->id}}">
+                                                                <input type="hidden" name="{{'colorsToDeleteList'.$i.'[]'}}" id="{{'colorsToDeleteList'.$i}}">
+                                                                <input type="hidden" name="{{'hexasToDeleteList'.$i.'[]'}}" id="{{'hexasToDeleteList'.$i}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,6 +418,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <?php $i++; ?>
                                 @endif
                             </div>
                         </div>
