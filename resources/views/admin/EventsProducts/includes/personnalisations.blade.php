@@ -76,8 +76,8 @@
                                                 <b>{{ $custom->title }}</b></a></td>
                                             <td>{{ $template->title }}</td>
                                             <td>
-                                                <a href="{{route('edit_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary" style="float:right">
-                                                Configurer
+                                                <a href="{{route('show_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary" style="float:right">
+                                                Détails
                                                 </a>
                                             </td>
                                             <td class="text-right">

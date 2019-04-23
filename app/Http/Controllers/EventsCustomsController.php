@@ -113,6 +113,8 @@ class EventsCustomsController extends Controller
         }
         $product = Product::find($events_product->product_id);
         $printzones = Printzones::all();
+        $font_transform = ['none','uppercase','capitalize','lowercase','full-width'];
+        $font_weight = ['100','200','300','400','500','600','700','800','900'];
         $select_printzones = [];
         if($product->printzones_id != null){
             foreach($printzones as $printzone){
@@ -123,7 +125,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.show', ['events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.show', ['font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
