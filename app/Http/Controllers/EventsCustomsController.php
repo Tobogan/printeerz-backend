@@ -285,9 +285,10 @@ class EventsCustomsController extends Controller
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image'.$i);
                             $option_title = $request->{'option_title'.$i};
-                            $image_name = $image_file->getClientOriginalName();
+                            $image_name = time().$image_file->getClientOriginalName();
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
-                            $disk->put($newFilePath, $image_file, 'public');
+                            $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
+                            $disk->put($newFilePath, $img_resized, 'public');
                             $image_file = $newFilePath;
                             $component = array(
                                 'template_component_id' => $request->{'template_component_id'.$i},
@@ -295,7 +296,7 @@ class EventsCustomsController extends Controller
                                 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
-                                    'image_url' => $newFilePath,
+                                    'image_url' => $newFilePath, // là j'ai enlevé $newFilePath
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
                                         'height' => $request->{'height'.$i},
@@ -411,7 +412,7 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image'.$i);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = $image_file->getClientOriginalName();
-                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title;
                             $disk->put($newFilePath, $image_file, 'public');
                             $image_file = $newFilePath;
                             $component = array(

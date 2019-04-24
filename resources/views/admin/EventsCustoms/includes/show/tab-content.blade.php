@@ -341,7 +341,7 @@
                                             </div>
                                             
                                             <div class="col-12">
-                                                <p class="text-muted">Ajoutez ici l'image correspondant à ce composant.</p>
+                                                <p class="text-muted">Modifiez ici l'image du composant.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -449,6 +449,34 @@
                                 </div>
                             </div>
                         </div>
+                        @elseif($template_component->comp_type == 'image')
+                            {{-- Image --}}
+                            @if(!empty($events_custom_component['settings']['image_url']) && $disk->exists($events_custom_component['settings']['image_url']))
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        Image du composant
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <img width="100%" title="Image du composant" class="" src="{{$s3 . $events_custom_component['settings']['image_url']}}"
+                                        alt="Image personnalisation">
+                                </div>
+                            </div>
+                            @else
+                            <div class="card card-inactive">
+                                <div class="card-body text-center">
+                                    <!-- Title -->
+                                    <p class="text-muted">
+                                        Pas d'image de personnalisation
+                                    </p>
+                                    <!-- Button -->
+                                    {{-- <a href="{{route('edit_product', $events_custom->id)}}" class="btn btn-primary btn-sm">
+                                        Ajouter une image
+                                    </a> --}}
+                                </div>
+                            </div>
+                            @endif
                         @endif
                     </div>
                 </div>
