@@ -7,16 +7,38 @@
                 </label>
                 {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
             </div>
-        </div>
-        <div class="col-4">
-            Image
-        </div>
-        <div class="col-12">
-            <div class="form-group">
-                <label>Description de l'événement</label>
-                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Description de l'événement</label>
+                    <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+                </div>
             </div>
         </div>
+        <div class="col-4">
+            {{-- Image --}}
+            @if(!empty($events_custom->image) && $disk->exists($events_custom->image))
+                <div class="card">
+                    <div class="card-body">
+                        <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->image}}"
+                            alt="Image personnalisation">
+                    </div>
+                </div>
+            @else
+                <div class="card card-inactive">
+                    <div class="card-body text-center">
+                        <!-- Title -->
+                        <p class="text-muted">
+                            Pas d'image de personnalisation
+                        </p>
+                        <!-- Button -->
+                        {{-- <a href="{{route('edit_product', $events_custom->id)}}" class="btn btn-primary btn-sm">
+                            Ajouter une image
+                        </a> --}}
+                    </div>
+                </div>
+            @endif
+        </div>
+
     </div>
 </div>
 <?php $i=0; ?>

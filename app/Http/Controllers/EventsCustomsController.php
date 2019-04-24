@@ -77,6 +77,8 @@ class EventsCustomsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255'
         ]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $events_custom = new Events_customs;
         $events_custom->title = $request->title;
         $events_custom->event_id = $request->get('event_id');
@@ -88,6 +90,23 @@ class EventsCustomsController extends Controller
         );
         $events_custom->is_active = $request->is_active;
         $events_custom->is_deleted = $request->is_deleted;
+        $events_custom->save();
+        if ($request->hasFile('custom_img')){
+            // Get file
+            $file = $request->file('custom_img');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $events_custom->image = $filePath;
+        }
         $events_custom->save();
         return redirect('admin/EventsCustoms/edit/'.$events_custom->id);
     }
@@ -104,6 +123,8 @@ class EventsCustomsController extends Controller
         $events_customs = Events_customs::all();
         $templates = Templates::all();
         $template_components = Template_components::all();
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_templates = [];
         foreach($templates as $template) {
             $select_templates[$template->id] = $template->title;
@@ -113,8 +134,24 @@ class EventsCustomsController extends Controller
         }
         $product = Product::find($events_product->product_id);
         $printzones = Printzones::all();
-        $font_transform = ['none','uppercase','capitalize','lowercase','full-width'];
-        $font_weight = ['100','200','300','400','500','600','700','800','900'];
+        $font_transform = [
+            'none'=>'Aucune',
+            'uppercase'=>'Tout en Majuscules',
+            'capitalize'=>'Première lettre en Majuscule',
+            'lowercase'=>'Tout en minuscule',
+            'full-width'=>'Pleine largeur'
+        ];
+        $font_weight = [
+            '100'=>'Thin (100)',
+            '200'=>'Extra Light (200)',
+            '300'=>'Light (300)',
+            '400'=>'Normal (400)',
+            '500'=>'Medium (500)',
+            '600'=>'Semi Bold (600)',
+            '700'=>'Bold (700)',
+            '800'=>'Extra Bold (800)',
+            '900'=>'Black (900)'
+        ];
         $select_printzones = [];
         if($product->printzones_id != null){
             foreach($printzones as $printzone){
@@ -125,7 +162,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.show', ['font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.show', ['disk'=>$disk,'s3'=>$s3,'font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
@@ -139,6 +176,8 @@ class EventsCustomsController extends Controller
         $events_custom = Events_customs::find($id);
         $templates = Templates::all();
         $template_components = Template_components::all();
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_templates = [];
         foreach ($templates as $template) {
             $select_templates[$template->id] = $template->title;
@@ -158,7 +197,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.edit', ['template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.edit', ['disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
@@ -471,7 +510,6 @@ class EventsCustomsController extends Controller
             $title = $request->ec_font_title;
             if($request->hasFile('ec_font_url')) {
                 $events_custom_event_id = $request->events_custom_event_id;
-                // $template_component_id = $request->tp_id_font;
                 // Create image name
                 $font_file = $request->file('ec_font_url');
                 $name = $font_file->getClientOriginalName();
