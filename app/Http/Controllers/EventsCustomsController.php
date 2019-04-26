@@ -284,17 +284,8 @@ class EventsCustomsController extends Controller
                                 }
                             }
                         }
-                        // for($k=1; $k<count($font); $k++){
-                        //     $array_ft = array(
-                        //         'title' => $font[$k],
-                        //         'font_url' => $urls[$k]
-                        //     );
-                        //     array_push($array_fonts, $array_ft);
-                        // }
-                        // font weight & font transform for every font added
                         $array_fonts_weight = array();
                         $fonts_weight = array();
-                        // dd($request->{'fontsWeightList'.$template_component_id});
                         foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
                             if ($request->{'fontsTransformList'.$template_component_id}) {
                                 foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
@@ -306,7 +297,6 @@ class EventsCustomsController extends Controller
                         }
                         foreach($request->{'fontsFileNameList'.$template_component_id} as $font_file_name){
                             $fonts_file_name_exploded = explode(",", $font_file_name);
-                            // dd($font_file_name);
                         }
                         for($k=1; $k<count($font); $k++){
                             $array_ft = array(
@@ -318,16 +308,6 @@ class EventsCustomsController extends Controller
                             );
                             array_push($array_fonts, $array_ft);
                         }
-                        // for($l=1; $l<count($fonts_weight_exploded); $l++){
-                        //     $array_weight_transform = array(
-                        //         'title' => $font[$l],
-                        //         'font_weight' => $fonts_weight_exploded[$l],
-                        //         'font_transform' => $fonts_transform_exploded[$l],
-                        //         'font_url' => $urls[$l]
-                        //     );
-                        //     array_push($array_fonts_weight, $array_weight_transform);
-                        // }
-                        // array_push($array_fonts, $array_fonts_weight); // here i push weight & transform datas to array fonts
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
                             'component_type' => $request->{'comp_type_'.$template_component_id},
@@ -409,7 +389,7 @@ class EventsCustomsController extends Controller
             $validatedData = $request->validate([
                 'title' => 'string|max:255'
             ]);
-            $disk = Storage::disk('s3'); //ajouter des $i dans les input
+            $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
@@ -446,14 +426,6 @@ class EventsCustomsController extends Controller
                                 }
                             }
                         }
-                        // for($k=1; $k<count($font); $k++){
-                        //     $array_ft = array(
-                        //         'title' => $font[$k],
-                        //         'font_url' => $urls[$k]
-                        //     );
-                        //     array_push($array_fonts, $array_ft);
-                        // }
-                        // font weight & font transform for every font added
                         $array_fonts_weight = array();
                         $fonts_weight = array();
                         foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
@@ -478,16 +450,6 @@ class EventsCustomsController extends Controller
                             );
                             array_push($array_fonts, $array_ft);
                         }
-                        // for($l=1; $l<count($fonts_weight_exploded); $l++){
-                        //     $array_weight_transform = array(
-                        //         'title' => $font[$l],
-                        //         'font_weight' => $fonts_weight_exploded[$l],
-                        //         'font_transform' => $fonts_transform_exploded[$l],
-                        //         'font_url' => $urls[$l]
-                        //     );
-                        //     array_push($array_fonts_weight, $array_weight_transform);
-                        // }
-                        // array_push($array_fonts, $array_fonts_weight); // here i push weight & transform datas to array fonts
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
                             'component_type' => $request->{'comp_type_'.$template_component_id},
@@ -576,8 +538,18 @@ class EventsCustomsController extends Controller
     public function destroy($id)
     {
         $events_custom = Events_customs::find($id);
+        $disk = Storage::disk('s3'); 
+        foreach($events_custom->components as $component){
+            if(isset($component['image_url'])){
+                $disk->delete($component['image_url']);
+            }
+        }
         $events_custom->delete();
-        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
+        $notification = array(
+            'status' => 'La personnalisation a été correctement supprimée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id)->with($notification);
     }
 
     public function desactivate($id)
@@ -650,9 +622,7 @@ class EventsCustomsController extends Controller
     {
         $disk = Storage::disk('s3'); 
         $font_url = '/events/'.$events_custom_event_id.'/fonts/'.$font_title.'/'.$font_name; 
-            // dd($font_url);
-            $disk->delete($font_url);
-        
+        $disk->delete($font_url);
         $response = array(
             'status' => 'success',
             'msg' => 'Font file has been deleted'

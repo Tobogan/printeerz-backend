@@ -78,9 +78,9 @@ class EventController extends Controller
             'name' => 'required|string|max:255',
             'advertiser' => 'required|string|max:255',
             'type' => 'string|max:255',
-            'logo_img' => 'max:400',
-            'cover_img' => 'max:400',
-            'BAT' => 'max:400',
+            'logo_img' => 'max:4000',
+            'cover_img' => 'max:4000',
+            'BAT' => 'max:4000',
             'description' => 'max:2750'
         ]);
 

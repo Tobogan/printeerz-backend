@@ -19,5 +19,8 @@ use Illuminate\Http\Request;
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 
+Route::get('v1/api/event/index', 'LiveController@index')->name('indexEvent_live');
+
+
 // Route::get('/home', 'HomeController@home')->name('home');
 
