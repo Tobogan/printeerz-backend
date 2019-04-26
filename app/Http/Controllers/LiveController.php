@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
+
 use Illuminate\Http\Request;
 
 class LiveController extends Controller
@@ -13,7 +15,8 @@ class LiveController extends Controller
      */
     public function index()
     {
-        return Event::all();
+        $events = Event::all();
+        return $events->toJson();
     }
 
     /**

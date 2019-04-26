@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Event;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,13 +14,13 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/events', function (Request $request) {
+    return Event::all();
+});
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 
-Route::get('v1/api/event/index', 'LiveController@index')->name('indexEvent_live');
+Route::get('events', 'LiveController@index')->name('indexEvent_live');
 
 
 // Route::get('/home', 'HomeController@home')->name('home');

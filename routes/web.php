@@ -16,6 +16,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 
 
 Route::view('/front/{path?}', 'app');
+// Route::view('/v1/events', 'app');
 
 Auth::routes();
 
