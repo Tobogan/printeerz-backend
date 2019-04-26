@@ -97,19 +97,10 @@ function updateFormHidden(list,hiddenValue){
     var name = $(this).text();
     var datas = [];
     var found = false;
-    // for(var i = 0; i < componentList.length; i++) {
-    //   if (componentList[i].id == id) {
-    //       found = true;
-    //       alert('Vous ne pouvez créer un gabarit avec deux composants identiques. Merci de l\'enlever de la liste.');
-    //       break;
-    //   }
-    // }
-    // if(found == false){
       componentList.push({
       id : id,
       name: name
       })
-    // }
   });
   // Format value to json
   var json = JSON.stringify(componentList, 'true');
@@ -134,7 +125,7 @@ $(function () {
     var name = $("#componentsSelect option:selected").text();
     var value = $(this).val();
     if(value) {
-      componentFormList.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
+      componentFormList.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div id="hidden_comp" class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
       // Update Form hidden value
       updateFormHidden(componentFormList,componentFormListHidden);
     };

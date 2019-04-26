@@ -75,9 +75,12 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'advertiser' => 'required|string|max:255',
             'name' => 'required|string|max:255',
+            'advertiser' => 'required|string|max:255',
             'type' => 'string|max:255',
+            'logo_img' => 'max:400',
+            'cover_img' => 'max:400',
+            'BAT' => 'max:400',
             'description' => 'max:2750'
         ]);
 
@@ -237,6 +240,9 @@ class EventController extends Controller
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
+                'logo_img' => 'max:400',
+                'cover_img' => 'max:400',
+                'BAT' => 'max:400',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
@@ -353,6 +359,9 @@ class EventController extends Controller
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
+                'logo_img' => 'max:400',
+                'cover_img' => 'max:400',
+                'BAT' => 'max:400',
                 'description' => 'max:750'
             ]);
             $id = $request->id;

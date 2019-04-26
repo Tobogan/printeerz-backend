@@ -32,10 +32,6 @@ class CustomerController extends Controller
     {
         $customers = Customer::all();
         $events = Event::all();
-        // $select = [];
-        // foreach($events as $event) {
-        //     $select[$event->id] = $event->nom;
-        // }
         return view('admin/Customer.index', ['customers' => $customers, 'events' => $events]);
     }
 

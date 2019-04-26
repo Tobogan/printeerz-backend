@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Events_customs;
+use App\Events_component;
 use App\Product;
 use App\Events_products;
 use App\Templates;
@@ -108,6 +109,38 @@ class EventsCustomsController extends Controller
             $events_custom->image = $filePath;
         }
         $events_custom->save();
+        // add events_component for every component in the template selected for the events_custom
+        $templates = Templates::all();
+        foreach($templates as $template){
+            if($template->id == $request->template_id){
+                $template_selected = $template;
+            }
+        }
+        $template_components = Template_components::all();
+        foreach($template_components as $template_component){
+            foreach($template_selected->components_ids as $component_id){
+                if($template_component->id == $component_id['id']){
+                    $events_component = new Events_component;
+                    $events_component->title = $template_component->title;
+                    $events_component->events_custom_id =  $events_custom->id;
+                    $events_component->template_component_id =  $template_component->id;
+                    $events_component->type = $template_component->comp_type;
+                    $events_component->event_id = $request->event_id;
+                    $events_component->events_product_id = $request->events_product_id;
+                    $events_component->template_id = $request->template_id;
+                    $events_component->printzone_id = $request->printzone_id;
+                    $events_component->width = $template_component->size['width'];
+                    $events_component->height = $template_component->size['height'];
+                    $events_component->origin_x =  $template_component->origin['x'];
+                    $events_component->origin_y = $template_component->origin['y'];
+                    $events_component->input_min = $template_component->characters['min'];
+                    $events_component->input_max = $template_component->characters['max'];
+                    $events_component->highlight = $template_component->highlight;
+                    $events_component->save();
+                }
+            }
+        }
+
         return redirect('admin/EventsCustoms/edit/'.$events_custom->id);
     }
 
@@ -123,6 +156,7 @@ class EventsCustomsController extends Controller
         $events_customs = Events_customs::all();
         $templates = Templates::all();
         $template_components = Template_components::all();
+        $events_components = Events_component::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_templates = [];
@@ -162,7 +196,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.show', ['disk'=>$disk,'s3'=>$s3,'font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.show', ['events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
@@ -187,6 +221,7 @@ class EventsCustomsController extends Controller
         }
         $product = Product::find($events_product->product_id);
         $printzones = Printzones::all();
+        $events_components = Events_component::all();
         $select_printzones = [];
         if ($product->printzones_id != null){
             foreach ($printzones as $printzone) {
@@ -197,7 +232,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.edit', ['disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.edit', ['events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
@@ -249,23 +284,53 @@ class EventsCustomsController extends Controller
                                 }
                             }
                         }
+                        // for($k=1; $k<count($font); $k++){
+                        //     $array_ft = array(
+                        //         'title' => $font[$k],
+                        //         'font_url' => $urls[$k]
+                        //     );
+                        //     array_push($array_fonts, $array_ft);
+                        // }
+                        // font weight & font transform for every font added
+                        $array_fonts_weight = array();
+                        $fonts_weight = array();
+                        foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
+                            if ($request->{'fontsTransformList'.$template_component_id}) {
+                                foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
+                                    $fonts_weight_exploded = explode(",", $font_weight);
+                                    $fonts_transform_exploded = explode(",", $font_transform);
+                                    array_push($fonts_weight, $fonts_transform_exploded);
+                                }
+                            }
+                        }
                         for($k=1; $k<count($font); $k++){
                             $array_ft = array(
                                 'title' => $font[$k],
+                                'font_weight' => $fonts_weight_exploded[$k],
+                                'font_transform' => $fonts_transform_exploded[$k],
                                 'font_url' => $urls[$k]
                             );
                             array_push($array_fonts, $array_ft);
                         }
+                        // for($l=1; $l<count($fonts_weight_exploded); $l++){
+                        //     $array_weight_transform = array(
+                        //         'title' => $font[$l],
+                        //         'font_weight' => $fonts_weight_exploded[$l],
+                        //         'font_transform' => $fonts_transform_exploded[$l],
+                        //         'font_url' => $urls[$l]
+                        //     );
+                        //     array_push($array_fonts_weight, $array_weight_transform);
+                        // }
+                        // array_push($array_fonts, $array_fonts_weight); // here i push weight & transform datas to array fonts
                         $component_input = array(
-                            'template_component_id' => $request->{'template_component_id'.$i},
+                            'events_component_id' => $request->{'template_component_id'.$i},
+                            'component_type' => $request->{'comp_type_'.$template_component_id},
                             'title' => $request->{'option_title'.$i},
-                            'position' => $request->{'option_position'.$i},
+                            // 'position' => $request->{'option_position'.$i},
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
                                 'input_max' => $request->{'max'.$i},
                                 'font_first_letter' => $request->{'font_first_letter'.$i},
-                                'font_transform' => $request->{'font_transform'.$i},
-                                'font_weight' => $request->{'font_weight'.$i},
                                 'fonts' => $array_fonts,
                                 'font_colors' => $array_colors,
                                 'position' => array(
@@ -291,9 +356,10 @@ class EventsCustomsController extends Controller
                             $disk->put($newFilePath, $img_resized, 'public');
                             $image_file = $newFilePath;
                             $component = array(
-                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'events_component_id' => $request->{'template_component_id'.$i},
+                                'component_type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
-                                'position' => $request->{'option_position'.$i},
+                                // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
                                     'image_url' => $newFilePath, // là j'ai enlevé $newFilePath
@@ -309,8 +375,9 @@ class EventsCustomsController extends Controller
                         else {
                             $component = array(
                                 'template_component_id' => $request->{'template_component_id'.$i},
+                                'component_type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
-                                'position' => $request->{'option_position'.$i},
+                                // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
@@ -340,8 +407,8 @@ class EventsCustomsController extends Controller
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
+            $events_custom->title = $request->title;
             $count_component = $request->countJS;
-            // dd($count_component);
             for($i=1;$i<=$count_component;$i++){
                 $template_component_id = $request->{'template_component_id'.$i};
                 if($template_component_id != null){
@@ -354,7 +421,7 @@ class EventsCustomsController extends Controller
                                 $hex = explode(",", $hexa);
                             }
                         }
-                        for($j=0;$j<count($col);$j++){
+                        for($j=1;$j<count($col);$j++){
                             $array = array(
                                 'title' => $col[$j],
                                 'code_hexa' => $hex[$j]
@@ -371,26 +438,53 @@ class EventsCustomsController extends Controller
                                     $urls = explode(",", $font_url);
                                     array_push($fonts, $urls);
                                 }
-                                // dd($urls);
                             }
                         }
-                        // dd($fonts);
-                        for ($k=0; $k<count($font); $k++) {
+                        // for($k=1; $k<count($font); $k++){
+                        //     $array_ft = array(
+                        //         'title' => $font[$k],
+                        //         'font_url' => $urls[$k]
+                        //     );
+                        //     array_push($array_fonts, $array_ft);
+                        // }
+                        // font weight & font transform for every font added
+                        $array_fonts_weight = array();
+                        $fonts_weight = array();
+                        foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
+                            if ($request->{'fontsTransformList'.$template_component_id}) {
+                                foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
+                                    $fonts_weight_exploded = explode(",", $font_weight);
+                                    $fonts_transform_exploded = explode(",", $font_transform);
+                                    array_push($fonts_weight, $fonts_transform_exploded);
+                                }
+                            }
+                        }
+                        for($k=1; $k<count($font); $k++){
                             $array_ft = array(
                                 'title' => $font[$k],
+                                'font_weight' => $fonts_weight_exploded[$k],
+                                'font_transform' => $fonts_transform_exploded[$k],
                                 'font_url' => $urls[$k]
                             );
                             array_push($array_fonts, $array_ft);
                         }
+                        // for($l=1; $l<count($fonts_weight_exploded); $l++){
+                        //     $array_weight_transform = array(
+                        //         'title' => $font[$l],
+                        //         'font_weight' => $fonts_weight_exploded[$l],
+                        //         'font_transform' => $fonts_transform_exploded[$l],
+                        //         'font_url' => $urls[$l]
+                        //     );
+                        //     array_push($array_fonts_weight, $array_weight_transform);
+                        // }
+                        // array_push($array_fonts, $array_fonts_weight); // here i push weight & transform datas to array fonts
                         $component_input = array(
-                            'template_component_id' => $request->{'template_component_id'.$i},
+                            'events_component_id' => $request->{'template_component_id'.$i},
                             'title' => $request->{'option_title'.$i},
-                            'position' => $request->{'option_position'.$i},
+                            // 'position' => $request->{'option_position'.$i},
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
                                 'input_max' => $request->{'max'.$i},
-                                'font_first_letter' => $request->{'font_first_letter'.$i},
-                                'font_transform' => $request->{'font_transform'.$i},
                                 'font_weight' => $request->{'font_weight'.$i},
                                 'fonts' => $array_fonts,
                                 'font_colors' => $array_colors,
@@ -411,17 +505,18 @@ class EventsCustomsController extends Controller
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image'.$i);
                             $option_title = $request->{'option_title'.$i};
-                            $image_name = $image_file->getClientOriginalName();
-                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title;
-                            $disk->put($newFilePath, $image_file, 'public');
+                            $image_name = time().$image_file->getClientOriginalName();
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
+                            $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
+                            $disk->put($newFilePath, $img_resized, 'public');
                             $image_file = $newFilePath;
                             $component = array(
-                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'events_component_id' => $request->{'template_component_id'.$i},
                                 'title' => $request->{'option_title'.$i},
-                                'position' => $request->{'option_position'.$i},
+                                // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
-                                    'image_url' => $newFilePath,
+                                    'image_url' => $newFilePath, // là j'ai enlevé $newFilePath
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
                                         'height' => $request->{'height'.$i},
@@ -435,7 +530,7 @@ class EventsCustomsController extends Controller
                             $component = array(
                                 'template_component_id' => $request->{'template_component_id'.$i},
                                 'title' => $request->{'option_title'.$i},
-                                'position' => $request->{'option_position'.$i},
+                                // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
                                     'position' => array(
                                         'width' => $request->{'width'.$i},

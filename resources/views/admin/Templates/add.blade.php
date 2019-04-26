@@ -214,3 +214,13 @@
     </div>
 </div>
 @endsection
+
+@section('javascripts')
+<script type="text/Javascript">
+
+$('#templateComponentsList').on('change', function () {
+    var comp = $('#hidden_comp').val();
+    console.log('comp');
+});
+</script>
+@endsection

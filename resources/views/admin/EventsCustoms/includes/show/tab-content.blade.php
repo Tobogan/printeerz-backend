@@ -1,16 +1,18 @@
 <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
     <div class="row">
         <div class="col-8">
-            <div class="form-group">
-                <label>
-                    Nom de la personnalisation
-                </label>
-                {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
-            </div>
-            <div class="col-12">
-                <div class="form-group">
-                    <label>Description de l'événement</label>
-                    <input id="textDescription" type="textarea" class="description" name="description" rows="3" value="{{$events_custom->description}}">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            Nom de la personnalisation
+                        </label>
+                        {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
+                    </div>
+                    <div class="form-group">
+                        <label>Description de l'événement</label>
+                        <input id="textDescription" type="textarea" class="description" name="description" rows="3" value="{{$events_custom->description}}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,10 +32,6 @@
                     <p class="text-muted">
                         Pas d'image de personnalisation
                     </p>
-                    <!-- Button -->
-                    {{-- <a href="{{route('edit_product', $events_custom->id)}}" class="btn btn-primary btn-sm">
-                        Ajouter une image
-                    </a> --}}
                 </div>
             </div>
             @endif
@@ -41,17 +39,14 @@
     </div>
 </div>
 <?php $i=0; ?>
-@foreach($template_components as $template_component)
-    <?php //$array_template = $events_custom->components; ?>
-    @foreach($events_custom->components as $events_custom_component)
-        @if($template_component->id == reset($events_custom_component))
+@foreach($events_custom->components as $component)
             <?php $i++; ?>
-            <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$template_component->id}}">
-            <input type="hidden" name="{{'comp_type_'.$template_component->id}}" value="{{$template_component->comp_type}}">
-            {{-- <input type="hidden" name="tp_id" id="tp_id" value="{{$template_component->id}}"> --}}
+            <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$component['events_component_id']}}">
+            <input type="hidden" name="{{'comp_type_'.$component['events_component_id']}}" value="{{$component['component_type']}}">
+            {{-- <input type="hidden" name="tp_id" id="tp_id" value="{{$component['events_component_id']}}"> --}}
             <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
-            <div class="tab-pane fade show" id="template_component_{{$template_component->id}}" role="tabpanel"
-                aria-labelledby="template_component_{{$template_component->id}}-tab">
+            <div class="tab-pane fade show" id="template_component_{{$component['events_component_id']}}" role="tabpanel"
+                aria-labelledby="template_component_{{$component['events_component_id']}}-tab">
                 {{-- Store template_composant id --}}
                 <div class="row">
                     <div class="col-8">
@@ -67,7 +62,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <!-- Input -->
-                                            {!! Form::text('option_title'.$i, $events_custom_component['title'], ['class' => 'form-control','placeholder' => 'Entrer le nom']) !!}
+                                            {!! Form::text('option_title'.$i, $component['title'], ['class' => 'form-control','placeholder' => 'Entrer le nom']) !!}
                                         </div>
                                         <div class="col-12">
                                             <p class="text-muted">Vous pouvez changer le nom de ce composant pour cette personnalisation.</p>
@@ -93,7 +88,7 @@
                                                                 Largeur (mm)
                                                             </label>
                                                             <!-- Input -->
-                                                            {!! Form::number('width'.$i, $events_custom_component['settings']['position']['width'],
+                                                            {!! Form::number('width'.$i, $component['settings']['position']['width'],
                                                             ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
                                                         </div>
                                                     </div>
@@ -105,7 +100,7 @@
                                                                 Hauteur (mm)
                                                             </label>
                                                             <!-- Input -->
-                                                            {!! Form::number('height'.$i, $events_custom_component['settings']['position']['height'],
+                                                            {!! Form::number('height'.$i, $component['settings']['position']['height'],
                                                             ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
                                                         </div>
                                                     </div>
@@ -114,7 +109,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($template_component->comp_type == 'input')
+                                @if($component['component_type'] == 'input')
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="row align-items-center">
@@ -126,7 +121,7 @@
                                             <div class="col-auto">
                                                     <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
                                                     data-toggle="modal" data-target="#addFontModal"
-                                                    data-id="{{$template_component->id}}">
+                                                    data-id="{{$component['events_component_id']}}">
                                                     Ajouter une police
                                                 </a>
                                             </div>
@@ -150,12 +145,12 @@
                                                                 </tr>
                                                             </thead>
                                     
-                                                            <tbody class="list" id="{{'font_name_list'.$template_component->id}}">
+                                                            <tbody class="list" id="{{'font_name_list'.$component['events_component_id']}}">
                                                                     <?php 
                                                                     $array_font_title = array();
                                                                     $array_font_url = array();
                                                                     ?>
-                                                                    @foreach($events_custom_component['settings']['fonts'] as $font)
+                                                                    @foreach($component['settings']['fonts'] as $font)
                                                                         <?php 
                                                                             array_push($array_font_title, $font['title']);
                                                                             array_push($array_font_url, $font['font_url']);
@@ -165,7 +160,7 @@
                                                                                 {{$font['title']}}
                                                                             </td>
                                                                             <td>
-                                                                                <a style="float:right" data-title="{{$font['title']}}" data-id="{{$template_component->id}}" onclick="var id=$(this).attr('data-id');var font=$(this).attr('data-title');deleteFontRow(id, font);$(this).closest('tr').remove();">
+                                                                                <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" onclick="var id=$(this).attr('data-id');var font=$(this).attr('data-title');deleteFontRow(id, font);$(this).closest('tr').remove();">
                                                                                     Supprimer 
                                                                                 </a>
                                                                             </td>
@@ -180,64 +175,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="{{'newsFonts'.$template_component->id}}">
-                                                <input type="hidden" name="{{'fontsList'.$template_component->id.'[]'}}" id="{{'fontsList'.$template_component->id}}" value="{{$str_font_title}}"> {{-- removed value="Roboto-Black" --}}
-                                                <input type="hidden" name="{{'font_urlList'.$template_component->id.'[]'}}" id="{{'font_urlList'.$template_component->id}}" value="{{$str_font_url}}"> {{-- removed value="/events/Roboto-Black.ttf" --}}
-                                                {{-- <input type="hidden" name="{{'url'.$template_component->id.'[]'}}" id="{{'url'.$template_component->id}}" value="Roboto-Black"> --}}
+                                            <div id="{{'newsFonts'.$component['events_component_id']}}">
+                                                <input type="hidden" name="{{'fontsList'.$component['events_component_id'].'[]'}}" id="{{'fontsList'.$component['events_component_id']}}" > {{-- removed value="Roboto-Black" --}}
+                                                <input type="hidden" name="{{'font_urlList'.$component['events_component_id'].'[]'}}" id="{{'font_urlList'.$component['events_component_id']}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                                <input type="hidden" name="{{'fontsWeightList'.$component['events_component_id'].'[]'}}" id="{{'fontsWeightList'.$component['events_component_id']}}"> {{-- font_weight --}}
+                                                <input type="hidden" name="{{'fontsTransformList'.$component['events_component_id'].'[]'}}" id="{{'fontsTransformList'.$component['events_component_id']}}"> {{-- font_transform --}}
+                                                {{-- <input type="hidden" name="{{'url'.$component['events_component_id'].'[]'}}" id="{{'url'.$component['events_component_id']}}" value="Roboto-Black"> --}}
                                             </div>
                                             <div id="fontsToDelete">
-                                                <input type="hidden" name="{{'fontsToDeleteList'.$template_component->id.'[]'}}" id="{{'fontsToDeleteList'.$template_component->id}}">
+                                                <input type="hidden" name="{{'fontsToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsToDeleteList'.$component['events_component_id']}}">
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <p class="text-muted">Vous pouvez ajouter de nouvelles polices pour cet événement.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Font_weight --}}
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-header-title">
-                                                    Epaisseur
-                                                </h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <!-- First name -->
-                                                        <div class="form-group">
-                                                            <!-- Input -->
-                                                            {!! Form::select('font_weight'.$i, $font_weight, $events_custom_component['settings']['font_weight'],
-                                                            ['class' => 'form-control']) !!}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- Transformation font --}}
-                                    <div class="col-12 col-md-6">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-header-title">
-                                                    Transformation
-                                                </h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <!-- First name -->
-                                                        <div class="form-group">
-                                                            <!-- Input -->
-                                                            {!! Form::select('font_transform'.$i, $font_transform, $events_custom_component['settings']['font_transform'],
-                                                            ['class' => 'form-control']) !!}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <p class="text-muted">Vous pouvez ajouter ou supprimier des polices à la liste.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -252,7 +202,7 @@
                                             <div class="col-auto">
                                                 <a href="#" class="buttonColor btn btn-sm btn-primary"
                                                     data-toggle="modal" data-target="#addColorModal"
-                                                    data-id="{{$template_component->id}}">
+                                                    data-id="{{$component['events_component_id']}}">
                                                     Ajouter une couleur
                                                 </a>
                                             </div>
@@ -281,12 +231,12 @@
                                                                 </tr>
                                                             </thead>
                                     
-                                                            <tbody class="list" id="{{'color_name_list'.$template_component->id}}">
+                                                            <tbody class="list" id="{{'color_name_list'.$component['events_component_id']}}">
                                                                 <?php 
                                                                 $array_font_color = array();
                                                                 $array_font_hexa = array();
                                                                 ?>
-                                                                @foreach($events_custom_component['settings']['font_colors'] as $font_color)
+                                                                @foreach($component['settings']['font_colors'] as $font_color)
                                                                     <?php 
                                                                         array_push($array_font_color, $font_color['title']);
                                                                         array_push($array_font_hexa, $font_color['code_hexa']);
@@ -299,7 +249,7 @@
                                                                             {{$font_color['code_hexa']}}
                                                                         </td>
                                                                         <td>
-                                                                            <a data-id="{{$template_component->id}}" data-title="{{$font_color['title']}}" data-hexa="{{$font_color['code_hexa']}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa=$(this).attr('data-hexa');var color=$(this).attr('data-title');deleteColorRow(id, color);deleteHexaRow(id, hexa);$(this).closest('tr').remove();">
+                                                                            <a data-id="{{$component['events_component_id']}}" data-title="{{$font_color['title']}}" data-hexa="{{$font_color['code_hexa']}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa=$(this).attr('data-hexa');var color=$(this).attr('data-title');deleteColorRow(id, color);deleteHexaRow(id, hexa);$(this).closest('tr').remove();">
                                                                                 Supprimer 
                                                                             </a>
                                                                         </td>
@@ -313,19 +263,22 @@
                                                         </table>
                                                     </div>
                                                     <div id="newsColors">
-                                                        <input type="hidden" name="{{'colorsList'.$template_component->id.'[]'}}" id="{{'colorsList'.$template_component->id}}" value="{{$str_color}}"> {{-- value="Black" --}}
-                                                        <input type="hidden" name="{{'hexaList'.$template_component->id.'[]'}}" id="{{'hexaList'.$template_component->id}}" value="{{$str_hexa}}"> {{-- value="000000" --}}
+                                                        <input type="hidden" name="{{'colorsList'.$component['events_component_id'].'[]'}}" id="{{'colorsList'.$component['events_component_id']}}" value="{{$str_color}}"> {{-- value="Black" --}}
+                                                        <input type="hidden" name="{{'hexaList'.$component['events_component_id'].'[]'}}" id="{{'hexaList'.$component['events_component_id']}}" value="{{$str_hexa}}"> {{-- value="000000" --}}
                                                     </div>
                                                     <div id="colorsToDelete">
-                                                        <input type="hidden" name="{{'colorsToDeleteList'.$template_component->id.'[]'}}" id="{{'colorsToDeleteList'.$template_component->id}}">
-                                                        <input type="hidden" name="{{'hexasToDeleteList'.$template_component->id.'[]'}}" id="{{'hexasToDeleteList'.$template_component->id}}">
+                                                        <input type="hidden" name="{{'colorsToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'colorsToDeleteList'.$component['events_component_id']}}">
+                                                        <input type="hidden" name="{{'hexasToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'hexasToDeleteList'.$component['events_component_id']}}">
                                                     </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p class="text-muted">Vous pouvez ajouter ou supprimer des couleurs de polices à la liste.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @elseif($template_component->comp_type == 'image')
+                                @elseif($component['component_type'] == 'image')
                                     <div class="card">
                                         <div class="card-header">
                                             <h4 class="card-header-title">
@@ -336,7 +289,7 @@
                                             <div class="form-group">
                                                 <div class="custom-file">
                                                     {!! Form::file('comp_image'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                                    <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                                                    <label class="custom-file-label" for="photo_profile">Modifiez l'image</label>
                                                 </div>
                                             </div>
                                             
@@ -345,7 +298,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 @endif {{-- Component type condition --}}
                             </div>
                         </div>
@@ -355,12 +307,12 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        Composant de type : {{ $template_component->comp_type }}
+                                        Composant de type : {{ $component['component_type'] }}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @if($template_component->comp_type == 'input')
+                        @if($component['component_type'] == 'input')
                         <div class="card">
                             <div class="card-header">
                                 <b>Nombre de caractères</b>
@@ -370,14 +322,14 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Minimum</label>
-                                            {!! Form::number('min'.$i,$events_custom_component['settings']['input_min'],['class' =>
+                                            {!! Form::number('min'.$i,$component['settings']['input_min'],['class' =>
                                             'form-control', 'placeholder' => '1']) !!}
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Maximum</label>
-                                            {!! Form::number('max'.$i, $events_custom_component['settings']['input_max'],['class' =>
+                                            {!! Form::number('max'.$i, $component['settings']['input_max'],['class' =>
                                             'form-control', 'placeholder' => '99']) !!}
                                         </div>
                                     </div>
@@ -404,7 +356,7 @@
                                                         X (mm)
                                                     </label>
                                                     <!-- Input -->
-                                                    {!! Form::number('origin_x'.$i, $events_custom_component['settings']['position']['origin_x'], ['class' =>
+                                                    {!! Form::number('origin_x'.$i, $component['settings']['position']['origin_x'], ['class' =>
                                                     'form-control', 'placeholder' =>'0', 'step' => 'any']) !!}
                                                 </div>
                                             </div>
@@ -416,7 +368,7 @@
                                                         Y (mm)
                                                     </label>
                                                     <!-- Input -->
-                                                    {!! Form::number('origin_y'.$i, $events_custom_component['settings']['position']['origin_y'], ['class' =>
+                                                    {!! Form::number('origin_y'.$i, $component['settings']['position']['origin_y'], ['class' =>
                                                     'form-control', 'placeholder' => '0', 'step' => 'any']) !!}
                                                 </div>
                                             </div>
@@ -425,7 +377,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if($template_component->comp_type == 'input')
+                        @if($component['component_type'] == 'input')
                         {{-- First letter --}}
                         <div class="row">
                             <div class="col-12">
@@ -441,7 +393,7 @@
                                                 <!-- First name -->
                                                 <div class="form-group">
                                                     <!-- Input -->
-                                                    {!! Form::text('font_first_letter'.$i, $events_custom_component['settings']['font_first_letter'], ['class' => 'form-control', 'placeholder' => '#']) !!}
+                                                    {!! Form::text('font_first_letter'.$i, $component['settings']['font_first_letter'], ['class' => 'form-control', 'placeholder' => '#']) !!}
                                                 </div>
                                             </div>
                                         </div>
@@ -449,9 +401,9 @@
                                 </div>
                             </div>
                         </div>
-                        @elseif($template_component->comp_type == 'image')
+                        @elseif($component['component_type'] == 'image')
                             {{-- Image --}}
-                            @if(!empty($events_custom_component['settings']['image_url']) && $disk->exists($events_custom_component['settings']['image_url']))
+                            @if(!empty($component['settings']['image_url']) && $disk->exists($component['settings']['image_url']))
                             <div class="card">
                                 <div class="card-header">
                                     <h4 class="card-header-title">
@@ -459,7 +411,7 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <img width="100%" title="Image du composant" class="" src="{{$s3 . $events_custom_component['settings']['image_url']}}"
+                                    <img width="100%" title="Image du composant" class="" src="{{$s3 . $component['settings']['image_url']}}"
                                         alt="Image personnalisation">
                                 </div>
                             </div>
@@ -470,10 +422,6 @@
                                     <p class="text-muted">
                                         Pas d'image de personnalisation
                                     </p>
-                                    <!-- Button -->
-                                    {{-- <a href="{{route('edit_product', $events_custom->id)}}" class="btn btn-primary btn-sm">
-                                        Ajouter une image
-                                    </a> --}}
                                 </div>
                             </div>
                             @endif
@@ -481,9 +429,8 @@
                     </div>
                 </div>
             </div>
-        @endif
     @endforeach
-@endforeach
+
 
 
 
