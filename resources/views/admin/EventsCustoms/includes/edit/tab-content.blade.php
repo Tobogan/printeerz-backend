@@ -175,6 +175,7 @@
                                         <div id="{{'newsFonts'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsList'.$events_component->id.'[]'}}" id="{{'fontsList'.$events_component->id}}" > {{-- removed value="Roboto-Black" --}}
                                             <input type="hidden" name="{{'font_urlList'.$events_component->id.'[]'}}" id="{{'font_urlList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                            <input type="hidden" name="{{'fontsFileNameList'.$events_component->id.'[]'}}" id="{{'fontsFileNameList'.$events_component->id}}"> {{-- font file name --}}
                                             <input type="hidden" name="{{'fontsWeightList'.$events_component->id.'[]'}}" id="{{'fontsWeightList'.$events_component->id}}"> {{-- font_weight --}}
                                             <input type="hidden" name="{{'fontsTransformList'.$events_component->id.'[]'}}" id="{{'fontsTransformList'.$events_component->id}}"> {{-- font_transform --}}
                                             {{-- <input type="hidden" name="{{'url'.$events_component->id.'[]'}}" id="{{'url'.$events_component->id}}" value="Roboto-Black"> --}}

@@ -294,6 +294,7 @@ class EventsCustomsController extends Controller
                         // font weight & font transform for every font added
                         $array_fonts_weight = array();
                         $fonts_weight = array();
+                        // dd($request->{'fontsWeightList'.$template_component_id});
                         foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
                             if ($request->{'fontsTransformList'.$template_component_id}) {
                                 foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
@@ -303,9 +304,14 @@ class EventsCustomsController extends Controller
                                 }
                             }
                         }
+                        foreach($request->{'fontsFileNameList'.$template_component_id} as $font_file_name){
+                            $fonts_file_name_exploded = explode(",", $font_file_name);
+                            // dd($font_file_name);
+                        }
                         for($k=1; $k<count($font); $k++){
                             $array_ft = array(
                                 'title' => $font[$k],
+                                'font_file_name' => $fonts_file_name_exploded[$k],
                                 'font_weight' => $fonts_weight_exploded[$k],
                                 'font_transform' => $fonts_transform_exploded[$k],
                                 'font_url' => $urls[$k]
@@ -374,7 +380,7 @@ class EventsCustomsController extends Controller
                         }
                         else {
                             $component = array(
-                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'events_component_id' => $request->{'template_component_id'.$i},
                                 'component_type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 // 'position' => $request->{'option_position'.$i},
@@ -407,7 +413,7 @@ class EventsCustomsController extends Controller
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
-            $events_custom->title = $request->title;
+            $events_custom->title = $request->option_title;
             $count_component = $request->countJS;
             for($i=1;$i<=$count_component;$i++){
                 $template_component_id = $request->{'template_component_id'.$i};
@@ -453,15 +459,19 @@ class EventsCustomsController extends Controller
                         foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
                             if ($request->{'fontsTransformList'.$template_component_id}) {
                                 foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
-                                    $fonts_weight_exploded = explode(",", $font_weight);
-                                    $fonts_transform_exploded = explode(",", $font_transform);
-                                    array_push($fonts_weight, $fonts_transform_exploded);
+                                    foreach($request->{'fontsFileNameList'.$template_component_id} as $font_file_name){
+                                        $fonts_weight_exploded = explode(",", $font_weight);
+                                        $fonts_transform_exploded = explode(",", $font_transform);
+                                        $fonts_file_name_exploded = explode(",", $font_file_name);
+                                        array_push($fonts_weight, $fonts_transform_exploded);
+                                    }
                                 }
                             }
                         }
                         for($k=1; $k<count($font); $k++){
                             $array_ft = array(
                                 'title' => $font[$k],
+                                'font_file_name' => $fonts_file_name_exploded[$k],
                                 'font_weight' => $fonts_weight_exploded[$k],
                                 'font_transform' => $fonts_transform_exploded[$k],
                                 'font_url' => $urls[$k]
@@ -480,12 +490,13 @@ class EventsCustomsController extends Controller
                         // array_push($array_fonts, $array_fonts_weight); // here i push weight & transform datas to array fonts
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
+                            'component_type' => $request->{'comp_type_'.$template_component_id},
                             'title' => $request->{'option_title'.$i},
                             // 'position' => $request->{'option_position'.$i},
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
                                 'input_max' => $request->{'max'.$i},
-                                'font_weight' => $request->{'font_weight'.$i},
+                                'font_first_letter' => $request->{'font_first_letter'.$i},
                                 'fonts' => $array_fonts,
                                 'font_colors' => $array_colors,
                                 'position' => array(
@@ -512,6 +523,7 @@ class EventsCustomsController extends Controller
                             $image_file = $newFilePath;
                             $component = array(
                                 'events_component_id' => $request->{'template_component_id'.$i},
+                                'component_type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
@@ -528,7 +540,8 @@ class EventsCustomsController extends Controller
                         }
                         else {
                             $component = array(
-                                'template_component_id' => $request->{'template_component_id'.$i},
+                                'events_component_id' => $request->{'template_component_id'.$i},
+                                'component_type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 // 'position' => $request->{'option_position'.$i},
                                 'settings' => array(
@@ -636,8 +649,10 @@ class EventsCustomsController extends Controller
     public function deleteFile($events_custom_event_id, $font_title, $font_name)
     {
         $disk = Storage::disk('s3'); 
-        $font_url = '/events/'.$events_custom_event_id.'/fonts/'.$font_title.'/'.$font_name;
-        $disk->delete($font_url);
+        $font_url = '/events/'.$events_custom_event_id.'/fonts/'.$font_title.'/'.$font_name; 
+            // dd($font_url);
+            $disk->delete($font_url);
+        
         $response = array(
             'status' => 'success',
             'msg' => 'Font file has been deleted'

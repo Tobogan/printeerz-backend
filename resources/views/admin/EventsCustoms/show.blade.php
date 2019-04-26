@@ -126,23 +126,43 @@
         var id = $('#tp_id_font').val();
         var font_title = $('#ec_font_title').val();
         var font_url = $('#ec_font_url').val();
+        var font_weight = $('#font_weight').val();
+        var font_transform = $('#font_transform').val();
         var font_name = font_url.replace('C:\\fakepath\\','');
         var events_custom_event_id = $('#events_custom_event_id').val();
         var events_custom_id = $('#events_custom_id').val();
         var new_path = '/events/'+events_custom_id+'/fonts/'+font_title+'/';
         var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
         var fontsList = $('#fontsList'+id).val();
+        var fontWeightList = document.getElementById("fontsWeightList"+id).value;
+        var fontTransformList = document.getElementById("fontsTransformList"+id).value;
         var font_urlList = document.getElementById("font_urlList"+id).value;
+        var fontsFileNameList = document.getElementById("fontsFileNameList"+id).value;
         var fonts = [];
         var url = [];
+        var fonts_weight = [];
+        var fonts_transform = [];
+        var fonts_file_name = [];
+        fonts_weight.push(fontWeightList);  // t'en es là
+        fonts_transform.push(fontTransformList);
         fonts.push(fontsList);  
         url.push(font_urlList);
+        fonts_file_name.push(fontsFileNameList);
         var array_fonts = [font_title];
         var array_urls = [font_url_replaced];
+        var array_fonts_weight = [font_weight];
+        var array_fonts_transform = [font_transform];
+        var array_fonts_file_name = [font_name];
         fonts.push([array_fonts]);
         url.push([array_urls]);
+        fonts_weight.push([array_fonts_weight]);
+        fonts_transform.push([array_fonts_transform]);
+        fonts_file_name.push([array_fonts_file_name]);
         document.getElementById("fontsList"+id).value = fonts;
         document.getElementById("font_urlList"+id).value = url;
+        document.getElementById("fontsWeightList"+id).value = fonts_weight;
+        document.getElementById("fontsTransformList"+id).value = fonts_transform;
+        document.getElementById("fontsFileNameList"+id).value = fonts_file_name;
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
@@ -201,6 +221,8 @@
                 }
             },
         });
+        console.log('font_tile -> '+font_title);
+        console.log('font_name -> '+font_name)
         $.ajax({
             type: 'delete',
             url: "/admin/EventsCustoms/deleteFile/events/"+events_custom_event_id+'/fonts/'+font_title+'/'+font_name,

@@ -149,18 +149,25 @@
                                                                     <?php 
                                                                     $array_font_title = array();
                                                                     $array_font_url = array();
+                                                                    $array_font_weight = array();
+                                                                    $array_font_transform = array();
+                                                                    $array_font_file_name = array();
                                                                     ?>
                                                                     @foreach($component['settings']['fonts'] as $font)
                                                                         <?php 
                                                                             array_push($array_font_title, $font['title']);
                                                                             array_push($array_font_url, $font['font_url']);
+                                                                            array_push($array_font_weight, $font['font_weight']);
+                                                                            array_push($array_font_transform, $font['font_transform']);
+                                                                            array_push($array_font_file_name, $font['font_file_name']);
+
                                                                         ?>
                                                                         <tr>
                                                                             <td class="font-name">
                                                                                 {{$font['title']}}
                                                                             </td>
                                                                             <td>
-                                                                                <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" onclick="var id=$(this).attr('data-id');var font=$(this).attr('data-title');deleteFontRow(id, font);$(this).closest('tr').remove();">
+                                                                            <a style="float:right" data-event_id="{{$events_custom->event_id}}" data-font_file_name="{{$font['font_file_name']}}" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" onclick="var event_id=$(this).attr('data-event_id');var id=$(this).attr('data-id');var font=$(this).attr('data-title');var font_url=$(this).attr('data-font_file_name');deleteFile(font,font_url,event_id);deleteFontRow(id,font);$(this).closest('tr').remove();">
                                                                                     Supprimer 
                                                                                 </a>
                                                                             </td>
@@ -169,6 +176,9 @@
                                                                     <?php 
                                                                         $str_font_title = implode(',',$array_font_title);
                                                                         $str_font_url = implode(',',$array_font_url);
+                                                                        $str_font_weight = implode(',',$array_font_weight);
+                                                                        $str_font_transform = implode(',',$array_font_transform);
+                                                                        $str_font_file_name = implode(',',$array_font_file_name);
                                                                     ?>
                                                             </tbody>
                                                         </table>
@@ -176,10 +186,11 @@
                                                 </div>
                                             </div>
                                             <div id="{{'newsFonts'.$component['events_component_id']}}">
-                                                <input type="hidden" name="{{'fontsList'.$component['events_component_id'].'[]'}}" id="{{'fontsList'.$component['events_component_id']}}" > {{-- removed value="Roboto-Black" --}}
-                                                <input type="hidden" name="{{'font_urlList'.$component['events_component_id'].'[]'}}" id="{{'font_urlList'.$component['events_component_id']}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
-                                                <input type="hidden" name="{{'fontsWeightList'.$component['events_component_id'].'[]'}}" id="{{'fontsWeightList'.$component['events_component_id']}}"> {{-- font_weight --}}
-                                                <input type="hidden" name="{{'fontsTransformList'.$component['events_component_id'].'[]'}}" id="{{'fontsTransformList'.$component['events_component_id']}}"> {{-- font_transform --}}
+                                                <input type="hidden" name="{{'fontsList'.$component['events_component_id'].'[]'}}" id="{{'fontsList'.$component['events_component_id']}}" value="{{$str_font_title}}"> {{-- removed value="Roboto-Black" --}}
+                                                <input type="hidden" name="{{'fontsFileNameList'.$component['events_component_id'].'[]'}}" id="{{'fontsFileNameList'.$component['events_component_id']}}" value="{{$str_font_file_name}}"> {{-- font file name --}}
+                                                <input type="hidden" name="{{'font_urlList'.$component['events_component_id'].'[]'}}" id="{{'font_urlList'.$component['events_component_id']}}" value="{{$str_font_url}}"> {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                                <input type="hidden" name="{{'fontsWeightList'.$component['events_component_id'].'[]'}}" id="{{'fontsWeightList'.$component['events_component_id']}}" value="{{$str_font_weight}}"> {{-- font_weight --}}
+                                                <input type="hidden" name="{{'fontsTransformList'.$component['events_component_id'].'[]'}}" id="{{'fontsTransformList'.$component['events_component_id']}}" value="{{$str_font_transform}}"> {{-- font_transform --}}
                                                 {{-- <input type="hidden" name="{{'url'.$component['events_component_id'].'[]'}}" id="{{'url'.$component['events_component_id']}}" value="Roboto-Black"> --}}
                                             </div>
                                             <div id="fontsToDelete">
@@ -187,7 +198,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <p class="text-muted">Vous pouvez ajouter ou supprimier des polices à la liste.</p>
+                                            <p class="text-muted">Vous pouvez ajouter ou supprimer des polices à la liste.</p>
                                         </div>
                                     </div>
                                 </div>
