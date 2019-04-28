@@ -24,11 +24,11 @@
                         </h2>
                         <p class="card-text text-muted">
                             <small>
-                                {{ $product -> vendor['name'] }}
+                                {{ $product->vendor['name'] }}
                             </small>
                         </p>
                     </div>
-                    <hr> @if ($product -> product_type)
+                    <hr> @if ($product->product_type)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Type</h5>
@@ -39,25 +39,25 @@
                                 </span>
                         </div>
                     </div>
-                    <hr> @endif @if ($product -> gender)
+                    <hr> @endif @if ($product->gender)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Sexe</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                    {{ $product -> gender }}
+                                    {{ $product->gender }}
                                 </span>
                         </div>
                     </div>
-                    <hr> @endif @if ($product -> vendor['reference'])
+                    <hr> @endif @if ($product->vendor['reference'])
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Référence</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                    {{ $product -> vendor['reference'] }}
+                                    {{ $product->vendor['reference'] }}
                                 </span>
                         </div>
                     </div>

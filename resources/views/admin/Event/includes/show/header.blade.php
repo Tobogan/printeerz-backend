@@ -31,6 +31,9 @@
             <a href="{{route('edit_event', $event->id)}}" class="dropdown-item">
               Modifier
             </a>
+            @if($event->BAT != null)
+                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{$s3.$event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
+            @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">
               Supprimer
             </a>

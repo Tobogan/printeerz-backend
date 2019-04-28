@@ -69,6 +69,13 @@ class EventsProductsController extends Controller
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
+            // here I push the id in the corresponding event
+            $event = Event::find($events_product->event_id);
+            $arr_events_product = $event->event_products_id;
+            array_push($arr_events_product, $events_product->id);
+            $event->event_products_id = $arr_events_product;
+            $event->update();
+            // response for ajax
             $response = array(
                 'status' => 'success',
                 'msg' => 'EventsProduct created successfully',
@@ -272,6 +279,24 @@ class EventsProductsController extends Controller
     public function destroy($id)
     {
         $events_product = Events_products::find($id);
+        $event = Event::find($events_product->event_id);
+        // here I search the id in event array and I delete it
+        function removeElement($array,$value) {
+            if (($key = array_search($value, $array)) !== false) {
+                unset($array[$key]);
+            }
+            return $array;
+        }
+        foreach($event->event_products_id as $events_product_id) {
+            if($events_product_id == $id) {
+                $id_to_delete = $events_product_id;
+            }
+        }
+        $result = removeElement($event->event_products_id, $id_to_delete);
+        $arr = $event->event_products_id;
+        $arr = $result;
+        $event->event_products_id = $arr;
+        $event->update();
         $events_product->delete();
         $event = Event::find($events_product->event_id);
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');

@@ -100,8 +100,8 @@ class EventController extends Controller
         $event->end_datetime = $request->end_datetime;
         $event->type = $request->type;
         $event->description = $request->description;
-        $event->event_products_id=$request->get('event_products_id');
-        $event->employee=$request->get('employees');
+        $event->event_products_id = array(); // and after push events_product_id after a ep storage
+        $event->employee = $request->get('employees');
         $event->comments = array(
             'id' => $request->comment_id,
             'employee_id' => $request->employee_id,
@@ -146,7 +146,7 @@ class EventController extends Controller
         }
         if ($request->hasFile('BAT')){
             // Get file
-            $file = $request->file('cover_img');
+            $file = $request->file('BAT');
             // Create name
             $name = time() . $file->getClientOriginalName();
             // Define the path
@@ -154,7 +154,7 @@ class EventController extends Controller
             // Upload the file
             $disk->put($filePath, $file, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            // unlink(public_path() . '/' . $name);
             // Put in database
             $event->BAT = $filePath;
         } 
