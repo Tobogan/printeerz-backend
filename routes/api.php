@@ -14,14 +14,14 @@ use App\Event;
 |
 */
 
+
 Route::middleware('auth:api')->get('/events', function (Request $request) {
     return Event::all();
 });
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
+Route::group(['middleware' => 'cors'], function () {
+    
+    Route::get('events', 'LiveController@index')->name('indexEvent_live');
 
-Route::get('events', 'LiveController@index')->name('indexEvent_live');
-
-
-// Route::get('/home', 'HomeController@home')->name('home');
-
+});
