@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 class EventsProductsController extends Controller
 {
     public function __construct(){
@@ -183,7 +187,9 @@ class EventsProductsController extends Controller
         $printzones = Printzones::all();
         $product = Product::find($events_product->product_id);
         $templates = Templates::all();
-        return view('admin/EventsProducts.show', ['templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/EventsProducts.show', ['disk'=>$disk, 's3'=>$s3,'templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
     }
 
     /**

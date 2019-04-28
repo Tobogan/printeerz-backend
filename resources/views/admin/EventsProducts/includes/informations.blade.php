@@ -12,11 +12,11 @@
             </div>
         </div>
         <div class="col-12 col-xl-4">
-            {{-- Image --}} @if(file_exists(public_path('uploads/'.$product->image)) && !empty($product->image))
+            {{-- Image --}} @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
                     <div class="avatar avatar-xxl card-avatar">
-                        <img src="/uploads/{{$product->image}}" alt="..." class="avatar-img rounded">
+                        <img src="{{$s3 . $product->image}}" alt="..." class="avatar-img rounded">
                     </div>
                     <div class="text-center">
                         <h2 class="card-title">
@@ -92,7 +92,7 @@
                         Pas d'image produit
                     </p>
                     <!-- Button -->
-                    <a href="{{route('edit_product', $product->id)}}" class="btn btn-primary btn-sm">
+                    <a href="{{route('edit_eventsProducts', $events_product->id)}}" class="btn btn-primary btn-sm">
                         Ajouter une image
                     </a>
                 </div>

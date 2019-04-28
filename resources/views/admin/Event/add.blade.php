@@ -125,7 +125,7 @@
             {!! Form::file('logo_img', array('class' => 'custom-file-input' . $errors->first('logo_img', 'is-invalid'), 'id' => 'logo_img')) !!}
             <label class="custom-file-label" for="logo_img">Charger une image</label>
           </div>
-          @if($errors->has('logo_img')) <script>alert('error size')</script> @endif
+          @if($errors->has('logo_img'))<div>Veuillez renseigner le nom de l'annonceur</div>@endif
 
         </div>
         <div class="form-group">

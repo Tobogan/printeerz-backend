@@ -48,7 +48,8 @@ class LiveController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::find($id);
+        return $event->toJson();
     }
 
     /**
