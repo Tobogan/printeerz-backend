@@ -24,16 +24,16 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('events', 'LiveController@index')->name('indexEvent_live');
     Route::get('event/{id}', 'LiveController@show')->name('show_event_live');
 
-    Route::prefix('auth')->group(function () {
-        Route::post('register', 'AuthController@register');
-        Route::post('login', 'AuthController@login');
-        Route::get('refresh', 'AuthController@refresh');
+    // Route::prefix('auth')->group(function () {
+    //     Route::post('register', 'AuthController@register');
+    //     Route::post('login', 'AuthController@login');
+    //     Route::get('refresh', 'AuthController@refresh');
 
-        Route::group(['middleware' => 'auth:api'], function(){
-            Route::get('user', 'AuthController@user');
-            Route::post('logout', 'AuthController@logout');
-        });
-    });
+    //     Route::group(['middleware' => 'auth:api'], function(){
+    //         Route::get('user', 'AuthController@user');
+    //         Route::post('logout', 'AuthController@logout');
+    //     });
+    // });
 
     Route::group(['middleware' => 'auth:api'], function(){
         // Users
@@ -43,4 +43,12 @@ Route::group(['middleware' => 'cors'], function () {
         // Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
     });
 
+    Route::post('register', 'UserController@register');
+    Route::post('login', 'UserController@authenticate');
+    Route::get('open', 'DataController@open');
+
+    Route::group(['middleware' => ['jwt.verify']], function() {
+        Route::get('user', 'UserController@getAuthenticatedUser');
+        Route::get('closed', 'DataController@closed');
+    });
 });

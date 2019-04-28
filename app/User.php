@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use App\Comment;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject // --implements JWTSubject
 {
     use Notifiable;
 
