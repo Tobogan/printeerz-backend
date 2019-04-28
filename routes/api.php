@@ -13,11 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/events', function (Request $request) {
-//     return Event::all();
-// });
+
+Route::middleware('auth:api')->get('/events', function (Request $request) {
+    return Event::all();
+});
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
-
-Route::get('events', 'LiveController@index')->name('index_event_live');
-Route::get('event/{id}', 'LiveController@show')->name('show_event_live');
+Route::group(['middleware' => 'cors'], function () {
+    
+    Route::get('events', 'LiveController@index')->name('indexEvent_live');
+    Route::get('event/{id}', 'LiveController@show')->name('show_event_live');
+    
+});
