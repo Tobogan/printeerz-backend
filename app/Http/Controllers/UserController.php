@@ -283,4 +283,26 @@ class UserController extends Controller
         $user->update();
         return redirect('admin/User/index');
     }
+
+    public function indexAPI()
+    {
+        $users = User::all();
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'users' => $users->toArray()
+            ], 200);
+    }
+
+    public function showAPI(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'user' => $user->toArray()
+            ], 200);
+    }
 }

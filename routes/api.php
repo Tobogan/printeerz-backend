@@ -23,5 +23,24 @@ Route::group(['middleware' => 'cors'], function () {
     
     Route::get('events', 'LiveController@index')->name('indexEvent_live');
     Route::get('event/{id}', 'LiveController@show')->name('show_event_live');
-    
+
+    Route::prefix('auth')->group(function () {
+        Route::post('register', 'AuthController@register');
+        Route::post('login', 'AuthController@login');
+        Route::get('refresh', 'AuthController@refresh');
+
+        Route::group(['middleware' => 'auth:api'], function(){
+            Route::get('user', 'AuthController@user');
+            Route::post('logout', 'AuthController@logout');
+        });
+    });
+
+    Route::group(['middleware' => 'auth:api'], function(){
+        // Users
+        Route::get('users', 'UserController@indexAPI');
+        Route::get('users/{id}', 'UserController@showAPI');
+        // Route::get('users', 'UserController@index')->middleware('isAdmin');
+        // Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+    });
+
 });
