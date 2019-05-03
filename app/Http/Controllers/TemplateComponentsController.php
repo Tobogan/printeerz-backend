@@ -56,7 +56,7 @@ class TemplateComponentsController extends Controller
         ]);
         $template_component = new Template_components;
         $template_component->title = $request->title;
-        $template_component->type = $request->type;
+        $template_component->comp_type = $request->type;
         //  si requête type image j'injecte l'image
         $disk = Storage::disk('s3');
         if ($request->hasFile('image')){
@@ -178,7 +178,7 @@ class TemplateComponentsController extends Controller
             ]);
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
-            $template_component->type = $request->type;
+            $template_component->comp_type = $request->type;
             //  si requête type image j'injecte l'image
             if ($request->hasFile('image')){
                 // Get current image path
@@ -247,7 +247,7 @@ class TemplateComponentsController extends Controller
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
             $template_component->title = $request->title;
-            $template_component->type = $request->type;
+            $template_component->comp_type = $request->type;
             //  si requête type image j'injecte l'image
             if ($request->hasFile('image')){
                 // Get current image path

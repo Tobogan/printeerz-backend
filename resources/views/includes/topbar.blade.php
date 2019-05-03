@@ -113,7 +113,7 @@
             </li>
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle " href="#" id="topnavDocumentation" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fe fe-settings"></i> Settings
+                <i class="fe fe-settings"></i> Configuration
             </a>
             <ul class="dropdown-menu" aria-labelledby="topnavDocumentation">
                 <li>

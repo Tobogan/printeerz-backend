@@ -16,6 +16,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 
 
 Route::view('/front/{path?}', 'app');
+// Route::view('/v1/events', 'app');
 
 Auth::routes();
 
@@ -100,6 +101,7 @@ Route::get('admin/EventsCustoms/desactivate/{id}', 'EventsCustomsController@desa
 Route::get('admin/EventsCustoms/activate/{id}', 'EventsCustomsController@activate')->name('activate_eventsCustoms');
 Route::post('admin/EventsCustoms/addColor', 'EventsCustomsController@addColor')->name('addColor_eventsCustoms');
 Route::post('admin/EventsCustoms/uploadFile', 'EventsCustomsController@uploadFile')->name('uploadFile_eventsCustoms');
+Route::delete('admin/EventsCustoms/deleteFile/events/{events_custom_event_id}/fonts/{font_title}/{font_name}', 'EventsCustomsController@deleteFile')->name('deleteFile_eventsCustoms');
 
 /*~~~~~~~~~~~___________Printzones Route__________~~~~~~~~~~~~*/
 Route::get('admin/Printzones/index', 'PrintzonesController@index')->name('index_printzones');

@@ -83,7 +83,7 @@
                                 </label>
                                 <div class="custom-file">
                                     <!-- Input -->
-                                    {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                    {!! Form::file('custom_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                                     <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
                                 </div>
                             </div>

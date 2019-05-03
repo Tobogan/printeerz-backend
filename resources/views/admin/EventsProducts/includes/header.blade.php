@@ -30,6 +30,7 @@
                                 <a href="{{route('edit_eventsProducts', $events_product->id)}}" class="dropdown-item">
                                     Modifier
                                 </a>
+
                                 <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEventsProduct">
                                     Supprimer
                                 </a>

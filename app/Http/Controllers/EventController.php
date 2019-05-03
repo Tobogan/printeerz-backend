@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-/*~~~~~~~~~~~___________MODELS__________~~~~~~~~~~~~*/
 use DB;
 use App\Event;
 use App\Customer;
@@ -23,7 +22,7 @@ class EventController extends Controller
 {
     public function __construct(){
         //$this->middleware(isActivate::class);
-       // $this->middleware(isAdmin::class);
+        // $this->middleware(isAdmin::class);
         $this->middleware('auth');
     }
 
@@ -76,9 +75,12 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'advertiser' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'advertiser' => 'required|string|max:255',
+            'type' => 'string|max:255',
+            'logo_img' => 'max:4000',
+            'cover_img' => 'max:4000',
+            'BAT' => 'max:4000',
             'description' => 'max:2750'
         ]);
 
@@ -98,8 +100,8 @@ class EventController extends Controller
         $event->end_datetime = $request->end_datetime;
         $event->type = $request->type;
         $event->description = $request->description;
-        $event->event_products_id=$request->get('event_products_id');
-        $event->employee=$request->get('employees');
+        $event->event_products_id = array(); // and after push events_product_id after a ep storage
+        $event->employee = $request->get('employees');
         $event->comments = array(
             'id' => $request->comment_id,
             'employee_id' => $request->employee_id,
@@ -144,7 +146,7 @@ class EventController extends Controller
         }
         if ($request->hasFile('BAT')){
             // Get file
-            $file = $request->file('cover_img');
+            $file = $request->file('BAT');
             // Create name
             $name = time() . $file->getClientOriginalName();
             // Define the path
@@ -152,13 +154,11 @@ class EventController extends Controller
             // Upload the file
             $disk->put($filePath, $file, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            // unlink(public_path() . '/' . $name);
             // Put in database
             $event->BAT = $filePath;
         } 
-
         $event->save();
-
         $notification = array(
             'status' => 'L\'événement a été correctement ajouté.',
             'alert-type' => 'success'
@@ -238,6 +238,9 @@ class EventController extends Controller
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
+                'logo_img' => 'max:4000',
+                'cover_img' => 'max:4000',
+                'BAT' => 'max:4000',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
@@ -280,7 +283,7 @@ class EventController extends Controller
             
             $event->save();
 
-        // Update logo image
+            // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -290,9 +293,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -303,7 +306,7 @@ class EventController extends Controller
                 }
            }
 
-        // Update Cover image
+            // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -313,9 +316,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -326,7 +329,7 @@ class EventController extends Controller
                 }
            }
 
-        //  Update BAT File
+            // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
                 // Get current image path
@@ -354,6 +357,9 @@ class EventController extends Controller
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
+                'logo_img' => 'max:4000',
+                'cover_img' => 'max:4000',
+                'BAT' => 'max:4000',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
@@ -403,7 +409,7 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->widen(300)->save($name);
                 // Upload the new image
@@ -426,9 +432,9 @@ class EventController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/' . $product->id . '/'. $name;
+                $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->heighten(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -459,7 +465,7 @@ class EventController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-    
+
             $event->save();
         }
         
@@ -493,8 +499,8 @@ class EventController extends Controller
         }
         // Delete BAT file
         $filePath = $event->BAT;
-            if(!empty($event->BAT) && $disk->exists($filePath)){
-        $disk->delete($filePath);
+        if(!empty($event->BAT) && $disk->exists($filePath)){
+            $disk->delete($filePath);
         }
 
         // Delete file

@@ -1,14 +1,11 @@
 <div class="header">
   @if(!empty($event->cover_img) && $disk->exists($event->cover_img))
-  <img width="100%" title="image principale" class="" src="{{$s3 . $event->cover_img}}" alt="Cover event">
-  @else
-  @endif
-
+  <div class="bg-cover" style="background-image: url('{{$s3 . $event->cover_img}}'); height:400px;"></div>@else @endif
   <div class="header-body @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mt-n5 mt-md-n6 @endif">
     <div class="row @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) align-items-end @else align-items-center @endif">
       @if(!empty($event->logoName) && $disk->exists($event->logoName))
       <div class="col-auto">
-        <div class="avatar avatar-xl header-avatar-top">
+        <div class="avatar avatar-xxl header-avatar-top">
           <img src="{{$s3 . $event->logoName}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
         </div>
       </div>
@@ -26,15 +23,17 @@
       </div>
       <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
         <div class="dropdown">
-          <a href="#" class="dropdown-ellipses dropdown-toggle btn btn-rounded-circle btn-white" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a href="#" class="dropdown-ellipses dropdown-toggle btn btn-rounded-circle btn-white" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             <i class="fe fe-more-vertical"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" x-placement="top-end"
-            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(16px, 0px, 0px);">
+          <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(16px, 0px, 0px);">
             <a href="{{route('edit_event', $event->id)}}" class="dropdown-item">
               Modifier
             </a>
+            @if($event->BAT != null)
+                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{$s3.$event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
+            @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">
               Supprimer
             </a>

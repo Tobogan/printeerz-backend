@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 class EventsProductsController extends Controller
 {
     public function __construct(){
@@ -65,6 +69,13 @@ class EventsProductsController extends Controller
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
+            // here I push the id in the corresponding event
+            $event = Event::find($events_product->event_id);
+            $arr_events_product = $event->event_products_id;
+            array_push($arr_events_product, $events_product->id);
+            $event->event_products_id = $arr_events_product;
+            $event->update();
+            // response for ajax
             $response = array(
                 'status' => 'success',
                 'msg' => 'EventsProduct created successfully',
@@ -183,7 +194,9 @@ class EventsProductsController extends Controller
         $printzones = Printzones::all();
         $product = Product::find($events_product->product_id);
         $templates = Templates::all();
-        return view('admin/EventsProducts.show', ['templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/EventsProducts.show', ['disk'=>$disk, 's3'=>$s3,'templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
     }
 
     /**
@@ -266,6 +279,24 @@ class EventsProductsController extends Controller
     public function destroy($id)
     {
         $events_product = Events_products::find($id);
+        $event = Event::find($events_product->event_id);
+        // here I search the id in event array and I delete it
+        function removeElement($array,$value) {
+            if (($key = array_search($value, $array)) !== false) {
+                unset($array[$key]);
+            }
+            return $array;
+        }
+        foreach($event->event_products_id as $events_product_id) {
+            if($events_product_id == $id) {
+                $id_to_delete = $events_product_id;
+            }
+        }
+        $result = removeElement($event->event_products_id, $id_to_delete);
+        $arr = $event->event_products_id;
+        $arr = $result;
+        $event->event_products_id = $arr;
+        $event->update();
         $events_product->delete();
         $event = Event::find($events_product->event_id);
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');

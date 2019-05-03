@@ -157,25 +157,28 @@
                                         App\Template_components::pluck('title','_id'), $template->components_ids, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
                                     </div>
+
                                     <div id="templateComponentsList" data-type='sortable' class="mt-3">
                                         {{-- Foreach templateComponentID --}}
-                                        {{-- <ul class="list-group py-2">
-                                            <li class="list-group-item ui-state-default" data-id="' + value + '">
-                                                <div class="row align-items-center">
-                                                    <div class="col ml-n2">' + name + '</div>
-                                                    <div class="col-auto">
-                                                        <a data-id="' + value + '" class="deleteComponent" style="cursor:pointer;">
-                                                            <i class="fe fe-trash-2"></i>
-                                                        </a>
+                                        @foreach ($template->components_ids as $component)
+                                            <ul class="list-group py-2">
+                                                <li class="list-group-item ui-state-default" data-id="{{$component['id']}}">
+                                                    <div class="row align-items-center">
+                                                        <div class="col ml-n2">{{$component['name']}}</div>
+                                                        <div class="col-auto">
+                                                            <a data-id="{{$component['id']}}" class="deleteComponent" style="cursor:pointer;">
+                                                                <i class="fe fe-trash-2"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <a class="handle" style="cursor:grab;">
+                                                                <i class="fe fe-more-vertical"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-auto">
-                                                        <a class="handle" style="cursor:grab;">
-                                                            <i class="fe fe-more-vertical"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul> --}}
+                                                </li>
+                                            </ul>
+                                        @endforeach
                                     </div>
                                     {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>

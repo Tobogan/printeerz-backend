@@ -29,12 +29,16 @@
     <div class="col-12 col-lg-8">
       {!! Form::open(['action' => 'EventController@store', 'files' => true]) !!}
       {{csrf_field()}}
-        <div class="form-group">
+      <div class="form-group">
+          <!-- Label -->
           <label>
-            Nom de l'événement
+              Nom de l'événement
           </label>
-          {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nom de l\'événement']) !!}
-        </div>
+          <!-- Input -->
+          {!! Form::text('name', null, ['class' => 'form-control' . $errors->first('name', '
+          is-invalid'), 'placeholder' => 'Nom de l\'événement']) !!}
+          @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner le nom de l'événement</div>@endif
+      </div>
         <div class="form-group">
           <label class="mb-1">
             Client
@@ -52,10 +56,11 @@
             Annonceur
           </label>
           <small class="form-text text-muted">
-            This is how others will learn about the project, so make it good!
+            Renseigner le nom de l'annonceur.
           </small>
-          {!! Form::text('advertiser', null, ['class' => 'form-control', 'placeholder' => 'Nom de l\'annonceur'])
-          !!}
+          {!! Form::text('advertiser', null, ['class' => 'form-control' . $errors->first('advertiser', '
+          is-invalid'), 'placeholder' => 'Nom de l\'annonceur']) !!}
+          @if($errors->has('advertiser'))<div class="invalid-feedback">Veuillez renseigner le nom de l'annonceur</div>@endif
         </div>
 
         <div class="row">
@@ -117,9 +122,11 @@
             Utilisez une image au format 1:1 avec une taille 400x400 maximum
           </small>
           <div class="custom-file">
-            {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
+            {!! Form::file('logo_img', array('class' => 'custom-file-input' . $errors->first('logo_img', 'is-invalid'), 'id' => 'logo_img')) !!}
             <label class="custom-file-label" for="logo_img">Charger une image</label>
           </div>
+          @if($errors->has('logo_img'))<div>Veuillez renseigner le nom de l'annonceur</div>@endif
+
         </div>
         <div class="form-group">
           <label class="mb-1">
@@ -133,6 +140,18 @@
             <label class="custom-file-label" for="cover_img">Charger une image</label>
           </div>
         </div>
+        <div class="form-group">
+            <label class="mb-1">
+              BAT de l'événement
+            </label>
+            <small class="form-text text-muted">
+              Utilisez une image au format 1:1 avec une taille 400x400 maximum
+            </small>
+            <div class="custom-file">
+              {!! Form::file('BAT', array('class' => 'custom-file-input', 'id' => 'BAT' )) !!}
+              <label class="custom-file-label" for="BAT">Charger une image</label>
+            </div>
+          </div>
         <hr class="mt-4 mb-5">
         <div class="form-group">
           <label>Description de l'événement</label>

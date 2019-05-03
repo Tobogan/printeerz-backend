@@ -151,6 +151,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <!-- First name -->
+                                    <p class="text-muted">Attention! Vous ne devez pas créer un gabarit avec deux composants identiques.</p>
                                     <div class="form-group m-0">
                                         <!-- Input -->
                                         {!! Form::select('components_ids[]',
@@ -159,7 +160,7 @@
                                     </div>
                                     <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>
-                                    {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
+                                    {!! Form::hidden('templateComponentsList', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>
                             </div>
                         </div>
@@ -212,4 +213,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascripts')
+<script type="text/Javascript">
+
+$('#templateComponentsList').on('change', function () {
+    var comp = $('#hidden_comp').val();
+    console.log('comp');
+});
+</script>
 @endsection
