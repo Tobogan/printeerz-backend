@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use App\Events_products;
+use App\Printzones;
+use App\Events_customs;
+use App\Product;
 
 use Illuminate\Http\Request;
 
@@ -20,7 +23,7 @@ class LiveController extends Controller
         return $events->toJson();
     }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -29,27 +32,6 @@ class LiveController extends Controller
     {
         $events_products = Events_products::all();
         return $events_products->toJson();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -64,8 +46,9 @@ class LiveController extends Controller
         return $event->toJson();
     }
 
-        /**
+    /**
      * Display the specified resource.
+     * Return array of events_product.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -77,7 +60,7 @@ class LiveController extends Controller
         return $events_products_ids;
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -90,36 +73,71 @@ class LiveController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function printzone($id)
     {
-        //
+        $printzone = Printzones::find($id);
+        return $printzone->toJson();
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function printzones()
     {
-        //
+        $printzones = Printzones::all();
+        return $printzones->toJson();
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function events_custom($id)
     {
-        //
+        $events_custom = Events_customs::find($id);
+        return $events_custom->toJson();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function events_customs()
+    {
+        $events_customs = Events_customs::all();
+        return $events_customs->toJson();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function product($id)
+    {
+        $product = Product::find($id);
+        return $product->toJson();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function products()
+    {
+        $products = Product::all();
+        return $products->toJson();
     }
 }

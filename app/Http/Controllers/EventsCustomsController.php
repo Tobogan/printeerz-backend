@@ -92,6 +92,14 @@ class EventsCustomsController extends Controller
         $events_custom->is_active = $request->is_active;
         $events_custom->is_deleted = $request->is_deleted;
         $events_custom->save();
+
+        // here I push the id in the corresponding events_product
+        $events_product = Events_products::find($events_custom->events_product_id);
+        $arr_events_customs = $events_product->event_customs_ids;
+        array_push($arr_events_customs, $events_custom->id);
+        $events_product->event_customs_ids = $arr_events_customs;
+        $events_product->update();
+
         if ($request->hasFile('custom_img')){
             // Get file
             $file = $request->file('custom_img');
@@ -539,11 +547,33 @@ class EventsCustomsController extends Controller
     {
         $events_custom = Events_customs::find($id);
         $disk = Storage::disk('s3'); 
+
+        // here I search the id in event array and I delete it
+        $events_product = Events_products::find($events_custom->events_product_id);
+        function removeElement($array,$value) {
+            if (($key = array_search($value, $array)) !== false) {
+                unset($array[$key]);
+            }
+            return $array;
+        }
+        foreach($events_product->event_customs_ids as $events_custom_id) {
+            if($events_custom_id == $id) {
+                $id_to_delete = $events_custom_id;
+            }
+        }
+        $result = removeElement($events_product->event_customs_ids, $id_to_delete);
+        $arr = $events_product->event_customs_ids;
+        $arr = $result;
+        $events_product->event_customs_ids = $arr;
+        $events_product->update();
+
+        // delete les images
         foreach($events_custom->components as $component){
             if(isset($component['image_url'])){
                 $disk->delete($component['image_url']);
             }
         }
+
         $events_custom->delete();
         $notification = array(
             'status' => 'La personnalisation a été correctement supprimée.',
