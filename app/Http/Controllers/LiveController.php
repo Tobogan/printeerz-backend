@@ -74,7 +74,7 @@ class LiveController extends Controller
     {
         $event = Event::find($id);
         $events_products_ids = $event->event_products_id;
-        return $events_products_ids->toJson();
+        return $events_products_ids;
     }
 
         /**

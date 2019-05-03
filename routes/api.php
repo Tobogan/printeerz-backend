@@ -23,7 +23,7 @@ Route::group(['middleware' => 'cors'], function () {
     
     Route::get('events', 'LiveController@events')->name('indexEvent_live');
     Route::get('event/{id}', 'LiveController@event')->name('show_event_live');
-    Route::get('event/{event_id}/events_products', 'LiveController@eventsProductIds')->name('show_event_live');
+    Route::get('event/{event_id}/products', 'LiveController@eventsProductIds')->name('show_event_live');
 
     Route::get('events_products', 'LiveController@eventsProducts')->name('indexEventsProducts_live');
     Route::get('events_product/{id}', 'LiveController@eventsProduct')->name('show_eventsProduct_live');
