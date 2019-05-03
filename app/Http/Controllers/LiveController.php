@@ -70,7 +70,7 @@ class LiveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function eventsProductIds($event_id)
+    public function eventsProductIds($id)
     {
         $event = Event::find($id);
         $events_products_ids = $event->event_products_id;
