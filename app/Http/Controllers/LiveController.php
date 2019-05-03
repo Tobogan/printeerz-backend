@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\Events_products;
 
 use Illuminate\Http\Request;
 
@@ -13,10 +14,21 @@ class LiveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function events()
     {
         $events = Event::all();
         return $events->toJson();
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function eventsProducts()
+    {
+        $events_products = Events_products::all();
+        return $events_products->toJson();
     }
 
     /**
@@ -46,10 +58,35 @@ class LiveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function event($id)
     {
         $event = Event::find($id);
         return $event->toJson();
+    }
+
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function eventsProductIds($event_id)
+    {
+        $event = Event::find($id);
+        $events_products_ids = $event->event_products_id;
+        return $events_products_ids->toJson();
+    }
+
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function eventsProduct($id)
+    {
+        $events_product = Events_products::find($id);
+        return $events_product->toJson();
     }
 
     /**
