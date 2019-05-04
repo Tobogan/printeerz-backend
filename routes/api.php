@@ -21,12 +21,21 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 Route::group(['middleware' => 'cors'], function () {
     
-    Route::get('events', 'LiveController@events')->name('indexEvent_live');
+    Route::get('events', 'LiveController@events')->name('index_event_live');
     Route::get('event/{id}', 'LiveController@event')->name('show_event_live');
     Route::get('event/{event_id}/products', 'LiveController@eventsProductIds')->name('show_event_live');
 
-    Route::get('events_products', 'LiveController@eventsProducts')->name('indexEventsProducts_live');
+    Route::get('events_products', 'LiveController@eventsProducts')->name('index_eventsProducts_live');
     Route::get('events_product/{id}', 'LiveController@eventsProduct')->name('show_eventsProduct_live');
+
+    Route::get('events_customs', 'LiveController@eventsCustoms')->name('index_eventsCustoms_live');
+    Route::get('events_custom/{id}', 'LiveController@eventsCustom')->name('show_eventsCustom_live');
+
+    Route::get('products', 'LiveController@Products')->name('index_Products_live');
+    Route::get('product/{id}', 'LiveController@Product')->name('show_Product_live');
+
+    Route::get('printzones', 'LiveController@printzones')->name('index_printzones_live');
+    Route::get('printzone/{id}', 'LiveController@printzone')->name('show_printzone_live');
 
     // Route::prefix('auth')->group(function () {
     //     Route::post('register', 'AuthController@register');
