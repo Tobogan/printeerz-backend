@@ -20,7 +20,6 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 Route::group(['middleware' => 'cors'], function () {
-    
     Route::get('events', 'LiveController@events')->name('index_event_live');
     Route::get('event/{id}', 'LiveController@event')->name('show_event_live');
     Route::get('event/{event_id}/products', 'LiveController@eventsProductIds')->name('show_event_live');
