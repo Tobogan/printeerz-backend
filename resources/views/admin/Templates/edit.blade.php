@@ -160,25 +160,27 @@
 
                                     <div id="templateComponentsList" data-type='sortable' class="mt-3">
                                         {{-- Foreach templateComponentID --}}
-                                        @foreach ($template->components_ids as $component)
-                                            <ul class="list-group py-2">
-                                                <li class="list-group-item ui-state-default" data-id="{{$component['id']}}">
-                                                    <div class="row align-items-center">
-                                                        <div class="col ml-n2">{{$component['name']}}</div>
-                                                        <div class="col-auto">
-                                                            <a data-id="{{$component['id']}}" class="deleteComponent" style="cursor:pointer;">
-                                                                <i class="fe fe-trash-2"></i>
-                                                            </a>
+                                        @if($template->components_ids)
+                                            @foreach ($template->components_ids as $component)
+                                                <ul class="list-group py-2">
+                                                    <li class="list-group-item ui-state-default" data-id="{{$component['id']}}">
+                                                        <div class="row align-items-center">
+                                                            <div class="col ml-n2">{{$component['name']}}</div>
+                                                            <div class="col-auto">
+                                                                <a data-id="{{$component['id']}}" class="deleteComponent" style="cursor:pointer;">
+                                                                    <i class="fe fe-trash-2"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <a class="handle" style="cursor:grab;">
+                                                                    <i class="fe fe-more-vertical"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-auto">
-                                                            <a class="handle" style="cursor:grab;">
-                                                                <i class="fe fe-more-vertical"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        @endforeach
+                                                    </li>
+                                                </ul>
+                                            @endforeach
+                                        @endif
                                     </div>
                                     {!! Form::hidden('templateComponentsList[]', "false", ['id' => 'templateComponentsListHidden']) !!}
                                 </div>
@@ -199,19 +201,29 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
+                                    @if(!empty($template->thumb_img) && $disk->exists($template->thumb_img))
+                                        <div class="avatar avatar-xxl card-avatar">
+                                            <img src="{{$s3 . $template->thumb_img}}" alt="..." class="avatar-img rounded">
+                                        </div>
+                                    @endif
                                     <!-- First name -->
                                     <div class="custom-file">
                                         {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id'
                                         => 'thumb', 'name' => 'thumb')) !!}
-                                        <label class="custom-file-label" for="thumb">Ajouter la miniature</label>
+                                        <label class="custom-file-label" for="thumb">Ajouter/Modifier la miniature</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
+                                    @if(!empty($template->full_img) && $disk->exists($template->full_img))
+                                        <div class="avatar avatar-xxl card-avatar">
+                                            <img src="{{$s3 . $template->full_img}}" alt="..." class="avatar-img rounded">
+                                        </div>
+                                    @endif
                                     <!-- First name -->
                                     <div class="custom-file">
                                         {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id'
                                         => 'full', 'name' => 'full')) !!}
-                                        <label class="custom-file-label" for="full">Ajouter l'image</label>
+                                        <label class="custom-file-label" for="full">Ajouter/Modifier l'image</label>
                                     </div>
                                 </div>
                             </div>

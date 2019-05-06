@@ -65,38 +65,7 @@ class TemplatesController extends Controller
         $template->category = $request->category;
         
         $disk = Storage::disk('s3');
-        if ($request->hasFile('thumb')){
-            // Get file
-            $file = $request->file('thumb');
-            // Create name
-            $name = time() . $file->getClientOriginalName();
-            // Define the path
-            $filePath = '/templates/' . $name;
-            // Resize img
-            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-            // Upload the file
-            $disk->put($filePath, $img, 'public');
-            // Delete public copy
-            unlink(public_path() . '/' . $name);
-            // Put in database
-            $thumb = $filePath;
-        }
-        if ($request->hasFile('full')){
-            // Get file
-            $file = $request->file('full');
-            // Create name
-            $name = time() . $file->getClientOriginalName();
-            // Define the path
-            $filePath = '/templates/' . $name;
-            // Resize img
-            $img = Image::make(file_get_contents($file))->save($name);
-            // Upload the file
-            $disk->put($filePath, $img, 'public');
-            // Delete public copy
-            unlink(public_path() . '/' . $name);
-            // Put in database
-            $full = $filePath;
-        }
+
         $template->size = array(
             'width' => $request->width,
             'height' => $request->height
@@ -106,15 +75,49 @@ class TemplatesController extends Controller
             'y' => $request->origin_y
         );
         $i=0;
-        foreach(json_decode($request->get('templateComponentsList')) as $templates_component){
-            $i++;
-            $templates_component->name == $templates_component->name.'(gabarit n°'.$i.')';
+        // dd(json_decode($request->get('templateComponentsList')));
+        if(json_decode($request->get('templateComponentsList')) !== false){
+            foreach(json_decode($request->get('templateComponentsList')) as $templates_component){
+                $i++;
+                $templates_component->name == $templates_component->name.'(gabarit n°'.$i.')';
+            }
+            $template->components_ids = json_decode($request->get('templateComponentsList'));
         }
-        $template->components_ids = json_decode($request->get('templateComponentsList'));
         $template->position = $request->position;
         $template->is_active = $request->is_active; 
         $template->is_deleted = $request->is_deleted;
-
+        if ($request->hasFile('thumb')){
+            // Get file
+            $file = $request->file('thumb');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/templates/'.$request->title.'/'.$name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $template->thumb_img = $filePath;
+        }
+        if ($request->hasFile('full')){
+            // Get file
+            $file = $request->file('full');
+            // Create name
+            $name = time() . $file->getClientOriginalName();
+            // Define the path
+            $filePath = '/templates/'.$request->title.'/'.$name;
+            // Resize img
+            $img = Image::make(file_get_contents($file))->save($name);
+            // Upload the file
+            $disk->put($filePath, $img, 'public');
+            // Delete public copy
+            unlink(public_path() . '/' . $name);
+            // Put in database
+            $template->full_img = $filePath;
+        }
         $template->save();
         $notification = array(
             'status' => 'Le gabarit a été correctement créé.',
@@ -143,7 +146,9 @@ class TemplatesController extends Controller
     public function edit($id)
     {
         $template = Templates::find($id);
-        return view('admin/Templates.edit', ['template' => $template]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/Templates.edit', ['s3' => $s3, 'disk' => $disk, 'template' => $template]);
     }
 
     /**
@@ -167,13 +172,13 @@ class TemplatesController extends Controller
             $disk = Storage::disk('s3');
             if ($request->hasFile('thumb')){
                 // Get current image path
-                $oldPath = $template->image["thumb"];
+                $oldPath = $template->thumb_img;
                 // Get new image
                 $file = $request->file('thumb');
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/templates/' . $name;
+                $newFilePath = '/templates/'.$request->title.'/'.$name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
@@ -181,29 +186,28 @@ class TemplatesController extends Controller
                 $disk->put($newFilePath, $img, 'public-read');
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $user->profile_img = $newFilePath;
-                if(!empty($template->image["thumb"]) && $disk->exists($newFilePath)){
+                $template->thumb_img = $newFilePath;
+                if(!empty($template->thumb_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
             if ($request->hasFile('full')){
-                // Get current image path
-                $oldPath = $template->image["full"];
-                // Get new image
+                // Get file
                 $file = $request->file('full');
-                // Create image name
+                $oldPath = $template->thumb_full;
+                // Create name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
-                $newFilePath = '/templates/' . $name;
-                // Resize new image
+                // Define the path
+                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
-                // Upload the new image
-                $disk = Storage::disk('s3');
+                // Upload the file
                 $disk->put($newFilePath, $img, 'public-read');
+                // Delete public copy
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $user->profile_img = $newFilePath;
-                if(!empty($template->image["full"]) && $disk->exists($newFilePath)){
+                $template->full_img = $newFilePath;
+                if(!empty($template->full_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
@@ -235,13 +239,13 @@ class TemplatesController extends Controller
             
             if ($request->hasFile('thumb')){
                 // Get current image path
-                $oldPath = $template->image_thumb;
+                $oldPath = $template->thumb_img;
                 // Get new image
                 $file = $request->file('thumb');
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/templates/' . $name;
+                $newFilePath = '/templates/'.$request->title.'/'.$name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
@@ -249,29 +253,28 @@ class TemplatesController extends Controller
                 $disk->put($newFilePath, $img, 'public-read');
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $template->image_thumb = $newFilePath;
-                if(!empty($template->image_thumb) && $disk->exists($newFilePath)){
+                $template->thumb_img = $newFilePath;
+                if(!empty($template->thumb_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
             if ($request->hasFile('full')){
-                // Get current image path
-                $oldPath = $template->image_full;
-                // Get new image
+                // Get file
                 $file = $request->file('full');
-                // Create image name
+                $oldPath = $template->thumb_full;
+                // Create name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
-                $newFilePath = '/templates/' . $name;
-                // Resize new image
+                // Define the path
+                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
-                // Upload the new image
-                $disk = Storage::disk('s3');
+                // Upload the file
                 $disk->put($newFilePath, $img, 'public-read');
+                // Delete public copy
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $template->image_full = $newFilePath;
-                if(!empty($template->image_full) && $disk->exists($newFilePath)){
+                $template->full_img = $newFilePath;
+                if(!empty($template->full_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
@@ -309,12 +312,12 @@ class TemplatesController extends Controller
         $template = Templates::find($id);
         // Delete Thumb image
         $disk = Storage::disk('s3');
-        $fileThumbPath = $template->image["thumb"];
-        if(!empty($template->image["thumb"]) && $disk->exists($fileThumbPath)){
+        $fileThumbPath = $template->thumb_img;
+        if(!empty($template->thumb_img) && $disk->exists($fileThumbPath)){
             $disk->delete($fileThumbPath);
         }
-        $fileFullPath = $template->image["full"];
-        if(!empty($template->image["full"]) && $disk->exists($fileFullPath)){
+        $fileFullPath = $template->full_img;
+        if(!empty($template->full_img) && $disk->exists($fileFullPath)){
             $disk->delete($fileFullPath);
         }
         $template->delete();

@@ -12,7 +12,8 @@
             </div>
         </div>
         <div class="col-12 col-xl-4">
-            {{-- Image --}} @if(!empty($product->image) && $disk->exists($product->image))
+            {{-- Image --}} 
+            @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
                     <div class="avatar avatar-xxl card-avatar">
@@ -28,7 +29,8 @@
                             </small>
                         </p>
                     </div>
-                    <hr> @if ($product->product_type)
+                    <hr> 
+                    @if ($product->product_type)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Type</h5>
@@ -39,7 +41,9 @@
                                 </span>
                         </div>
                     </div>
-                    <hr> @endif @if ($product->gender)
+                    <hr> 
+                    @endif 
+                    @if ($product->gender)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Sexe</h5>
@@ -50,7 +54,9 @@
                                 </span>
                         </div>
                     </div>
-                    <hr> @endif @if ($product->vendor['reference'])
+                    <hr> 
+                    @endif 
+                    @if ($product->vendor['reference'])
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Référence</h5>

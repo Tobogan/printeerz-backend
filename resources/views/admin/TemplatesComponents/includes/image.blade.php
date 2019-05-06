@@ -10,12 +10,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                        <!-- First name -->
-                        <div class="custom-file">
-                            {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                            <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                            <!-- First name -->
+                            <div class="custom-file">
+                                {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
