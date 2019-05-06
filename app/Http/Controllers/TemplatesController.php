@@ -235,7 +235,7 @@ class TemplatesController extends Controller
             
             if ($request->hasFile('thumb')){
                 // Get current image path
-                $oldPath = $template->image["thumb"];
+                $oldPath = $template->image_thumb;
                 // Get new image
                 $file = $request->file('thumb');
                 // Create image name
@@ -249,14 +249,14 @@ class TemplatesController extends Controller
                 $disk->put($newFilePath, $img, 'public-read');
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $user->profile_img = $newFilePath;
-                if(!empty($template->image["thumb"]) && $disk->exists($newFilePath)){
+                $template->image_thumb = $newFilePath;
+                if(!empty($template->image_thumb) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
             if ($request->hasFile('full')){
                 // Get current image path
-                $oldPath = $template->image["full"];
+                $oldPath = $template->image_full;
                 // Get new image
                 $file = $request->file('full');
                 // Create image name
@@ -270,8 +270,8 @@ class TemplatesController extends Controller
                 $disk->put($newFilePath, $img, 'public-read');
                 unlink(public_path() . '/' . $name);
                 // Put in database
-                $user->profile_img = $newFilePath;
-                if(!empty($template->image["full"]) && $disk->exists($newFilePath)){
+                $template->image_full = $newFilePath;
+                if(!empty($template->image_full) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }

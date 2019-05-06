@@ -1,13 +1,13 @@
 @extends('layouts/templateAdmin')
 @section('title', 'Zones d\'impressions')
-@section('alerts')
-@if (session('status'))
-<div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
-    data-dismiss="alert">
-    {{ session('status') }}
-</div>
-@endif
-@endsection
+    @section('alerts')
+        @if (session('status'))
+            <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+                data-dismiss="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+    @endsection
 @section('content')
 
 @if (session('status'))
@@ -89,6 +89,7 @@
                                         Status
                                     </a>
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
 
