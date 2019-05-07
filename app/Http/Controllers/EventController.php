@@ -7,7 +7,8 @@ use App\Event;
 use App\Customer;
 use App\Product;
 use App\Printzones;
-use App\Events_products;;
+use App\Events_products;
+use App\Events_customs;;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -502,7 +503,19 @@ class EventController extends Controller
         if(!empty($event->BAT) && $disk->exists($filePath)){
             $disk->delete($filePath);
         }
-
+        // ici je vais chercher les events_products & events_custom de l'event et je les efface
+        $events_products = Events_products::where('event_id', '=', $id)->get();
+        if($events_products != null){
+            foreach($events_products as $events_product){
+                $events_product->delete();
+            }
+        }
+        $events_customs = Events_customs::where('event_id', '=', $id)->get();
+        if($events_customs != null){
+            foreach($events_customs as $events_custom){
+                $events_custom->delete();
+            }
+        }
         // Delete file
         $event->delete();
 
