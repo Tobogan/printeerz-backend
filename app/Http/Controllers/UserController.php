@@ -36,6 +36,16 @@
             ]);
         }
 
+        /**
+         * Show the form for creating a new resource.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function create()
+        {
+            return view('admin/User.add');
+        }
+
         public function register(Request $request)
         {
                 $validator = Validator::make($request->all(), [
