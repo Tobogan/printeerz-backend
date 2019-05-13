@@ -151,7 +151,6 @@
                             <div class="row">
                                 <div class="col-12">
                                     <!-- First name -->
-                                    <p class="text-muted">Attention! Vous ne devez pas créer un gabarit avec deux composants identiques.</p>
                                     <div class="form-group m-0">
                                         <!-- Input -->
                                         {!! Form::select('components_ids[]',

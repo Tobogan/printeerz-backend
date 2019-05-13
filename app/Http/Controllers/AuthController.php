@@ -6,6 +6,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -36,9 +38,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $tk = JWTAuth::attempt($credentials);
 
         if ($token = $this->guard()->attempt($credentials)) {
-            return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
+            return response()->json(['token' => $tk, 'token_type' => 'bearer','expires' => auth('api')->factory()->getTTL() * 60,], 200)->header('Authorization', $token);
         }
 
         return response()->json(['error' => 'login_error'], 401);

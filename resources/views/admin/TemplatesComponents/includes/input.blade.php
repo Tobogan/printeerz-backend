@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -56,14 +56,14 @@
                             {!! Form::text('font_name', null, ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
                         </div>
                     </div>
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                         <!-- First name -->
                         <div class="custom-file">
                             {!! Form::file('font_url', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
                             <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
                         </div>
-                    </div>
-                    <hr class="mt-4 mb-5">
+                    </div> --}}
+                    {{--<hr class="mt-4 mb-5">
                     <div class="col-12">
                         <div class="form-group">
                             <!-- Label -->
@@ -118,6 +118,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 {!! Form::hidden('fonts_total', '3') !!}

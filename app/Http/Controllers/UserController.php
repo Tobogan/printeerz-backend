@@ -27,8 +27,13 @@
             } catch (JWTException $e) {
                 return response()->json(['error' => 'could_not_create_token'], 500);
             }
-
-            return response()->json(compact('token'));
+            // return response()->json(compact('token'));
+            // ici j'ai ajouté cette réponse pour envoyer la date d'exp et le type de token
+            return response()->json([
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires' => auth('api')->factory()->getTTL() * 60,
+            ]);
         }
 
         public function register(Request $request)

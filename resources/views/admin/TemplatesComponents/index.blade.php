@@ -1,13 +1,13 @@
 @extends('layouts/templateAdmin')
-@section('title', 'Composants')
-@section('alerts')
-@if (session('status'))
-<div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
-    data-dismiss="alert">
-    {{ session('status') }}
-</div>
-@endif
-@endsection
+    @section('title', 'Composants')
+        @section('alerts')
+            @if (session('status'))
+                <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+                    data-dismiss="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+        @endsection
 @section('content')
 
 <div class="container-fluid">
@@ -81,9 +81,9 @@
                             @foreach ($template_components as $component)
                             <tr>
                                 <td class="templatesComponents-title"><a
-                                        href="{{route('edit_templatesComponents', $component->id)}}"><b>{{$component->title}}</b></a>
+                                        href="{{route('edit_templatesComponents', $component->id)}}"><b>{{ $component->title }}</b></a>
                                 </td>
-                                <td class="templatesComponents-type">{{ $component->type }}</td>
+                                <td class="templatesComponents-type">{{ $component->comp_type }}</td>
                                 @if(isset($component->size["width"]))
                                 <td class="templatesComponents-size-width">{{ $component->size["width"] }}</td>
                                 @else

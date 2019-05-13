@@ -40,7 +40,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Type</label>
-                                {!! Form::text('Type', $template_component->type, ['class' => 'form-control', 'placeholder' => 'Type', 'disabled' => ''])!!}
+                                {!! Form::text('Type', $template_component->comp_type, ['class' => 'form-control', 'placeholder' => 'Type', 'disabled' => ''])!!}
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
@@ -375,7 +375,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             {!! Form::hidden('fonts_total', '3') !!}
             

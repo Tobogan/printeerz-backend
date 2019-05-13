@@ -103,12 +103,12 @@ class TemplateComponentsController extends Controller
                     $request_font_weight =  $request->{'font_weight_'.$i};
                     $request_font_transform =  $request->{'font_transform_'.$i};
                     $request_font_first_letter =  $request->{'font_first_letter_'.$i};
-                    $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
-                    $request_font_url->move(public_path('uploads'), $url);
+                    // $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
+                    // $request_font_url->move(public_path('uploads'), $url);
                     $font = array(
                         'id' =>  $request_font_id,
                         'name' => $request_font_name,
-                        'url' => $url,
+                        // 'url' => $url,
                         'weight' => $request_font_weight,
                         'transform' => $request_font_transform,
                         'first_letter' => $request_font_first_letter,
@@ -160,6 +160,24 @@ class TemplateComponentsController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
+        // $font_transform = [
+        //     'none'=>'Aucune',
+        //     'uppercase'=>'Tout en Majuscules',
+        //     'capitalize'=>'Première lettre en Majuscule',
+        //     'lowercase'=>'Tout en minuscule',
+        //     'full-width'=>'Pleine largeur'
+        // ];
+        // $font_weight = [
+        //     '100'=>'Thin (100)',
+        //     '200'=>'Extra Light (200)',
+        //     '300'=>'Light (300)',
+        //     '400'=>'Normal (400)',
+        //     '500'=>'Medium (500)',
+        //     '600'=>'Semi Bold (600)',
+        //     '700'=>'Bold (700)',
+        //     '800'=>'Extra Bold (800)',
+        //     '900'=>'Black (900)'
+        // ];
         return view('admin/TemplatesComponents.edit', ['template_component' => $template_component, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
     }
 
@@ -220,14 +238,14 @@ class TemplateComponentsController extends Controller
                     'available' => $request->available,
                     'always' => $request->always
                 );
-                $template_component->font = array(
-                    'id' =>  $request->font_id,
-                    'name' => $request->font_name,
-                    'url' => $request->font_url,
-                    'weight' => $request->font_weight,
-                    'transform' => $request->font_transform,
-                    'first_letter' => $request->font_first_letter,
-                );
+                // $template_component->font = array(
+                //     'id' =>  $request->font_id,
+                //     'name' => $request->font_name,
+                //     // 'url' => $request->font_url,
+                //     'weight' => $request->font_weight,
+                //     'transform' => $request->font_transform,
+                //     'first_letter' => $request->font_first_letter,
+                // );
             }
             $template_component->is_customizable = $request->is_customizable;
             $template_component->is_active = $request->is_active; 
@@ -289,14 +307,14 @@ class TemplateComponentsController extends Controller
                     'available' => $request->available,
                     'always' => $request->always
                 );
-                $template_component->font = array(
-                    'id' =>  $request->font_id,
-                    'name' => $request->font_name,
-                    'url' => $request->font_url,
-                    'weight' => $request->font_weight,
-                    'transform' => $request->font_transform,
-                    'first_letter' => $request->font_first_letter,
-                );
+                // $template_component->font = array(
+                //     'id' =>  $request->font_id,
+                //     'name' => $request->font_name,
+                //     // 'url' => $request->font_url,
+                //     'weight' => $request->font_weight,
+                //     'transform' => $request->font_transform,
+                //     'first_letter' => $request->font_first_letter,
+                // );
             }
             $template_component->is_customizable = $request->is_customizable;
             $template_component->is_active = $request->is_active; 
@@ -332,7 +350,7 @@ class TemplateComponentsController extends Controller
         return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a template function in index template__________~~~~~~~~~~~~-*/
+    // activate and desactivate a template function in index template
     public function desactivate($id)
     {
         $template_component = Template_components::find($id);

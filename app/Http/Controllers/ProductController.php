@@ -262,6 +262,7 @@ class ProductController extends Controller
         if(!empty($product->image) && $disk->exists($filePath)){
             $disk->delete($filePath);
         }
+        // ici j'efface les products_variants enfant ce produit
         $products_variants = Products_variants::all();
         foreach($products_variants as $products_variant) {
             if($products_variant->product_id == $product->id) {

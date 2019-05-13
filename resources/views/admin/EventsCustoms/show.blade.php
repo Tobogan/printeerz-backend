@@ -143,7 +143,7 @@
         var fonts_weight = [];
         var fonts_transform = [];
         var fonts_file_name = [];
-        fonts_weight.push(fontWeightList);  // t'en es là
+        fonts_weight.push(fontWeightList);
         fonts_transform.push(fontTransformList);
         fonts.push(fontsList);  
         url.push(font_urlList);
