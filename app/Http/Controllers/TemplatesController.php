@@ -182,8 +182,7 @@ class TemplatesController extends Controller
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
-                $disk = Storage::disk('s3');
-                $disk->put($newFilePath, $img, 'public-read');
+                $disk->put($newFilePath, $img, 'public');
                 unlink(public_path() . '/' . $name);
                 // Put in database
                 $template->thumb_img = $newFilePath;
@@ -202,7 +201,7 @@ class TemplatesController extends Controller
                 // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
                 // Upload the file
-                $disk->put($newFilePath, $img, 'public-read');
+                $disk->put($newFilePath, $img, 'public');
                 // Delete public copy
                 unlink(public_path() . '/' . $name);
                 // Put in database
@@ -250,7 +249,7 @@ class TemplatesController extends Controller
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
                 $disk = Storage::disk('s3');
-                $disk->put($newFilePath, $img, 'public-read');
+                $disk->put($newFilePath, $img, 'public');
                 unlink(public_path() . '/' . $name);
                 // Put in database
                 $template->thumb_img = $newFilePath;
@@ -269,7 +268,7 @@ class TemplatesController extends Controller
                 // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
                 // Upload the file
-                $disk->put($newFilePath, $img, 'public-read');
+                $disk->put($newFilePath, $img, 'public');
                 // Delete public copy
                 unlink(public_path() . '/' . $name);
                 // Put in database
