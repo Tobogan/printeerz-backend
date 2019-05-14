@@ -16,73 +16,73 @@
 
     class UserController extends Controller
     {
-        public function authenticate(Request $request)
-        {
-            $credentials = $request->only('email', 'password');
+        // public function authenticate(Request $request)
+        // {
+        //     $credentials = $request->only('email', 'password');
 
-            try {
-                if (! $token = JWTAuth::attempt($credentials)) {
-                    return response()->json(['error' => 'invalid_credentials'], 400);
-                }
-            } catch (JWTException $e) {
-                return response()->json(['error' => 'could_not_create_token'], 500);
-            }
-            // return response()->json(compact('token'));
-            // ici j'ai ajouté cette réponse pour envoyer la date d'exp et le type de token
-            return response()->json([
-                'token' => $token,
-                'token_type' => 'bearer',
-                'expires' => auth('api')->factory()->getTTL() * 60,
-            ]);
-        }
+        //     try {
+        //         if (! $token = JWTAuth::attempt($credentials)) {
+        //             return response()->json(['error' => 'invalid_credentials'], 400);
+        //         }
+        //     } catch (JWTException $e) {
+        //         return response()->json(['error' => 'could_not_create_token'], 500);
+        //     }
+        //     // return response()->json(compact('token'));
+        //     // ici j'ai ajouté cette réponse pour envoyer la date d'exp et le type de token
+        //     return response()->json([
+        //         'token' => $token,
+        //         'token_type' => 'bearer',
+        //         'expires' => auth('api')->factory()->getTTL() * 60,
+        //     ]);
+        // }
 
-        public function register(Request $request)
-        {
-                $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6|confirmed',
-            ]);
+        // public function register(Request $request)
+        // {
+        //         $validator = Validator::make($request->all(), [
+        //         'name' => 'required|string|max:255',
+        //         'email' => 'required|string|email|max:255|unique:users',
+        //         'password' => 'required|string|min:6|confirmed',
+        //     ]);
 
-            if($validator->fails()){
-                    return response()->json($validator->errors()->toJson(), 400);
-            }
+        //     if($validator->fails()){
+        //             return response()->json($validator->errors()->toJson(), 400);
+        //     }
 
-            $user = User::create([
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password')),
-            ]);
+        //     $user = User::create([
+        //         'name' => $request->get('name'),
+        //         'email' => $request->get('email'),
+        //         'password' => Hash::make($request->get('password')),
+        //     ]);
 
-            $token = JWTAuth::fromUser($user);
+        //     $token = JWTAuth::fromUser($user);
 
-            return response()->json(compact('user','token'),201);
-        }
+        //     return response()->json(compact('user','token'),201);
+        // }
 
-        public function getAuthenticatedUser()
-        {
-            try {
+        // public function getAuthenticatedUser()
+        // {
+        //     try {
 
-                if (! $user = JWTAuth::parseToken()->authenticate()) {
-                        return response()->json(['user_not_found'], 404);
-                }
+        //         if (! $user = JWTAuth::parseToken()->authenticate()) {
+        //                 return response()->json(['user_not_found'], 404);
+        //         }
 
-            } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        //     } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-                return response()->json(['token_expired'], $e->getStatusCode());
+        //         return response()->json(['token_expired'], $e->getStatusCode());
 
-            } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+        //     } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 
-                return response()->json(['token_invalid'], $e->getStatusCode());
+        //         return response()->json(['token_invalid'], $e->getStatusCode());
 
-            } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+        //     } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 
-                return response()->json(['token_absent'], $e->getStatusCode());
+        //         return response()->json(['token_absent'], $e->getStatusCode());
 
-            }
+        //     }
 
-            return response()->json(compact('user'));
-        }
+        //     return response()->json(compact('user'));
+        // }
 
         /**
          * Display a listing of the resource.
@@ -96,6 +96,76 @@
             $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
             $exists = $disk->exists('file.jpg');
             return view('admin/User.index', ['users' => $users, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
+        }
+
+        /**
+         * Show the form for creating a new resource.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function create()
+        {
+            return view('admin/User.add');
+        }
+
+        /**
+         * Store a newly created resource in storage.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
+         */
+        public function store(Request $request)
+        {
+            $validatedData = $request->validate([
+                'username' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'firstname' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:employees',
+                'password' => 'required|string|min:6|confirmed'
+            ]);
+
+            $user = new User;
+            $user->lastname = $request->lastname;
+            $user->firstname = $request->firstname;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->password = bcrypt($request->password);
+            $user->role = $request->role;
+            $user->is_active = $request->is_active;
+            $user->is_deleted = $request->is_deleted;
+            $disk = Storage::disk('s3');
+            if ($request->hasFile('profile_img')){
+                // Get file
+                $file = $request->file('profile_img');
+                // Create name
+                $name = time() . $file->getClientOriginalName();
+                // Define the path
+                $filePath = '/users/' . $name;
+                // Resize img
+                $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+                // Upload the file
+                $disk->put($filePath, $img, 'public');
+                // Delete public copy
+                unlink(public_path() . '/' . $name);
+                // Put in database
+                $user->profile_img = $filePath;
+            }
+            $user->save();
+            return redirect('admin/User/index');
+        }
+
+        /**
+         * Show the form for editing the specified resource.
+         *
+         * @param  int  $id
+         * @return \Illuminate\Http\Response
+         */
+        public function edit($id)
+        {
+            $user = User::find($id);
+            //$user = Auth::user();
+            return view('admin/User.edit', ['user' => $user]);
         }
 
         /**
