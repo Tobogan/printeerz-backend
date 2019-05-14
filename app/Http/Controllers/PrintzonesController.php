@@ -72,7 +72,11 @@ class PrintzonesController extends Controller
 
         $printzone->save();
 
-        return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement créee.');
+        $notification = array(
+            'status' => 'La zone d\'impression ont été correctement créee.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Printzones/edit/' . $printzone->id)->with($notification);
     }
 
     /**
@@ -130,10 +134,6 @@ class PrintzonesController extends Controller
             $printzone->tray_width = $request->tray_width;
             $printzone->tray_height = $request->tray_height;
             $printzone->description = $request->description;
-    
-            $printzone->save();
-    
-            return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement modifiée.');
         }
 
         else {
@@ -159,11 +159,14 @@ class PrintzonesController extends Controller
             $printzone->is_active = $request->is_active;
             $printzone->is_deleted = $request->is_deleted;
             $printzone->description = $request->description;
-    
-            $printzone->save();
-    
-            return redirect('admin/Printzones/index')->with('status', 'La zone d\'impression ont été correctement modifiée.');
         }
+        $printzone->save();
+
+        $notification = array(
+            'status' => 'La zone d\'impression ont été correctement modifiée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Printzones/edit/' . $printzone->id)->with($notification);
     }
 
     /**

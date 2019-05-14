@@ -100,8 +100,8 @@ class ProductController extends Controller
             'status' => 'Le produit a été correctement ajouté',
             'alert-type' => 'success'
         );
-            return redirect('admin/Product/index')->with($notification);
-        }
+        return redirect('admin/Product/show/' . $product->id)->with($notification);
+    }
     
 
     /**
@@ -241,10 +241,10 @@ class ProductController extends Controller
                 
             }
             $notification = array(
-                'status' => 'Le produit a été correctement modifié',
+                'status' => 'Le produit a été correctement modifié.',
                 'alert-type' => 'success'
             );
-            return redirect('admin/Product/index')->with($notification);
+            return redirect('admin/Product/show/' . $product->id)->with($notification);
         }
 
     /**

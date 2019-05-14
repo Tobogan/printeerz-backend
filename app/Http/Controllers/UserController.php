@@ -92,7 +92,7 @@
         //     }
 
         //     return response()->json(compact('user'));
-        // }
+        }
 
         /**
          * Display a listing of the resource.
@@ -100,22 +100,12 @@
          * @return \Illuminate\Http\Response
          */
         public function index()
-        {   
+        {
             $users = User::all();
             $disk = Storage::disk('s3');
             $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
             $exists = $disk->exists('file.jpg');
             return view('admin/User.index', ['users' => $users, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
-        }
-
-        /**
-         * Show the form for creating a new resource.
-         *
-         * @return \Illuminate\Http\Response
-         */
-        public function create()
-        {
-            return view('admin/User.add');
         }
 
         /**
@@ -174,7 +164,6 @@
         public function edit($id)
         {
             $user = User::find($id);
-            //$user = Auth::user();
             return view('admin/User.edit', ['user' => $user]);
         }
 

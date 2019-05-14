@@ -9,11 +9,9 @@
                         </label>
                         {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
                     </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>Description de l'événement</label>
-                            <input id="textDescription" type="textarea" class="description" name="description" rows="3">
-                        </div>
+                    <div class="form-group">
+                        <label>Description de la personnalisation</label>
+                        <input id="textDescription" type="textarea" class="description" name="description" rows="3">
                     </div>
                 </div>
             </div>
@@ -121,7 +119,53 @@
                                 </div>
                             </div>
                             @if($events_component->type == 'input')
-                            <div class="card">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-header-title">
+                                                Polices
+                                            </h4>
+                                            <div class="col-auto">
+                                                <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
+                                                    data-toggle="modal" data-target="#addFontModal"
+                                                    data-id="{{$events_component->id}}">
+                                                    Nouvelle police
+                                                </a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
+                                                    data-toggle="modal" data-target="#addFontModal"
+                                                    data-id="{{$events_component->id}}">
+                                                    Police existante
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <!-- Fonts -->
+                                                    <div class="form-group m-0">
+                                                        <!-- Input -->
+                                                        {!! Form::select('fonts_ids[]',
+                                                        App\Font::pluck('title','_id'), null, ['id' =>
+                                                        'fontsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
+                                                    </div>
+                                                    <div id="customFontsList" data-type="sortable" class="mt-3">
+                                                    </div>
+                                                    {!! Form::hidden('customFontsList', "false", ['id' => 'customFontsListHidden']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Ex logique de font --}}
+
+                            {{-- <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">
@@ -148,16 +192,16 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>
-                                                                    <a href="#" class="text-muted" data-sort="font-name">
+                                                                    <a href="#" class="text-muted" data-sort="font-name"> --}}
                                                                         {{-- Nom --}}
-                                                                    </a>
+                                                                    {{-- </a>
                                                                 </th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
                                 
                                                         <tbody class="list" id="{{'font_name_list'.$events_component->id}}">
-                                                            <tr>
+                                                            <tr> --}}
                                                                 {{-- <td class="font-name">
                                                                     Roboto-Black
                                                                 </td>
@@ -166,20 +210,20 @@
                                                                         Supprimer 
                                                                     </a>
                                                                 </td> --}}
-                                                            </tr>
+                                                            {{-- </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div id="{{'newsFonts'.$events_component->id}}">
+                                        </div> --}}
+                                        {{-- <div id="{{'newsFonts'.$events_component->id}}"> --}}
                                             <input type="hidden" name="{{'fontsList'.$events_component->id.'[]'}}" id="{{'fontsList'.$events_component->id}}" > {{-- removed value="Roboto-Black" --}}
                                             <input type="hidden" name="{{'font_urlList'.$events_component->id.'[]'}}" id="{{'font_urlList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
                                             <input type="hidden" name="{{'fontsFileNameList'.$events_component->id.'[]'}}" id="{{'fontsFileNameList'.$events_component->id}}"> {{-- font file name --}}
                                             <input type="hidden" name="{{'fontsWeightList'.$events_component->id.'[]'}}" id="{{'fontsWeightList'.$events_component->id}}"> {{-- font_weight --}}
                                             <input type="hidden" name="{{'fontsTransformList'.$events_component->id.'[]'}}" id="{{'fontsTransformList'.$events_component->id}}"> {{-- font_transform --}}
                                             {{-- <input type="hidden" name="{{'url'.$events_component->id.'[]'}}" id="{{'url'.$events_component->id}}" value="Roboto-Black"> --}}
-                                        </div>
+                                        {{-- </div>
                                         <div id="fontsToDelete">
                                             <input type="hidden" name="{{'fontsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsToDeleteList'.$events_component->id}}">
                                         </div>
@@ -188,7 +232,9 @@
                                         <p class="text-muted">Vous pouvez ajouter de nouvelles polices pour cet événement.</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
+
+                            {{-- Fin de l'ex logique de font --}}
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">

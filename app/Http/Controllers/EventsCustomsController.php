@@ -6,10 +6,12 @@ use DB;
 use App\Events_customs;
 use App\Events_component;
 use App\Product;
+use App\Event;
 use App\Events_products;
 use App\Templates;
 use App\Template_components;
 use App\Printzones;
+use App\Font;
 
 use Illuminate\Http\Request;
 
@@ -47,6 +49,7 @@ class EventsCustomsController extends Controller
     {
         $events_customs = Events_customs::all();
         $events_product = Events_products::find($id);
+        $event = Event::find($events_product->event_id);
         $product = Product::find($events_product->product_id);
         $printzones = Printzones::all();
         $templates = Templates::all();
@@ -64,7 +67,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.add', ['select_printzones' => $select_printzones, 'templates' => $templates, 'select_templates' => $select_templates, 'product' => $product, 'events_customs' => $events_customs, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.add', ['event' => $event, 'select_printzones' => $select_printzones, 'templates' => $templates, 'select_templates' => $select_templates, 'product' => $product, 'events_customs' => $events_customs, 'events_product' => $events_product]);
     }
 
     /**
@@ -217,6 +220,7 @@ class EventsCustomsController extends Controller
     {
         $events_custom = Events_customs::find($id);
         $templates = Templates::all();
+        $fonts = Font::all();
         $template_components = Template_components::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
@@ -240,7 +244,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.edit', ['events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.edit', ['fonts' => $fonts, 'events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**

@@ -26,8 +26,7 @@ Route::get('/', function () {
     return view('home');
 })->middleware('auth');
 
-/*~~~~~~~~~~~___________User Route__________~~~~~~~~~~~~*/
-
+// User Routes
 Route::get('admin/User/index', 'UserController@index')->name('user_index');
 Route::get('admin/User/create', 'UserController@create')->name('create_user');
 Route::post('admin/User/store', 'UserController@store')->name('store_user');
@@ -39,7 +38,7 @@ Route::get('admin/User/delete/{id}', 'UserController@delete')->name('delete_user
 Route::get('admin/User/desactivate/{id}', 'UserController@desactivate')->name('desactivate_user');
 Route::get('admin/User/activate/{id}', 'UserController@activate')->name('activate_user');
 
-/*~~~~~~~~~~~___________Products Route__________~~~~~~~~~~~~*/
+// Products Routes
 Route::get('admin/Product/index', 'ProductController@index')->name('index_product');
 Route::get('admin/Product/create', 'ProductController@create')->name('create_product');
 Route::post('admin/Product/store', 'ProductController@store')->name('store_product');
@@ -51,7 +50,7 @@ Route::get('admin/Product/delete/{id}', 'ProductController@delete')->name('delet
 Route::get('admin/Product/desactivate/{id}', 'ProductController@desactivate')->name('desactivate_product');
 Route::get('admin/Product/activate/{id}', 'ProductController@activate')->name('activate_product');
 
-/*~~~~~~~~~~~___________Customers Route__________~~~~~~~~~~~~*/
+// Customers Routes
 Route::get('admin/Customer/index', 'CustomerController@index')->name('index_customer');
 Route::get('admin/Customer/create', 'CustomerController@create')->name('create_customer');
 Route::post('admin/Customer/store', 'CustomerController@store')->name('store_customer');
@@ -63,9 +62,10 @@ Route::get('admin/Customer/delete/{id}', 'CustomerController@delete')->name('del
 Route::get('admin/Customer/desactivate/{id}', 'CustomerController@desactivate')->name('desactivate_customer');
 Route::get('admin/Customer/activate/{id}', 'CustomerController@activate')->name('activate_customer');
 
-/*~~~~~~~~~~~___________Events Route__________~~~~~~~~~~~~*/
+// Events Routes
 Route::get('admin/Event/index', 'EventController@index')->name('index_event');
 Route::get('admin/Event/create', 'EventController@create')->name('create_event');
+Route::get('admin/Event/clientCreate/{id}', 'EventController@clientCreate')->name('clientCreate_event');
 Route::post('admin/Event/store', 'EventController@store')->name('store_event');
 Route::get('admin/Event/show/{id}', 'EventController@show')->name('show_event');
 Route::get('admin/Event/edit/{id}', 'EventController@edit')->name('edit_event');
@@ -76,7 +76,7 @@ Route::get('admin/Event/desactivate/{id}', 'EventController@desactivate')->name(
 Route::get('admin/Event/show/comment', 'CommentController@addComment')->name('comment_event');
 Route::get('admin/Event/show_eventVariants/{id}', 'EventController@show_eventVariants')->name('show_eventVariants');
 
-/*~~~~~~~~~~~___________EventsProducts Route__________~~~~~~~~~~~~*/
+// EventsProducts Routes
 Route::get('admin/EventsProducts/index', 'EventsProductsController@index')->name('index_eventsProducts');
 Route::get('admin/EventsProducts/create', 'EventsProductsController@create')->name('create_eventsProducts');
 Route::get('admin/EventsProducts/createAdmin', 'EventsProductsController@createAdmin')->name('createAdmin_eventsProducts');
@@ -89,7 +89,7 @@ Route::post('admin/EventsProducts/update', 'EventsProductsController@update')->n
 Route::get('admin/EventsProducts/destroy/{id}', 'EventsProductsController@destroy')->name('destroy_eventsProducts');
 Route::get('admin/EventsProducts/deleteVariant/{id}/{products_variant_id}', 'EventsProductsController@deleteVariant')->name('deleteVariant_eventsProducts');
 
-/*~~~~~~~~~~~___________EventsCustoms Route__________~~~~~~~~~~~~*/
+// EventsCustoms Routes
 Route::get('admin/EventsCustoms/index', 'EventsCustomsController@index')->name('index_eventsCustoms');
 Route::get('admin/EventsCustoms/create/{id}', 'EventsCustomsController@create')->name('create_eventsCustoms');
 Route::post('admin/EventsCustoms/store', 'EventsCustomsController@store')->name('store_eventsCustoms');
@@ -103,7 +103,7 @@ Route::post('admin/EventsCustoms/addColor', 'EventsCustomsController@addColor')-
 Route::post('admin/EventsCustoms/uploadFile', 'EventsCustomsController@uploadFile')->name('uploadFile_eventsCustoms');
 Route::delete('admin/EventsCustoms/deleteFile/events/{events_custom_event_id}/fonts/{font_title}/{font_name}', 'EventsCustomsController@deleteFile')->name('deleteFile_eventsCustoms');
 
-/*~~~~~~~~~~~___________Printzones Route__________~~~~~~~~~~~~*/
+// Printzones Routes
 Route::get('admin/Printzones/index', 'PrintzonesController@index')->name('index_printzones');
 Route::get('admin/Printzones/create', 'PrintzonesController@create')->name('create_printzones');
 Route::post('admin/Printzones/store', 'PrintzonesController@store')->name('store_printzones');
@@ -114,14 +114,14 @@ Route::get('admin/Printzones/destroy/{id}', 'PrintzonesController@destroy')->nam
 Route::get('admin/Printzones/desactivate/{id}', 'PrintzonesController@desactivate')->name('desactivate_printzones');
 Route::get('admin/Printzones/activate/{id}', 'PrintzonesController@activate')->name('activate_printzones');
 
-/*~~~~~~~~~~~___________Comments Route__________~~~~~~~~~~~~*/
+// Comments Routes
 Route::post('comment/add', 'CommentController@addComment');
 Route::delete('comment/delete/{id}', 'CommentController@destroy')->name('destroy_comment');
 
-/*~~~~~~~~~~~___________Front Route__________~~~~~~~~~~~~*/
+// Front Routes
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
 
-/*~~~~~~~~~~~___________ProductsVariants Route__________~~~~~~~~~~~~*/
+// ProductsVariants Routes
 Route::get('admin/ProductsVariants/index', 'ProductsVariantsController@index')->name('index_productsVariants');
 Route::get('admin/ProductsVariants/create', 'ProductsVariantsController@create')->name('create_productsVariants');
 Route::post('admin/ProductsVariants/store', 'ProductsVariantsController@store')->name('store_productsVariants');
@@ -132,7 +132,7 @@ Route::get('admin/ProductsVariants/destroy/{id}', 'ProductsVariantsController@de
 Route::get('admin/ProductsVariants/activate/{id}', 'ProductsVariantsController@activate')->name('activate_productsVariants');
 Route::get('admin/ProductsVariants/desactivate/{id}', 'ProductsVariantsController@desactivate')->name('desactivate_productsVariants');
 
-/*~~~~~~~~~~~__________Templates Route__________~~~~~~~~~~~~*/
+// Templates Routes
 Route::get('admin/Templates/index', 'TemplatesController@index')->name('index_templates');
 Route::get('admin/Templates/create', 'TemplatesController@create')->name('create_templates');
 Route::post('admin/Templates/store', 'TemplatesController@store')->name('store_templates');
@@ -142,7 +142,7 @@ Route::get('admin/Templates/destroy/{id}', 'TemplatesController@destroy')->name(
 Route::get('admin/Templates/activate/{id}', 'TemplatesController@activate')->name('activate_templates');
 Route::get('admin/Templates/desactivate/{id}', 'TemplatesController@desactivate')->name('desactivate_templates');
 
-/*~~~~~~~~~~~__________Templates Components Route__________~~~~~~~~~~~~*/
+// Templates Components Routes
 Route::get('admin/TemplatesComponents/index', 'TemplateComponentsController@index')->name('index_templatesComponents');
 Route::get('admin/TemplatesComponents/create', 'TemplateComponentsController@create')->name('create_templatesComponents');
 Route::post('admin/TemplatesComponents/store', 'TemplateComponentsController@store')->name('store_templatesComponents');
@@ -151,6 +151,16 @@ Route::post('admin/TemplatesComponents/update', 'TemplateComponentsController@up
 Route::get('admin/TemplatesComponents/destroy/{id}', 'TemplateComponentsController@destroy')->name('destroy_templatesComponents');
 Route::get('admin/TemplatesComponents/activate/{id}', 'TemplateComponentsController@activate')->name('activate_templatesComponents');
 Route::get('admin/TemplatesComponents/desactivate/{id}', 'TemplateComponentsController@desactivate')->name('desactivate_templatesComponents');
+
+// Fonts Routes
+Route::get('admin/Fonts/index', 'FontsController@index')->name('index_fonts');
+Route::get('admin/Fonts/create', 'FontsController@create')->name('create_fonts');
+Route::post('admin/Fonts/store', 'FontsController@store')->name('store_fonts');
+Route::get('admin/Fonts/edit/{id}', 'FontsController@edit')->name('edit_fonts');
+Route::post('admin/Fonts/update', 'FontsController@update')->name('update_fonts');
+Route::get('admin/Fonts/destroy/{id}', 'FontsController@destroy')->name('destroy_fonts');
+Route::get('admin/Fonts/activate/{id}', 'FontsController@activate')->name('activate_fonts');
+Route::get('admin/Fonts/desactivate/{id}', 'FontsController@desactivate')->name('desactivate_fonts');
 
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 
@@ -174,19 +184,3 @@ Route::get('/templates',function(){
     $templates = Templates::all();
     return Response::json($templates);
 });
-
-
-// $couleurs = Couleurs::select('nom')
-//     ->join('productVariants', 'couleur_id', '=', 'couleurs.id')
-//     ->where('couleur_id', '=', $prod_id)
-//     ->get();
-
-
-
-// Route::get('/admin/Couleur/variant_colors',function(){
-//     $couleur_id[] = Input::get('variants[]');
-//     //  dd($couleur_id);
-//     $color = Couleur::where('id', '=', $couleur_id)->get();
-
-//     return Response::json($color);
-// });

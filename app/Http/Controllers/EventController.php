@@ -56,6 +56,24 @@ class EventController extends Controller
         return view('admin/Event.add', ['events' => $events, 'select_customers' => $select_customers, 'products' => $products]);
     }
 
+        /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function clientCreate($id){
+        $events = Event::all();
+        $products = Product::all();
+        $customers = Customer::all();
+        $select_customers = [];
+        foreach($customers as $customer) {
+            if($customer->id == $id){
+                $select_customers[$customer->id] = $customer->title;
+            }
+        }
+        return view('admin/Event.add', ['events' => $events, 'select_customers' => $select_customers, 'products' => $products]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -164,7 +182,7 @@ class EventController extends Controller
             'status' => 'L\'événement a été correctement ajouté.',
             'alert-type' => 'success'
         );
-        return redirect('admin/Event/index')->with($notification);
+        return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 
     /**
@@ -176,6 +194,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
+        $customer = Customer::find($event->customer_id);
         $products = Product::all();
         $events_products = Events_products::all();
         $printzones = Printzones::all();
@@ -185,7 +204,7 @@ class EventController extends Controller
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['printzones' => $printzones, 'select_products' => $select_products,
+        return view('admin/Event.show', ['customer_name' => $customer->title, 'printzones' => $printzones, 'select_products' => $select_products,
         'events_products' => $events_products, 'products' => $products, 'event' => $event, 'disk' => $disk, 's3' =>
         $s3]);
     }
@@ -474,8 +493,8 @@ class EventController extends Controller
         'status' => 'L\'événement a été correctement modifié.',
         'alert-type' => 'success'
         );
-
-        return redirect('admin/Event/index')->with($notification);
+        
+        return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 
     /**

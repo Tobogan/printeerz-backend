@@ -117,19 +117,24 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="topnavDocumentation">
                 <li>
-                <a class="dropdown-item {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
-                    Zones d'impression
-                </a>
+                    <a class="dropdown-item {{ request()->is('admin/Printzones/*') ? 'active' : '' }}" href="{{route('index_printzones')}}">
+                        Zones d'impression
+                    </a>
                 </li>
                 <li>
-                <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
-                    Gabarits
-                </a>
+                    <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
+                        Gabarits
+                    </a>
                 </li>
                 <li>
-                <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
-                    Composants
-                </a>
+                    <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
+                        Composants
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item {{ request()->is('admin/Fonts/*') ? 'active' : '' }}" href="{{route('index_fonts')}}">
+                        Polices
+                    </a>
                 </li>
             </ul>
             </li>

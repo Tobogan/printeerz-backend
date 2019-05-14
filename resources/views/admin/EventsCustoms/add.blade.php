@@ -52,16 +52,18 @@
                                 <label>
                                     Nom de la personnalisation
                                 </label>
+                                <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
                                 <!-- Input text title-->
-                                {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control', 'placeholder' => 'Nom'])
                                 !!}
                             </div>
 
                             <div class="form-group">
                                 <!-- Label -->
                                 <label>
-                                    Sélectionner la zone d'impression
+                                    Sélectionnez la zone d'impression
                                 </label>
+                                <p class="text-muted b-4">Sélectionnez la zone d'impression sur laquelle se trouvera cette personnalisation.</p>
                                 <!-- Input -->
                                 {!! Form::select('printzone_id', $select_printzones, null, ['id' => 'printzone', 'class' => 'form-control'])
                                 !!}
@@ -71,8 +73,9 @@
                             <div class="form-group">
                                 <!-- Label -->
                                 <label>
-                                    Sélectionner le gabarit
+                                    Sélectionnez le gabarit
                                 </label>
+                                <p class="text-muted b-4">Sélectionnez quel gabarit vous souhaitez ajouter à cette personnalisation.</p>
                                 <!-- Input -->
                                 {!! Form::select('template_id', $select_templates, null, ['id' => 'templateComponentType', 'class' => 'form-control'])
                                 !!}
@@ -81,6 +84,7 @@
                                 <label>
                                     Ajouter l'image d'illustration
                                 </label>
+                                <p class="text-muted b-4">Vous pouvez ajouter ici une image illustrant cette personnalisation.</p>
                                 <div class="custom-file">
                                     <!-- Input -->
                                     {!! Form::file('custom_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}

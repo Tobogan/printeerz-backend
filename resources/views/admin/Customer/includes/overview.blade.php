@@ -11,7 +11,7 @@
                             </h4>
                         </div>
                         <div class="col-auto">
-                            <a href="{{action('EventController@create')}}" class="btn btn-sm btn-primary">
+                            <a href="{{route('clientCreate_event', $customer->id)}}" class="btn btn-sm btn-primary">
                                 Ajouter un événement
                             </a>
                         </div>
@@ -94,7 +94,7 @@
                     <p class="text-muted">
                         Ajouter le premier événement
                     </p>
-                    <a href="{{action('EventController@create')}}" class="btn btn-primary">
+                    <a href="{{route('clientCreate_event', $customer->id)}}" class="btn btn-primary">
                         Ajouter un événement
                     </a>
                 </div>

@@ -34,13 +34,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nom du composant</label>
+                                <label>Nom</label>
                                 {!! Form::text('title', $template_component->title, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom']) !!}
                                 @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du composant</div>@endif
                             </div>
                             <div class="form-group">
                                 <label>Type</label>
-                                {!! Form::text('Type', $template_component->comp_type, ['class' => 'form-control', 'placeholder' => 'Type', 'disabled' => ''])!!}
+                                <p class="text-muted b-4">Vous ne pouvez pas modifier le type de ce composant. Merci de le supprimer et de le recréer.</p> 
+                                {!! Form::text('type', $template_component->comp_type, ['class' => 'form-control text-muted b-2', 'placeholder' => 'Type', 'disabled' => ''])!!}
                             </div>
                         </div>
                     </div>
@@ -122,7 +123,7 @@
                 </div>
             </div>
 
-            @if($template_component->type == 'input')
+            @if($template_component->comp_type == 'input')
             <div type="input">
                 <div class="row">
                     <div class="col-12">
@@ -160,226 +161,14 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-header-title">
-                                    Police de caractère par défault
-                                </h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="col-12">
-                                    <!-- First name -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Nom
-                                        </label>
-                                        <!-- Input -->
-                                        {!! Form::text('font_name', $template_component->font["name"], ['class' => 'form-control', 'placeholder' => 'Entrer le nom']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('font_url', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                        <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
-                                    </div>
-                                </div>
-                                <hr class="mt-4 mb-5">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Epaisseur
-                                        </label>
-                                        <div class="form-group">
-                                            @if($template_component->font["weight"] == '900')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900" selected>Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '200')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200" selected>Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '300')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300" selected>Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '400')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400" selected>Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '500')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500" selected>Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '600')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600" selected>Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '700')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700" selected>Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @elseif($template_component->font["weight"] == '800')
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100">Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800" selected>Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @else
-                                                <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
-                                                    <option value="100" selected>Thin (100)</option>
-                                                    <option value="200">Extra Light (200)</option>
-                                                    <option value="300">Light (300)</option>
-                                                    <option value="400">Normal (400)</option>
-                                                    <option value="500">Medium (500)</option>
-                                                    <option value="600">Semi Bold (600)</option>
-                                                    <option value="700">Bold (700)</option>
-                                                    <option value="800">Extra Bold (800)</option>
-                                                    <option value="900">Black (900)</option>
-                                                </select>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <!-- First name -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Transformation
-                                        </label>
-                                        {{-- choix de transformation --}}
-                                        <div class="form-group">
-                                            @if($template_component->font["transform"] == 'full-width')
-                                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
-                                                    <option value="none">Aucune</option>
-                                                    <option value="uppercase">Tout en Majuscules</option>
-                                                    <option value="capitalize">Première lettre en Majuscule</option>
-                                                    <option value="lowercase">Tout en minuscule</option>
-                                                    <option value="full-width" selected>Pleine largeur</option>
-                                                </select>
-                                            @elseif($template_component->font["transform"] == 'uppercase')
-                                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
-                                                    <option value="none">Aucune</option>
-                                                    <option value="uppercase" selected>Tout en Majuscules</option>
-                                                    <option value="capitalize">Première lettre en Majuscule</option>
-                                                    <option value="lowercase">Tout en minuscule</option>
-                                                    <option value="full-width">Pleine largeur</option>
-                                                </select>
-                                            @elseif($template_component->font["transform"] == 'capitalize')
-                                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
-                                                    <option value="none">Aucune</option>
-                                                    <option value="uppercase">Tout en Majuscules</option>
-                                                    <option value="capitalize" selected>Première lettre en Majuscule</option>
-                                                    <option value="lowercase">Tout en minuscule</option>
-                                                    <option value="full-width">Pleine largeur</option>
-                                                </select>
-                                            @elseif($template_component->font["transform"] == 'lowercase')
-                                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
-                                                    <option value="none">Aucune</option>
-                                                    <option value="uppercase">Tout en Majuscules</option>
-                                                    <option value="capitalize">Première lettre en Majuscule</option>
-                                                    <option value="lowercase" selected>Tout en minuscule</option>
-                                                    <option value="full-width">Pleine largeur</option>
-                                                </select>
-                                            @else
-                                                <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
-                                                    <option value="none" selected>Aucune</option>
-                                                    <option value="uppercase">Tout en Majuscules</option>
-                                                    <option value="capitalize">Première lettre en Majuscule</option>
-                                                    <option value="lowercase">Tout en minuscule</option>
-                                                    <option value="full-width" selected>Pleine largeur</option>
-                                                </select>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <!-- First name -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Première lettre ou symbole avant le texte
-                                        </label>
-                                        <!-- Input -->
-                                        {!! Form::text('font_first_letter', $template_component->font["first_letter"], ['class' => 'form-control',
-                                        'placeholder' => '#']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
             {!! Form::hidden('fonts_total', '3') !!}
-            
-            <div data-root="componentElement" type="image input">
+            @endif
+            {{-- Input Image --}}
+            @if($template_component->comp_type == 'image')
+                @include('admin.TemplatesComponents.includes.edit.image')
+            @endif
+            {{-- <div data-root="componentElement" type="image input">
                 <div class="row" >
                     <div class="col-12">
                         <div class="card">
@@ -396,13 +185,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            @endif
-            {{-- Input Image --}}
-            @if($template_component->type == 'image')
-                @include('admin.TemplatesComponents.includes.edit.image')
-            @endif
-
+            </div> --}}
             {{-- hidden for edit --}}
             <input type="hidden" class="form-control" name="actual_title" value="{{$template_component->title}}">
             <input type="hidden" class="form-control" name="template_component_id" value="{{$template_component->id}}">

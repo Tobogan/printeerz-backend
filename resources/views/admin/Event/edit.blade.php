@@ -58,7 +58,7 @@
                     <small class="form-text text-muted">
                         Sélectionner le client. S'il n'existe pas, veuillez le créer dans la section Clients
                     </small>
-                    {!! Form::select('customer_id', $select_customers, null, ['class' => 'form-control', 'data-toggle'
+                    {!! Form::select('customer_id', $select_customers, $event->customer_id, ['class' => 'form-control', 'data-toggle'
                     => 'select']) !!}
                 </div>
 

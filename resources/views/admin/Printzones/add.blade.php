@@ -44,7 +44,7 @@
                                         <label>
                                             Zone
                                         </label>
-                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('zone', ' is-invalid'), 'placeholder' => 'Nom'])!!}
                                         @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Position du plateau
+                                Position de la zone par rapport au plateau
                             </h4>
                         </div>
                         <div class="card-body">
