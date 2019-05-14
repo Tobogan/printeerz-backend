@@ -19,8 +19,8 @@
                     => 'color', 'name' => 'color', 'data-role' => 'tagsinput')) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('size', 'Tailles') !!} {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajouter
-                    des tailles','id' => 'size', 'name' => 'size', 'data-role' => 'tagsinput')) !!}
+                    {!! Form::label('size', 'Tailles') !!} {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajouter des tailles',
+                    'id' => 'size', 'name' => 'size', 'data-role' => 'tagsinput')) !!}
                 </div>
             </div>
             <div class="modal-footer">
