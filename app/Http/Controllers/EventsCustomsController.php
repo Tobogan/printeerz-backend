@@ -234,6 +234,11 @@ class EventsCustomsController extends Controller
         $product = Product::find($events_product->product_id);
         $printzones = Printzones::all();
         $events_components = Events_component::all();
+        $fonts = Font::all();
+        $select_fonts = [];
+        foreach ($fonts as $font) {
+            $select_fonts[$font->id] = $font->title;
+        }
         $select_printzones = [];
         if ($product->printzones_id != null){
             foreach ($printzones as $printzone) {
@@ -244,7 +249,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.edit', ['fonts' => $fonts, 'events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.edit', ['select_fonts' => $select_fonts, 'events_components' => $events_components,'disk'=>$disk,'s3'=>$s3,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
     }
 
     /**
@@ -310,9 +315,13 @@ class EventsCustomsController extends Controller
                         foreach($request->{'fontsFileNameList'.$template_component_id} as $font_file_name){
                             $fonts_file_name_exploded = explode(",", $font_file_name);
                         }
+                        foreach($request->{'fontsIdsList'.$template_component_id} as $font_id){
+                            $fonts_ids_exploded = explode(",", $font_id);
+                        }
                         for($k=1; $k<count($font); $k++){
                             $array_ft = array(
                                 'title' => $font[$k],
+                                'font_id' => $fonts_ids_exploded[$k],
                                 'font_file_name' => $fonts_file_name_exploded[$k],
                                 'font_weight' => $fonts_weight_exploded[$k],
                                 'font_transform' => $fonts_transform_exploded[$k],
@@ -622,22 +631,31 @@ class EventsCustomsController extends Controller
             $validatedData = $request->validate([
             ]);
             $disk = Storage::disk('s3'); 
-            $title = $request->ec_font_title;
+            $font = new Font;
+            $font->title = $request->ec_font_title;
+            $font->weight = $request->font_weight;
+            $font->is_active = true;
+            $font->is_deleted = false;
             if($request->hasFile('ec_font_url')) {
-                $events_custom_event_id = $request->events_custom_event_id;
+                // $events_custom_event_id = $request->events_custom_event_id;
                 // Create image name
                 $font_file = $request->file('ec_font_url');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/events/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
+                // $newFilePath = '/events/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
+                $newFilePath = '/fonts/'.$request->ec_font_title.'/'.$name;
                 // Upload the new image
-                $disk->put($newFilePath, $font_file, 'public');
+                // $disk->put($newFilePath, $font_file, 'public');
+                Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
                 // Put in database
-                $font_file = $newFilePath;
+                // $font_file = $newFilePath;
+                $font->url = $newFilePath;
             }
+            $font->save();
             $response = array(
                 'status' => 'success',
-                'msg' => 'Font file send to the server'
+                'msg' => 'Font created and file send to the server',
+                'font_id' => $font->id
             );
             return response()->json($response);
         }
@@ -652,10 +670,10 @@ class EventsCustomsController extends Controller
      * @param  string $font_url
      * @return \Illuminate\Http\Response
      */
-    public function deleteFile($events_custom_event_id, $font_title, $font_name)
+    public function deleteFile($font_title, $font_name)
     {
         $disk = Storage::disk('s3'); 
-        $font_url = '/events/'.$events_custom_event_id.'/fonts/'.$font_title.'/'.$font_name; 
+        $font_url = '/fonts/'.$font_title.'/'.$font_name; 
         $disk->delete($font_url);
         $response = array(
             'status' => 'success',
@@ -663,5 +681,4 @@ class EventsCustomsController extends Controller
         );
         return response()->json($response);
     }
-    
 }

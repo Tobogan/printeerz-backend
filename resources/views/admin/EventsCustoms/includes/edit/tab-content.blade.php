@@ -119,8 +119,8 @@
                                 </div>
                             </div>
                             @if($events_component->type == 'input')
-
-                            <div class="row">
+                            {{-- Nouvelle logique test --}}
+                            {{-- <div class="row">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header">
@@ -161,11 +161,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{-- Ex logique de font --}}
 
-                            {{-- <div class="card">
+                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">
@@ -174,12 +174,19 @@
                                             </h4>
                                         </div>
                                         <div class="col-auto">
-                                                <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
+                                                <a href="#" class="buttonFont btn btn-sm btn-primary"
                                                 data-toggle="modal" data-target="#addFontModal"
                                                 data-id="{{$events_component->id}}">
-                                                Ajouter une police
+                                                +
                                             </a>
                                         </div>
+                                        <div class="col-auto">
+                                            <a href="#" class="buttonFont btn btn-sm btn-primary"
+                                            data-toggle="modal" data-target="#selectFontModal"
+                                            data-id="{{$events_component->id}}">
+                                            Sélectionner une police
+                                        </a>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -191,48 +198,40 @@
                                                     <table class="table table-sm table-nowrap card-table">
                                                         <thead>
                                                             <tr>
-                                                                <th>
-                                                                    <a href="#" class="text-muted" data-sort="font-name"> --}}
-                                                                        {{-- Nom --}}
-                                                                    {{-- </a>
-                                                                </th>
+                                                                <th><a href="#" class="text-muted" data-sort="font-name"></a></th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
                                 
                                                         <tbody class="list" id="{{'font_name_list'.$events_component->id}}">
-                                                            <tr> --}}
-                                                                {{-- <td class="font-name">
-                                                                    Roboto-Black
-                                                                </td>
-                                                                <td>
-                                                                <a style="float:right" data-id="{{$template_component->id}}" onclick="var id=$(this).attr('data-id');var font='Roboto-Black';deleteFontRow(id, font);$(this).closest('tr').remove();">
-                                                                        Supprimer 
-                                                                    </a>
-                                                                </td> --}}
-                                                            {{-- </tr>
+                                                            <tr></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div> --}}
-                                        {{-- <div id="{{'newsFonts'.$events_component->id}}"> --}}
+                                        </div> 
+                                        <div id="{{'newsFonts'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsList'.$events_component->id.'[]'}}" id="{{'fontsList'.$events_component->id}}" > {{-- removed value="Roboto-Black" --}}
                                             <input type="hidden" name="{{'font_urlList'.$events_component->id.'[]'}}" id="{{'font_urlList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
                                             <input type="hidden" name="{{'fontsFileNameList'.$events_component->id.'[]'}}" id="{{'fontsFileNameList'.$events_component->id}}"> {{-- font file name --}}
                                             <input type="hidden" name="{{'fontsWeightList'.$events_component->id.'[]'}}" id="{{'fontsWeightList'.$events_component->id}}"> {{-- font_weight --}}
                                             <input type="hidden" name="{{'fontsTransformList'.$events_component->id.'[]'}}" id="{{'fontsTransformList'.$events_component->id}}"> {{-- font_transform --}}
+                                            <input type="hidden" name="{{'fontsIdsList'.$events_component->id.'[]'}}" id="{{'fontsIdsList'.$events_component->id}}"> {{-- font_ids --}}
                                             {{-- <input type="hidden" name="{{'url'.$events_component->id.'[]'}}" id="{{'url'.$events_component->id}}" value="Roboto-Black"> --}}
-                                        {{-- </div>
-                                        <div id="fontsToDelete">
+                                         </div>
+                                        <div id="{{'fontsToDelete'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsToDeleteList'.$events_component->id}}">
+                                            <input type="hidden" name="{{'fontsIdsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsIdsToDeleteList'.$events_component->id}}">
+                                            <input type="hidden" name="{{'fontsFileNameToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsFileNameToDeleteList'.$events_component->id}}"> {{-- font file name --}}
+                                            <input type="hidden" name="{{'font_urlToDeleteList'.$events_component->id.'[]'}}" id="{{'font_urlToDeleteList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                            {{-- <input type="hidden" name="{{'data_font_id'.$events_component->id.'[]'}}" id="{{'data_font_id'.$events_component->id}}"> --}}
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <p class="text-muted">Vous pouvez ajouter de nouvelles polices pour cet événement.</p>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             {{-- Fin de l'ex logique de font --}}
                             <div class="card">

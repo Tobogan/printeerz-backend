@@ -15,8 +15,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Meci d'ajouter le fichier de la police et de préciser son nom.</p>
-                {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-5']) !!}
+                <p class="text-muted b-4">Merci d'ajouter le fichier de la police et de préciser son nom.</p>
+                {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-3']) !!}
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="events_custom_event_id" id="events_custom_event_id"
                     value="{{$events_custom->event_id}}">
@@ -24,10 +24,12 @@
                     <label>
                         Nom
                     </label>
-                    {{ Form::text('ec_font_title', null, array('class' => 'form-control mb-3','id' => 'ec_font_title')) }}
+                    {{ Form::text('ec_font_title', null, array('class' => 'form-control mb-2','id' => 'ec_font_title')) }}
                 </div>
                 <div class="form-group">
                     <!-- Input -->
+                    <label> Epaisseur</label>
+                    <p class="text-muted b-4">Vous devez sélectionner l'épaisseur de cette police.</p>
                     <select name="font_weight" id="font_weight" class="form-control" data-toggle="select">
                         <option value="100">Thin (100)</option>
                         <option value="200">Extra Light (200)</option>
@@ -42,6 +44,8 @@
                 </div>
                 <div class="form-group">
                     <!-- Input -->
+                    <label>Transformation</label>
+                    <p class="text-muted b-4">Vous pouvez sélectionner une transformation pour cette police.</p>
                     <select name="font_transform" id="font_transform" class="form-control" data-toggle="select">
                         <option value="none">Aucune</option>
                         <option value="uppercase">Tout en Majuscules</option>

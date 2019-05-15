@@ -298,6 +298,12 @@ class EventsProductsController extends Controller
         $arr = $result;
         $event->event_products_id = $arr;
         $event->update();
+        $events_customs = Events_customs::where('events_product_id', '=', $id)->get();
+        if($events_customs != null){
+            foreach($events_customs as $events_custom){
+                $events_custom->delete();
+            }
+        }
         $events_product->delete();
         $event = Event::find($events_product->event_id);
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');

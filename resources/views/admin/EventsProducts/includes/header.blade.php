@@ -17,7 +17,7 @@
                     <h1 class="header-title">
                         {{ $events_product->title }}
                     </h1>
-
+                    <p class="text-muted b-4 mt-2">Ce produit est lié à un événement et basé sur un produit générique. Vous pouvez y ajouter des variantes et des personnalisations.</p>
                 </div>
                 <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
                     <div class="col-auto">

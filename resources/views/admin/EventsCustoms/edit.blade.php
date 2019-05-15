@@ -77,6 +77,7 @@
 
     @include('admin.EventsCustoms.includes.modal_addColor')
     @include('admin.EventsCustoms.includes.modal_addFont')
+    @include('admin.EventsCustoms.includes.modal_selectFont')
 
 
 
@@ -131,6 +132,10 @@
         $('#idTPFont').html('<input type="hidden" name="tp_id_font" id="tp_id_font" value="'+id+'">');
     });
 
+    // $('#AddFont').on('submit', function (e) {
+    function addDeleteBtn(font_title, id, font_url_replaced,font_id, font_name){
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-url="'+font_url_replaced+'" data-font_id="'+font_id+'" data-font="'+font_title+'" data-font_name="'+font_name+'" onclick="var id=$(this).attr(\'data-id\');var font_id=$(this).attr(\'data-font_id\');var font=$(this).attr(\'data-font\');font_name=$(this).attr(\'data-font_name\');var url=$(this).attr(\'data-url\');deleteFontRow(id,font,font_id,font_name,url);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+    }
     $('#AddFont').on('submit', function (e) {
         e.preventDefault();
         $('#submit_modalAddFont').hide();
@@ -143,9 +148,8 @@
         var font_weight = $('#font_weight').val();
         var font_transform = $('#font_transform').val();
         var font_name = font_url.replace('C:\\fakepath\\','');
-        var events_custom_event_id = $('#events_custom_event_id').val();
         var events_custom_id = $('#events_custom_id').val();
-        var new_path = '/events/'+events_custom_id+'/fonts/'+font_title+'/';
+        var new_path = '/fonts/'+font_title+'/';
         var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
         var fontsList = $('#fontsList'+id).val();
         var fontWeightList = document.getElementById("fontsWeightList"+id).value;
@@ -157,7 +161,7 @@
         var fonts_weight = [];
         var fonts_transform = [];
         var fonts_file_name = [];
-        fonts_weight.push(fontWeightList);  // t'en es là
+        fonts_weight.push(fontWeightList);
         fonts_transform.push(fontTransformList);
         fonts.push(fontsList);  
         url.push(font_urlList);
@@ -180,12 +184,53 @@
         $('#addFontModal').modal('hide');
         $('#submit_modalAddFont').show();
         $('#loading_modalAddFont').addClass('d-none');
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-url="'+font_url_replaced+'" data-font="'+font_title+'" onclick="var id=$(this).attr(\'data-id\');var font=$(this).attr(\'data-font\');var url=$(this).attr(\'data-url\');deleteFontRow(id,font);deleteFile('+'\''+font_title+'\',\''+font_name+'\',\''+events_custom_event_id+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+    });
+
+
+    $('#SelectFont').on('submit', function (e) {
+        e.preventDefault();
+        $('#submit_modalSelectFont').hide();
+        $('#loading_modalSelectFont').removeClass('d-none');
+        $(this).removeClass('btn-primary');
+        $(this).addClass('btn-success');
+        var id = $('#tp_id_font').val();
+        var font_title = $('#ec_font_title').val();
+        var font_transform = $('#font_transform').val();
+        var font_id = $('#font_id').val();
+        var events_custom_event_id = $('#events_custom_event_id').val();
+        var fontsList = $('#fontsList'+id).val();
+        var fontTransformList = document.getElementById("fontsTransformList"+id).value;
+        var fontsFileNameList = document.getElementById("fontsFileNameList"+id).value;
+        var fontsIdsList = document.getElementById("fontsIdsList"+id).value;
+        var fonts = [];
+        var fonts_transform = [];
+        var fonts_file_name = [];
+        var fonts_ids = [];
+        fonts_transform.push(fontTransformList);
+        fonts.push(fontsList);  
+        fonts_file_name.push(fontsFileNameList);
+        fonts_ids.push(fontsIdsList);
+        var array_fonts = [font_title];
+        var array_fonts_transform = [font_transform];
+        var array_fonts_file_name = [font_name];
+        var array_fonts_ids = [font_id];
+        fonts.push([array_fonts]);
+        fonts_transform.push([array_fonts_transform]);
+        fonts_file_name.push([array_fonts_file_name]);
+        fonts_ids.push([array_fonts_ids]);
+        document.getElementById("fontsList"+id).value = fonts;
+        document.getElementById("fontsTransformList"+id).value = fonts_transform;
+        document.getElementById("fontsFileNameList"+id).value = fonts_file_name;
+        document.getElementById("fontsIdsList"+id).value = fonts_ids;
+        console.log('fontsIdsList = '+ document.getElementById("fontsIdsList"+id).value);
+
+        $('#selectFontModal').modal('hide');
+        $('#submit_modalSelectFont').show();
+        $('#loading_modalSelectFont').addClass('d-none');
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-url="'+font_url_replaced+'" data-font_id="'+font_id+'" data-font="'+font_title+'" data-font_name="'+font_name+'" onclick="var id=$(this).attr(\'data-id\');var font_id=$(this).attr(\'data-font_id\');var font=$(this).attr(\'data-font\');font_name=$(this).attr(\'data-font_name\');var url=$(this).attr(\'data-url\');deleteFontRow(id,font,font_id,font_name,url);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
 
     function deleteColorRow(id,color){
-        // var id = $('#tp_id').val();
-        // var i = $('#countJS'+id).val();
         var colorsList = $('#colorsList'+id).val();
         var colors = [];
         colors.push(colorsToDeleteList);
@@ -200,8 +245,6 @@
     }
 
     function deleteHexaRow(id,hexa){
-        // var id = $('#tp_id').val();
-        // var i = $('#countJS'+id).val();
         var hexaList = $('#hexaList'+id).val();
         var hexas = [];
         var hexasToDeleteList = $('#hexasToDeleteList'+id).val();
@@ -216,25 +259,69 @@
         document.getElementById("hexasToDeleteList"+id).value = "";
     }
 
-    function deleteFontRow(id,font){
-        // var id = $('#tp_id_font').val();
+    function deleteFontRow(id,font,font_id,font_name,font_url){
         var fontsList = $('#fontsList'+id).val();
+        var fontsIdsList = $('#fontsIdsList'+id).val();
+        var fontsFileNameList = $('#fontsFileNameList'+id).val();
+        var font_urlList = $('#font_urlList'+id).val();
+
         var fonts = [];
+        var fonts_ids = [];
+        var fonts_file_names = [];
+        var fonts_urls = [];
+
         var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+        var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
+        var fontsFileNameToDeleteList = $('#fontsFileNameToDeleteList'+id).val();
+        var font_urlToDeleteList = $('#font_urlToDeleteList'+id).val();
+
         fonts.push(fontsToDeleteList);
+        fonts_ids.push(fontsIdsToDeleteList);
+        fonts_file_names.push(fontsFileNameToDeleteList);
+        fonts_urls.push(font_urlToDeleteList);
+
         var array_fonts = [font];
+        var array_fonts_ids = [font_id];
+        var array_fonts_file_names = [font_name];
+        var array_fonts_urls = [font_url];
+
         fonts.push([array_fonts]);
+        fonts_ids.push([array_fonts_ids]);
+        fonts_file_names.push([array_fonts_file_names]);
+        fonts_urls.push([array_fonts_urls]);
+
         document.getElementById("fontsToDeleteList"+id).value = fonts;
+        document.getElementById("fontsIdsToDeleteList"+id).value = fonts_ids;
+        document.getElementById("fontsFileNameToDeleteList"+id).value = fonts_file_names;
+        document.getElementById("font_urlToDeleteList"+id).value = fonts_urls;
+
         var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
-        var toDeleteClean = fontsToDeleteList.replace(',', "");
+        var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
+        var fontsFileNameToDeleteList = $('#fontsFileNameToDeleteList'+id).val();
+        var font_urlToDeleteList = $('#font_urlToDeleteList'+id).val();
+
         console.log('font to delete = '+fontsToDeleteList);
-        var finalFonts = fontsList.replace(fontsToDeleteList, "");
-        document.getElementById("fontsList"+id).value = finalFonts;
-        // console.log('finalColors= '+document.getElementById("fontsList"+id).value);
+        console.log('ids to delete = '+fontsIdsToDeleteList);
+        console.log('file_names to delete = '+fontsFileNameToDeleteList);
+        console.log('urls to delete = '+font_urlToDeleteList);
+        // var finalFonts = fontsList.replace(fontsToDeleteList, "");
+        // var finalIdsFonts = fontsIdsList.replace(fontsIdsToDeleteList, "");
+        // var finalFileNamesFonts = fontsFileNameList.replace(fontsFileNameToDeleteList, "");
+        // var finalUrlsFonts = font_urlList.replace(font_urlToDeleteList, "");
+        // Here I replace the values by the final value after the delete
+        document.getElementById("fontsList"+id).value = fontsList.replace(fontsToDeleteList, "");
+        document.getElementById("fontsIdsList"+id).value = fontsIdsList.replace(fontsIdsToDeleteList, "");
+        document.getElementById("fontsFileNameList"+id).value = fontsFileNameList.replace(fontsFileNameToDeleteList, "");
+        document.getElementById("font_urlList"+id).value = font_urlList.replace(font_urlToDeleteList, "");
+
+        // Here I delete input content
         document.getElementById("fontsToDeleteList"+id).value = "";
+        document.getElementById("fontsIdsToDeleteList"+id).value = "";
+        document.getElementById("fontsFileNameToDeleteList"+id).value = "";
+        document.getElementById("font_urlToDeleteList"+id).value = "";
     }
 
-    function deleteFile(font_title, font_name, events_custom_event_id) {
+    function deleteFile(font_title, font_name) {
         $.ajaxSetup({
             beforeSend: function (xhr, type) {
                 if (!type.crossDomain) {
@@ -244,10 +331,9 @@
         });
         $.ajax({
             type: 'delete',
-            url: "/admin/EventsCustoms/deleteFile/events/"+events_custom_event_id+'/fonts/'+font_title+'/'+font_name,
+            url: "/admin/EventsCustoms/deleteFile/fonts/"+font_title+'/'+font_name,
             dataType: "JSON",
             data: {
-                "events_custom_event_id": events_custom_event_id,
                 "font_name": font_name,
                 "font_title": font_title,
                 _token: '{!! csrf_token() !!}',
@@ -262,70 +348,5 @@
             }
         });
     }
-
-
-    // --------------------------------
-    // Tweak Select2 select 
-    // with new items display and position draggable
-    // --------------------------------
-
-    // Update Form hidden value
-    function updateFormHidden(list,hiddenValue){
-    var list = list;
-    var listItem = list.find('li');
-    var fontList = [];
-    // Get each datas in list item
-    $(listItem).each(function(){
-        var id = $(this).data('id');
-        var name = $(this).text();
-        var datas = [];
-        var found = false;
-        fontList.push({
-        id : id,
-        name: name
-        })
-    });
-    // Format value to json
-    var json = JSON.stringify(fontList, 'true');
-    // Add value to form hidden value
-    $(hiddenValue).attr('value', json);
-    };
-
-    $(function () {
-    // Get Select2 item
-    var fontsSelect = $('#fontsSelect');
-    var fontFormList = $("#customFontsList");
-    var fontFormListHidden = $("#customFontsListHidden");
-
-    // Prepend clear option & new placeholder
-    fontsSelect.prepend('<option selected></option>').select2({
-        placeholder: "Sélectionnez une police pour l'ajouter",
-        allowClear: true
-    });
-
-    // Add items
-    fontsSelect.on('select2:close', function (e) {
-        var name = $("#fontsSelect option:selected").text();
-        var value = $(this).val();
-        if(value) {
-        fontFormList.append('<ul class="list-group py-2"><li class="list-group-item ui-state-default" data-id="' + value + '"><div class="row align-items-center"><div id="hidden_comp" class="col ml-n2">' + name + '</div><div class="col-auto"><a data-id="' + value + '" class="deletefont" style="cursor:pointer;"><i class="fe fe-trash-2"></i></a></div><div class="col-auto"><a class="handle" style="cursor:grab;"><i class="fe fe-more-vertical"></i></a></div></div></li></ul>');
-        // Update Form hidden value
-        updateFormHidden(fontFormList,fontFormListHidden);
-        };
-        // Reset Select2 value
-        $(this).val(null).trigger('change.select2')
-    });
-
-    // Remove items
-    $(document).on('click', '.deletefont', function (event) {
-        event.preventDefault;
-        var a = event.target;
-        // Remove ul element
-        a.closest('ul').remove();
-        // Update Form hidden value
-        updateFormHidden(fontFormList,fontFormListHidden);
-    });
-    });
-
 </script>
 @endsection
