@@ -294,41 +294,70 @@ class EventsCustomsController extends Controller
                         $fonts = array();
                         foreach ($request->{'fontsList'.$template_component_id} as $font_title) {
                             if ($request->{'font_urlList'.$template_component_id}) {
-                                foreach ($request->{'font_urlList'.$template_component_id} as $font_url) {
-                                    $font = explode(",", $font_title);
-                                    $urls = explode(",", $font_url);
-                                    array_push($fonts, $urls);
-                                }
+                                $font = explode(",", $font_title);
                             }
                         }
+                        $shift = array_shift($font); // here i delete first element of font
+                        $arr_ids = array();
+                        $arr_urls = array();
+                        $arr_filenames = array();
+                        $fonts_all = Font::all();
                         $array_fonts_weight = array();
                         $fonts_weight = array();
                         foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
-                            if ($request->{'fontsTransformList'.$template_component_id}) {
-                                foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
-                                    $fonts_weight_exploded = explode(",", $font_weight);
-                                    $fonts_transform_exploded = explode(",", $font_transform);
-                                    array_push($fonts_weight, $fonts_transform_exploded);
+                            foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
+                                $fonts_weight_exploded = explode(",", $font_weight);
+                                $fonts_transform_exploded = explode(",", $font_transform);
+
+                                array_push($fonts_weight, $fonts_transform_exploded);
+                            }
+                        }
+
+                        $shifted_weight = array_shift($fonts_weight_exploded);
+                        $shifted_transform = array_shift($fonts_transform_exploded);
+                        foreach($font as $ft){
+                            foreach($fonts_all as $font_obj){
+                                if($font_obj->title == $ft){
+                                    foreach($fonts_weight_exploded as $weight){
+                                        if($weight == 'default'){
+                                            array_push($array_fonts_weight, $font_obj->weight);
+                                        }
+                                        else{
+                                            array_push($array_fonts_weight, $weight);
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        // dd($array_fon1ts_weight);
+
+
+                        foreach($font as $ft){
+                            foreach($fonts_all as $font_obj){
+                                if($font_obj->title == $ft){
+                                    array_push($arr_ids, $font_obj->id);
+                                    array_push($arr_urls, $font_obj->url);
+                                    array_push($arr_filenames, $font_obj->file_name);
+                                    break;
                                 }
                             }
                         }
-                        foreach($request->{'fontsFileNameList'.$template_component_id} as $font_file_name){
-                            $fonts_file_name_exploded = explode(",", $font_file_name);
+                        // dd($arr_urls);
+                        for($k=0; $k<count($font); $k++){
+                            if($font[$k] !== null){
+                                $array_ft = array(
+                                    'title' => $font[$k],
+                                    'font_id' => $arr_ids[$k],
+                                    'font_file_name' => $arr_filenames[$k],
+                                    'font_weight' => $array_fonts_weight[$k],
+                                    'font_transform' => $fonts_transform_exploded[$k],
+                                    'font_url' => $arr_urls[$k]
+                                );
+                                array_push($array_fonts, $array_ft);
+                            }
                         }
-                        foreach($request->{'fontsIdsList'.$template_component_id} as $font_id){
-                            $fonts_ids_exploded = explode(",", $font_id);
-                        }
-                        for($k=1; $k<count($font); $k++){
-                            $array_ft = array(
-                                'title' => $font[$k],
-                                'font_id' => $fonts_ids_exploded[$k],
-                                'font_file_name' => $fonts_file_name_exploded[$k],
-                                'font_weight' => $fonts_weight_exploded[$k],
-                                'font_transform' => $fonts_transform_exploded[$k],
-                                'font_url' => $urls[$k]
-                            );
-                            array_push($array_fonts, $array_ft);
-                        }
+                        
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
                             'component_type' => $request->{'comp_type_'.$template_component_id},
@@ -651,6 +680,7 @@ class EventsCustomsController extends Controller
                 // $font_file = $newFilePath;
                 $font->url = $newFilePath;
             }
+            $font->file_name = $name;
             $font->save();
             $response = array(
                 'status' => 'success',

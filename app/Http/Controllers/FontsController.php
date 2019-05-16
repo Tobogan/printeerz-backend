@@ -80,6 +80,7 @@ class FontsController extends Controller
             // Put in database
             $font->url = $filePath;
         }
+        $font->file_name = $name;
         $font->save();
         $notification = array(
             'status' => 'La police a été correctement ajoutée.',
@@ -147,6 +148,7 @@ class FontsController extends Controller
                     $disk->delete($oldPath);
                 }
             }
+            $font->file_name = $name;
             $font->save();
         }
         else {
@@ -178,6 +180,7 @@ class FontsController extends Controller
                 if(!empty($font->url) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
+                $font->file_name = $name;
             }
             $font->save();
         }

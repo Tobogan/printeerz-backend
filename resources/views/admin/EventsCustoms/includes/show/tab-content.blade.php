@@ -148,19 +148,18 @@
                                                             <tbody class="list" id="{{'font_name_list'.$component['events_component_id']}}">
                                                                     <?php 
                                                                     $array_font_title = array();
+                                                                    $array_font_transform = array();
                                                                     $array_font_url = array();
                                                                     $array_font_weight = array();
-                                                                    $array_font_transform = array();
                                                                     $array_font_file_name = array();
                                                                     ?>
                                                                     @foreach($component['settings']['fonts'] as $font)
                                                                         <?php 
                                                                             array_push($array_font_title, $font['title']);
+                                                                            array_push($array_font_transform, $font['font_transform']);
                                                                             array_push($array_font_url, $font['font_url']);
                                                                             array_push($array_font_weight, $font['font_weight']);
-                                                                            array_push($array_font_transform, $font['font_transform']);
                                                                             array_push($array_font_file_name, $font['font_file_name']);
-
                                                                         ?>
                                                                         <tr>
                                                                             <td class="font-name">
@@ -175,9 +174,9 @@
                                                                     @endforeach
                                                                     <?php 
                                                                         $str_font_title = implode(',',$array_font_title);
+                                                                        $str_font_transform = implode(',',$array_font_transform);
                                                                         $str_font_url = implode(',',$array_font_url);
                                                                         $str_font_weight = implode(',',$array_font_weight);
-                                                                        $str_font_transform = implode(',',$array_font_transform);
                                                                         $str_font_file_name = implode(',',$array_font_file_name);
                                                                     ?>
                                                             </tbody>

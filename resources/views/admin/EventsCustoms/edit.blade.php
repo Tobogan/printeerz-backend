@@ -7,12 +7,12 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-10 col-xl-8">
+        <div class="col-12">
             <!-- Header -->
             <div class="header">
                 <div class="header-body">
                     <div class="row align-items-center">
-                        <div class="col">
+                        <div class="col mb-3 ml--3 ml-md--2">
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 CONFIGURATION
@@ -186,7 +186,6 @@
         $('#loading_modalAddFont').addClass('d-none');
     });
 
-
     $('#SelectFont').on('submit', function (e) {
         e.preventDefault();
         $('#submit_modalSelectFont').hide();
@@ -194,40 +193,39 @@
         $(this).removeClass('btn-primary');
         $(this).addClass('btn-success');
         var id = $('#tp_id_font').val();
-        var font_title = $('#ec_font_title').val();
         var font_transform = $('#font_transform').val();
+        var font_weight = 'default';// ici
         var font_id = $('#font_id').val();
-        var events_custom_event_id = $('#events_custom_event_id').val();
+        var font_title = $('#font_id option:selected').text();
         var fontsList = $('#fontsList'+id).val();
         var fontTransformList = document.getElementById("fontsTransformList"+id).value;
-        var fontsFileNameList = document.getElementById("fontsFileNameList"+id).value;
         var fontsIdsList = document.getElementById("fontsIdsList"+id).value;
+        var fontWeightList = document.getElementById("fontsWeightList"+id).value;
         var fonts = [];
         var fonts_transform = [];
-        var fonts_file_name = [];
         var fonts_ids = [];
+        var fonts_weight = [];
         fonts_transform.push(fontTransformList);
-        fonts.push(fontsList);  
-        fonts_file_name.push(fontsFileNameList);
+        fonts.push(fontsList);
         fonts_ids.push(fontsIdsList);
+        fonts_weight.push(fontWeightList);
         var array_fonts = [font_title];
         var array_fonts_transform = [font_transform];
-        var array_fonts_file_name = [font_name];
         var array_fonts_ids = [font_id];
+        var array_fonts_weight = [font_weight];
         fonts.push([array_fonts]);
         fonts_transform.push([array_fonts_transform]);
-        fonts_file_name.push([array_fonts_file_name]);
         fonts_ids.push([array_fonts_ids]);
+        fonts_weight.push([array_fonts_weight]);
         document.getElementById("fontsList"+id).value = fonts;
         document.getElementById("fontsTransformList"+id).value = fonts_transform;
-        document.getElementById("fontsFileNameList"+id).value = fonts_file_name;
         document.getElementById("fontsIdsList"+id).value = fonts_ids;
-        console.log('fontsIdsList = '+ document.getElementById("fontsIdsList"+id).value);
+        document.getElementById("fontsWeightList"+id).value = fonts_weight;
 
         $('#selectFontModal').modal('hide');
         $('#submit_modalSelectFont').show();
         $('#loading_modalSelectFont').addClass('d-none');
-        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-url="'+font_url_replaced+'" data-font_id="'+font_id+'" data-font="'+font_title+'" data-font_name="'+font_name+'" onclick="var id=$(this).attr(\'data-id\');var font_id=$(this).attr(\'data-font_id\');var font=$(this).attr(\'data-font\');font_name=$(this).attr(\'data-font_name\');var url=$(this).attr(\'data-url\');deleteFontRow(id,font,font_id,font_name,url);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+        $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'" data-font_id="'+font_id+'" data-font="'+font_title+'" onclick="var id=$(this).attr(\'data-id\');var font_id=$(this).attr(\'data-font_id\');var font=$(this).attr(\'data-font\');deleteSelectedFontRow(id,font,font_id);$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
     });
 
     function deleteColorRow(id,color){
@@ -319,6 +317,43 @@
         document.getElementById("fontsIdsToDeleteList"+id).value = "";
         document.getElementById("fontsFileNameToDeleteList"+id).value = "";
         document.getElementById("font_urlToDeleteList"+id).value = "";
+    }
+
+    function deleteSelectedFontRow(id,font,font_id){
+        var fontsList = $('#fontsList'+id).val();
+        var fontsIdsList = $('#fontsIdsList'+id).val();
+
+        var fonts = [];
+        var fonts_ids = [];
+
+        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+        var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
+
+        fonts.push(fontsToDeleteList);
+        fonts_ids.push(fontsIdsToDeleteList);
+
+        var array_fonts = [font];
+        var array_fonts_ids = [font_id];
+
+        fonts.push([array_fonts]);
+        fonts_ids.push([array_fonts_ids]);
+
+        document.getElementById("fontsToDeleteList"+id).value = fonts;
+        document.getElementById("fontsIdsToDeleteList"+id).value = fonts_ids;
+
+        var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
+        var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
+
+        console.log('font to delete = '+fontsToDeleteList);
+        console.log('ids to delete = '+fontsIdsToDeleteList);
+
+        // Here I replace the values by the final value after the delete
+        document.getElementById("fontsList"+id).value = fontsList.replace(fontsToDeleteList, "");
+        document.getElementById("fontsIdsList"+id).value = fontsIdsList.replace(fontsIdsToDeleteList, "");
+
+        // Here I delete input content
+        document.getElementById("fontsToDeleteList"+id).value = "";
+        document.getElementById("fontsIdsToDeleteList"+id).value = "";
     }
 
     function deleteFile(font_title, font_name) {

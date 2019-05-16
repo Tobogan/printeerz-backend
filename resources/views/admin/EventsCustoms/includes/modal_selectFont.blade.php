@@ -18,8 +18,7 @@
                 <p class="text-muted b-4">Si elle ne se trouve pas dans la liste merci de l'ajouter en cliquant sur le bouton "+" dans le formulaire de personnalisation.</p>
                 {!! Form::open(['id' => 'SelectFont', 'files' => true, 'class' => 'mt-5']) !!}
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="events_custom_event_id" id="events_custom_event_id"
-                    value="{{$events_custom->event_id}}">
+                <input type="hidden" name="events_custom_event_id" id="events_custom_event_id" value="{{$events_custom->event_id}}">
                 <div class="form-group">
                     <label> Nom</label>
                     {!! Form::select('font_id', $select_fonts, null, ['id' => 'font_id', 'class' => 'form-control mb-3']) !!}
