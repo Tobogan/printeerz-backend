@@ -5,11 +5,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Sélectionner une police existante</h2>
-                @if (session('status'))
-                <div class="alert alert-success mt-1 mb-2">
-                    {{ session('status') }}
-                </div>
-                @endif
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

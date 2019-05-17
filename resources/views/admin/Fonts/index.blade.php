@@ -9,18 +9,6 @@
         @endif
     @endsection
 @section('content')
-
-@if (session('status'))
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-            </div>
-        </div>
-    </div>
-</div>
-@endif
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">

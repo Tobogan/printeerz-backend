@@ -1,5 +1,12 @@
 @extends('layouts/templateAdmin')
-
+ @section('alerts')
+        @if (session('status'))
+            <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+                data-dismiss="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+    @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

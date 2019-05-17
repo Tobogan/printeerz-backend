@@ -25,15 +25,14 @@
                 </div>
             </div>
             {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            @section('alerts')
+            @if (session('status'))
+                <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+                    data-dismiss="alert">
+                    {{ session('status') }}
+                </div>
             @endif
+        @endsection
             {!! Form::open(['action' => array('EventsCustomsController@store'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
