@@ -400,7 +400,7 @@ class EventsCustomsController extends Controller
                                 'title' => $request->{'option_title'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
-                                    'image_url' => $newFilePath, // là j'ai enlevé $newFilePath
+                                    'image_url' => $newFilePath,
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
                                         'height' => $request->{'height'.$i},
@@ -442,7 +442,7 @@ class EventsCustomsController extends Controller
             $validatedData = $request->validate([
                 'title' => 'string|max:255'
             ]);
-            $disk = Storage::disk('s3'); //ajouter des $i dans les input
+            $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
             $events_custom->components = array();
@@ -587,7 +587,7 @@ class EventsCustomsController extends Controller
                                 'title' => $request->{'option_title'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
-                                    'image_url' => $newFilePath, // là j'ai enlevé $newFilePath
+                                    'image_url' => $newFilePath,
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
                                         'height' => $request->{'height'.$i},
@@ -704,42 +704,35 @@ class EventsCustomsController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        if($request) {
-            $validatedData = $request->validate([
-            ]);
-            $disk = Storage::disk('s3'); 
-            $font = new Font;
-            $font->title = $request->ec_font_title;
-            $font->weight = $request->font_weight;
-            $font->is_active = true;
-            $font->is_deleted = false;
-            if($request->hasFile('ec_font_url')) {
-                // $events_custom_event_id = $request->events_custom_event_id;
-                // Create image name
-                $font_file = $request->file('ec_font_url');
-                $name = $font_file->getClientOriginalName();
-                // Define the new path to image
-                // $newFilePath = '/events/'.$events_custom_event_id.'/fonts/'.$title.'/'.$name;
-                $newFilePath = '/fonts/'.$request->ec_font_title.'/'.$name;
-                // Upload the new image
-                // $disk->put($newFilePath, $font_file, 'public');
-                Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
-                // Put in database
-                // $font_file = $newFilePath;
-                $font->url = $newFilePath;
-            }
-            $font->file_name = $name;
-            $font->save();
-            $response = array(
-                'status' => 'success',
-                'msg' => 'Font created and file send to the server',
-                'font_id' => $font->id
-            );
-            return response()->json($response);
+        $validatedData = $request->validate([
+            'ec_font_title' => 'required|unique:fonts|string|max:255',
+            'ec_font_url' => 'required|file|max:4000'
+        ]);
+        $disk = Storage::disk('s3'); 
+        $font = new Font;
+        $font->title = $request->ec_font_title;
+        $font->weight = $request->font_weight;
+        $font->is_active = true;
+        $font->is_deleted = false;
+        if($request->hasFile('ec_font_url')) {
+            // Create image name
+            $font_file = $request->file('ec_font_url');
+            $name = $font_file->getClientOriginalName();
+            // Define the new path to image
+            $newFilePath = '/fonts/'.$request->ec_font_title.'/'.$name;
+            // Upload the new image
+            Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
+            // Put in database
+            $font->url = $newFilePath;
         }
-        else {
-            return 'no';
-        }
+        $font->file_name = $name;
+        $font->save();
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Font created and file send to the server',
+            'font_id' => $font->id
+        );
+        return response()->json($response);
     }
 
     /**

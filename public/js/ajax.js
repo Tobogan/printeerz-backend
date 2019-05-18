@@ -176,30 +176,16 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data);
-                console.log(data.font_id);
                 var id = $('#tp_id_font').val();
                 var font_title = $('#ec_font_title').val();
                 var font_url = $('#ec_font_url').val();
                 var font_transform = $('#font_transform').val();
                 var font_weight = $('#font_weight').val();
                 var font_name = font_url.replace('C:\\fakepath\\','');
-                var new_path = '/fonts/'+font_title+'/';
-                var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
-                var fontsIdsList = document.getElementById("fontsIdsList"+id).value;
-                var fonts_ids = [];
-                fonts_ids.push(fontsIdsList);
-                var array_fonts_ids = [data.font_id];
-                fonts_ids.push([array_fonts_ids]);
-                document.getElementById("fontsIdsList"+id).value = fonts_ids;
-                // document.getElementById("data_font_id"+id).value = data.font_id;
-                // console.log(document.getElementById("data_font_id"+id).value);
-                // $('#fontsToDelete'+id).html('<input type="hidden" name="data_font_id" id="data_font_id'+id+'" value="'+data.font_id+'">');
+                console.log(data);
                 addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
-                // là il faut que tu add l'ID de la font dans l'input hidden
                 $('#ec_font_title').val('');
                 $('#ec_font_url').val('');
-                // fin du ajax
             }
         });
     });

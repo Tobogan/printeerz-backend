@@ -275,37 +275,46 @@ $('.buttonFont').on('click', function(e) {
 function addDeleteBtn(font_title,id,font_transform,font_weight,font_name){
   $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-weight="'+font_weight+'" data-font="'+font_title+'" data-transform="'+font_transform+'" onclick="var id=$(this).attr(\'data-id\');var weight=$(this).attr(\'data-weight\');var font=$(this).attr(\'data-font\');var transform=$(this).attr(\'data-transform\');deleteFontRow(id,font,weight,transform);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
 }
+
 $('#AddFont').on('submit', function (e) {
   e.preventDefault();
-  $('#submit_modalAddFont').hide();
-  $('#loading_modalAddFont').removeClass('d-none');
-  $(this).removeClass('btn-primary');
-  // $(this).addClass('btn-success');
-  var id = $('#tp_id_font').val();
-  var font_title = $('#ec_font_title').val();
-  var font_weight = $('#font_weight').val();
-  var font_transform = $('#font_transform').val();
-  var fontsList = $('#fontsList'+id).val();
-  var fontWeightList = document.getElementById("fontsWeightList"+id).value;
-  var fontTransformList = document.getElementById("fontsTransformList"+id).value;
-  var fonts = [];
-  var fonts_weight = [];
-  var fonts_transform = [];
-  fonts_weight.push(fontWeightList);
-  fonts_transform.push(fontTransformList);
-  fonts.push(fontsList);  
-  var array_fonts = [font_title];
-  var array_fonts_weight = [font_weight];
-  var array_fonts_transform = [font_transform];
-  fonts.push([array_fonts]);
-  fonts_weight.push([array_fonts_weight]);
-  fonts_transform.push([array_fonts_transform]);
-  document.getElementById("fontsList"+id).value = fonts;
-  document.getElementById("fontsWeightList"+id).value = fonts_weight;
-  document.getElementById("fontsTransformList"+id).value = fonts_transform;
-  $('#addFontModal').modal('hide');
-  $('#submit_modalAddFont').show();
-  $('#loading_modalAddFont').addClass('d-none');
+  console.log($('#ec_font_title').val());
+  if(!($('#ec_font_title').val())){
+    alert('Merci renseigner le nom de la police.');
+  }
+  else if(!$('#ec_font_url').val()){
+    alert('Merci de charger le fichier de la police.');
+  }
+  else{
+    $('#submit_modalAddFont').hide();
+    $('#loading_modalAddFont').removeClass('d-none');
+    $(this).removeClass('btn-primary');
+    var id = $('#tp_id_font').val();
+    var font_title = $('#ec_font_title').val();
+    var font_weight = $('#font_weight').val();
+    var font_transform = $('#font_transform').val();
+    var fontsList = $('#fontsList'+id).val();
+    var fontWeightList = document.getElementById("fontsWeightList"+id).value;
+    var fontTransformList = document.getElementById("fontsTransformList"+id).value;
+    var fonts = [];
+    var fonts_weight = [];
+    var fonts_transform = [];
+    fonts_weight.push(fontWeightList);
+    fonts_transform.push(fontTransformList);
+    fonts.push(fontsList);  
+    var array_fonts = [font_title];
+    var array_fonts_weight = [font_weight];
+    var array_fonts_transform = [font_transform];
+    fonts.push([array_fonts]);
+    fonts_weight.push([array_fonts_weight]);
+    fonts_transform.push([array_fonts_transform]);
+    document.getElementById("fontsList"+id).value = fonts;
+    document.getElementById("fontsWeightList"+id).value = fonts_weight;
+    document.getElementById("fontsTransformList"+id).value = fonts_transform;
+    $('#addFontModal').modal('hide');
+    $('#submit_modalAddFont').show();
+    $('#loading_modalAddFont').addClass('d-none');
+  }
 });
 
 $('#SelectFont').on('submit', function (e) {
@@ -313,7 +322,6 @@ $('#SelectFont').on('submit', function (e) {
   $('#submit_modalSelectFont').hide();
   $('#loading_modalSelectFont').removeClass('d-none');
   $(this).removeClass('btn-primary');
-  // $(this).addClass('btn-success');
   var id = $('#tp_id_font').val();
   var font_transform = $('#font_transform').val();
   var font_weight = 'default';// ici
@@ -337,7 +345,6 @@ $('#SelectFont').on('submit', function (e) {
   document.getElementById("fontsList"+id).value = fonts;
   document.getElementById("fontsTransformList"+id).value = fonts_transform;
   document.getElementById("fontsWeightList"+id).value = fonts_weight;
-
   $('#selectFontModal').modal('hide');
   $('#submit_modalSelectFont').show();
   $('#loading_modalSelectFont').addClass('d-none');
