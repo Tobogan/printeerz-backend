@@ -1,14 +1,5 @@
 {{-- Add color modal --}}
 <div class="modal fade" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModalLabel" aria-hidden="true">
-<<<<<<< HEAD
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="exampleModalLabel">Ajouter une couleur de police</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-=======
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,7 +18,6 @@
                         Nom
                     </label>
                     {{ Form::text('color', null, array('class' => 'form-control mb-3','id' => 'ep_color')) }}
->>>>>>> b9ff33ed839d82ead2e355ce855eb3a23aac7b4a
                 </div>
                 <div class="form-group">
                     <label>

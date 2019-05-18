@@ -24,8 +24,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
             {{-- Body --}}
             @section('alerts')
             @if (session('status'))
@@ -35,7 +33,6 @@
                 </div>
             @endif
         @endsection
->>>>>>> b9ff33ed839d82ead2e355ce855eb3a23aac7b4a
             {!! Form::open(['action' => array('EventsCustomsController@store'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">

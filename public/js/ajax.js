@@ -181,6 +181,8 @@ $(document).ready(function () {
                 var id = $('#tp_id_font').val();
                 var font_title = $('#ec_font_title').val();
                 var font_url = $('#ec_font_url').val();
+                var font_transform = $('#font_transform').val();
+                var font_weight = $('#font_weight').val();
                 var font_name = font_url.replace('C:\\fakepath\\','');
                 var new_path = '/fonts/'+font_title+'/';
                 var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
@@ -193,7 +195,7 @@ $(document).ready(function () {
                 // document.getElementById("data_font_id"+id).value = data.font_id;
                 // console.log(document.getElementById("data_font_id"+id).value);
                 // $('#fontsToDelete'+id).html('<input type="hidden" name="data_font_id" id="data_font_id'+id+'" value="'+data.font_id+'">');
-                addDeleteBtn(font_title, id, font_url_replaced,data.font_id, font_name);
+                addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
                 // là il faut que tu add l'ID de la font dans l'input hidden
                 $('#ec_font_title').val('');
                 $('#ec_font_url').val('');

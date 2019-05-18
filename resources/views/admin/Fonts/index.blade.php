@@ -1,5 +1,5 @@
 @extends('layouts/templateAdmin')
-@section('title', 'Zones d\'impressions')
+@section('title', 'Polices')
     @section('alerts')
         @if (session('status'))
             <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"

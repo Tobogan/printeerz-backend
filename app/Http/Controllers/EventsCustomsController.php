@@ -656,9 +656,11 @@ class EventsCustomsController extends Controller
         $events_product->update();
 
         // delete les images
-        foreach($events_custom->components as $component){
-            if(isset($component['image_url'])){
-                $disk->delete($component['image_url']);
+        if(isset($events_custom->components)){
+            foreach($events_custom->components as $component){
+                if(isset($component['image_url'])){
+                    $disk->delete($component['image_url']);
+                }
             }
         }
 

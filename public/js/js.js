@@ -230,6 +230,10 @@ $('.buttonColor').on('click', function(e) {
   $('#idTP').html('<input type="hidden" name="tp_id" id="tp_id" value="'+id+'">');
 });
 
+// --------------------------------
+// This function display colors added and stock them on a input to store in DB
+// --------------------------------
+
 $('#AddColor').on('submit', function (e) {
   e.preventDefault();
   $('#submit_modalAddColor').hide();
@@ -268,54 +272,37 @@ $('.buttonFont').on('click', function(e) {
   $('#idTPFont').html('<input type="hidden" name="tp_id_font" id="tp_id_font" value="'+id+'">');
 });
 
-function addDeleteBtn(font_title, id, font_url_replaced,font_id, font_name){
-  $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-url="'+font_url_replaced+'" data-font_id="'+font_id+'" data-font="'+font_title+'" data-font_name="'+font_name+'" onclick="var id=$(this).attr(\'data-id\');var font_id=$(this).attr(\'data-font_id\');var font=$(this).attr(\'data-font\');font_name=$(this).attr(\'data-font_name\');var url=$(this).attr(\'data-url\');deleteFontRow(id,font,font_id,font_name,url);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
+function addDeleteBtn(font_title,id,font_transform,font_weight,font_name){
+  $('#font_name_list'+id).append('<tr><td class="font-name">'+font_title+'</td><td><a style="float:right" data-id="'+id+'"data-weight="'+font_weight+'" data-font="'+font_title+'" data-transform="'+font_transform+'" onclick="var id=$(this).attr(\'data-id\');var weight=$(this).attr(\'data-weight\');var font=$(this).attr(\'data-font\');var transform=$(this).attr(\'data-transform\');deleteFontRow(id,font,weight,transform);deleteFile('+'\''+font_title+'\',\''+font_name+'\');$(this).closest(\'tr\').remove();">Supprimer</a></td></tr>');
 }
 $('#AddFont').on('submit', function (e) {
   e.preventDefault();
   $('#submit_modalAddFont').hide();
   $('#loading_modalAddFont').removeClass('d-none');
   $(this).removeClass('btn-primary');
-  $(this).addClass('btn-success');
+  // $(this).addClass('btn-success');
   var id = $('#tp_id_font').val();
   var font_title = $('#ec_font_title').val();
-  var font_url = $('#ec_font_url').val();
   var font_weight = $('#font_weight').val();
   var font_transform = $('#font_transform').val();
-  var font_name = font_url.replace('C:\\fakepath\\','');
-  var events_custom_id = $('#events_custom_id').val();
-  var new_path = '/fonts/'+font_title+'/';
-  var font_url_replaced = font_url.replace('C:\\fakepath\\', new_path);
   var fontsList = $('#fontsList'+id).val();
   var fontWeightList = document.getElementById("fontsWeightList"+id).value;
   var fontTransformList = document.getElementById("fontsTransformList"+id).value;
-  var font_urlList = document.getElementById("font_urlList"+id).value;
-  var fontsFileNameList = document.getElementById("fontsFileNameList"+id).value;
   var fonts = [];
-  var url = [];
   var fonts_weight = [];
   var fonts_transform = [];
-  var fonts_file_name = [];
   fonts_weight.push(fontWeightList);
   fonts_transform.push(fontTransformList);
   fonts.push(fontsList);  
-  url.push(font_urlList);
-  fonts_file_name.push(fontsFileNameList);
   var array_fonts = [font_title];
-  var array_urls = [font_url_replaced];
   var array_fonts_weight = [font_weight];
   var array_fonts_transform = [font_transform];
-  var array_fonts_file_name = [font_name];
   fonts.push([array_fonts]);
-  url.push([array_urls]);
   fonts_weight.push([array_fonts_weight]);
   fonts_transform.push([array_fonts_transform]);
-  fonts_file_name.push([array_fonts_file_name]);
   document.getElementById("fontsList"+id).value = fonts;
-  document.getElementById("font_urlList"+id).value = url;
   document.getElementById("fontsWeightList"+id).value = fonts_weight;
   document.getElementById("fontsTransformList"+id).value = fonts_transform;
-  document.getElementById("fontsFileNameList"+id).value = fonts_file_name;
   $('#addFontModal').modal('hide');
   $('#submit_modalAddFont').show();
   $('#loading_modalAddFont').addClass('d-none');
@@ -326,7 +313,7 @@ $('#SelectFont').on('submit', function (e) {
   $('#submit_modalSelectFont').hide();
   $('#loading_modalSelectFont').removeClass('d-none');
   $(this).removeClass('btn-primary');
-  $(this).addClass('btn-success');
+  // $(this).addClass('btn-success');
   var id = $('#tp_id_font').val();
   var font_transform = $('#font_transform').val();
   var font_weight = 'default';// ici
@@ -334,27 +321,21 @@ $('#SelectFont').on('submit', function (e) {
   var font_title = $('#font_id option:selected').text();
   var fontsList = $('#fontsList'+id).val();
   var fontTransformList = document.getElementById("fontsTransformList"+id).value;
-  var fontsIdsList = document.getElementById("fontsIdsList"+id).value;
   var fontWeightList = document.getElementById("fontsWeightList"+id).value;
   var fonts = [];
   var fonts_transform = [];
-  var fonts_ids = [];
   var fonts_weight = [];
   fonts_transform.push(fontTransformList);
   fonts.push(fontsList);
-  fonts_ids.push(fontsIdsList);
   fonts_weight.push(fontWeightList);
   var array_fonts = [font_title];
   var array_fonts_transform = [font_transform];
-  var array_fonts_ids = [font_id];
   var array_fonts_weight = [font_weight];
   fonts.push([array_fonts]);
   fonts_transform.push([array_fonts_transform]);
-  fonts_ids.push([array_fonts_ids]);
   fonts_weight.push([array_fonts_weight]);
   document.getElementById("fontsList"+id).value = fonts;
   document.getElementById("fontsTransformList"+id).value = fonts_transform;
-  document.getElementById("fontsIdsList"+id).value = fonts_ids;
   document.getElementById("fontsWeightList"+id).value = fonts_weight;
 
   $('#selectFontModal').modal('hide');
@@ -392,62 +373,51 @@ function deleteHexaRow(id,hexa){
   document.getElementById("hexasToDeleteList"+id).value = "";
 }
 
-function deleteFontRow(id,font,font_id,font_name,font_url){
+function deleteFontRow(id,font,font_weight,font_transform){
   var fontsList = $('#fontsList'+id).val();
-  var fontsIdsList = $('#fontsIdsList'+id).val();
-  var fontsFileNameList = $('#fontsFileNameList'+id).val();
-  var font_urlList = $('#font_urlList'+id).val();
+  var fontsWeightList = $('#fontsWeightList'+id).val();
+  var fontsTransformList = $('#fontsTransformList'+id).val();
 
   var fonts = [];
-  var fonts_ids = [];
-  var fonts_file_names = [];
-  var fonts_urls = [];
+  var fonts_weights = [];
+  var fonts_transforms = [];
 
   var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
-  var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
-  var fontsFileNameToDeleteList = $('#fontsFileNameToDeleteList'+id).val();
-  var font_urlToDeleteList = $('#font_urlToDeleteList'+id).val();
+  var fontsWeightsToDeleteList = $('#fontsWeightsToDeleteList'+id).val();
+  var fontsTransformToDeleteList = $('#fontsTransformToDeleteList'+id).val();
 
   fonts.push(fontsToDeleteList);
-  fonts_ids.push(fontsIdsToDeleteList);
-  fonts_file_names.push(fontsFileNameToDeleteList);
-  fonts_urls.push(font_urlToDeleteList);
+  fonts_weights.push(fontsWeightsToDeleteList);
+  fonts_transforms.push(fontsTransformToDeleteList);
 
   var array_fonts = [font];
-  var array_fonts_ids = [font_id];
-  var array_fonts_file_names = [font_name];
-  var array_fonts_urls = [font_url];
+  var array_fonts_weights = [font_weight];
+  var array_fonts_transforms = [font_transform];
 
   fonts.push([array_fonts]);
-  fonts_ids.push([array_fonts_ids]);
-  fonts_file_names.push([array_fonts_file_names]);
-  fonts_urls.push([array_fonts_urls]);
+  fonts_weights.push([array_fonts_weights]);
+  fonts_transforms.push([array_fonts_transforms]);
 
   document.getElementById("fontsToDeleteList"+id).value = fonts;
-  document.getElementById("fontsIdsToDeleteList"+id).value = fonts_ids;
-  document.getElementById("fontsFileNameToDeleteList"+id).value = fonts_file_names;
-  document.getElementById("font_urlToDeleteList"+id).value = fonts_urls;
+  document.getElementById("fontsWeightsToDeleteList"+id).value = fonts_weights;
+  document.getElementById("fontsTransformToDeleteList"+id).value = fonts_transforms;
 
   var fontsToDeleteList = $('#fontsToDeleteList'+id).val();
-  var fontsIdsToDeleteList = $('#fontsIdsToDeleteList'+id).val();
-  var fontsFileNameToDeleteList = $('#fontsFileNameToDeleteList'+id).val();
-  var font_urlToDeleteList = $('#font_urlToDeleteList'+id).val();
+  var fontsWeightsToDeleteList = $('#fontsWeightsToDeleteList'+id).val();
+  var fontsTransformToDeleteList = $('#fontsTransformToDeleteList'+id).val();
 
   console.log('font to delete = '+fontsToDeleteList);
-  console.log('ids to delete = '+fontsIdsToDeleteList);
-  console.log('file_names to delete = '+fontsFileNameToDeleteList);
-  console.log('urls to delete = '+font_urlToDeleteList);
+  console.log('weights to delete = '+fontsWeightsToDeleteList);
+  console.log('transform to delete = '+fontsTransformToDeleteList);
   // Here I replace the values by the final value after the delete
   document.getElementById("fontsList"+id).value = fontsList.replace(fontsToDeleteList, "");
-  document.getElementById("fontsIdsList"+id).value = fontsIdsList.replace(fontsIdsToDeleteList, "");
-  document.getElementById("fontsFileNameList"+id).value = fontsFileNameList.replace(fontsFileNameToDeleteList, "");
-  document.getElementById("font_urlList"+id).value = font_urlList.replace(font_urlToDeleteList, "");
+  document.getElementById("fontsWeightList"+id).value = fontsWeightList.replace(fontsWeightsToDeleteList, "");
+  document.getElementById("fontsTransformList"+id).value = fontsTransformList.replace(fontsTransformToDeleteList, "");
 
   // Here I delete input content
   document.getElementById("fontsToDeleteList"+id).value = "";
-  document.getElementById("fontsIdsToDeleteList"+id).value = "";
-  document.getElementById("fontsFileNameToDeleteList"+id).value = "";
-  document.getElementById("font_urlToDeleteList"+id).value = "";
+  document.getElementById("fontsWeightsToDeleteList"+id).value = "";
+  document.getElementById("fontsTransformToDeleteList"+id).value = "";
 }
 
 function deleteSelectedFontRow(id,font,font_id){

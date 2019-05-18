@@ -1,5 +1,5 @@
 @extends('layouts/templateAdmin')
-
+@section('title', $events_product->title)
 @section('content')
 @include('admin.EventsProducts.includes.modalDelete')
 
@@ -9,5 +9,4 @@
     @include('admin.EventsProducts.includes.addVarianteEP')
     @include('admin.EventsProducts.includes.personnalisations')
 </div>
-
 @endsection

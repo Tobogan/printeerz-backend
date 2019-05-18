@@ -180,8 +180,8 @@
                                         <div id="{{'fontsToDelete'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsToDeleteList'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsIdsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsIdsToDeleteList'.$events_component->id}}">
-                                            <input type="hidden" name="{{'fontsFileNameToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsFileNameToDeleteList'.$events_component->id}}"> {{-- font file name --}}
-                                            <input type="hidden" name="{{'font_urlToDeleteList'.$events_component->id.'[]'}}" id="{{'font_urlToDeleteList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                            <input type="hidden" name="{{'fontsWeightsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsWeightsToDeleteList'.$events_component->id}}"> {{-- font file name --}}
+                                            <input type="hidden" name="{{'fontsTransformToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsTransformToDeleteList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
                                         </div>
                                     </div>
                                     <div class="col-12">
