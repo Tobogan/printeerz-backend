@@ -57,8 +57,8 @@ class FontsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'file_font' => 'max:4000'
+            'title' => 'required|unique:fonts|string|max:255',
+            'file_font' => 'required|file|max:4000'
         ]);
 
         $font = new Font;
@@ -79,8 +79,8 @@ class FontsController extends Controller
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             // Put in database
             $font->url = $filePath;
+            $font->file_name = $name;
         }
-        $font->file_name = $name;
         $font->save();
         $notification = array(
             'status' => 'La police a été correctement ajoutée.',
@@ -123,7 +123,7 @@ class FontsController extends Controller
     {
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
+                'title' => 'required|unique:fonts|string|max:255',
             ]);
             $id = $request->id;
             $font = Font::find($id);
@@ -143,17 +143,17 @@ class FontsController extends Controller
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 // Put in database
                 $font->url = $newFilePath;
+                $font->file_name = $name;
                 unlink(public_path() . '/' . $name);
                 if(!empty($font->url) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
-            $font->file_name = $name;
             $font->save();
         }
         else {
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
+                'title' => 'required|unique:fonts|string|max:255',
             ]);
             $id = $request->id;
             $font = Font::find($id);
@@ -162,7 +162,6 @@ class FontsController extends Controller
             $font->is_active = $request->is_active;
             $font->is_deleted = $request->is_deleted;
             $font->save();
-
             if($request->hasFile('font_file')) {
                 $disk = Storage::disk('s3');
                 $oldPath = $font->url;
@@ -180,7 +179,6 @@ class FontsController extends Controller
                 if(!empty($font->url) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
-                $font->file_name = $name;
             }
             $font->save();
         }
@@ -215,7 +213,7 @@ class FontsController extends Controller
             'status' => 'La police a été correctement supprimée.',
             'alert-type' => 'success'
         );
-        return redirect('admin/Font/index')->with($notification);
+        return redirect('admin/Fonts/index')->with($notification);
     }
 
     public function desactivate($id)

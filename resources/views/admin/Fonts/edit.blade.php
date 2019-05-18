@@ -37,15 +37,13 @@
                                         </label>
                                         {!! Form::text('title', $font->title, ['class' => 'form-control'.
                                         $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner ce
-                                            champ</div>@endif
+                                        @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect ou déjà connu.</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             Epaisseur de la police
                                         </label>
-                                        {!! Form::select('weight', $font_weights, $font->weight, ['class' => 'form-control'. $errors->first('weight', ' is-invalid')])!!}
-                                        @if($errors->has('weight'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
+                                        {!! Form::select('weight', $font_weights, $font->weight, ['class' => 'form-control'])!!}
                                     </div>
                                 </div>
                             </div>
@@ -79,16 +77,14 @@
                             <div class="row">
                                 <div class="col-12">
                                     <p class="h3">Fichier de la police</p>
-                                    <p class="text-muted mb-4">Ajouter le fichier de la police au format .ttf, .otf, .woff, .eot, .svg.</p>
+                                    <p class="text-muted mb-4">Ajouter le fichier de la police au format .ttf, .otf, .woff, .eot, .svg. (max 4mo)</p>
                                 </div>
                                 <div class="col-12">
                                     <!-- First name -->
                                     <div class="form-group">
-                                        <div class="custom-file">
-                                            {!! Form::file('font_file', array('class' => 'custom-file-input', 'id' => 'font_file'))
-                                            !!}
-                                            <label class="custom-file-label" for="projectCoverUploads">Modifier le fichier</label>
-                                        </div>
+                                            <label >Charger un fichier</label>
+                                        {!! Form::file('file_font', array( 'class' => 'form-control'. $errors->first('file_font', ' is-invalid'), 'id' => 'file_font')) !!}
+                                        @if($errors->has('file_font'))<div class="invalid-feedback">Fichier absent ou trop volumineux.</div>@endif
                                     </div>
                                 </div>
                             </div>

@@ -38,7 +38,7 @@
                                             Nom de la police
                                         </label>
                                         {!! Form::text('title', null, ['class' => 'form-control'. $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
+                                        @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect ou déjà connu.</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <label>
@@ -60,13 +60,14 @@
                             <div class="row">
                                 <div class="col-12">
                                     <p class="h3">Fichier de la police</p>
-                                    <p class="text-muted mb-4">Ajouter le fichier de la police au format .ttf, .otf, .woff, .eot, .svg.</p>
+                                    <p class="text-muted mb-4">Ajouter le fichier de la police au format .ttf, .otf, .woff, .eot, .svg. (max 4mo)</p>
                                 </div>
                                 <div class="col-12">
                                     <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('file_font', array( 'class' => 'custom-file-input', 'id' => 'file_font')) !!}
-                                        <label class="custom-file-label" for="file_font">Charger un fichier</label>
+                                    <div class="form-group">
+                                            <label >Charger un fichier</label>
+                                        {!! Form::file('file_font', array( 'class' => 'form-control'. $errors->first('file_font', ' is-invalid'), 'id' => 'file_font')) !!}
+                                        @if($errors->has('file_font'))<div class="invalid-feedback">Fichier absent ou trop volumineux.</div>@endif
                                     </div>
                                 </div>
                             </div>

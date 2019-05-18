@@ -9,7 +9,7 @@
                 <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert" data-dismiss="alert" >
                     {{ session('status') }}
                 </div>
-            @endif    
+            @endif
         </div>
         <div class="main-content">
             @include('includes.topbar')

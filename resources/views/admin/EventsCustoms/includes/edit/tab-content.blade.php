@@ -7,7 +7,8 @@
                         <label>
                             Nom de la personnalisation
                         </label>
-                        {!! Form::text('title', $events_custom->title, ['class' => 'form-control', 'placeholder' => '']) !!}
+                        {!! Form::text('title', $events_custom->title, ['class' => 'form-control'. $errors->first('title', ' is-invalid')]) !!}
+                        @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect.</div>@endif
                     </div>
                     <div class="form-group">
                         <label>Description de la personnalisation</label>
@@ -119,49 +120,6 @@
                                 </div>
                             </div>
                             @if($events_component->type == 'input')
-                            {{-- Nouvelle logique test --}}
-                            {{-- <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-header-title">
-                                                Polices
-                                            </h4>
-                                            <div class="col-auto">
-                                                <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
-                                                    data-toggle="modal" data-target="#addFontModal"
-                                                    data-id="{{$events_component->id}}">
-                                                    Nouvelle police
-                                                </a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
-                                                    data-toggle="modal" data-target="#addFontModal"
-                                                    data-id="{{$events_component->id}}">
-                                                    Police existante
-                                                </a>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <!-- Fonts -->
-                                                    <div class="form-group m-0">
-                                                        <!-- Input -->
-                                                        {!! Form::select('fonts_ids[]',
-                                                        App\Font::pluck('title','_id'), null, ['id' =>
-                                                        'fontsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
-                                                    </div>
-                                                    <div id="customFontsList" data-type="sortable" class="mt-3">
-                                                    </div>
-                                                    {!! Form::hidden('customFontsList', "false", ['id' => 'customFontsListHidden']) !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
 
                             {{-- Ex logique de font --}}
 
@@ -224,7 +182,6 @@
                                             <input type="hidden" name="{{'fontsIdsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsIdsToDeleteList'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsFileNameToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsFileNameToDeleteList'.$events_component->id}}"> {{-- font file name --}}
                                             <input type="hidden" name="{{'font_urlToDeleteList'.$events_component->id.'[]'}}" id="{{'font_urlToDeleteList'.$events_component->id}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
-                                            {{-- <input type="hidden" name="{{'data_font_id'.$events_component->id.'[]'}}" id="{{'data_font_id'.$events_component->id}}"> --}}
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -275,19 +232,7 @@
                                                         </thead>
                                 
                                                         <tbody class="list" id="{{'color_name_list'.$events_component->id}}">
-                                                            <tr>
-                                                                {{-- <td class="color-name">
-                                                                    Black
-                                                                </td>
-                                                                <td class="color-code_hex">
-                                                                    000000
-                                                                </td>
-                                                                <td>
-                                                                    <a data-id="{{$template_component->id}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa='000000';var color='Black';deleteColorRow(id, color);deleteHexaRow(id, hexa);$(this).closest('tr').remove();">
-                                                                        Supprimer 
-                                                                    </a>
-                                                                </td> --}}
-                                                            </tr>
+                                                            <tr></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>

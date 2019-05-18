@@ -24,16 +24,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
-            @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {!! Form::open(['action' => array('EventsCustomsController@store'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
@@ -54,8 +44,9 @@
                                 </label>
                                 <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
                                 <!-- Input text title-->
-                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control'. $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])
                                 !!}
+                                @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect ou déjà connu.</div>@endif
                             </div>
 
                             <div class="form-group">
