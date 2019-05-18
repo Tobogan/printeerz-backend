@@ -176,16 +176,28 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                var id = $('#tp_id_font').val();
-                var font_title = $('#ec_font_title').val();
-                var font_url = $('#ec_font_url').val();
-                var font_transform = $('#font_transform').val();
-                var font_weight = $('#font_weight').val();
-                var font_name = font_url.replace('C:\\fakepath\\','');
-                console.log(data);
-                addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
-                $('#ec_font_title').val('');
-                $('#ec_font_url').val('');
+                console.log(data.errors);
+                if(data.errors){
+                    console.log('là');
+                    $('.alert alert-danger').html('');
+                    jQuery.each(data.errors, function(key, value){
+                        $('.alert alert-danger').show();
+                        $('.alert alert-danger').append('<li>'+value+'</li>');
+                    });
+                }
+                else{
+                    $('.alert alert-danger').hide();
+                    var id = $('#tp_id_font').val();
+                    var font_title = $('#ec_font_title').val();
+                    var font_url = $('#ec_font_url').val();
+                    var font_transform = $('#font_transform').val();
+                    var font_weight = $('#font_weight').val();
+                    var font_name = font_url.replace('C:\\fakepath\\','');
+                    console.log(data);
+                    addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
+                    $('#ec_font_title').val('');
+                    $('#ec_font_url').val('');
+                }
             }
         });
     });

@@ -279,42 +279,34 @@ function addDeleteBtn(font_title,id,font_transform,font_weight,font_name){
 $('#AddFont').on('submit', function (e) {
   e.preventDefault();
   console.log($('#ec_font_title').val());
-  if(!($('#ec_font_title').val())){
-    alert('Merci renseigner le nom de la police.');
-  }
-  else if(!$('#ec_font_url').val()){
-    alert('Merci de charger le fichier de la police.');
-  }
-  else{
-    $('#submit_modalAddFont').hide();
-    $('#loading_modalAddFont').removeClass('d-none');
-    $(this).removeClass('btn-primary');
-    var id = $('#tp_id_font').val();
-    var font_title = $('#ec_font_title').val();
-    var font_weight = $('#font_weight').val();
-    var font_transform = $('#font_transform').val();
-    var fontsList = $('#fontsList'+id).val();
-    var fontWeightList = document.getElementById("fontsWeightList"+id).value;
-    var fontTransformList = document.getElementById("fontsTransformList"+id).value;
-    var fonts = [];
-    var fonts_weight = [];
-    var fonts_transform = [];
-    fonts_weight.push(fontWeightList);
-    fonts_transform.push(fontTransformList);
-    fonts.push(fontsList);  
-    var array_fonts = [font_title];
-    var array_fonts_weight = [font_weight];
-    var array_fonts_transform = [font_transform];
-    fonts.push([array_fonts]);
-    fonts_weight.push([array_fonts_weight]);
-    fonts_transform.push([array_fonts_transform]);
-    document.getElementById("fontsList"+id).value = fonts;
-    document.getElementById("fontsWeightList"+id).value = fonts_weight;
-    document.getElementById("fontsTransformList"+id).value = fonts_transform;
-    $('#addFontModal').modal('hide');
-    $('#submit_modalAddFont').show();
-    $('#loading_modalAddFont').addClass('d-none');
-  }
+  $('#submit_modalAddFont').hide();
+  $('#loading_modalAddFont').removeClass('d-none');
+  $(this).removeClass('btn-primary');
+  var id = $('#tp_id_font').val();
+  var font_title = $('#ec_font_title').val();
+  var font_weight = $('#font_weight').val();
+  var font_transform = $('#font_transform').val();
+  var fontsList = $('#fontsList'+id).val();
+  var fontWeightList = document.getElementById("fontsWeightList"+id).value;
+  var fontTransformList = document.getElementById("fontsTransformList"+id).value;
+  var fonts = [];
+  var fonts_weight = [];
+  var fonts_transform = [];
+  fonts_weight.push(fontWeightList);
+  fonts_transform.push(fontTransformList);
+  fonts.push(fontsList);  
+  var array_fonts = [font_title];
+  var array_fonts_weight = [font_weight];
+  var array_fonts_transform = [font_transform];
+  fonts.push([array_fonts]);
+  fonts_weight.push([array_fonts_weight]);
+  fonts_transform.push([array_fonts_transform]);
+  document.getElementById("fontsList"+id).value = fonts;
+  document.getElementById("fontsWeightList"+id).value = fonts_weight;
+  document.getElementById("fontsTransformList"+id).value = fonts_transform;
+  $('#addFontModal').modal('hide');
+  $('#submit_modalAddFont').show();
+  $('#loading_modalAddFont').addClass('d-none');
 });
 
 $('#SelectFont').on('submit', function (e) {
