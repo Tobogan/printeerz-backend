@@ -70,8 +70,8 @@
               <label>
                 Date de début
               </label>
-              {!! Form::date('start_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' =>
-              'Début', 'data-toggle' => 'flatpickr']) !!}
+              {!! Form::date('start_datetime', new \DateTime(), ['class' => 'form-control'. $errors->first('start_datetime', ' is-invalid'), 'placeholder' => 'Début', 'data-toggle' => 'flatpickr']) !!}
+              @if($errors->has('start_datetime'))<div class="invalid-feedback">La date de début doit être obligatoire antérieure ou égale à la date de début.</div>@endif
             </div>
           </div>
 
@@ -81,8 +81,10 @@
               <label>
                 Date de fin
               </label>
-              {!! Form::date('end_datetime', new \DateTime(), ['class' => 'form-control', 'placeholder' => 'Fin',
+              {!! Form::date('end_datetime', new \DateTime(), ['class' => 'form-control'. $errors->first('end_datetime', ' is-invalid'), 'placeholder' => 'Fin',
               'data-toggle' => 'flatpickr']) !!}
+              @if($errors->has('end_datetime'))<div class="invalid-feedback">La date de début doit être obligatoire antérieure ou égale à la date de début.</div>@endif
+
             </div>
           </div>
         </div>

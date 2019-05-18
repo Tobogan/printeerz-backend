@@ -100,6 +100,7 @@ class EventController extends Controller
             'logo_img' => 'max:4000',
             'cover_img' => 'max:4000',
             'BAT' => 'max:4000',
+            'start_datetime'=>'required|date|before_or_equal:end_datetime',
             'description' => 'max:2750'
         ]);
 
@@ -261,6 +262,8 @@ class EventController extends Controller
                 'logo_img' => 'max:4000',
                 'cover_img' => 'max:4000',
                 'BAT' => 'max:4000',
+                'start_datetime'=>'required|date|before_or_equal:end_date_time',
+                'end_datetime'=>'required|date',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
@@ -380,6 +383,8 @@ class EventController extends Controller
                 'logo_img' => 'max:4000',
                 'cover_img' => 'max:4000',
                 'BAT' => 'max:4000',
+                'start_datetime'=>'required|date|before_or_equal:end_date_time',
+                'end_datetime'=>'required|date',
                 'description' => 'max:750'
             ]);
             $id = $request->id;

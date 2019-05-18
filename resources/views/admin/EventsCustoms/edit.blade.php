@@ -1,8 +1,12 @@
 @extends('layouts/templateAdmin')
-
-
-
-
+@section('alerts')
+@if (session('status'))
+    <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
+        data-dismiss="alert">
+        {{ session('status') }}
+    </div>
+@endif
+@endsection
 @section('content')
 
 <div class="container">
@@ -28,7 +32,7 @@
                     <div class="row align-items-center">
                         <div class="col-12 col-md-auto mt-2 mt-md-0">
                             <ul class="nav nav-tabs nav-overflow header-tabs" id="myTab" role="tablist">
-    @include('admin.EventsCustoms.includes.edit.nav-tabs')
+                                @include('admin.EventsCustoms.includes.edit.nav-tabs')
                             </ul>
                         </div>
                     </div>
