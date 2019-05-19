@@ -442,8 +442,8 @@
         $('#loading_modalAddFont').removeClass('d-none');
         $(this).removeClass('btn-primary');
         $(this).addClass('btn-success');
-        var font_title = $('#ec_font_title').val();
-        var font_url = $('#ec_font_url').val();
+        var font_title = $('#title').val();
+        var font_url = $('#file').val();
         var font_name = font_url.replace('C:\\fakepath\\','');
         var events_custom_event_id = $('#events_custom_event_id').val();
         console.log('event-id=> '+events_custom_event_id);

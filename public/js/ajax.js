@@ -176,27 +176,30 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data.errors);
                 if(data.errors){
-                    console.log('là');
-                    $('.alert alert-danger').html('');
+                    $('.alert-danger').html('');
                     jQuery.each(data.errors, function(key, value){
-                        $('.alert alert-danger').show();
-                        $('.alert alert-danger').append('<li>'+value+'</li>');
+                        $('.alert-danger').show();
+                        $('.alert-danger').append('<li>'+value+'</li>');
                     });
                 }
                 else{
-                    $('.alert alert-danger').hide();
+                    $('#submit_modalAddFont').hide();
+                    $('#loading_modalAddFont').removeClass('d-none');
+                    $(this).removeClass('btn-primary');
+                    $('.alert-danger').hide();
                     var id = $('#tp_id_font').val();
-                    var font_title = $('#ec_font_title').val();
-                    var font_url = $('#ec_font_url').val();
+                    var font_title = $('#title').val();
+                    var font_url = $('#file').val();
                     var font_transform = $('#font_transform').val();
                     var font_weight = $('#font_weight').val();
                     var font_name = font_url.replace('C:\\fakepath\\','');
-                    console.log(data);
                     addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
-                    $('#ec_font_title').val('');
-                    $('#ec_font_url').val('');
+                    $('#addFontModal').modal('hide');
+                    $('#submit_modalAddFont').show();
+                    $('#loading_modalAddFont').addClass('d-none');
+                    $('#title').val('');
+                    $('#file').val('');
                 }
             }
         });

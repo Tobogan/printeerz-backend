@@ -704,8 +704,8 @@ class EventsCustomsController extends Controller
     public function uploadFile(Request $request)
     {
         $validatedData = \Validator::make($request->all(),[
-            'ec_font_title' => 'required|unique:fonts|string|max:255',
-            'ec_font_url' => 'required|file|max:4000'
+            'title' => 'required|unique:fonts|string|max:255',
+            'file' => 'required|file|max:4000'
         ]);
         if ($validatedData->fails()){
             return response()->json(['errors'=>$validatedData->errors()->all()]);
@@ -713,16 +713,16 @@ class EventsCustomsController extends Controller
         else{
             $disk = Storage::disk('s3'); 
             $font = new Font;
-            $font->title = $request->ec_font_title;
+            $font->title = $request->title;
             $font->weight = $request->font_weight;
             $font->is_active = true;
             $font->is_deleted = false;
-            if($request->hasFile('ec_font_url')) {
+            if($request->hasFile('file')) {
                 // Create image name
-                $font_file = $request->file('ec_font_url');
+                $font_file = $request->file('file');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/fonts/'.$request->ec_font_title.'/'.$name;
+                $newFilePath = '/fonts/'.$request->title.'/'.$name;
                 // Upload the new image
                 Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
                 // Put in database

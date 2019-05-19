@@ -3,13 +3,14 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="alert alert-danger" style="display:none"></div>
+            <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Ajouter une police</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
                 <p class="text-muted b-4">Merci d'ajouter le fichier de la police et de préciser son nom.</p>
                 {!! Form::open(['id' => 'AddFont', 'files' => true, 'class' => 'mt-3']) !!}
@@ -20,7 +21,7 @@
                     <label>
                         Nom
                     </label>
-                    {{ Form::text('ec_font_title', null, array('class' => 'form-control mb-2','id' => 'ec_font_title')) }}
+                    {{ Form::text('title', null, array('class' => 'form-control mb-2','id' => 'title')) }}
                 </div>
                 <div class="form-group">
                     <!-- Input -->
@@ -54,7 +55,7 @@
                     <label>
                         Fichier
                     </label>
-                    {!! Form::file('ec_font_url', array('id' => 'ec_font_url', 'name' => 'ec_font_url', 'class' =>
+                    {!! Form::file('file', array('id' => 'file', 'name' => 'file', 'class' =>
                     'form-control')) !!}
                 </div>
                 <div id="idTPFont">
