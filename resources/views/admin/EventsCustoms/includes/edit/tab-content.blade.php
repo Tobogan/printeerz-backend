@@ -185,7 +185,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <p class="text-muted">Vous pouvez ajouter de nouvelles polices pour cet événement.</p>
+                                        <p class="text-muted">Vous pouvez ajouter ou supprimer des polices pour cette personnalisation.</p>
                                     </div>
                                 </div>
                             </div>
@@ -245,6 +245,9 @@
                                                     <input type="hidden" name="{{'hexasToDeleteList'.$events_component->id.'[]'}}" id="{{'hexasToDeleteList'.$events_component->id}}">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="text-muted">Vous pouvez ajouter ou supprimer des couleurs de police pour cette personnalisation.</p>
                                         </div>
                                     </div>
                                 </div>

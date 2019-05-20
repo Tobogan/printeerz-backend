@@ -8,7 +8,7 @@ use App\Customer;
 use App\Product;
 use App\Printzones;
 use App\Events_products;
-use App\Events_customs;;
+use App\Events_customs;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -121,7 +121,7 @@ class EventController extends Controller
         $event->type = $request->type;
         $event->description = $request->description;
         $event->event_products_id = array(); // and after push events_product_id after a ep storage
-        $event->employee = $request->get('employees');
+        $event->user_ids = $request->get('employees');
         $event->comments = array(
             'id' => $request->comment_id,
             'employee_id' => $request->employee_id,
@@ -196,6 +196,7 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         $customer = Customer::find($event->customer_id);
+        $users = User::all();
         $products = Product::all();
         $events_products = Events_products::all();
         $printzones = Printzones::all();
@@ -205,7 +206,7 @@ class EventController extends Controller
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['customer_name' => $customer->title, 'printzones' => $printzones, 'select_products' => $select_products,
+        return view('admin/Event.show', ['users' => $users, 'customer_name' => $customer->title, 'printzones' => $printzones, 'select_products' => $select_products,
         'events_products' => $events_products, 'products' => $products, 'event' => $event, 'disk' => $disk, 's3' =>
         $s3]);
     }
@@ -289,7 +290,7 @@ class EventController extends Controller
             $event->event_products_id=$event_products_id;
 
             $employees[]=$request->get('employees');
-            $event->employees=$employees;
+            $event->user_ids=$employees;
 
             $event->comments = array(
                 'id' => $request->comment_id,
@@ -490,7 +491,6 @@ class EventController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-
             $event->save();
         }
         
@@ -527,22 +527,28 @@ class EventController extends Controller
         if(!empty($event->BAT) && $disk->exists($filePath)){
             $disk->delete($filePath);
         }
-        // ici je vais chercher les events_products & events_custom de l'event et je les efface
+        // Delete events_customs of this event
         $events_products = Events_products::where('event_id', '=', $id)->get();
         if($events_products != null){
             foreach($events_products as $events_product){
-                $events_product->delete();
+                app('App\Http\Controllers\EventsProductsController')->destroy($events_product->id);
             }
         }
+        // Delete events_customs of this event
         $events_customs = Events_customs::where('event_id', '=', $id)->get();
         if($events_customs != null){
             foreach($events_customs as $events_custom){
-                $events_custom->delete();
+                app('App\Http\Controllers\EventsCustomsController')->destroy($events_custom->id);
             }
         }
-        // Delete file
+        // Delete events_component of this event
+        $events_components = Events_component::where('event_id', '=', $id)->get();
+        if($events_components != null){
+            foreach($events_components as $events_component){
+                app('App\Http\Controllers\EventsComponentController')->destroy($events_component->id);
+            }
+        }
         $event->delete();
-
         $notification = array(
             'status' => 'L\'événement a été correctement supprimé.',
             'alert-type' => 'success'

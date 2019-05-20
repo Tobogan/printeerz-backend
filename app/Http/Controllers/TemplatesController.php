@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Templates;
 use App\Template_components;
+use App\Events_customs;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -309,22 +310,34 @@ class TemplatesController extends Controller
     public function destroy($id)
     {
         $template = Templates::find($id);
-        // Delete Thumb image
-        $disk = Storage::disk('s3');
-        $fileThumbPath = $template->thumb_img;
-        if(!empty($template->thumb_img) && $disk->exists($fileThumbPath)){
-            $disk->delete($fileThumbPath);
+        $events_customs = Events_customs::all();
+        foreach($events_customs as $events_custom){
+            if($events_custom->template_id == $id){
+                $notification = array(
+                    'status' => 'Vous ne pouvez pas supprimer ce gabarit car il est utilisé dans un événement.',
+                    'alert-type' => 'danger'
+                );
+                return redirect('admin/Templates/index')->with($notification);
+            }
+            else{
+            // Delete Thumb image
+            $disk = Storage::disk('s3');
+            $fileThumbPath = $template->thumb_img;
+            if(!empty($template->thumb_img) && $disk->exists($fileThumbPath)){
+                $disk->delete($fileThumbPath);
+            }
+            $fileFullPath = $template->full_img;
+            if(!empty($template->full_img) && $disk->exists($fileFullPath)){
+                $disk->delete($fileFullPath);
+            }
+            $template->delete();
+            $notification = array(
+                'status' => 'Le gabarit a été correctement supprimé.',
+                'alert-type' => 'success'
+            );
+            return redirect('admin/Templates/index')->with($notification);
+            }
         }
-        $fileFullPath = $template->full_img;
-        if(!empty($template->full_img) && $disk->exists($fileFullPath)){
-            $disk->delete($fileFullPath);
-        }
-        $template->delete();
-        $notification = array(
-            'status' => 'Le gabarit a été correctement supprimé.',
-            'alert-type' => 'success'
-        );
-        return redirect('admin/Templates/index')->with($notification);
     }
 
     public function desactivate($id)

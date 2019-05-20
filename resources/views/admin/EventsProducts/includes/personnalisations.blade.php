@@ -68,8 +68,7 @@
                         <tbody class="list">
                             @foreach($events_customs as $custom)
                                 @foreach($templates as $template)
-                                    <?php //dd($custom->template[0]) ?>
-                                    @if($custom->template[0] == $template->id)
+                                    @if($custom->template_id == $template->id)
                                         @if($custom->events_product_id == $events_product->id)
                                         <tr>
                                             <td class="events_custom-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">

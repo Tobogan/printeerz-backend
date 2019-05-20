@@ -56,33 +56,40 @@ class EventsProductsController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()) {
-            $validatedData = $request->validate([
+            $validatedData = \Validator::make($request->all(),[
+                'title' => 'required|string|unique:events_products|max:255',
+                'description' => 'string|max:255',
                 'product_id' => 'required|string|max:255'
             ]);
-            $events_product = new Events_products;
-            $events_product->event_id = $request->event_id;
-            $events_product->product_id = $request->product_id;
-            $product = Product::find($events_product->product_id);
-            $events_product->title = $request->title;
-            $events_product->variants = array();
-            $events_product->event_customs_ids = array();
-            $events_product->description = $request->product_description;
-            $events_product->is_active = $request->is_active;
-            $events_product->is_deleted = $request->is_deleted;
-            $events_product->save();
-            // here I push the id in the corresponding event
-            $event = Event::find($events_product->event_id);
-            $arr_events_product = $event->event_products_id;
-            array_push($arr_events_product, $events_product->id);
-            $event->event_products_id = $arr_events_product;
-            $event->update();
-            // response for ajax
-            $response = array(
-                'status' => 'success',
-                'msg' => 'EventsProduct created successfully',
-                'events_product' => $events_product
-            );
-            return response()->json($response);
+            if ($validatedData->fails()){
+                return response()->json(['errors'=>$validatedData->errors()->all()]);
+            }
+            else{
+                $events_product = new Events_products;
+                $events_product->event_id = $request->event_id;
+                $events_product->product_id = $request->product_id;
+                $product = Product::find($events_product->product_id);
+                $events_product->title = $request->title;
+                $events_product->variants = array();
+                $events_product->event_customs_ids = array();
+                $events_product->description = $request->product_description;
+                $events_product->is_active = $request->is_active;
+                $events_product->is_deleted = $request->is_deleted;
+                $events_product->save();
+                // here I push the id in the corresponding event
+                $event = Event::find($events_product->event_id);
+                $arr_events_product = $event->event_products_id;
+                array_push($arr_events_product, $events_product->id);
+                $event->event_products_id = $arr_events_product;
+                $event->update();
+                // response for ajax
+                $response = array(
+                    'status' => 'success',
+                    'msg' => 'EventsProduct created successfully',
+                    'events_product' => $events_product
+                );
+                return response()->json($response);
+            }
         }
         else {
             return 'no';

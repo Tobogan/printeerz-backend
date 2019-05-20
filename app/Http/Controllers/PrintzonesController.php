@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Printzones;
+use App\Product;
 
 use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
@@ -123,7 +124,6 @@ class PrintzonesController extends Controller
             
             $id = $request->printzones_id;
             $printzone = Printzones::find($id);
-    
             $printzone->name = $request->name;
             $printzone->zone = $request->zone;
             $printzone->printer_id = $request->printer_id;
@@ -177,13 +177,30 @@ class PrintzonesController extends Controller
      */
     public function destroy($id)
     {
-        $printzone = Printzones::find($id);
-        $printzone->delete();
-        return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement supprimée.');
-
+        $products = Product::all();
+        foreach($products as $product){
+            foreach($product->printzones_id as $key => $value){
+                if($id == $value){
+                    $notification = array(
+                        'status' => 'Vous ne pouvez pas supprimer cette zone car elle est utilisée pour le produit : '.$product->title,
+                        'alert-type' => 'danger'
+                    );
+                    return redirect('admin/Printzones/index')->with($notification);
+                }
+                else{
+                    $printzone = Printzones::find($id);
+                    $printzone->delete();
+                    $notification = array(
+                        'status' => 'La zone d\'impression ont été correctement supprimée.',
+                        'alert-type' => 'success'
+                    );
+                    return redirect('admin/Printzones/index')->with($notification);
+                }
+            }
+        }
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a printzone function in index printzone__________~~~~~~~~~~~~-*/
+    // activate and desactivate a printzone function in index printzone
     public function desactivate($id)
     {
         $printzone = Printzones::find($id);

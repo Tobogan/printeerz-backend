@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Template_components;
+use App\Templates;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -336,18 +337,33 @@ class TemplateComponentsController extends Controller
      */
     public function destroy($id)
     {
-        $template_component = Template_components::find($id);
-        $disk = Storage::disk('s3');
-        $filePath = $template_component->image;
-        if(!empty($template_component->image) && $disk->exists($filePath)){
-            $disk->delete($filePath);
+        $templates = Templates::all();
+        foreach($templates as $template){
+            foreach($template['components_ids'] as $value){
+                // dd($id);
+                if($id == $value['id']){
+                    $notification = array(
+                        'status' => 'Vous ne pouvez pas supprimer ce composant car il est utilisé pour le gabarit : '.$template->title,
+                        'alert-type' => 'danger'
+                    );
+                    return redirect('admin/TemplatesComponents/index')->with($notification);
+                }
+                else{
+                    $template_component = Template_components::find($id);
+                    $disk = Storage::disk('s3');
+                    $filePath = $template_component->image;
+                    if(!empty($template_component->image) && $disk->exists($filePath)){
+                        $disk->delete($filePath);
+                    }
+                    $template_component->delete();
+                    $notification = array(
+                        'status' => 'Le composant a été correctement supprimé.',
+                        'alert-type' => 'success'
+                    );
+                    return redirect('admin/TemplatesComponents/index')->with($notification);
+                }
+            }
         }
-        $template_component->delete();
-        $notification = array(
-            'status' => 'Le composant a été correctement supprimé.',
-            'alert-type' => 'success'
-        );
-        return redirect('admin/TemplatesComponents/index')->with($notification);
     }
 
     // activate and desactivate a template function in index template

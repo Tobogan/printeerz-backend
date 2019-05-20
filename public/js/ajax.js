@@ -124,15 +124,26 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/store',
             data: $(this).serialize(),
             success: function (msg) {
-                title = $('#title').val('');
-                description = $('#description').val('');
-                console.log(msg.events_product);
-                $(this).removeClass('btn-primary');
-                $(this).addClass('btn-success');
-                $('#addEventsProductModal').modal('hide');
-                $('#submit_modal_EP').show();
-                $('#loading_modal_EP').addClass('d-none');
-                location.reload();
+                if(msg.errors){
+                    $('.alert-danger').html('');
+                    jQuery.each(msg.errors, function(key, value){
+                        $('.alert-danger').show();
+                        $('.alert-danger').append('<li>'+value+'</li>');
+                    });
+                    $('#submit_modal_EP').show();
+                    $('#loading_modal_EP').addClass('d-none');
+                }
+                else{
+                    title = $('#title').val('');
+                    description = $('#description').val('');
+                    console.log(msg.events_product);
+                    $(this).removeClass('btn-primary');
+                    $(this).addClass('btn-success');
+                    $('#addEventsProductModal').modal('hide');
+                    $('#submit_modal_EP').show();
+                    $('#loading_modal_EP').addClass('d-none');
+                    location.reload();
+                }
             },
             error: function (request, status, error) {
                 $('#submit_modal_EP').show();

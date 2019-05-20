@@ -80,7 +80,7 @@
                                 <td class="fonts-weight">{{ $font->weight }}</td>
 
                                 <td class="fonts-is_active">
-                                    @if($font->is_active === 'true')
+                                    @if($font->is_active == 'true')
                                     <span class="badge badge-soft-success">Activée</span>
                                     @else
                                     <span class="badge badge-soft-secondary">Désactivée</span>

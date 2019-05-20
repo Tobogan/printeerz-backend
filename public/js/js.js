@@ -232,38 +232,50 @@ $('.buttonColor').on('click', function(e) {
 
 // --------------------------------
 // This function display colors added and stock them on a input to store in DB
+// With errors management
 // --------------------------------
 
 $('#AddColor').on('submit', function (e) {
   e.preventDefault();
-  $('#submit_modalAddColor').hide();
-  $('#loading_modalAddColor').removeClass('d-none');
-  $(this).removeClass('btn-primary');
-  $(this).addClass('btn-success');
   var color = $('#ep_color').val();
   var code_hex = $('#ep_code_hex').val();
   var id = $('#tp_id').val();
   var colorsList = $('#colorsList'+id).val();
   var hexaList = $('#hexaList'+id).val();
-  console.log(id);
   var colors = [];
   var hexa = [];
-  colors.push(colorsList);
-  hexa.push(hexaList);
-  var array_colors = [color];
-  var array_hexas = [code_hex];
-  colors.push([array_colors]);
-  hexa.push([array_hexas]);
-  document.getElementById("colorsList"+id).value = colors;
-  document.getElementById("hexaList"+id).value = hexa;
-  console.log(document.getElementById("colorsList"+id).value);
-  console.log(document.getElementById("hexaList"+id).value);
-  $('#addColorModal').modal('hide');
-  $('#submit_modalAddColor').show();
-  $('#loading_modalAddColor').addClass('d-none');
-  $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td><a data-id="'+id+'"data-color="'+color+'" data-hexa="'+code_hex+'" onclick="var id=$(this).attr(\'data-id\');var color=$(this).attr(\'data-color\');var hexa=$(this).attr(\'data-hexa\');deleteColorRow(id,color);deleteHexaRow(id,hexa);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
-  $('#ep_color').val('');
-  $('#ep_code_hex').val('');
+  if(color == '' || code_hex == ''){
+    $('.alert-danger').html('');
+    $('.alert-danger').show();
+    $('.alert-danger').append('<li>Merci de remplir tous les champs.</li>');
+  }
+  else if(colorsList.search(color) !== -1 || hexaList.search(code_hex) !== -1){
+    $('.alert-danger').html('');
+    $('.alert-danger').show();
+    $('.alert-danger').append('<li>Cette couleur a déjà été ajoutée.</li>');
+  }
+  else{
+    $('#submit_modalAddColor').hide();
+    $('#loading_modalAddColor').removeClass('d-none');
+    $(this).removeClass('btn-primary');
+    // $(this).addClass('btn-success');
+    colors.push(colorsList);
+    hexa.push(hexaList);
+    var array_colors = [color];
+    var array_hexas = [code_hex];
+    colors.push([array_colors]);
+    hexa.push([array_hexas]);
+    document.getElementById("colorsList"+id).value = colors;
+    document.getElementById("hexaList"+id).value = hexa;
+    console.log(document.getElementById("colorsList"+id).value);
+    console.log(document.getElementById("hexaList"+id).value);
+    $('#addColorModal').modal('hide');
+    $('#submit_modalAddColor').show();
+    $('#loading_modalAddColor').addClass('d-none');
+    $('#color_name_list'+id).append('<tr><td class="color-name">'+color+'</td><td class="color-code_hex">'+code_hex+'</td><td><a data-id="'+id+'"data-color="'+color+'" data-hexa="'+code_hex+'" onclick="var id=$(this).attr(\'data-id\');var color=$(this).attr(\'data-color\');var hexa=$(this).attr(\'data-hexa\');deleteColorRow(id,color);deleteHexaRow(id,hexa);$(this).closest(\'tr\').remove();" style="float:right">Supprimer</a></td></tr>');
+    $('#ep_color').val('');
+    $('#ep_code_hex').val('');
+  }
 });
 
 $('.buttonFont').on('click', function(e) {
@@ -472,3 +484,11 @@ function deleteFile(font_title, font_name) {
       }
   });
 }
+
+// $('#editEventsCustomForm').on('submit', function (e) {
+//   e.preventDefault();
+
+//   var id = $('#tp_id_font').val();
+//   var fontsList = $('#fontsList'+id).val();
+
+// });

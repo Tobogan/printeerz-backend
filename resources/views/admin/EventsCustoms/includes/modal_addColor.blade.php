@@ -2,6 +2,7 @@
 <div class="modal fade" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Ajouter une couleur de police</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

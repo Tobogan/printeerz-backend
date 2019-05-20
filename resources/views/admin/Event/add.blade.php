@@ -115,7 +115,16 @@
           </small>
           {!! Form::text('type', null, ['class' => 'form-control', 'placeholder' => 'Type d\'événement']) !!}
         </div>
-        <hr class="mt-4 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <p class="h3">Participants</p>
+                    <p class="text-muted b-4">Sélectionnez les participants et utilisateurs autorisées.</p>
+                    {!! Form::select('employees[]', App\User::pluck('username','_id'),null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                </div>
+            </div>
+        </div>
+        <hr class="mb-3">
         <div class="form-group">
           <label class="mb-1">
             Logo de l'événement

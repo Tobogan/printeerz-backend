@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Font;
+use App\Events_customs;
 
 use Illuminate\Http\Request;
 
@@ -200,20 +201,36 @@ class FontsController extends Controller
     public function destroy($id)
     {
         $font = Font::find($id);
-        // Delete logo image
-        $disk = Storage::disk('s3');
-        $filePath = $font->url;
-        if(!empty($font->url) && $disk->exists($filePath)){
-            $disk->delete($filePath);
-        }
-        // Delete file
-        $font->delete();
+        $events_customs = Events_customs::all();
+        foreach($events_customs as $events_custom){
+            if(isset($events_custom['components'][0]['settings']['fonts'])){
+                foreach($events_custom['components'][0]['settings']['fonts'] as $custom_font){
+                    if(isset($custom_font['font_id']) && $custom_font['font_id'] == $font->id){
+                        $notification = array(
+                            'status' => 'Vous ne pouvez pas supprimer cette police car elle est utilisée dans un événement.',
+                            'alert-type' => 'danger'
+                        );
+                        return redirect('admin/Fonts/index')->with($notification);
+                    }
+                    else{
+                        // Delete logo image
+                        $disk = Storage::disk('s3');
+                        $filePath = $font->url;
+                        if(!empty($font->url) && $disk->exists($filePath)){
+                            $disk->delete($filePath);
+                        }
+                        // Delete file
+                        $font->delete();
 
-        $notification = array(
-            'status' => 'La police a été correctement supprimée.',
-            'alert-type' => 'success'
-        );
-        return redirect('admin/Fonts/index')->with($notification);
+                        $notification = array(
+                            'status' => 'La police a été correctement supprimée.',
+                            'alert-type' => 'success'
+                        );
+                        return redirect('admin/Fonts/index')->with($notification);
+                    }
+                }
+            }
+        }
     }
 
     public function desactivate($id)

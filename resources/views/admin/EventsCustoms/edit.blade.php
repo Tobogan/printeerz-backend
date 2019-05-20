@@ -42,7 +42,7 @@
 
             {{-- Body --}}
 
-            {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4']) !!}
+            {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'id' => 'editEventsCustomForm']) !!}
             {{csrf_field()}}
             {{-- Custom title --}}
             <div class="row">
@@ -65,8 +65,8 @@
                             <div class="buttons">
                                 {!! Form::submit('Configurer', ['class' => 'btn btn-primary', 'style' => 'float:right'])
                                 !!}
-                                <a class='btn btn-secondary' style="float: left"
-                                    href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a>
+                                {{-- <a class='btn btn-secondary' style="float: left"
+                                    href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a> --}}
                             </div>
                         </div>
                     </div>

@@ -44,6 +44,7 @@
                         <label>
                             Nom d'utilisateur
                         </label>
+                        <p class="text-muted">Nom et Prénom par défaut</p>
                         <!-- Input -->
                         <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}"
                             required autofocus>
