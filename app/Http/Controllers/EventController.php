@@ -94,9 +94,10 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|unique:events|string|max:255',
             'advertiser' => 'required|string|max:255',
             'type' => 'string|max:255',
+            'employees' => 'required',
             'logo_img' => 'max:4000',
             'cover_img' => 'max:4000',
             'BAT' => 'max:4000',
@@ -260,16 +261,16 @@ class EventController extends Controller
                 'advertiser' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
+                'employees' => 'required',
                 'logo_img' => 'max:4000',
                 'cover_img' => 'max:4000',
                 'BAT' => 'max:4000',
-                'start_datetime'=>'required|date|before_or_equal:end_date_time',
+                'start_datetime'=>'required|date|before_or_equal:end_datetime',
                 'end_datetime'=>'required|date',
                 'description' => 'max:750'
             ]);
             $id = $request->id;
             $event = Event::find($id);
-            $events = Event::all();
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
             $event->customer_id = $request->customer_id;
@@ -285,13 +286,10 @@ class EventController extends Controller
             $event->end_datetime = $request->end_datetime;
             $event->type = $request->type;
             $event->description = $request->description;
-
             $event_products_id[]=$request->get('event_products_id');
             $event->event_products_id=$event_products_id;
-
             $employees[]=$request->get('employees');
             $event->user_ids=$employees;
-
             $event->comments = array(
                 'id' => $request->comment_id,
                 'employee_id' => $request->employee_id,
@@ -304,9 +302,6 @@ class EventController extends Controller
             foreach($customers as $customer) {
                 $select_customers[$customer->id] = $customer->title;
             }
-            
-            $event->save();
-
             // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
@@ -329,7 +324,6 @@ class EventController extends Controller
                 $disk->delete($oldPath);
                 }
            }
-
             // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
@@ -352,7 +346,6 @@ class EventController extends Controller
                 $disk->delete($oldPath);
                 }
            }
-
             // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
@@ -373,18 +366,17 @@ class EventController extends Controller
                 $disk->delete($oldPath);
                 }
             }
-
             $event->save();
-        }        
+        }
         else {
             $validatedData = $request->validate([
                 'advertiser' => 'required|string|max:255',
-                'name' => 'required|string|max:255',
+                'name' => 'required|unique:events|string|max:255',
                 'type' => 'required|string|max:255',
-                'logo_img' => 'max:4000',
-                'cover_img' => 'max:4000',
-                'BAT' => 'max:4000',
-                'start_datetime'=>'required|date|before_or_equal:end_date_time',
+                'logo_img' => 'max:5000',
+                'cover_img' => 'max:5000',
+                'BAT' => 'max:5000',
+                'start_datetime'=>'required|date|before_or_equal:end_datetime',
                 'end_datetime'=>'required|date',
                 'description' => 'max:750'
             ]);
@@ -495,10 +487,10 @@ class EventController extends Controller
         }
         
         $notification = array(
-        'status' => 'L\'événement a été correctement modifié.',
-        'alert-type' => 'success'
-        );
-        
+            'status' => 'L\'événement a été correctement modifié.',
+            'alert-type' => 'success'
+            );
+            
         return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 

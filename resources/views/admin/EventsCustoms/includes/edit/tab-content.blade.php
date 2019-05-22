@@ -18,6 +18,23 @@
             </div>
         </div>
         <div class="col-4">
+            {{-- IsActive part link to an input hidden --}}
+            <div class="row" >
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="custom-control custom-switch">
+                                        <input name="is_active" type="checkbox" class="custom-control-input" id="isActive" value="{{ $events_custom->is_active }}">
+                                        <label class="custom-control-label" for="isActive">Ce composant est-il actif ?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{-- Image --}}
             @if(!empty($events_custom->image) && $disk->exists($events_custom->image))
                 <div class="card">
@@ -29,14 +46,10 @@
             @else
                 <div class="card card-inactive">
                     <div class="card-body text-center">
-                        <!-- Title -->
+                        <!-- No image -->
                         <p class="text-muted">
                             Pas d'image de personnalisation
                         </p>
-                        <!-- Button -->
-                        {{-- <a href="{{route('edit_product', $events_custom->id)}}" class="btn btn-primary btn-sm">
-                            Ajouter une image
-                        </a> --}}
                     </div>
                 </div>
             @endif
@@ -44,12 +57,19 @@
 
     </div>
 </div>
-<?php $i=0; ?>
+<?php 
+$i=0;
+$arrayEventsComponentsIds = array();
+ ?>
 @foreach($events_components as $events_component)
     @if($events_component->events_custom_id == $events_custom->id)
-        <?php $i++; ?>
+        {{-- For every components we put id in an array --}}
+        <?php 
+        $i++;
+        array_push($arrayEventsComponentsIds, $events_component->id);
+         ?>
         <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$events_component->id}}">
-        <input type="hidden" name="{{'comp_type_'.$events_component->id}}" value="{{$events_component->type}}">
+        <input type="hidden" name="{{'comp_type_'.$events_component->id}}" id="{{'comp_type_'.$events_component->id}}" value="{{$events_component->type}}">
         {{-- <input type="hidden" name="tp_id" id="tp_id" value="{{$events_component->id}}"> --}}
         <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
         <div class="tab-pane fade show" id="template_component_{{$events_component->id}}" role="tabpanel"
@@ -76,8 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- Custom size --}}
-                            <div class="row">
+1                            <div class="row">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header">
@@ -120,10 +139,7 @@
                                 </div>
                             </div>
                             @if($events_component->type == 'input')
-
-                            {{-- Ex logique de font --}}
-
-                             <div class="card">
+                            <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">
@@ -160,7 +176,6 @@
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
-                                
                                                         <tbody class="list" id="{{'font_name_list'.$events_component->id}}">
                                                             <tr></tr>
                                                         </tbody>
@@ -175,7 +190,6 @@
                                             <input type="hidden" name="{{'fontsWeightList'.$events_component->id.'[]'}}" id="{{'fontsWeightList'.$events_component->id}}"> {{-- font_weight --}}
                                             <input type="hidden" name="{{'fontsTransformList'.$events_component->id.'[]'}}" id="{{'fontsTransformList'.$events_component->id}}"> {{-- font_transform --}}
                                             <input type="hidden" name="{{'fontsIdsList'.$events_component->id.'[]'}}" id="{{'fontsIdsList'.$events_component->id}}"> {{-- font_ids --}}
-                                            {{-- <input type="hidden" name="{{'url'.$events_component->id.'[]'}}" id="{{'url'.$events_component->id}}" value="Roboto-Black"> --}}
                                          </div>
                                         <div id="{{'fontsToDelete'.$events_component->id}}">
                                             <input type="hidden" name="{{'fontsToDeleteList'.$events_component->id.'[]'}}" id="{{'fontsToDeleteList'.$events_component->id}}">
@@ -189,8 +203,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- Fin de l'ex logique de font --}}
+                            {{-- Fonts colors --}}
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
@@ -252,6 +265,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- Image components --}}
                             @elseif($events_component->type == 'image')
                                 <div class="card">
                                     <div class="card-header">
@@ -262,7 +276,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                {!! Form::file('comp_image'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
+                                                {!! Form::file('comp_image'.$events_component->id, array('class' => 'form-control custom-file-input', 'id' =>'comp_image'.$events_component->id)) !!}
                                                 <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
                                             </div>
                                         </div>
@@ -272,7 +286,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif {{-- Component type condition --}}
+                            @endif {{-- /Component type condition --}}
                         </div>
                     </div>
                 </div>
@@ -352,33 +366,34 @@
                         </div>
                     </div>
                     @if($events_component->type == 'input')
-                    {{-- First letter --}}
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-header-title">
-                                        Première lettre ou symbole avant le texte
-                                    </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <!-- First name -->
-                                            <div class="form-group">
-                                                <!-- Input -->
-                                                {!! Form::text('font_first_letter'.$i, null, ['class' => 'form-control', 'placeholder' => '#']) !!}
+                        {{-- First letter --}}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-header-title">
+                                            Première lettre ou symbole avant le texte
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <!-- First name -->
+                                                <div class="form-group">
+                                                    <!-- Input -->
+                                                    {!! Form::text('font_first_letter'.$i, null, ['class' => 'form-control', 'placeholder' => '#']) !!}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endif
                 </div>
             </div>
         </div>
     @endif
 @endforeach
-
+{{-- Send an array with eventsCustom ids for alert errors --}}
+<input type="hidden" name="arrayEventsComponentsIds[]" value="{{ json_encode($arrayEventsComponentsIds) }}" id="arrayEventsComponentsIds">

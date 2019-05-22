@@ -99,13 +99,14 @@
           </small>
           <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse"
             name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
-          <input class="form-control mt-2" name="address" id="address" type="hidden">
+          <input class="{{ 'form-control mt-2' . $errors->first('address', ' is-invalid')}}" name="address" id="address" type="hidden">
           <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
           <input class="form-control mt-2" name="city" id="city" type="hidden">
           <input class="form-control mt-2" name="country" id="country" type="hidden">
           <input class="form-control mt-2" name="lattitude" id="latitude" type="hidden">
           <input class="form-control mt-2" name="longitude" id="longitude" type="hidden">
         </div>
+        @if($errors->has('address'))<div class="invalid-feedback">Le champ "adresse" est obligatoire.</div>@endif
         <div class="form-group">
           <label class="mb-1">
             Type de l'événement
@@ -120,8 +121,9 @@
                 <div class="form-group">
                     <p class="h3">Participants</p>
                     <p class="text-muted b-4">Sélectionnez les participants et utilisateurs autorisées.</p>
-                    {!! Form::select('employees[]', App\User::pluck('username','_id'),null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
-                </div>
+                    {!! Form::select('employees[]', App\User::pluck('username','_id'),null, ['class' => 'form-control'. $errors->first('employees', ' is-invalid'), 'multiple', 'data-toggle' => 'select']) !!}
+                    @if($errors->has('employees'))<div class="invalid-feedback">Le champ "participants" est obligatoire.</div>@endif
+                  </div>
             </div>
         </div>
         <hr class="mb-3">

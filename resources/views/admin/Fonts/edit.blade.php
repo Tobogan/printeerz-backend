@@ -58,8 +58,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="custom-control custom-switch">
-                                        <input name="is_active" type="checkbox" class="custom-control-input"
-                                            id="isActive" value="{{ $font->is_active }}">
+                                        <input name="is_active" type="checkbox" class="custom-control-input" id="isActive" value="{{ $font->is_active }}">
                                         <label class="custom-control-label" for="isActive">Ce composant est-il actif
                                             ?</label>
                                     </div>
@@ -69,7 +68,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">

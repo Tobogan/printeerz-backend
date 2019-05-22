@@ -18,6 +18,22 @@
             </div>
         </div>
         <div class="col-4">
+            <div class="row" >
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                <div class="custom-control custom-switch">
+                                    <input name="is_active" type="checkbox" class="custom-control-input" id="isActive" value="{{ $events_custom->is_active }}">
+                                    <label class="custom-control-label" for="isActive">Ce composant est-il actif ?</label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{-- Image --}}
             @if(!empty($events_custom->image) && $disk->exists($events_custom->image))
                 <div class="card">

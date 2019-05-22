@@ -1,13 +1,5 @@
 @extends('layouts/templateAdmin')
 @section('title', 'Personnalisations')
-    @section('alerts')
-        @if (session('status'))
-            <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
-                data-dismiss="alert">
-                {{ session('status') }}
-            </div>
-        @endif
-    @endsection
 @section('content')
 
 <div class="container">
@@ -39,16 +31,14 @@
                     </div>
                 </div>
             </div>
-
             {{-- Body --}}
-
-            {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'id' => 'editEventsCustomForm']) !!}
+            {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'id' => 'editEventsCustomForm', 'onsubmit' => 'return checkErrorsEditEventsCustom()']) !!}
             {{csrf_field()}}
             {{-- Custom title --}}
             <div class="row">
                 <div class="col-12">
                     <div class="tab-content" id="myTabContent">
-    @include('admin.EventsCustoms.includes.edit.tab-content')
+                        @include('admin.EventsCustoms.includes.edit.tab-content')
                     </div>
                     {{-- Store Event custom event_id --}}
                     <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id"
@@ -60,18 +50,17 @@
                     {{-- Store Event product title --}}
                     <input type="hidden" class="form-control" name="actual_title" value="{{$events_custom->title}}">
                     {{-- Custom actions --}}
+                    {!! Form::hidden('is_active', $events_custom->is_active, [ 'id'=>'formActive']) !!}
                     <div class="row">
                         <div class="col-12">
                             <div class="buttons">
-                                {!! Form::submit('Configurer', ['class' => 'btn btn-primary', 'style' => 'float:right'])
+                                {!! Form::submit('Valider', ['class' => 'btn btn-primary', 'style' => 'float:right','id' => 'submitEditEventsCustom'])
                                 !!}
                                 {{-- <a class='btn btn-secondary' style="float: left"
                                     href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a> --}}
                             </div>
                         </div>
                     </div>
-
-
                     {!! Form::close() !!}
                 </div>
             </div>
@@ -79,13 +68,10 @@
     </div>
 </div>{{-- /container --}}
 @endsection
-
-    @include('admin.EventsCustoms.includes.modal_addColor')
-    @include('admin.EventsCustoms.includes.modal_addFont')
-    @include('admin.EventsCustoms.includes.modal_selectFont')
-
-
-
+{{-- Modals includes --}}
+@include('admin.EventsCustoms.includes.modal_addColor')
+@include('admin.EventsCustoms.includes.modal_addFont')
+@include('admin.EventsCustoms.includes.modal_selectFont')
 
 @section('javascripts')
 @parent()

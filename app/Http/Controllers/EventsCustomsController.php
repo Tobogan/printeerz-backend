@@ -95,8 +95,8 @@ class EventsCustomsController extends Controller
         $events_custom->template_id = $request->template_id;
         $events_custom->printzone_id = $request->printzone_id;
         $events_custom->components = array();
-        $events_custom->is_active = $request->is_active;
-        $events_custom->is_deleted = $request->is_deleted;
+        $events_custom->is_active = 'true';
+        $events_custom->is_deleted = 'false';
         $events_custom->save();
         // here I push the id in the corresponding events_product
         $events_product = Events_products::find($events_custom->events_product_id);
@@ -397,9 +397,9 @@ class EventsCustomsController extends Controller
                         $events_custom->components = $array;
                     }
                     if($request->{'comp_type_'.$template_component_id} == 'image'){
-                        if($request->hasFile('comp_image'.$i)){
+                        if($request->hasFile('comp_image'.$template_component_id)){
                             $events_custom_event_id = $request->events_custom_event_id;
-                            $image_file = $request->file('comp_image'.$i);
+                            $image_file = $request->file('comp_image'.$template_component_id);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = time().$image_file->getClientOriginalName();
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
@@ -443,13 +443,11 @@ class EventsCustomsController extends Controller
                     }
                 }
             }
-
-            
             $events_custom->description = $request->description;
+            $events_custom->is_active = $request->is_active;
             $events_custom->save();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
-
         else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
@@ -585,9 +583,9 @@ class EventsCustomsController extends Controller
                         $events_custom->components = $array;
                     }
                     if($request->{'comp_type_'.$template_component_id} == 'image'){
-                        if($request->hasFile('comp_image'.$i)){
+                        if($request->hasFile('comp_image'.$template_component_id)){
                             $events_custom_event_id = $request->events_custom_event_id;
-                            $image_file = $request->file('comp_image'.$i);
+                            $image_file = $request->file('comp_image'.$template_component_id);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = time().$image_file->getClientOriginalName();
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
