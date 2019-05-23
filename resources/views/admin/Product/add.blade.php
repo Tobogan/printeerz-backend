@@ -28,99 +28,136 @@
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
-                    <div class="form-group">
-                        <label>
-                            Nom du produit
-                        </label>
-                        {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom du produit'])!!}
-                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du produit</div>@endif
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12 col-md-6">
-                   <div class="form-group">
-                        <label>
-                            Type de produit
-                        </label>
-                        {!! Form::text('product_type', null, ['class' => 'form-control' . $errors->first('product_type', ' is-invalid'), 'placeholder' => 'Type de produit']) !!}
-                        @if($errors->has('product_type'))<div class="invalid-feedback">Veuillez renseigner le type du produit</div>@endif
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="form-group">
-                        <label>Genre du produit</label>
-                        <select name="gender" id="gender" class="form-control" data-toggle="select">
-                            <option value="male">Homme</option>
-                            <option value="female">Femme</option>
-                            <option value="unisex">Unisex</option>
-                            <option value="accessories">Accessoires</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12">
-                    <p class="h3">Fournisseur</p>
-                    <p class="text-muted b-4">Renseigner les informations du fournisseur</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="form-group">
-                        <label>
-                            Nom
-                        </label>
-                        {!! Form::text('vendor_name', null, ['class' => 'form-control', 'placeholder' => 'Nom']) !!}
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="form-group">
-                        <label>
-                            Référence
-                        </label>
-                        {!! Form::text('vendor_reference', null, ['class' => 'form-control', 'placeholder' => 'Référence']) !!}
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4 mb-5">
-            <div class="row">
-                <div class="col-12">
-                    <p class="h3">Image</p>
-                    <p class="text-muted b-4">Ajouter l'image du produit en format 1:1</p>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <div class="custom-file">
-                            {!! Form::file('image', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
-                            <label class="custom-file-label" for="logo_img">Télécharger l'image du produit</label>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title mt-2">
+                                Informations générales du produit.
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>
+                                    Nom du produit
+                                </label>
+                                {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom du produit'])!!}
+                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du produit</div>@endif
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Type de produit
+                                        </label>
+                                        {!! Form::text('product_type', null, ['class' => 'form-control' . $errors->first('product_type', ' is-invalid'), 'placeholder' => 'Type de produit']) !!}
+                                        @if($errors->has('product_type'))<div class="invalid-feedback">Veuillez renseigner le type du produit</div>@endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Genre du produit</label>
+                                        <select name="gender" id="gender" class="form-control" data-toggle="select">
+                                            <option value="male">Homme</option>
+                                            <option value="female">Femme</option>
+                                            <option value="unisex">Unisexe</option>
+                                            <option value="accessories">Accessoires</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12">
-                    <div class="form-group">
-                        <p class="h3"> Zones d'impression</p>
-                        <p class="text-muted b-4">Sélectionner les zones d'impression qui seront disponibles pour ce produit</p>
-                        {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title mt-2">
+                                Informations du fournisseur.
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Nom
+                                        </label>
+                                        {!! Form::text('vendor_name', null, ['class' => 'form-control', 'placeholder' => 'Nom']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Référence
+                                        </label>
+                                        {!! Form::text('vendor_reference', null, ['class' => 'form-control', 'placeholder' => 'Référence']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4 mb-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title mt-2">
+                                Image du produit.
+                                <p class="text-muted b-4 mt-3">Ajouter l'image du produit en format 1:1 (max 4mo)</p>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>
+                                        Télécharger l'image du produit
+                                    </label>
+                                    {!! Form::file('image', ['class' => 'form-control'.$errors->first('image', 'is-invalid')]) !!}
+                                    @if($errors->has('image'))<div class="invalid-feedback">Merci de charger une image ou de respecter le format.</div>@endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <p class="h3">Description</p>
-                        <p class="text-muted b-4">Ecriver une description rapide du produit (max: 750 caractères)</p>
-                        <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header-title mt-2">
+                                        Zones d'impression disponibles.
+                                    <p class="text-muted b-4 mt-3">Sélectionnez les zones d'impression qui seront disponibles pour ce produit</p>
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'), null, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select']) !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title mt-2">
+                                Description du produit.
+                                <p class="text-muted b-4 mt-3">Ecrivez une description rapide du produit (max: 750 caractères)</p>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             {!! Form::hidden('is_active', "true") !!}
             {!! Form::hidden('is_deleted', "false") !!}
-            <hr class="mt-4 mb-5">
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">

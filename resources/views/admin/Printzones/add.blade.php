@@ -179,7 +179,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" >
+            {{-- <div class="row" >
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
@@ -194,8 +194,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            {!! Form::hidden('is_active', 'false', [ 'id'=>'formActive']) !!}
+            </div> --}}
+            {!! Form::hidden('is_active', 'true', [ 'id'=>'formActive']) !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">

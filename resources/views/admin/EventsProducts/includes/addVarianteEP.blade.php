@@ -1,6 +1,7 @@
 <div class="modal fade" id="addVarianteEPModal" tabindex="-1" role="dialog" aria-labelledby="addVarianteEPModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Ajouter une variante</h2>
                 @if (session('status'))

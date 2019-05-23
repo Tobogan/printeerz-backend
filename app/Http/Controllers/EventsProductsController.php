@@ -106,47 +106,59 @@ class EventsProductsController extends Controller
     {
         if($request->ajax()) {
             if ($request->actual_titleEP == $request->title){
-                $validatedData = $request->validate([
-                    'products_variant_id' => 'required|string|max:255'
+                $validatedData = \Validator::make($request->all(),[
+                    'products_variant_id' => 'required|string|max:255',
+                    'quantity' => 'required|string|max:255'
                 ]);
-                $id = $request->events_product_id;
-                $events_product = Events_products::find($id);
-                $variants = array(
-                    $request->products_variant_id,
-                    $request->quantity
-                );
-                $array = $events_product->variants;
-                array_push($array, $variants);
-                $events_product->variants = $array;
-                $events_product->save();
-                $response = array(
-                    'status' => 'success',
-                    'msg' => 'EventsProduct created successfully',
-                    'events_product' => $events_product
-                );
-                return response()->json($response);
+                if ($validatedData->fails()){
+                    return response()->json(['errors'=>$validatedData->errors()->all()]);
+                }
+                else{
+                    $id = $request->events_product_id;
+                    $events_product = Events_products::find($id);
+                    $variants = array(
+                        $request->products_variant_id,
+                        $request->quantity
+                    );
+                    $array = $events_product->variants;
+                    array_push($array, $variants);
+                    $events_product->variants = $array;
+                    $events_product->save();
+                    $response = array(
+                        'status' => 'success',
+                        'msg' => 'EventsProduct created successfully',
+                        'events_product' => $events_product
+                    );
+                    return response()->json($response);
+                }
             }
             else {
-                $validatedData = $request->validate([
-                    'products_variant_id' => 'required|string|max:255'
+                $validatedData = \Validator::make($request->all(),[
+                    'products_variant_id' => 'required|string|max:255',
+                    'quantity' => 'required|string|max:255'
                 ]);
-                $id = $request->events_product_id;
-                $events_product = Events_products::find($id);
-                $events_product->title == $request->title;
-                $variants = array(
-                    $request->products_variant_id,
-                    $request->quantity
-                );
-                $array = $events_product->variants;
-                array_push($array, $variants);
-                $events_product->variants = $array;
-                $events_product->save();
-                $response = array(
-                    'status' => 'success',
-                    'msg' => 'EventsProduct created successfully',
-                    'events_product' => $events_product
-                );
-                return response()->json($response);
+                if ($validatedData->fails()){
+                    return response()->json(['errors'=>$validatedData->errors()->all()]);
+                }
+                else{
+                    $id = $request->events_product_id;
+                    $events_product = Events_products::find($id);
+                    $events_product->title == $request->title;
+                    $variants = array(
+                        $request->products_variant_id,
+                        $request->quantity
+                    );
+                    $array = $events_product->variants;
+                    array_push($array, $variants);
+                    $events_product->variants = $array;
+                    $events_product->save();
+                    $response = array(
+                        'status' => 'success',
+                        'msg' => 'EventsProduct created successfully',
+                        'events_product' => $events_product
+                    );
+                    return response()->json($response);
+                }
             }
         }
         else {
@@ -164,7 +176,7 @@ class EventsProductsController extends Controller
      */
     public function deleteVariant($id, $products_variant_id)
     {
-        function removeElement($array,$value) {
+        function removeElementEP($array,$value) {
             if (($key = array_search($value, $array)) !== false) {
               unset($array[$key]);
             }
@@ -178,7 +190,7 @@ class EventsProductsController extends Controller
                 }
             }
         }
-        $result = removeElement($events_product->variants, $variant_to_delete);
+        $result = removeElementEP($events_product->variants, $variant_to_delete);
         $arr = $events_product->variants;
         $arr = $result;
         $events_product->variants = $arr;
@@ -305,7 +317,7 @@ class EventsProductsController extends Controller
         $arr = $result;
         $event->event_products_id = $arr;
         $event->update();
-        $events_customs = Events_customs::where('events_product_id', '=', $id)->get();
+        $events_customs = Events_customs::where('events_product_id','=',$id)->get();
         if($events_customs != null){
             foreach($events_customs as $events_custom){
                 $events_custom->delete();
@@ -316,7 +328,7 @@ class EventsProductsController extends Controller
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }
 
-    /*--~~~~~~~~~~~___________activate and desactivate a events$events_product function in index events$events_product__________~~~~~~~~~~~~-*/
+    // Activate and desactivate a events$events_product function in index events$events_product
     public function desactivate($id)
     {
         $events_product = Events_products::find($id);

@@ -1,6 +1,7 @@
 <div class="modal fade" id="addVariante" tabindex="-1" role="dialog" aria-labelledby="addVarianteLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
+            <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Ajouter des variantes</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

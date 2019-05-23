@@ -73,48 +73,48 @@
 
                         <tbody class="list">
                             @foreach ($fonts as $font)
-                            <tr>
-                                <td class="fonts-title"><a
-                                        href="{{route('edit_fonts', $font->id)}}"><b>{{$font->title}}</b></a>
-                                </td>
-                                <td class="fonts-weight">{{ $font->weight }}</td>
+                                <tr>
+                                    <td class="fonts-title"><a
+                                            href="{{route('edit_fonts', $font->id)}}"><b>{{$font->title}}</b></a>
+                                    </td>
+                                    <td class="fonts-weight">{{ $font->weight }}</td>
 
-                                <td class="fonts-is_active">
-                                    @if($font->is_active == 'true')
-                                    <span class="badge badge-soft-success">Activée</span>
-                                    @else
-                                    <span class="badge badge-soft-secondary">Désactivée</span>
-                                    @endif
-                                </td>
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            data-boundary="window">
-                                            <i class="fe fe-more-vertical"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="{{route('edit_fonts', $font->id)}}"
-                                                class="dropdown-item">
-                                                Modifier la police
+                                    <td class="fonts-is_active">
+                                        @if($font->is_active == 'true')
+                                        <span class="badge badge-soft-success">Activée</span>
+                                        @else
+                                        <span class="badge badge-soft-secondary">Désactivée</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                data-boundary="window">
+                                                <i class="fe fe-more-vertical"></i>
                                             </a>
-                                            @if ($font->is_active === "true")
-                                            <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')"
-                                                href="{{route('desactivate_fonts', $font->id)}}">
-                                                Désactiver </a>
-                                            @else
-                                            <a class="dropdown-item"
-                                                href="{{route('activate_fonts', $font->id)}}">Activer</a>
-                                            @endif
-                                            <hr class="dropdown-divider">
-                                            <a class="dropdown-item text-danger"
-                                                onclick="return confirm('Êtes-vous sûr?')"
-                                                href="{{route('destroy_fonts', $font->id)}}"> Supprimer
-                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="{{route('edit_fonts', $font->id)}}"
+                                                    class="dropdown-item">
+                                                    Modifier la police
+                                                </a>
+                                                @if ($font->is_active === "true")
+                                                <a class="dropdown-item" onclick="return confirm('Êtes-vous sûr?')"
+                                                    href="{{route('desactivate_fonts', $font->id)}}">
+                                                    Désactiver </a>
+                                                @else
+                                                <a class="dropdown-item"
+                                                    href="{{route('activate_fonts', $font->id)}}">Activer</a>
+                                                @endif
+                                                <hr class="dropdown-divider">
+                                                <a class="dropdown-item text-danger"
+                                                    onclick="return confirm('Êtes-vous sûr?')"
+                                                    href="{{route('destroy_fonts', $font->id)}}"> Supprimer
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

@@ -9,6 +9,7 @@ use App\Product;
 use App\Printzones;
 use App\Events_products;
 use App\Events_customs;
+use App\Events_component;
 use App\User;
 
 use Illuminate\Http\Request;

@@ -98,15 +98,26 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (msg) {
-                color = $('#color').val('');
-                size = $('#size').val('');
-                console.log(msg.products_variant);
-                $(this).removeClass('btn-primary');
-                $(this).addClass('btn-success');
-                $('#addVariante').modal('hide');
-                $('#submit_modal').show();
-                $('#loading_modal').addClass('d-none');
-                location.reload();
+                if(msg.errors){
+                    $('.alert-danger').html('');
+                    jQuery.each(msg.errors, function(key, value){
+                        $('.alert-danger').show();
+                        $('.alert-danger').append('<li>'+value+'</li>');
+                    });
+                    $('#submit_modal').show();
+                    $('#loading_modal').addClass('d-none');
+                }
+                else{
+                    color = $('#color').val('');
+                    size = $('#size').val('');
+                    console.log(msg.products_variant);
+                    $(this).removeClass('btn-primary');
+                    $(this).addClass('btn-success');
+                    $('#addVariante').modal('hide');
+                    $('#submit_modal').show();
+                    $('#loading_modal').addClass('d-none');
+                    location.reload();
+                }
             },
             error: function (request, status, error) {
                 $('#submit_modal').show();
@@ -161,13 +172,24 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/addVarianteEP',
             data: $(this).serialize(),
             success: function (msg) {
-                console.log(msg.events_product);
-                $(this).removeClass('btn-primary');
-                $(this).addClass('btn-success');
-                $('#addVarianteEPModal').modal('hide');
-                $('#submit_modalVarianteEP').show();
-                $('#loading_modalVarianteEP').addClass('d-none');
-                location.reload();
+                if(msg.errors){
+                    $('.alert-danger').html('');
+                    jQuery.each(msg.errors, function(key, value){
+                        $('.alert-danger').show();
+                        $('.alert-danger').append('<li>'+value+'</li>');
+                    });
+                    $('#submit_modalVarianteEP').show();
+                    $('#loading_modalVarianteEP').addClass('d-none');
+                }
+                else{
+                    console.log(msg.events_product);
+                    $(this).removeClass('btn-primary');
+                    $(this).addClass('btn-success');
+                    $('#addVarianteEPModal').modal('hide');
+                    $('#submit_modalVarianteEP').show();
+                    $('#loading_modalVarianteEP').addClass('d-none');
+                    location.reload();
+                }
             },
             error: function (request, status, error) {
                 $('#submit_modalVarianteEP').show();

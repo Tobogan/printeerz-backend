@@ -132,8 +132,8 @@
             Logo de l'événement
           </label>
           <small class="form-text text-muted">
-            Utilisez une image au format 1:1 avec une taille 400x400 maximum
-          </small>
+              Utilisez une image au format 1:1 avec une taille 400x400 maximum de moins de 5mo.
+            </small>
           <div class="custom-file">
             {!! Form::file('logo_img', array('class' => 'custom-file-input' . $errors->first('logo_img', 'is-invalid'), 'id' => 'logo_img')) !!}
             <label class="custom-file-label" for="logo_img">Charger une image</label>
@@ -146,25 +146,25 @@
             Cover de l'événement
           </label>
           <small class="form-text text-muted">
-            Utilisez une image au format 1:1 avec une taille 400x400 maximum
-          </small>
+              Utilisez une image au format 1:1 avec une taille 400x400 maximum de moins de 5mo.
+            </small>
           <div class="custom-file">
             {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img' )) !!}
             <label class="custom-file-label" for="cover_img">Charger une image</label>
           </div>
         </div>
         <div class="form-group">
-            <label class="mb-1">
-              BAT de l'événement
-            </label>
-            <small class="form-text text-muted">
-              Utilisez une image au format 1:1 avec une taille 400x400 maximum
+          <label class="mb-1">
+            BAT de l'événement
+          </label>
+          <small class="form-text text-muted">
+              Utilisez un .pdf de moins de 5mo.
             </small>
-            <div class="custom-file">
-              {!! Form::file('BAT', array('class' => 'custom-file-input', 'id' => 'BAT' )) !!}
-              <label class="custom-file-label" for="BAT">Charger une image</label>
-            </div>
+          <div class="custom-file">
+            {!! Form::file('BAT', array('class' => 'custom-file-input', 'id' => 'BAT' )) !!}
+            <label class="custom-file-label" for="BAT">Charger une image</label>
           </div>
+        </div>
         <hr class="mt-4 mb-5">
         <div class="form-group">
           <label>Description de l'événement</label>

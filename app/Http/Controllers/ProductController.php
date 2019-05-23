@@ -58,6 +58,8 @@ class ProductController extends Controller
             'title' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
             'product_type' => 'required|string|max:255',
+            'printzones_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
             'description' => 'max:750'
         ]);
         $product = new Product;
@@ -129,8 +131,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::find($id);
-        $products = Product::all();
-        return view('admin/Product.edit', ['product' => $product, 'products' => $products]);
+        $products = Product::all();        
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        return view('admin/Product.edit', ['s3' => $s3, 'disk' => $disk, 'product' => $product, 'products' => $products]);
     }
 
     /**
@@ -147,6 +151,8 @@ class ProductController extends Controller
                 'title' => 'required|string|max:255',
                 'gender' => 'required|string|max:255',
                 'product_type' => 'required|string|max:255',
+                'printzones_id' => 'required',
+                'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
                 'description' => 'max:750'
             ]);
             
@@ -196,6 +202,8 @@ class ProductController extends Controller
                     'title' => 'required|string|max:255',
                     'gender' => 'required|string|max:255',
                     'product_type' => 'required|string|max:255',
+                    'printzones_id' => 'required',
+                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
                     'description' => 'max:750'
                 ]);
                 $id = $request->product_id;

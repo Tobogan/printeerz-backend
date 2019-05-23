@@ -207,7 +207,7 @@ class FontsController extends Controller
                 foreach($events_custom['components'][0]['settings']['fonts'] as $custom_font){
                     if(isset($custom_font['font_id']) && $custom_font['font_id'] == $font->id){
                         $notification = array(
-                            'status' => 'Vous ne pouvez pas supprimer cette police car elle est utilisée dans un événement.',
+                            'status' => 'Vous ne pouvez pas supprimer cette police car elle est utilisée par un événement.',
                             'alert-type' => 'danger'
                         );
                         return redirect('admin/Fonts/index')->with($notification);
@@ -229,6 +229,22 @@ class FontsController extends Controller
                         return redirect('admin/Fonts/index')->with($notification);
                     }
                 }
+            }
+            else{
+                // Delete logo image
+                $disk = Storage::disk('s3');
+                $filePath = $font->url;
+                if(!empty($font->url) && $disk->exists($filePath)){
+                    $disk->delete($filePath);
+                }
+                // Delete file
+                $font->delete();
+
+                $notification = array(
+                    'status' => 'La police a été correctement supprimée.',
+                    'alert-type' => 'success'
+                );
+                return redirect('admin/Fonts/index')->with($notification);
             }
         }
     }

@@ -11,17 +11,14 @@
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-
                             <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 Nouvel événement
                             </h6>
-
                             <!-- Title -->
                             <h1 class="header-title">
                                 Modifier {{$event->name}}
                             </h1>
-
                         </div>
                         <div class="col-auto">
                         </div>
@@ -135,7 +132,7 @@
                 </div>
 
                 <!-- Divider -->
-                <hr class="mt-4 mb-5">
+                <hr class="mt-2 mb-2">
 
                 <!-- Event logo -->
                 <div class="form-group">
@@ -143,7 +140,7 @@
                         Logo de l'événement
                     </label>
                     <small class="form-text text-muted">
-                        Utilisez une image au format 1:1 avec une taille 400x400 maximum
+                        Utilisez une image au format 1:1 avec une taille 400x400 maximum de moins de 5mo.
                     </small>
                     <div class="custom-file">
                         {!! Form::file('logo_img', array('class' => 'custom-file-input', 'id' => 'logo_img')) !!}
@@ -157,12 +154,24 @@
                         Cover de l'événement
                     </label>
                     <small class="form-text text-muted">
-                        Utilisez une image au format 1:1 avec une taille 400x400 maximum
+                        Utilisez une image au format 1:1 avec une taille 400x400 maximum de moins de 5mo.
                     </small>
                     <div class="custom-file">
                         {!! Form::file('cover_img', array('class' => 'custom-file-input', 'id' => 'cover_img' )) !!}
                         <label class="custom-file-label" for="cover_img">Charger une image</label>
                     </div>
+                </div>
+                <div class="form-group">
+                <label class="mb-1">
+                    BAT de l'événement
+                </label>
+                <small class="form-text text-muted">
+                    Utilisez un .pdf de moins de 5mo.
+                </small>
+                <div class="custom-file">
+                    {!! Form::file('BAT', array('class' => 'custom-file-input', 'id' => 'BAT' )) !!}
+                    <label class="custom-file-label" for="BAT">Charger un nouveau BAT</label>
+                </div>
                 </div>
                 <!-- Divider -->
                 <hr class="mt-4 mb-5">

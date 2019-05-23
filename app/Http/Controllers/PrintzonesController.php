@@ -77,7 +77,7 @@ class PrintzonesController extends Controller
             'status' => 'La zone d\'impression ont été correctement créee.',
             'alert-type' => 'success'
         );
-        return redirect('admin/Printzones/edit/' . $printzone->id)->with($notification);
+        return redirect('admin/Printzones/index')->with($notification);
     }
 
     /**
@@ -166,7 +166,7 @@ class PrintzonesController extends Controller
             'status' => 'La zone d\'impression ont été correctement modifiée.',
             'alert-type' => 'success'
         );
-        return redirect('admin/Printzones/edit/' . $printzone->id)->with($notification);
+        return redirect('admin/Printzones/index')->with($notification);
     }
 
     /**
@@ -198,6 +198,13 @@ class PrintzonesController extends Controller
                 }
             }
         }
+        $printzone = Printzones::find($id);
+        $printzone->delete();
+        $notification = array(
+            'status' => 'La zone d\'impression ont été correctement supprimée.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Printzones/index')->with($notification);
     }
 
     // activate and desactivate a printzone function in index printzone
