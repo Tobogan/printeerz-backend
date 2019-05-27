@@ -5,7 +5,7 @@
     <meta charSet="utf-8" />
     <title>{{ config('Printeerz', 'Printeerz') }} - @yield('title')</title>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    {{-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" /> --}}
     {{-- Libs CSS --}}
     <link rel="stylesheet" href="{{ asset ('fonts/feather/feather.min.css') }}">
     <link rel="stylesheet" href="{{ asset ('libs/highlight.js/styles/vs2015.css') }}">

@@ -10,6 +10,7 @@ use App\Printzones;
 use App\Events_products;
 use App\Events_customs;
 use App\Events_component;
+use App\Event_local_download;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -110,6 +111,7 @@ class EventController extends Controller
         $event->name = $request->name;
         $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
+        $event->is_ready = false;
         $event->location = array(
             'address' => $request->address,
             'postal_code' => $request->postal_code,
@@ -176,7 +178,7 @@ class EventController extends Controller
             // Upload the file
             $disk->put($filePath, $file, 'public');
             // Delete public copy
-            // unlink(public_path() . '/' . $name);
+            unlink(public_path() . '/' . $name);
             // Put in database
             $event->BAT = $filePath;
         } 
@@ -197,7 +199,6 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        $customer = Customer::find($event->customer_id);
         $users = User::all();
         $products = Product::all();
         $events_products = Events_products::all();
@@ -208,9 +209,7 @@ class EventController extends Controller
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['users' => $users, 'customer_name' => $customer->title, 'printzones' => $printzones, 'select_products' => $select_products,
-        'events_products' => $events_products, 'products' => $products, 'event' => $event, 'disk' => $disk, 's3' =>
-        $s3]);
+        return view('admin/Event.show', ['event' => $event, 'users' => $users, 'printzones' => $printzones, 'select_products' => $select_products,'events_products' => $events_products, 'products' => $products, 'disk' => $disk, 's3' => $s3]);
     }
 
     /**
@@ -581,6 +580,22 @@ class EventController extends Controller
         $event->update();
         $notification = array(
             'status' => 'L\'événement a été correctement activé.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Event/index')->with($notification);
+    }
+
+    public function is_not_ready($id)
+    {
+        $event = Event::find($id);
+        $event->is_ready = false;
+        $event_local_download = Event_local_download::where($event_local_download->event_id,'=',$event->id);
+        if($event_local_download !== null) {
+            app('App\Http\Controllers\EventLocalDownloadController')->destroy($event_local_download->id);
+        }
+        $event->update();
+        $notification = array(
+            'status' => 'L\'événement n\'est plus prêt.',
             'alert-type' => 'success'
         );
         return redirect('admin/Event/index')->with($notification);

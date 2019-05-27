@@ -144,6 +144,7 @@ class ProductsVariantsController extends Controller
             $products_variant->quantity = $request->quantity;
             $products_variant->size = $request->size;
             $printzones_nb = $request->printzones_nb;
+            $printzones = array();
             if($request->printzone1) {
                 for($i=1; $i<$printzones_nb;$i++){
                     if ($request->hasFile('printzone'.$i)){
@@ -167,18 +168,23 @@ class ProductsVariantsController extends Controller
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
                         $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        // $disk->put($newFilePath, $img, 'public');
-                        Storage::disk('s3')->put($newFilePath , file_get_contents($file));
+                        $disk->put($newFilePath, $img, 'public');
+                        // Storage::disk('s3')->put($newFilePath , file_get_contents($file));
                     }
-                    $products_variant->{'printzone'.$i} = array(
+                    // $products_variant->{'printzone'.$i} = array(
+                    //     'id' => $request_id,
+                    //     'title' => $request_name,
+                    //     'image' => $newFilePath
+                    // );
+                    $printzone = array(
                         'id' => $request_id,
                         'title' => $request_name,
                         'image' => $newFilePath
                     );
+                    array_push($printzones, $printzone);
                 }
             }
             $products_variant->numberOfZones = $printzones_nb - 1;
-            
             if ($request->hasFile('image')){
                 $oldPath = $products_variant->image;
                 $file = $request->file('image');
@@ -192,6 +198,7 @@ class ProductsVariantsController extends Controller
                 // Put in database
                 $products_variant->image = $newFilePath;
             }
+            $products_variant->printzones = $printzones;
             $products_variant->save();
             $product = Product::find($products_variant->product_id);
             $notification = array(
@@ -217,6 +224,7 @@ class ProductsVariantsController extends Controller
             $disk = Storage::disk('s3');
             $products_variant->quantity = $request->quantity;
             $printzones_nb = $request->printzones_nb;
+            $printzones = array();
             if($request->printzone1) {
                 for($i=1; $i<$printzones_nb;$i++){
                     if ($request->hasFile('printzone'.$i)){
@@ -225,7 +233,6 @@ class ProductsVariantsController extends Controller
                             $file = $request->file('printzone'.$i);
                             $name = time() . $file->getClientOriginalName();
                             $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                            unlink(public_path() . '/' . $name);
                             if(!empty($products_variant->{'printzone'.$i}['image']) && $disk->exists($newFilePath)){
                                 $disk->delete($oldPath);
                             }
@@ -239,18 +246,20 @@ class ProductsVariantsController extends Controller
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
                         $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        // $disk->put($newFilePath, $img, 'public');
                         // Put in database
                         Storage::disk('s3')->put($newFilePath , file_get_contents($file));
+                        unlink(public_path() . '/' . $name);
                     }
-                    $products_variant->{'printzone'.$i} = array(
+                    $printzone = array(
                         'id' => $request_id,
                         'title' => $request_name,
                         'image' => $newFilePath
                     );
+                    array_push($printzones, $printzone);
                 }
             }
-            $product_variant->numberOfZones = $printzones_nb - 1;
+            $products_variant->printzones = $printzones;
+            $products_variant->numberOfZones = $printzones_nb - 1;
             if ($request->hasFile('image')){
                 $oldPath = $products_variant->image;
                 $file = $request->file('image');
@@ -261,6 +270,7 @@ class ProductsVariantsController extends Controller
                 }
                 $img = Image::make(file_get_contents($file))->widen(300)->save($name);
                 $disk->put($newFilePath, $img, 'public');
+                unlink(public_path() . '/' . $name);
                 $products_variant->image = $newFilePath;
             }
             $products_variant->save();

@@ -237,4 +237,52 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#eventIsReady').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '/admin/EventLocalDownload/store',
+            data: $(this).serialize(),
+            success: function (res) {
+                console.log(res);
+                $('#submit_modal_eventIsReady').hide();
+                $('#loading_modal_eventIsReady').removeClass('d-none');
+                $(this).removeClass('btn-primary');
+                $('#eventIsReadyModal').modal('hide');
+                $('#submit_modal_eventIsReady').show();
+                $('#loading_modal_eventIsReady').addClass('d-none');
+                location.reload();
+            }
+        });
+    });
+
+    $('#isNotReadyBtn').click(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr, type) {
+                if (!type.crossDomain) {
+                    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                }
+            },
+        });
+        var event_id = $(this).data("event_id");
+        // var token = $(this).data("token");
+        $.ajax({
+            type: 'GET',
+            url: "/admin/EventLocalDownload/destroy/" + event_id,
+            data: {
+                "event_id": event_id,
+                _token: '{!! csrf_token() !!}',
+            },
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                location.reload();
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
 });

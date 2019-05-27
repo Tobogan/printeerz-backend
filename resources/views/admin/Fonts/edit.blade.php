@@ -59,7 +59,7 @@
                                 <div class="col-12">
                                     <div class="custom-control custom-switch">
                                         <input name="is_active" type="checkbox" class="custom-control-input" id="isActive" value="{{ $font->is_active }}">
-                                        <label class="custom-control-label" for="isActive">Ce composant est-il actif
+                                        <label class="custom-control-label" for="isActive">Cette police est-elle active
                                             ?</label>
                                     </div>
                                 </div>

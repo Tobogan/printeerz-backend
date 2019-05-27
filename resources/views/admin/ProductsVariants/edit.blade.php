@@ -114,59 +114,110 @@
                     <?php $i = 1; ?> 
                     <div class="row">
                         <div class="col-12">
-                            @if($product->printzones_id)
-                                @foreach($printzones as $printzone)
-                                    @foreach($product->printzones_id as $print) 
-                                        @if($printzone->id == $print)
-                                            <div class="card">
-                                                @if(isset($products_variant->{'printzone'.$i}['image']))
-                                                    <div class="card-header">
-                                                        <h4 class="card-header-title mt-2">
-                                                            {{$products_variant->{'printzone'.$i}['title']}}
-                                                            <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
-                                                        </h4>
+                            @if($products_variant->printzones !== null)
+                                @foreach($products_variant->printzones as $printzone)
+                                <div class="card">
+                                    @if(isset($printzone['image']))
+                                        <div class="card-header">
+                                            <h4 class="card-header-title mt-2">
+                                                {{$printzone['title']}}
+                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                            </h4>
+                                        </div>
+                                    @else
+                                        <div class="card-header">
+                                            <h4 class="card-header-title mt-2">
+                                                Image(s) par zone d'impression
+                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                            </h4>
+                                        </div>
+                                    @endif
+                                    <div class="card-body">
+                                        @if(!isset($printzone['title']))
+                                            <label> {{ $printzone->name }}</label>
+                                        @endif
+                                        @if(isset($printzone['image']))
+                                            @if(!empty($printzone['image']) && $disk->exists($printzone['image']))
+                                                <img width="auto"  class="" src="{{$s3 . $printzone['image']}}"
+                                                    alt="Image de zone" style="margin-left:auto;margin-right:auto;display:block;">
+                                                <p class="text-muted">
+                                                    Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
+                                                </p>
+                                            @else
+                                                <div class="card card-inactive">
+                                                    <div class="card-body text-center">
+                                                        <!-- No image -->
+                                                        <p class="text-muted">
+                                                            Pas d'image pour cette zone d'impression
+                                                        </p>
                                                     </div>
-                                                @else
-                                                    <div class="card-header">
-                                                        <h4 class="card-header-title mt-2">
-                                                            Image(s) par zone d'impression
-                                                            <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
-                                                        </h4>
-                                                    </div>
-                                                @endif
-                                                <div class="card-body">
-                                                    @if(!isset($products_variant->{'printzone'.$i}['title']))
-                                                        <label> {{ $printzone->name }}</label>
-                                                    @endif
-                                                    @if(isset($products_variant->{'printzone'.$i}['image']))
-                                                        @if(!empty($products_variant->{'printzone'.$i}['image']) && $disk->exists($products_variant->{'printzone'.$i}['image']))
-                                                            <img width="auto"  class="" src="{{$s3 . $products_variant->{'printzone'.$i}['image']}}"
-                                                                alt="Image de zone" style="margin-left:auto;margin-right:auto;display:block;">
-                                                            <p class="text-muted">
-                                                                Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
-                                                            </p>
-                                                        @else
-                                                            <div class="card card-inactive">
-                                                                <div class="card-body text-center">
-                                                                    <!-- No image -->
-                                                                    <p class="text-muted">
-                                                                        Pas d'image pour cette zone d'impression
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                    @endif
-                                                    <div class="form-group">
-                                                        {!! Form::file('printzone'.$i, array('class' => 'form-control')) !!}
-                                                        <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
-                                                        <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
-                                                    </div>
-                                                    <?php $i++; ?> 
                                                 </div>
-                                            </div>
-                                        @endif 
+                                            @endif
+                                        @endif
+                                        <div class="form-group">
+                                            {!! Form::file('printzone'.$i, array('class' => 'form-control')) !!}
+                                            <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone['title'] }}">
+                                            <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone['id'] }}">
+                                        </div>
+                                        <?php $i++; ?> 
+                                    </div>
+                                </div>
+                                @endforeach
+                            @else
+                                @if($product->printzones_id)
+                                    @foreach($printzones as $printzone)
+                                        @foreach($product->printzones_id as $print) 
+                                            @if($printzone->id == $print)
+                                                <div class="card">
+                                                    @if(isset($products_variant->{'printzone'.$i}['image']))
+                                                        <div class="card-header">
+                                                            <h4 class="card-header-title mt-2">
+                                                                {{$products_variant->{'printzone'.$i}['title']}}
+                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                            </h4>
+                                                        </div>
+                                                    @else
+                                                        <div class="card-header">
+                                                            <h4 class="card-header-title mt-2">
+                                                                Image(s) par zone d'impression
+                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                            </h4>
+                                                        </div>
+                                                    @endif
+                                                    <div class="card-body">
+                                                        @if(!isset($products_variant->{'printzone'.$i}['title']))
+                                                            <label> {{ $printzone->name }}</label>
+                                                        @endif
+                                                        @if(isset($products_variant->{'printzone'.$i}['image']))
+                                                            @if(!empty($products_variant->{'printzone'.$i}['image']) && $disk->exists($products_variant->{'printzone'.$i}['image']))
+                                                                <img width="auto"  class="" src="{{$s3 . $products_variant->{'printzone'.$i}['image']}}"
+                                                                    alt="Image de zone" style="margin-left:auto;margin-right:auto;display:block;">
+                                                                <p class="text-muted">
+                                                                    Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
+                                                                </p>
+                                                            @else
+                                                                <div class="card card-inactive">
+                                                                    <div class="card-body text-center">
+                                                                        <!-- No image -->
+                                                                        <p class="text-muted">
+                                                                            Pas d'image pour cette zone d'impression
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                        <div class="form-group">
+                                                            {!! Form::file('printzone'.$i, array('class' => 'form-control')) !!}
+                                                            <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone->name }}">
+                                                            <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone->id }}">
+                                                        </div>
+                                                        <?php $i++; ?> 
+                                                    </div>
+                                                </div>
+                                            @endif 
+                                        @endforeach 
                                     @endforeach 
-                                @endforeach 
+                                @endif
                             @endif
                         </div>
                     </div>

@@ -105,7 +105,7 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image du produit.
-                                <p class="text-muted b-4 mt-3">Ajouter l'image du produit en format 1:1 (max 4mo)</p>
+                                <p class="text-muted b-4 mt-3">Ajouter l'image du produit en format 1:1 (max 2mo)</p>
                             </h4>
                         </div>
                         <div class="card-body">

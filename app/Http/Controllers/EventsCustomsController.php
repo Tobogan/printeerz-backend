@@ -402,6 +402,7 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image'.$template_component_id);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = time().$image_file->getClientOriginalName();
+                            unlink(public_path() . '/' . $image_name);
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
                             $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');

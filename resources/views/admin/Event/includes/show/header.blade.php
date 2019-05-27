@@ -1,6 +1,18 @@
 <div class="header">
   @if(!empty($event->cover_img) && $disk->exists($event->cover_img))
-  <div class="bg-cover" style="background-image: url('{{$s3 . $event->cover_img}}'); height:400px;"></div>@else @endif
+  <div class="bg-cover" style="background-image: url('{{$s3 . $event->cover_img}}'); height:400px; z-index:1;">
+    @if($event->is_ready !== true)
+    <div><a href="#" class="btn btn-primary" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
+        READY ?
+    </a></div>
+    @else
+    <div><a href="#" class="btn btn-success" data-event_id="{{$event->id}}" onclick="return confirm('Cette évenement n\'est plus prêt ?');" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isNotReadyBtn">
+        Evénement prêt !
+    </a></div>
+    @endif
+  </div>
+  @else 
+  @endif
   <div class="header-body @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mt-n5 mt-md-n6 @endif">
     <div class="row @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) align-items-end @else align-items-center @endif">
       @if(!empty($event->logoName) && $disk->exists($event->logoName))
@@ -21,6 +33,12 @@
           <span class="small">by {{ $event->advertiser }}</span>
         </h1>
       </div>
+      {{-- <div class="custom-control custom-switch">
+        <input name="is_ready" type="checkbox" class="custom-control-input" id="eventIsReadyBtn" value="{{ $event->is_ready }}">
+          <label class="custom-control-label" for="isActive">Cet événement est-il prêt ?</label>
+      </div> --}}
+      <!-- Button -->
+      {!! Form::hidden('is_ready', $event->is_ready, [ 'id'=>'formActive']) !!}
       <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
         <div class="dropdown">
           <a href="#" class="dropdown-ellipses dropdown-toggle btn btn-rounded-circle btn-white" role="button" data-toggle="dropdown"
@@ -32,7 +50,7 @@
               Modifier
             </a>
             @if($event->BAT != null)
-                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{$s3.$event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
+                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{ $s3.$event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
             @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">
               Supprimer

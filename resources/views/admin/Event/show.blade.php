@@ -14,9 +14,9 @@
                 @include('admin.Event.includes.show.feed')
                 @include('admin.Event.includes.show.users')
                 @include('admin.Event.includes.show.addEventsProducts')
+                @include('admin.Event.includes.show.eventReady')
             </div>
         </div>
     </div>
 </div>
-
 @endsection

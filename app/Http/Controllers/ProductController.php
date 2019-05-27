@@ -59,23 +59,21 @@ class ProductController extends Controller
             'gender' => 'required|string|max:255',
             'product_type' => 'required|string|max:255',
             'printzones_id' => 'required',
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
             'description' => 'max:750'
         ]);
         $product = new Product;
         $product->title = $request->title;
         $product->vendor = array(
-            'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
             'name' => $request->vendor_name,
             'reference' => $request->vendor_reference
         );
         $product->gender = $request->gender;
         $product->product_type = $request->product_type;
-        $product->printzones_id = $request->get('printzones_id'); //les printzones dispo sur ce produit
-        $product->tags=$request->get('tags');
+        $product->printzones_id = $request->get('printzones_id');
+        // $product->tags=$request->get('tags');
         $product->description = $request->description;
-        $product->variants_id=$request->get('variants_id');
-        $product->is_active = $request->is_active; //penser à mettre l'input hidden
+        // $product->variants_id=$request->get('variants_id');
+        $product->is_active = $request->is_active;
         $product->is_deleted = $request->is_deleted;
         $product->save();
         $disk = Storage::disk('s3');
@@ -90,6 +88,7 @@ class ProductController extends Controller
             $img = Image::make(file_get_contents($file))->widen(300)->save($name);
             // Upload the file
             $disk->put($filePath, $img, 'public');
+            // Storage::disk('s3')->put($filePath, file_get_contents($file));
             // Delete public copy
             unlink(public_path() . '/' . $name);
             // Put in database
@@ -97,7 +96,6 @@ class ProductController extends Controller
         }
 
         $product->save();
-        $products = Product::all();
         $notification = array(
             'status' => 'Le produit a été correctement ajouté',
             'alert-type' => 'success'
@@ -152,7 +150,7 @@ class ProductController extends Controller
                 'gender' => 'required|string|max:255',
                 'product_type' => 'required|string|max:255',
                 'printzones_id' => 'required',
-                'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
                 'description' => 'max:750'
             ]);
             
@@ -194,7 +192,6 @@ class ProductController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-
             $product->save();
             }        
             else {
@@ -203,7 +200,7 @@ class ProductController extends Controller
                     'gender' => 'required|string|max:255',
                     'product_type' => 'required|string|max:255',
                     'printzones_id' => 'required',
-                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                    'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
                     'description' => 'max:750'
                 ]);
                 $id = $request->product_id;
@@ -245,8 +242,6 @@ class ProductController extends Controller
                     }
                 }
                 $product->save();
-
-                
             }
             $notification = array(
                 'status' => 'Le produit a été correctement modifié.',
@@ -284,7 +279,6 @@ class ProductController extends Controller
         );
         return redirect('admin/Product/index')->with($notification);
     }
-
 
     public function desactivate($id)
     {

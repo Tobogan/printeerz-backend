@@ -76,6 +76,7 @@ class FontsController extends Controller
             // Define the path to file
             $filePath = '/fonts/' . $title . '/' . $name;
             // Upload the new image
+            unlink(public_path() . '/' . $name);
             // $disk->put($filePath, $file, 'public');
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             // Put in database
