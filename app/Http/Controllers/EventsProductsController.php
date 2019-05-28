@@ -68,7 +68,6 @@ class EventsProductsController extends Controller
                 $events_product = new Events_products;
                 $events_product->event_id = $request->event_id;
                 $events_product->product_id = $request->product_id;
-                $product = Product::find($events_product->product_id);
                 $events_product->title = $request->title;
                 $events_product->variants = array();
                 $events_product->event_customs_ids = array();
@@ -81,6 +80,7 @@ class EventsProductsController extends Controller
                 $arr_events_product = $event->event_products_id;
                 array_push($arr_events_product, $events_product->id);
                 $event->event_products_id = $arr_events_product;
+                $event->is_ready = false;
                 $event->update();
                 // response for ajax
                 $response = array(
@@ -124,6 +124,10 @@ class EventsProductsController extends Controller
                     array_push($array, $variants);
                     $events_product->variants = $array;
                     $events_product->save();
+                    // Change event is_ready status
+                    $event = Event::find($events_product->event_id);
+                    $event->is_ready = false;
+                    $event->update();
                     $response = array(
                         'status' => 'success',
                         'msg' => 'EventsProduct created successfully',
@@ -152,6 +156,9 @@ class EventsProductsController extends Controller
                     array_push($array, $variants);
                     $events_product->variants = $array;
                     $events_product->save();
+                    $event = Event::find($events_product->event_id);
+                    $event->is_ready = false;
+                    $event->update();
                     $response = array(
                         'status' => 'success',
                         'msg' => 'EventsProduct created successfully',
@@ -259,7 +266,9 @@ class EventsProductsController extends Controller
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            $events_products = Events_products::all();
+            $event = Event::find($events_product->event_id);
+            $event->is_ready = false;
+            $event->update();
             $notification = array(
                 'status' => 'Le client a été correctement ajouté',
                 'alert-type' => 'success'
@@ -281,7 +290,9 @@ class EventsProductsController extends Controller
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
-            $events_products = Events_products::all();
+            $event = Event::find($events_product->event_id);
+            $event->is_ready = false;
+            $event->update();
             $notification = array(
                 'status' => 'Le client a été correctement ajouté',
                 'alert-type' => 'success'
@@ -325,6 +336,8 @@ class EventsProductsController extends Controller
         }
         $events_product->delete();
         $event = Event::find($events_product->event_id);
+        $event->is_ready = false;
+        $event->update();
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }
 

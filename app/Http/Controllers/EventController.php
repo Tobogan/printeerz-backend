@@ -366,6 +366,11 @@ class EventController extends Controller
                 $disk->delete($oldPath);
                 }
             }
+            if($event->is_ready == true) {
+                $event->is_ready == false;
+                $event_local_download = Event_local_download::where('eventId','=',$event->id);
+                $event_local_download->delete();
+            }
             $event->save();
         }
         else {
@@ -483,11 +488,15 @@ class EventController extends Controller
                     $disk->delete($oldPath);
                 }
             }
+            if($event->is_ready == true) {
+                $event->is_ready == false;
+                $event_local_download = Event_local_download::where('eventId','=',$event->id);
+                $event_local_download->delete();
+            }
             $event->save();
         }
-        
         $notification = array(
-            'status' => 'L\'événement a été correctement modifié.',
+            'status' => 'L\'événement a été correctement modifié. Il est plus prêt à être démarré, s\'il est bien prêt merci de cliquer sur le bouton "Prêt ?."',
             'alert-type' => 'success'
             );
             

@@ -14,7 +14,6 @@ use Illuminate\Auth\Middleware\Authenticate;
 |
 */
 
-
 Route::view('/front/{path?}', 'app');
 // Route::view('/v1/events', 'app');
 
@@ -165,7 +164,6 @@ Route::get('admin/Fonts/desactivate/{id}', 'FontsController@desactivate')->name(
 // EventLocalDownload
 Route::post('admin/EventLocalDownload/store', 'EventLocalDownloadController@store')->name('store_eventLocalDownload');
 Route::get('admin/EventLocalDownload/destroy/{id}', 'EventLocalDownloadController@destroy')->name('destroy_eventLocalDownload');
-
 
 // Route::get('/select_product', 'EventController@ajax/{product_id}')->name('ajax_event');
 

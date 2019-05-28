@@ -447,6 +447,9 @@ class EventsCustomsController extends Controller
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->save();
+            $event = Event::find($events_custom->event_id);
+            $event->is_ready = false;
+            $event->update();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
         else {
@@ -633,6 +636,9 @@ class EventsCustomsController extends Controller
             
             $events_custom->description = $request->description;
             $events_custom->save();
+            $event = Event::find($events_custom->event_id);
+            $event->is_ready = false;
+            $event->update();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
         }
     }
@@ -684,6 +690,9 @@ class EventsCustomsController extends Controller
         }
         // Delete events_custom & redirect w/ message
         $events_custom->delete();
+        $event = Event::find($events_custom->event_id);
+        $event->is_ready = false;
+        $event->update();
         $notification = array(
             'status' => 'La personnalisation a été correctement supprimée.',
             'alert-type' => 'success'

@@ -127,6 +127,10 @@ class EventLocalDownloadController extends Controller
             $event_local_download->products = $eventLocalDownloadProducts;
             // Update event is_ready
             $event->is_ready = true;
+            $locals = Event_local_download::where('eventId','=',$event->id)->get();
+            foreach($locals as $local) {
+                $local->delete();
+            }
             $event->update();
             // Save and response send
             $event_local_download->save();
