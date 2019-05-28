@@ -46,13 +46,13 @@ class EventLocalDownloadController extends Controller
             $finalProducts = array();
             $eventLocalDownloadProducts = array();
             // Printzones & products variant image by printzone
-            foreach($events_products as $events_product) {
+            foreach ($events_products as $events_product) {
                 $events_customsArray = array();
                 $productsVariantsArray = array();
                 $printzonesArray = array();
                 $finalProducts = array();
                 $product = Product::find($events_product->product_id);
-                foreach($product->printzones_id as $printzone_id) {
+                foreach ($product->printzones_id as $printzone_id) {
                     $printzone = Printzones::find($printzone_id);
                         $printzoneData = array(
                             'title' => $printzone->name,
@@ -67,12 +67,12 @@ class EventLocalDownloadController extends Controller
                         array_push($printzonesArray, $printzoneData);
                 }
                 // Events customs
-                foreach($events_product->event_customs_ids as $events_custom_id) {
+                foreach ($events_product->event_customs_ids as $events_custom_id) {
                     $events_custom = Events_customs::find($events_custom_id);
-                    foreach($events_custom->components as $component) {
-                        if($component['component_type'] == 'image') {
+
+                    foreach ($events_custom->components as $component) {
+                        if ($component['component_type'] == 'image') {
                             $eventsCustomImageArray = array(
-                                'title' => $events_custom->title,
                                 'componentTitle' => $component['title'],
                                 'componentType' => $component['component_type'],
                                 'image' => $component['settings']['image_url'],
@@ -83,9 +83,8 @@ class EventLocalDownloadController extends Controller
                             );
                             array_push($events_customsArray, $eventsCustomImageArray);
                         }
-                        else if($component['component_type'] == 'input') {
+                        else if ($component['component_type'] == 'input') {
                             $eventsCustomInputArray = array(
-                                'title' => $events_custom->title,
                                 'componentTitle' => $component['title'],
                                 'componentType' => $component['component_type'],
                                 'input_min'=> $component['settings']['input_min'],
@@ -101,9 +100,13 @@ class EventLocalDownloadController extends Controller
                             array_push($events_customsArray, $eventsCustomInputArray);
                         }
                     }
+                    $events_customs_final = array(
+                        'title' => $events_custom->title,
+                        'components' => $events_customsArray
+                    );
                 }
                 // Products_variants
-                foreach($events_product->variants as $variant) {
+                foreach ($events_product->variants as $variant) {
                     $products_variant = Products_variants::find($variant[0]);
                     $productsVariantData = array(
                         'size' => $products_variant->size,
@@ -120,7 +123,7 @@ class EventLocalDownloadController extends Controller
                     'type' => $product->product_type,
                     'printzones' => $printzonesArray,
                     'products_variants' => $productsVariantsArray,
-                    'events_customs' => $events_customsArray
+                    'events_customs' => $events_customs_final
                 );
                 array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
             }
@@ -129,7 +132,7 @@ class EventLocalDownloadController extends Controller
             // Update event is_ready
             $event->is_ready = true;
             $locals = Event_local_download::where('eventId','=',$event->id)->get();
-            foreach($locals as $local) {
+            foreach ($locals as $local) {
                 $local->delete();
             }
             $event->update();
