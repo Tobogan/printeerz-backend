@@ -11,6 +11,10 @@ use App\Customer;
 use App\Printzones;
 use App\Products_variants;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 use Illuminate\Http\Request;
 
 class EventLocalDownloadController extends Controller
@@ -34,6 +38,7 @@ class EventLocalDownloadController extends Controller
             $event_local_download->eventId = $event->id;
             $event_local_download->eventCoverImg = $event->cover_img;
             $event_local_download->eventLogoName = $event->logoName;
+            app('App\Http\Controllers\EventLocalDownloadController')->download_file($event->logoName);
             $event_local_download->advertiserName = $event->advertiser;
             $event_local_download->customerName = $customer->title;
             $event_local_download->contactFullName = $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"];
@@ -160,6 +165,22 @@ class EventLocalDownloadController extends Controller
     {
         $event_local_download = Event_local_download::find($id);
         return view('admin/EventLocalDownload.show', ['event_local_download' => $event_local_download]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download_file($file_url)
+    {
+        $disk = Storage::disk('s3');
+        $stream = $disk
+            ->getDriver()
+            ->readStream($file_url);
+
+        \is_resource($stream) && \file_put_contents(public_path(), \stream_get_contents($stream), FILE_APPEND);
     }
 
     /**

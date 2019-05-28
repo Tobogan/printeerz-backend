@@ -33,10 +33,6 @@
           <span class="small">by {{ $event->advertiser }}</span>
         </h1>
       </div>
-      {{-- <div class="custom-control custom-switch">
-        <input name="is_ready" type="checkbox" class="custom-control-input" id="eventIsReadyBtn" value="{{ $event->is_ready }}">
-          <label class="custom-control-label" for="isActive">Cet événement est-il prêt ?</label>
-      </div> --}}
       <!-- Button -->
       {!! Form::hidden('is_ready', $event->is_ready, [ 'id'=>'formActive']) !!}
       <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
