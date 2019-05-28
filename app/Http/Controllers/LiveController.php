@@ -7,6 +7,7 @@ use App\Events_products;
 use App\Printzones;
 use App\Events_customs;
 use App\Product;
+use App\Event_local_download;
 
 use Illuminate\Http\Request;
 
@@ -139,5 +140,17 @@ class LiveController extends Controller
     {
         $products = Product::all();
         return $products->toJson();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function event_local_download($id)
+    {
+        $event_local_download = Event_local_download::find($id);
+        return $event_local_download->toJson();
     }
 }

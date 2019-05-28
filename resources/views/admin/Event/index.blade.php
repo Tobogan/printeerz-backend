@@ -84,6 +84,7 @@
                                         Date
                                     </a>
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
 
@@ -109,6 +110,11 @@
                                     <div class="badge badge-soft-primary">{{ $event->type }}</div>
                                 </td>
                                 <td class="event-date">{{ date('d/m/y', strtotime($event->start_datetime)) }} </td>
+                                <td class="event-is_ready">
+                                    @if ($event->is_ready == true)<span class="badge badge-soft-success">Ready</span>
+                                    @else <span class="badge badge-soft-secondary">Not Ready</span>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

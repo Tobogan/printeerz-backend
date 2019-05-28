@@ -36,6 +36,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('printzones', 'LiveController@printzones')->name('index_printzones_live');
     Route::get('printzone/{id}', 'LiveController@printzone')->name('show_printzone_live');
 
+    Route::get('event_local_download/{id}', 'LiveController@event_local_download')->name('show_eventLocalDownload_live');
+
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');
         Route::post('login', 'AuthController@login');

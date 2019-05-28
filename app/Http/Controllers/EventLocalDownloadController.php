@@ -125,6 +125,7 @@ class EventLocalDownloadController extends Controller
                 array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
             }
             $event_local_download->products = $eventLocalDownloadProducts;
+            // Save and response send
             // Update event is_ready
             $event->is_ready = true;
             $locals = Event_local_download::where('eventId','=',$event->id)->get();
@@ -132,8 +133,9 @@ class EventLocalDownloadController extends Controller
                 $local->delete();
             }
             $event->update();
-            // Save and response send
             $event_local_download->save();
+            $event->event_local_download_id = $event_local_download->id;
+            $event->update();
             $response = array(
                 'status' => 'success',
                 'msg' => 'You have store the future data for this event'
@@ -143,6 +145,18 @@ class EventLocalDownloadController extends Controller
         else {
             return 'Error, bad request dude...:(';
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $event_local_download = Event_local_download::find($id);
+        return view('admin/EventLocalDownload.show', ['event_local_download' => $event_local_download]);
     }
 
     /**
