@@ -2,16 +2,25 @@
   @if(!empty($event->cover_img) && $disk->exists($event->cover_img))
   <div class="bg-cover" style="background-image: url('{{$s3 . $event->cover_img}}'); height:400px; z-index:1;">
     @if($event->is_ready !== true)
-    <div><a href="#" class="btn btn-danger" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
-        Not Ready
-    </a></div>
+      <div><a href="#" class="btn btn-danger" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
+          Not Ready
+      </a></div>
     @else
-    <div><a href="#" class="btn btn-success" data-event_id="{{$event->id}}" onclick="return confirm('Cette évenement n\'est plus prêt ?');" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isNotReadyBtn">
-        Ready
-    </a></div>
+      <div><a href="#" class="btn btn-success" data-event_id="{{$event->id}}" onclick="return confirm('Cette évenement n\'est plus prêt ?');" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isNotReadyBtn">
+          Ready
+      </a></div>
     @endif
   </div>
-  @else 
+  @else
+    @if($event->is_ready !== true)
+      <div><a href="#" class="btn btn-danger" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
+          Not Ready
+      </a></div>
+    @else
+      <div><a href="#" class="btn btn-success" data-event_id="{{$event->id}}" onclick="return confirm('Cette évenement n\'est plus prêt ?');" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isNotReadyBtn">
+          Ready
+      </a></div>
+    @endif
   @endif
   <div class="header-body @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mt-n5 mt-md-n6 @endif">
     <div class="row @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) align-items-end @else align-items-center @endif">
