@@ -150,7 +150,9 @@ class EventController extends Controller
             // Delete public copy
             unlink(public_path() . '/' . $name);
             // Put in database
-            $event->logoName = $filePath;
+            $event->logoNameUrl = $filePath;
+            $event->logoNameFileName = $name;
+            $event->logoNamePath = '/events/';
         }
         if ($request->hasFile('cover_img')){
             // Get file
@@ -166,7 +168,9 @@ class EventController extends Controller
             // Delete public copy
             unlink(public_path() . '/' . $name);
             // Put in database
-            $event->cover_img = $filePath;
+            $event->coverImg = $filePath;
+            $event->coverImgFileName = $name;
+            $event->coverImgPath = '/events/';
         }
         if ($request->hasFile('BAT')){
             // Get file
@@ -181,6 +185,8 @@ class EventController extends Controller
             unlink(public_path() . '/' . $name);
             // Put in database
             $event->BAT = $filePath;
+            $event->BATFileName = $name;
+            $event->BATPath = '/events/';
         } 
         $event->save();
         $notification = array(
@@ -318,7 +324,9 @@ class EventController extends Controller
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
-                $event->logoName = $newFilePath;
+                $event->logoNameUrl = $filePath;
+                $event->logoNameFileName = $name;
+                $event->logoNamePath = '/events/';
                 unlink(public_path() . '/' . $name);
                 if(!empty($event->logoName ) && $disk->exists($newFilePath)){
                 $disk->delete($oldPath);
@@ -340,7 +348,9 @@ class EventController extends Controller
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
-                $event->cover_img = $newFilePath;
+                $event->coverImg = $filePath;
+                $event->coverImgFileName = $name;
+                $event->coverImgPath = '/events/';
                 unlink(public_path() . '/' . $name);
                 if(!empty($event->cover_img) && $disk->exists($newFilePath)){
                 $disk->delete($oldPath);
@@ -361,6 +371,8 @@ class EventController extends Controller
                 $disk->put($newFilePath, $file, 'public');
                 // Put in database
                 $event->BAT = $newFilePath;
+                $event->BATFileName = $name;
+                $event->BATPath = '/events/';
                 unlink(public_path() . '/' . $name);
                 if(!empty($event->BAT) && $disk->exists($newFilePath)){
                 $disk->delete($oldPath);
@@ -423,7 +435,7 @@ class EventController extends Controller
             $event->save();
 
             // Update logo image
-            if ($request->hasFile('logo_img')){
+           if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
                 $oldPath = $event->logoName;
@@ -434,19 +446,20 @@ class EventController extends Controller
                 // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
-                $event->logoName = $newFilePath;
+                $event->logoNameUrl = $filePath;
+                $event->logoNameFileName = $name;
+                $event->logoNamePath = '/events/';
                 unlink(public_path() . '/' . $name);
-                if(!empty($event->logoName) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                if(!empty($event->logoName ) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
                 }
-            }
-
+           }
             // Update Cover image
-            if ($request->hasFile('cover_img')){
+           if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
                 // Get current image path
                 $oldPath = $event->logo_img;
@@ -461,13 +474,14 @@ class EventController extends Controller
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
-                $event->cover_img = $newFilePath;
+                $event->coverImg = $filePath;
+                $event->coverImgFileName = $name;
+                $event->coverImgPath = '/events/';
                 unlink(public_path() . '/' . $name);
                 if(!empty($event->cover_img) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                $disk->delete($oldPath);
                 }
-            }
-
+           }
             // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
@@ -483,9 +497,11 @@ class EventController extends Controller
                 $disk->put($newFilePath, $file, 'public');
                 // Put in database
                 $event->BAT = $newFilePath;
+                $event->BATFileName = $name;
+                $event->BATPath = '/events/';
                 unlink(public_path() . '/' . $name);
                 if(!empty($event->BAT) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                $disk->delete($oldPath);
                 }
             }
             if($event->is_ready == true) {

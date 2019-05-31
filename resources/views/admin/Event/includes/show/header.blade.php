@@ -1,6 +1,6 @@
 <div class="header">
-  @if(!empty($event->cover_img) && $disk->exists($event->cover_img))
-  <div class="bg-cover" style="background-image: url('{{$s3 . $event->cover_img}}'); height:400px; z-index:1;">
+  @if(!empty($event->coverImg) && $disk->exists($event->coverImg))
+  <div class="bg-cover" style="background-image: url('{{$s3 . $event->coverImg}}'); height:400px; z-index:1;">
     @if($event->is_ready !== true)
       <div><a href="#" class="btn btn-danger" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
           Not Ready
@@ -22,16 +22,16 @@
       </a></div>
     @endif
   @endif
-  <div class="header-body @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mt-n5 mt-md-n6 @endif">
-    <div class="row @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) align-items-end @else align-items-center @endif">
-      @if(!empty($event->logoName) && $disk->exists($event->logoName))
+  <div class="header-body @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) mt-n5 mt-md-n6 @endif">
+    <div class="row @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) align-items-end @else align-items-center @endif">
+      @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
       <div class="col-auto">
         <div class="avatar avatar-xxl header-avatar-top">
-          <img src="{{$s3 . $event->logoName}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+          <img src="{{$s3 . $event->logoUrl}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
         </div>
       </div>
       @endif
-      <div class="col @if(!empty($event->cover_img) && $disk->exists($event->cover_img)) mb-3 ml-n3 ml-md-n2 @endif">
+      <div class="col @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) mb-3 ml-n3 ml-md-n2 @endif">
         @if($event->customer)
         <h6 class="header-pretitle">
           {{ $event->customer->title}}

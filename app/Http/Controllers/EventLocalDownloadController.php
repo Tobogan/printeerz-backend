@@ -11,6 +11,8 @@ use App\Customer;
 use App\Printzones;
 use App\Products_variants;
 
+use File;
+
 use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -36,9 +38,9 @@ class EventLocalDownloadController extends Controller
             // Mains Data
             $event_local_download->eventTitle = $event->name;
             $event_local_download->eventId = $event->id;
-            $event_local_download->eventCoverImg = $event->cover_img;
-            $event_local_download->eventLogoName = $event->logoName;
-            app('App\Http\Controllers\EventLocalDownloadController')->download_file($event->logoName);
+            $event_local_download->eventCoverImg = $event->coverImg;
+            $event_local_download->eventLogoUrl = $event->logoUrl;
+            // app('App\Http\Controllers\EventLocalDownloadController')->download_file($event->logoUrl,$event->logoFileName,$event->logoPath);
             $event_local_download->advertiserName = $event->advertiser;
             $event_local_download->customerName = $customer->title;
             $event_local_download->contactFullName = $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"];
@@ -122,19 +124,30 @@ class EventLocalDownloadController extends Controller
                     array_push($productsVariantsArray, $productsVariantData);
                 }
                 // Final JSON
-                $eventLocalDownloadProduct = array(
-                    'title' => $events_product->title,
-                    'gender' => $product->gender,
-                    'type' => $product->product_type,
-                    'printzones' => $printzonesArray,
-                    'products_variants' => $productsVariantsArray,
-                    'events_customs' => $events_customs_final
-                );
+                if (isset($events_customs_final)) {
+                    $eventLocalDownloadProduct = array(
+                        'id' => $events_product->id,
+                        'title' => $events_product->title,
+                        'gender' => $product->gender,
+                        'type' => $product->product_type,
+                        'printzones' => $printzonesArray,
+                        'products_variants' => $productsVariantsArray,
+                        'events_customs' => $events_customs_final
+                    );
+                }
+                else {
+                    $eventLocalDownloadProduct = array(
+                        'id' => $events_product->id,
+                        'title' => $events_product->title,
+                        'gender' => $product->gender,
+                        'type' => $product->product_type,
+                        'printzones' => $printzonesArray,
+                        'products_variants' => $productsVariantsArray
+                    );
+                }
                 array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
             }
             $event_local_download->products = $eventLocalDownloadProducts;
-            // Save and response send
-            // Update event is_ready
             $event->is_ready = true;
             $locals = Event_local_download::where('eventId','=',$event->id)->get();
             foreach ($locals as $local) {
@@ -173,14 +186,18 @@ class EventLocalDownloadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function download_file($file_url)
+    public function download_file($fileUrl, $fileName, $filePath)
     {
+        $path= public_path().'/uploads'.$filePath;
+
+        if(!File::exists($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
         $disk = Storage::disk('s3');
         $stream = $disk
             ->getDriver()
-            ->readStream($file_url);
-
-        \is_resource($stream) && \file_put_contents(public_path(), \stream_get_contents($stream), FILE_APPEND);
+            ->readStream($fileUrl);
+        \is_resource($stream) && \file_put_contents($path.$fileName, \stream_get_contents($stream), FILE_APPEND);
     }
 
     /**

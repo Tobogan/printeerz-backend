@@ -332,7 +332,6 @@ class EventsCustomsController extends Controller
                                 array_push($fonts_weight, $fonts_transform_exploded);
                             }
                         }
-
                         $shifted_weight = array_shift($fonts_weight_exploded);
                         $shifted_transform = array_shift($fonts_transform_exploded);
                         foreach($font as $ft){
