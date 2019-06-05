@@ -12,7 +12,7 @@
                         </div>
                         <div class="col-auto">
                             <a href="{{route('clientCreate_event', $customer->id)}}" class="btn btn-sm btn-primary">
-                                Ajouter un événement
+                                Ajoutez un événement
                             </a>
                         </div>
                     </div>
@@ -92,10 +92,10 @@
                         Pas d'événements programmés.
                     </h1>
                     <p class="text-muted">
-                        Ajouter le premier événement
+                        Ajoutez le premier événement
                     </p>
                     <a href="{{route('clientCreate_event', $customer->id)}}" class="btn btn-primary">
-                        Ajouter un événement
+                        Ajoutez un événement
                     </a>
                 </div>
             </div>

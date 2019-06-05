@@ -29,7 +29,7 @@
                     </p>
                     <!-- Button -->
                     <a href="{{route('edit_product', $product->id)}}" class="btn btn-primary btn-sm">
-                        Ajouter une image
+                        Ajoutez une image
                     </a>
                 </div>
             </div>

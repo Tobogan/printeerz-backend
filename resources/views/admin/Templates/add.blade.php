@@ -5,16 +5,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
-            <!-- Header -->
             <div class="header">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 CREATION
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Créer un gabarit
                             </h1>
@@ -24,7 +21,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
             {!! Form::open(['action' => array('TemplatesController@store'), 'files' => true,
             'class' => 'mb-4']) !!}
             {{csrf_field()}}
@@ -34,22 +30,17 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Nom du gabarit
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
                                         @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du gabarit</div>@endif
                                     </div>
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Catégorie
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::text('category', null, ['class' => 'form-control' . $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
                                         @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner la catégorie du gabarit</div>@endif
                                     </div>
@@ -70,27 +61,23 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            Largeur (cm)
+                                            Largeur (mm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
-                                        '']) !!}
+                                        '150']) !!}
+                                        {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            Hauteur (cm)
+                                            Hauteur (mm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' =>
-                                        '']) !!}
+                                        '150']) !!}
+                                        {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -110,27 +97,23 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            X (cm)
+                                            X (mm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
+                                        {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            Y (cm)
+                                            Y (mm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
+                                        {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -150,12 +133,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- First name -->
                                     <div class="form-group m-0">
-                                        <!-- Input -->
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), null, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
+                                        {!! $errors->first('components_ids', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                     <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>
@@ -177,19 +159,19 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id'
+                                    <div class="form-group">
+                                        <label for="thumb">Ajoutez la miniature</label>
+                                        {!! Form::file('thumb', array('class' => 'form-control', 'id'
                                         => 'thumb', 'name' => 'thumb')) !!}
-                                        <label class="custom-file-label" for="thumb">Ajouter la miniature</label>
+                                        {!! $errors->first('thumb', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id'
+                                    <div class="form-group">
+                                        <label for="full">Ajoutez l'image</label>
+                                        {!! Form::file('full', array('class' => 'form-control', 'id'
                                         => 'full', 'name' => 'full')) !!}
-                                        <label class="custom-file-label" for="full">Ajouter l'image</label>
+                                        {!! $errors->first('full', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>

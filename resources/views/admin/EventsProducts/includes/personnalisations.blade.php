@@ -15,13 +15,13 @@
                         Pas de personnalisation.
                     </h1>
                     <p class="text-muted">
-                        Ajouter la première personnalisation
+                        Ajoutez la première personnalisation
                     </p>
                     <!-- Button -->
                     <a href="{{route('create_eventsCustoms', $events_product->id)}}" class="btn btn-sm btn-primary">
                         {{-- là modal
                         personnalisation inc --}}
-                        Ajouter une personnalisation
+                        Ajoutez une personnalisation
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                             <div class="col-auto">
                                 <!-- Button -->
                                 <a href="{{route('create_eventsCustoms', $events_product->id)}}" class="btn btn-sm btn-primary">
-                                    Ajouter une personnalisation
+                                    Ajoutez une personnalisation
                                 </a>
                             </div>
                         </div>

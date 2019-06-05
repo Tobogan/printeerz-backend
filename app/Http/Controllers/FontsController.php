@@ -59,7 +59,7 @@ class FontsController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:fonts|string|max:255',
-            'file_font' => 'required|file|max:4000'
+            'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
         ]);
 
         $font = new Font;
@@ -76,9 +76,11 @@ class FontsController extends Controller
             // Define the path to file
             $filePath = '/fonts/' . $title . '/' . $name;
             // Upload the new image
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // $disk->put($filePath, $file, 'public');
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $disk->put($newFilePath, file_get_contents($file), 'public');
             // Put in database
             $font->url = $filePath;
             $font->file_name = $name;
@@ -125,9 +127,10 @@ class FontsController extends Controller
     {
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
-                'title' => 'required|unique:fonts|string|max:255',
+                'title' => 'required|string|max:255',
+                'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
             ]);
-            $id = $request->id;
+            $id = $request->font_id;
             $font = Font::find($id);
             $font->weight = $request->weight;
             $font->is_active = $request->is_active;
@@ -142,22 +145,25 @@ class FontsController extends Controller
                 $newFilePath = '/fonts/'.$name;
                 // Upload the new image
                 // $disk->put($newFilePath, $font_file, 'public');
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $disk->put($newFilePath, file_get_contents($file), 'public');
                 // Put in database
                 $font->url = $newFilePath;
                 $font->file_name = $name;
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 if(!empty($font->url) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
-            $font->save();
+            $font->update();
         }
         else {
             $validatedData = $request->validate([
                 'title' => 'required|unique:fonts|string|max:255',
+                'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
             ]);
-            $id = $request->id;
+            $id = $request->font_id;
             $font = Font::find($id);
             $font->title = $request->title;
             $font->weight = $request->weight;
@@ -174,23 +180,24 @@ class FontsController extends Controller
                 $newFilePath = '/fonts/'.$name;
                 // Upload the new image
                 // $disk->put($newFilePath, $font_file, 'public');
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $disk->put($newFilePath, file_get_contents($file), 'public');
                 // Put in database
                 $font->url = $newFilePath;
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 if(!empty($font->url) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
-            $font->save();
+            $font->update();
         }
         
         $notification = array(
         'status' => 'La police a été correctement modifiée.',
         'alert-type' => 'success'
         );
-        
-        return redirect('admin/Fonts/edit/' . $font->id)->with($notification);
+         return redirect('admin/Fonts/index')->with($notification);
     }
 
     /**

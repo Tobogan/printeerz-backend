@@ -24,7 +24,7 @@
         {!! Form::text('nom', $zone->nom, ['class' => 'form-control', 'placeholder' => 'Nom de la zone:']) !!}
         </div>
 
-        {!! Form::label('image', 'Ajouter une photo de la zone: ') !!}
+        {!! Form::label('image', 'Ajoutez une photo de la zone: ') !!}
         {!! Form::file('image', array('class' => 'form-control')) !!}
        
         </div>

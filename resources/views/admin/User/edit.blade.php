@@ -115,6 +115,7 @@
                                 <div class="col-12 col-md-6">
                                     <label for="phone">Téléphone</label>
                                     {!! Form::text('phone', $user->phone, ['class' => 'form-control']) !!}
+                                    {!! $errors->first('phone', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                 </div>
                             </div>
                         </div>
@@ -156,14 +157,13 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image de profil
-                                <p class="text-muted mt-2 mb-2">Ajoutez une image de profil (max 4mo)</p>
+                                <p class="text-muted mt-2 mb-2">Modifiez l'image de profil (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
                             </h4>
                         </div>
-                        <div class="col-12">
-                            <!-- First name -->
-                            <div class="custom-file">
-                                {!! Form::file('profile_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                <label class="custom-file-label" for="photo_profile">Ajouter un fichier</label>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {!! Form::file('profile_img', array('class' => 'form-control', 'id' =>'photo_profile')) !!}
+                                {!! $errors->first('profile_img', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-3">
                                 Rôle
-                                <p class="text-muted mt-2">Sélectionnez le rôle de l'utilisateur</p>
+                                <p class="text-muted mt-2">Sélectionnez un nouveau rôle pour l'utilisateur</p>
                             </h4>
                         </div>
                         <div class="card-body">

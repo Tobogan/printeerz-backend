@@ -82,13 +82,13 @@
                             </div>
                             <div class="form-group">
                                 <label>
-                                    Ajouter l'image d'illustration
+                                    Ajoutez l'image d'illustration
                                 </label>
                                 <p class="text-muted b-4">Vous pouvez ajouter ici une image illustrant cette personnalisation.</p>
                                 <div class="custom-file">
                                     <!-- Input -->
                                     {!! Form::file('custom_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                                    <label class="custom-file-label" for="photo_profile">Ajoutez l'image</label>
                                 </div>
                             </div>
                         </div>

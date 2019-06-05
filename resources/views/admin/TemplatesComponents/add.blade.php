@@ -64,25 +64,8 @@
             @include('admin.TemplatesComponents.includes.sizeposition')
             @include('admin.TemplatesComponents.includes.input')
             @include('admin.TemplatesComponents.includes.image')
-            <div data-root="componentElement" type="image input">
-                <div class="row" >
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                    <div class="custom-control custom-switch">
-                                        <input name="is_active" type="checkbox" class="custom-control-input" id="customSwitch1">
-                                        <label class="custom-control-label" for="customSwitch1">Ce composant est-il actif ?</label>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {!! Form::hidden('is_deleted', "false") !!}
+            {!! Form::hidden('is_active', "true") !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">

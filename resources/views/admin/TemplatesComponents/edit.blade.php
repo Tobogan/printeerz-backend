@@ -30,18 +30,18 @@
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Nom</label>
-                                {!! Form::text('title', $template_component->title, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom']) !!}
+                                {!! Form::text('title', $template_component->title, ['class' => 'form-control', 'placeholder' => 'Nom']) !!}
                                 @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du composant</div>@endif
                             </div>
                             <div class="form-group">
                                 <label>Type</label>
                                 <p class="text-muted b-4">Vous ne pouvez pas modifier le type de ce composant. Merci de le supprimer et de le recréer.</p> 
                                 {!! Form::text('type', $template_component->comp_type, ['class' => 'form-control text-muted b-2', 'placeholder' => 'Type', 'disabled' => ''])!!}
+                                {!! $errors->first('type', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                             </div>
                         </div>
                     </div>
@@ -59,25 +59,21 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Hauteur (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('height', $template_component->size["height"], ['class' => 'form-control', 'placeholder' => '']) !!}
+                                        {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Largeur (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('width', $template_component->size["width"], ['class' => 'form-control', 'placeholder' => '']) !!}
+                                        {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -96,25 +92,21 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             X (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_x', $template_component->origin["x"], ['class' => 'form-control', 'placeholder' =>'0']) !!}
+                                        {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Y (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_y', $template_component->origin["y"], ['class' => 'form-control', 'placeholder' => '0']) !!}
+                                        {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -136,25 +128,23 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-                                        <!-- First name -->
                                         <div class="form-group">
-                                            <!-- Label -->
                                             <label>
                                                 Minimum
                                             </label>
-                                            <!-- Input -->
-                                            {!! Form::number('min', $template_component->characters["min"], ['class' => 'form-control', 'placeholder' => '1']) !!} </div>
+                                            {!! Form::number('min', $template_component->characters["min"], ['class' => 'form-control', 'placeholder' => '1']) !!}
+                                            {!! $errors->first('min', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <!-- First name -->
                                         <div class="form-group">
-                                            <!-- Label -->
                                             <label>
                                                 Maximum
                                             </label>
-                                            <!-- Input -->
                                             {!! Form::number('max', $template_component->characters["max"], ['class' => 'form-control', 'placeholder' =>
-                                            '99']) !!} </div>
+                                            '99']) !!} 
+                                            {!! $errors->first('max', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

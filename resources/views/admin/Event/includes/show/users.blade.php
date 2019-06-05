@@ -56,11 +56,11 @@
                                     </h1>
                                     <!-- Subtitle -->
                                     <p class="text-muted">
-                                        Ajouter votre premier utilisateur pour cet événement
+                                        Ajoutez votre premier utilisateur pour cet événement
                                     </p>
                                     <!-- Button -->
                                     <a href="#" class="btn btn-primary">
-                                        Ajouter un utilisateur
+                                        Ajoutez un utilisateur
                                     </a>
                                 </div>
                             </div>

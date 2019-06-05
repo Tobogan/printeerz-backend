@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">Ajouter une variante</h2>
+                <h2 class="modal-title" id="exampleModalLabel">Ajoutez une variante</h2>
                 @if (session('status'))
                 <div class="alert alert-success mt-1 mb-2">
                     {{ session('status') }}

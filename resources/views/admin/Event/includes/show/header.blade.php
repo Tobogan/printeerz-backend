@@ -1,6 +1,6 @@
 <div class="header">
-  @if(!empty($event->coverImg) && $disk->exists($event->coverImg))
-  <div class="bg-cover" style="background-image: url('{{$s3 . $event->coverImg}}'); height:400px; z-index:1;">
+  @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl))
+  <div class="bg-cover" style="background-image: url('{{$s3 . $event->coverImgUrl}}'); height:400px; z-index:1;">
     @if($event->is_ready !== true)
       <div><a href="#" class="btn btn-danger" data-toggle="modal" data-event_id="{{$event->id}}" data-target="#eventIsReadyModal" style="z-index:1; float:right;margin-top:13px;margin-right:13px;" id="isReadyBtn">
           Not Ready
@@ -22,8 +22,8 @@
       </a></div>
     @endif
   @endif
-  <div class="header-body @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) mt-n5 mt-md-n6 @endif">
-    <div class="row @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) align-items-end @else align-items-center @endif">
+  <div class="header-body @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) mt-n5 mt-md-n6 @endif">
+    <div class="row @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) align-items-end @else align-items-center @endif">
       @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
       <div class="col-auto">
         <div class="avatar avatar-xxl header-avatar-top">
@@ -31,7 +31,7 @@
         </div>
       </div>
       @endif
-      <div class="col @if(!empty($event->coverImg) && $disk->exists($event->coverImg)) mb-3 ml-n3 ml-md-n2 @endif">
+      <div class="col @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) mb-3 ml-n3 ml-md-n2 @endif">
         @if($event->customer)
         <h6 class="header-pretitle">
           {{ $event->customer->title}}
@@ -54,8 +54,8 @@
             <a href="{{route('edit_event', $event->id)}}" class="dropdown-item">
               Modifier
             </a>
-            @if($event->BAT != null)
-                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{ $s3.$event->BAT }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
+            @if($event->BATUrl != null)
+                <a class="dropdown-item" role="button" href="#" onclick="window.open('{{ $s3.$event->BATUrl }}', '_blank', 'fullscreen=yes'); return false;"> Voir le BAT</a>
             @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">
               Supprimer

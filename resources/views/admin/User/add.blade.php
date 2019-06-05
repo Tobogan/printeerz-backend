@@ -141,7 +141,7 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image de profil
-                                <p class="text-muted mt-2 mb-2">Ajoutez une image de profil (max 4mo)</p>
+                                <p class="text-muted mt-2 mb-2">Ajoutez une image de profil (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -149,7 +149,7 @@
                                 <!-- First name -->
                                 <div class="custom-file">
                                     {!! Form::file('profile_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="photo_profile">Ajouter un fichier</label>
+                                    <label class="custom-file-label" for="photo_profile">Ajoutez un fichier</label>
                                 </div>
                             </div>
                         </div>

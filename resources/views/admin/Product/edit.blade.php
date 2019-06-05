@@ -148,13 +148,14 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image du produit.
-                                <p class="text-muted b-4 mt-3">Modifier l'image du produit en format 1:1 (max 2mo)</p>
+                                <p class="text-muted b-4 mt-3">Modifiez l'image du produit en format 1:1 (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="col-12">
                                 <div class="form-group">
                                     {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
+                                    <div>{!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} </div>
                                 </div>
                             </div>
                         </div>
@@ -193,8 +194,8 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input id="textDescription" type="textarea" class="description" name="description" rows="3"
-                                    value="{{ $product->description }}">
+                                {!! Form::textarea('description', $product->description, ['id' => 'description', 'class' => 'form-control','rows' => 4, 'cols' => 54]) !!}
+                                {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} 
                             </div>
                         </div>
                     </div>

@@ -140,7 +140,7 @@
                                                             <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary mb-2"
                                                                 data-toggle="modal" data-target="#addFontModal"
                                                                 data-id="{{$template_component->id}}">
-                                                                Ajouter une police
+                                                                Ajoutez une police
                                                             </a>
                                                         </div>
                                                         <!-- Label -->
@@ -236,7 +236,7 @@
                                                                 <a href="#" style="float:right" class="buttonColor btn btn-sm btn-primary mb-2"
                                                                     data-toggle="modal" data-target="#addColorModal"
                                                                     data-id="{{$template_component->id}}">
-                                                                    Ajouter une couleur
+                                                                    Ajoutez une couleur
                                                                 </a>
                                                             </div>
                                                             <!-- Label -->

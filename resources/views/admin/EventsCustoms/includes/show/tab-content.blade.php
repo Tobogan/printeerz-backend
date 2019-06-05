@@ -138,7 +138,7 @@
                                             <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
                                             data-toggle="modal" data-target="#addFontModal"
                                             data-id="{{$component['events_component_id']}}">
-                                            Ajouter une police
+                                            Ajoutez une police
                                         </a>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                                         <a href="#" class="buttonColor btn btn-sm btn-primary"
                                             data-toggle="modal" data-target="#addColorModal"
                                             data-id="{{$component['events_component_id']}}">
-                                            Ajouter une couleur
+                                            Ajoutez une couleur
                                         </a>
                                     </div>
                                 </div>

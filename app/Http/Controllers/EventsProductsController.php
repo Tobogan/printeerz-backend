@@ -58,7 +58,7 @@ class EventsProductsController extends Controller
         if($request->ajax()) {
             $validatedData = \Validator::make($request->all(),[
                 'title' => 'required|string|unique:events_products|max:255',
-                'description' => 'string|max:255',
+                'description' => 'nullable|string|max:255',
                 'product_id' => 'required|string|max:255'
             ]);
             if ($validatedData->fails()){
@@ -318,16 +318,18 @@ class EventsProductsController extends Controller
             }
             return $array;
         }
-        foreach($event->event_products_id as $events_product_id) {
-            if($events_product_id == $id) {
-                $id_to_delete = $events_product_id;
+        if($event->event_products_id !== null) {
+            foreach($event->event_products_id as $events_product_id) {
+                if($events_product_id == $id) {
+                    $id_to_delete = $events_product_id;
+                }
             }
-        }
         $result = removeElement($event->event_products_id, $id_to_delete);
         $arr = $event->event_products_id;
         $arr = $result;
         $event->event_products_id = $arr;
         $event->update();
+        }
         $events_customs = Events_customs::where('events_product_id','=',$id)->get();
         if($events_customs != null){
             foreach($events_customs as $events_custom){

@@ -216,7 +216,7 @@ $arrayEventsComponentsIds = array();
                                             <a href="#" class="buttonColor btn btn-sm btn-primary"
                                                 data-toggle="modal" data-target="#addColorModal"
                                                 data-id="{{$events_component->id}}">
-                                                Ajouter une couleur
+                                                Ajoutez une couleur
                                             </a>
                                         </div>
                                     </div>
@@ -277,7 +277,7 @@ $arrayEventsComponentsIds = array();
                                         <div class="form-group">
                                             <div class="custom-file">
                                                 {!! Form::file('comp_image'.$events_component->id, array('class' => 'form-control custom-file-input', 'id' =>'comp_image'.$events_component->id)) !!}
-                                                <label class="custom-file-label" for="photo_profile">Ajouter l'image</label>
+                                                <label class="custom-file-label" for="photo_profile">Ajoutez l'image</label>
                                             </div>
                                         </div>
                                         

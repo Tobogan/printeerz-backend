@@ -9,25 +9,21 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <!-- First name -->
                         <div class="form-group">
-                            <!-- Label -->
                             <label>
-                                Hauteur (cm)
+                                Hauteur (mm)
                             </label>
-                            <!-- Input -->
-                            {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                            {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' => '250']) !!}
+                            {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <!-- First name -->
                         <div class="form-group">
-                            <!-- Label -->
                             <label>
-                                Largeur (cm)
+                                Largeur (mm)
                             </label>
-                            <!-- Input -->
-                            {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                            {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' => '150']) !!}
+                            {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                         </div>
                     </div>
                 </div>
@@ -46,25 +42,21 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <!-- First name -->
                         <div class="form-group">
-                            <!-- Label -->
                             <label>
-                                X (cm)
+                                X (mm)
                             </label>
-                            <!-- Input -->
                             {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>'0']) !!}
+                            {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <!-- First name -->
                         <div class="form-group">
-                            <!-- Label -->
                             <label>
-                                Y (cm)
+                                Y (mm)
                             </label>
-                            <!-- Input -->
                             {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' => '0']) !!}
+                            {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                         </div>
                     </div>
                 </div>

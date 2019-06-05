@@ -15,10 +15,10 @@
             Pas de variantes.
         </h1>
         <p class="text-muted">
-            Ajouter la première variante du produit
+            Ajoutez la première variante du produit
         </p>
         <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addVariante">
-            Ajouter une variante
+            Ajoutez une variante
         </a>
     </div>
 </div>
@@ -36,7 +36,7 @@
                 <div class="col-auto">
                     <!-- Button -->
                     <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addVariante">
-                        Ajouter une variante
+                        Ajoutez une variante
                     </a>
                 </div>
             </div>

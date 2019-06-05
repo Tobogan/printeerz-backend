@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="alert alert-danger" id="alert alert-danger" style="display:none"></div>
             <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">Ajouter des variantes</h2>
+                <h2 class="modal-title" id="exampleModalLabel">Ajoutez des variantes</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,11 +18,11 @@
                     <input type="hidden" name="is_active" id="is_active" value="true">
                     <input type="hidden" name="is_deleted" id="is_deleted" value="false"> 
                     {!! Form::label('color', 'Ajoutez une ou plusieurs couleurs') !!}
-                    {!! Form::text('color', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajouter des couleurs','id'
+                    {!! Form::text('color', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajoutez des couleurs','id'
                     => 'color', 'name' => 'color', 'data-role' => 'tagsinput')) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('size', 'Ajouter une ou plusieurs tailles') !!} {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajouter des tailles',
+                    {!! Form::label('size', 'Ajoutez une ou plusieurs tailles') !!} {!! Form::text('size', null, array('class'=>'form-control mb-2', 'placeholder' =>'Ajoutez des tailles',
                     'id' => 'size', 'name' => 'size', 'data-role' => 'tagsinput')) !!}
                 </div>
             </div>

@@ -58,15 +58,20 @@ class TemplatesController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255'
+            'title' => 'required|string|unique:templates|max:255',
+            'width' => 'required|string|max:255',
+            'height' => 'required|string|max:255',
+            'origin_x' => 'required|string|max:255',
+            'origin_y' => 'required|string|max:255',
+            'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
+            'full' => 'image|mimes:jpeg,jpg,png|max:4000',
+            'category' => 'required|string|max:255',
+            'components_ids' => 'required'
         ]);
         $template = new Templates;
         $template->title = $request->title;
         $template->category = $request->category;
-        
         $disk = Storage::disk('s3');
-
         $template->size = array(
             'width' => $request->width,
             'height' => $request->height
@@ -76,7 +81,6 @@ class TemplatesController extends Controller
             'y' => $request->origin_y
         );
         $i=0;
-        // dd(json_decode($request->get('templateComponentsList')));
         if(json_decode($request->get('templateComponentsList')) !== false){
             foreach(json_decode($request->get('templateComponentsList')) as $templates_component){
                 $i++;
@@ -87,19 +91,22 @@ class TemplatesController extends Controller
         $template->position = $request->position;
         $template->is_active = $request->is_active; 
         $template->is_deleted = $request->is_deleted;
+        $template->save();
         if ($request->hasFile('thumb')){
             // Get file
             $file = $request->file('thumb');
             // Create name
             $name = time() . $file->getClientOriginalName();
             // Define the path
-            $filePath = '/templates/'.$request->title.'/'.$name;
+            $filePath = '/templates/'.$template->id.'/'.$name;
             // Resize img
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $template->thumb_img = $filePath;
         }
@@ -109,13 +116,15 @@ class TemplatesController extends Controller
             // Create name
             $name = time() . $file->getClientOriginalName();
             // Define the path
-            $filePath = '/templates/'.$request->title.'/'.$name;
+            $filePath = '/templates/'.$template->id.'/'.$name;
             // Resize img
             $img = Image::make(file_get_contents($file))->save($name);
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $template->full_img = $filePath;
         }
@@ -164,7 +173,14 @@ class TemplatesController extends Controller
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'category' => 'required|string|max:255'
+                'width' => 'required|string|max:255',
+                'height' => 'required|string|max:255',
+                'origin_x' => 'required|string|max:255',
+                'origin_y' => 'required|string|max:255',
+                'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'full' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'category' => 'required|string|max:255',
+                'components_ids' => 'required'
             ]);
             $id = $request->template_id;
             $template = Templates::find($id);
@@ -179,12 +195,14 @@ class TemplatesController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                $newFilePath = '/templates/'.$template->id.'/'.$name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template->thumb_img = $newFilePath;
                 if(!empty($template->thumb_img) && $disk->exists($newFilePath)){
@@ -198,13 +216,15 @@ class TemplatesController extends Controller
                 // Create name
                 $name = time() . $file->getClientOriginalName();
                 // Define the path
-                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                $newFilePath = '/templates/'.$template->id.'/'.$name;
                 // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
                 // Upload the file
                 $disk->put($newFilePath, $img, 'public');
                 // Delete public copy
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template->full_img = $newFilePath;
                 if(!empty($template->full_img) && $disk->exists($newFilePath)){
@@ -224,13 +244,18 @@ class TemplatesController extends Controller
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
-            $template->save();
-            return redirect('admin/Templates/index')->with('status', 'Le gabarit a été correctement modifié.');
         }
         else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'category' => 'required|string|max:255'
+                'width' => 'required|string|max:255',
+                'height' => 'required|string|max:255',
+                'origin_x' => 'required|string|max:255',
+                'origin_y' => 'required|string|max:255',
+                'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'full' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'category' => 'required|string|max:255',
+                'components_ids' => 'required'
             ]);
             $id = $request->template_id;
             $template = Templates::find($id);
@@ -245,36 +270,40 @@ class TemplatesController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                $newFilePath = '/templates/'.$template->id.'/'.$name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template->thumb_img = $newFilePath;
-                if(!empty($template->thumb_img) && $disk->exists($newFilePath)){
+                if (!empty($template->thumb_img) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
             }
-            if ($request->hasFile('full')){
+            if ($request->hasFile('full')) {
                 // Get file
                 $file = $request->file('full');
                 $oldPath = $template->thumb_full;
                 // Create name
                 $name = time() . $file->getClientOriginalName();
                 // Define the path
-                $newFilePath = '/templates/'.$request->title.'/'.$name;
+                $newFilePath = '/templates/'.$template->id.'/'.$name;
                 // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
                 // Upload the file
                 $disk->put($newFilePath, $img, 'public');
                 // Delete public copy
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template->full_img = $newFilePath;
-                if(!empty($template->full_img) && $disk->exists($newFilePath)){
+                if (!empty($template->full_img) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
             }
@@ -292,13 +321,13 @@ class TemplatesController extends Controller
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
-            $template->save();
-            $notification = array(
-                'status' => 'Le gabarit a été correctement modifié.',
-                'alert-type' => 'success'
-            );
-            return redirect('admin/Templates/index')->with($notification);
         }
+        $template->update();
+        $notification = array(
+            'status' => 'Le gabarit a été correctement modifié.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Templates/index')->with($notification);
     }
 
     /**

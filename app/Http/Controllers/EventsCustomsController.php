@@ -79,7 +79,8 @@ class EventsCustomsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|unique:events_customs|string|max:255'
+            'title' => 'required|unique:events_customs|string|max:255',
+            'custom_img' => 'image|mimes:jpeg,jpg,png|max:4000'
         ]);
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
@@ -88,11 +89,9 @@ class EventsCustomsController extends Controller
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
         $events_custom->events_product_variants_ids = $request->get('event_product_variants_ids');
-        // $events_custom->template = array( // TO UPDATE !!
-        //     $request->template_id,
-        //     $request->printzone_id,
-        // );
         $events_custom->template_id = $request->template_id;
+        $template = Templates::find($request->template_id);
+        $events_custom->template_title = $template->title;
         $events_custom->printzone_id = $request->printzone_id;
         $events_custom->components = array();
         $events_custom->is_active = 'true';
@@ -117,7 +116,9 @@ class EventsCustomsController extends Controller
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $events_custom->image = $filePath;
         }
@@ -266,7 +267,9 @@ class EventsCustomsController extends Controller
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'color' => 'string|max:500'
+                'color' => 'string|max:500',
+                'code_hex' => 'string|max:500',
+                'comp_image' => 'image|mimes:jpeg,jpg,png|max:4000'
             ]);
             $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
@@ -401,10 +404,12 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image'.$template_component_id);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = time().$image_file->getClientOriginalName();
-                            unlink(public_path() . '/' . $image_name);
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
                             $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');
+                            if (file_exists(public_path() . '/' . $image_name)) {
+                                unlink(public_path() . '/' . $image_name);
+                            }
                             $image_file = $newFilePath;
                             $component = array(
                                 'events_component_id' => $request->{'template_component_id'.$i},
@@ -594,6 +599,9 @@ class EventsCustomsController extends Controller
                             $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$option_title.'/'.$image_name;
                             $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');
+                            if (file_exists(public_path() . '/' . $image_name)) {
+                                unlink(public_path() . '/' . $image_name);
+                            }
                             $image_file = $newFilePath;
                             $component = array(
                                 'events_component_id' => $request->{'template_component_id'.$i},
@@ -733,7 +741,7 @@ class EventsCustomsController extends Controller
     {
         $validatedData = \Validator::make($request->all(),[
             'title' => 'required|unique:fonts|string|max:255',
-            'file' => 'required|file|max:4000'
+            'file' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
         ]);
         if ($validatedData->fails()){
             return response()->json(['errors'=>$validatedData->errors()->all()]);

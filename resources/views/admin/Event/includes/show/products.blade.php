@@ -81,11 +81,11 @@
                         </h1>
                         <!-- Subtitle -->
                         <p class="text-muted">
-                            Ajouter votre premier produit pour cet événement
+                            Ajoutez votre premier produit pour cet événement
                         </p>
                         <!-- Button -->
                         <div><a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEventsProductModal">
-                                Ajouter un produit
+                                Ajoutez un produit
                         </a></div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="col ml-n2">
                             <h4 class="card-title mb-1 name">
-                                <a href="#" data-toggle="modal" data-target="#addEventsProductModal">Ajouter un produit</a>
+                                <a href="#" data-toggle="modal" data-target="#addEventsProductModal">Ajoutez un produit</a>
                             </h4>
                         </div>
                     </div>

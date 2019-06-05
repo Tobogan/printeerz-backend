@@ -1,4 +1,5 @@
 {
     "git.ignoreLimitWarning": true,
-    "editor.renderWhitespace": "all"
+    "editor.renderWhitespace": "all",
+    "blade.format.enable": true
 }

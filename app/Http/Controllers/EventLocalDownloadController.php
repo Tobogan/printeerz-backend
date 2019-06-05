@@ -38,7 +38,7 @@ class EventLocalDownloadController extends Controller
             // Mains Data
             $event_local_download->eventTitle = $event->name;
             $event_local_download->eventId = $event->id;
-            $event_local_download->eventCoverImg = $event->coverImg;
+            $event_local_download->eventCoverImg = $event->coverImgUrl;
             $event_local_download->eventLogoUrl = $event->logoUrl;
             // app('App\Http\Controllers\EventLocalDownloadController')->download_file($event->logoUrl,$event->logoFileName,$event->logoPath);
             $event_local_download->advertiserName = $event->advertiser;
@@ -76,7 +76,6 @@ class EventLocalDownloadController extends Controller
                 // Events customs
                 foreach ($events_product->event_customs_ids as $events_custom_id) {
                     $events_custom = Events_customs::find($events_custom_id);
-
                     foreach ($events_custom->components as $component) {
                         if ($component['component_type'] == 'image') {
                             $eventsCustomImageArray = array(
@@ -109,6 +108,7 @@ class EventLocalDownloadController extends Controller
                     }
                     $events_customs_final = array(
                         'title' => $events_custom->title,
+                        'template_title' => $events_custom->template_title,
                         'components' => $events_customsArray
                     );
                 }

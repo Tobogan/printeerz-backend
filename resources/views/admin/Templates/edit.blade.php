@@ -33,25 +33,18 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Nom du gabarit
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::text('title', $template->title, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du gabarit</div>@endif
-                                    </div>
+                                        {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}                                    </div>
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Catégorie
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::text('category', $template->category, ['class' => 'form-control' . $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
-                                        @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner la catégorie du gabarit</div>@endif
-                                    </div>
+                                        {!! $errors->first('category', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,27 +63,23 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Largeur (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('width', $template->size["width"], ['class' => 'form-control', 'placeholder' =>
                                         '']) !!}
+                                        {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Hauteur (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('height', $template->size["height"], ['class' => 'form-control', 'placeholder' =>
                                         '']) !!}
+                                        {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -110,27 +99,23 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             X (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_x', $template->origin["x"], ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
+                                        {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Y (cm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('origin_y', $template->origin["y"], ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
+                                        {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -150,12 +135,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- First name -->
                                     <div class="form-group m-0">
-                                        <!-- Input -->
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), $template->components_ids, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
+                                        {!! $errors->first('components_ids', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
 
                                     <div id="templateComponentsList" data-type='sortable' class="mt-3">
@@ -206,11 +190,11 @@
                                             <img src="{{$s3 . $template->thumb_img}}" alt="..." class="avatar-img rounded">
                                         </div>
                                     @endif
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('thumb', array('class' => 'form-control custom-file-input', 'id'
+                                    <div class="form-group">
+                                        <label for="thumb">Ajoutez/Modifier la miniature</label>
+                                        {!! Form::file('thumb', array('class' => 'form-control', 'id'
                                         => 'thumb', 'name' => 'thumb')) !!}
-                                        <label class="custom-file-label" for="thumb">Ajouter/Modifier la miniature</label>
+                                        {!! $errors->first('thumb', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -219,11 +203,11 @@
                                             <img src="{{$s3 . $template->full_img}}" alt="..." class="avatar-img rounded">
                                         </div>
                                     @endif
-                                    <!-- First name -->
-                                    <div class="custom-file">
-                                        {!! Form::file('full', array('class' => 'form-control custom-file-input', 'id'
+                                    <div class="form-group">
+                                        <label for="full">Ajoutez/Modifier l'image</label>
+                                        {!! Form::file('full', array('class' => 'form-control', 'id'
                                         => 'full', 'name' => 'full')) !!}
-                                        <label class="custom-file-label" for="full">Ajouter/Modifier l'image</label>
+                                        {!! $errors->first('full', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>

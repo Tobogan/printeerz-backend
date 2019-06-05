@@ -52,7 +52,14 @@ class TemplateComponentsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|unique:template_components|max:255',
+            'height' => 'nullable|string|max:255',
+            'width' => 'nullable|string|max:255',
+            'origin_x' => 'nullable|string|max:255',
+            'origin_y' => 'nullable|string|max:255',
+            'min' => 'nullable|string|max:255',
+            'max' => 'nullable|string|max:255',
+            'image' => 'image|mimes:jpeg,jpg,png|max:4000',
             'type' => 'required|string|max:255'
         ]);
         $template_component = new Template_components;
@@ -72,7 +79,9 @@ class TemplateComponentsController extends Controller
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $template_component->image = $filePath;
         }
@@ -193,11 +202,18 @@ class TemplateComponentsController extends Controller
     {
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255'
+                'title' => 'required|string|max:255',
+                'height' => 'nullable|string|max:255',
+                'width' => 'nullable|string|max:255',
+                'origin_x' => 'nullable|string|max:255',
+                'origin_y' => 'nullable|string|max:255',
+                'min' => 'nullable|string|max:255',
+                'max' => 'nullable|string|max:255',
+                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'type' => 'nullable|string|max:255'
             ]);
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
-            $template_component->comp_type = $request->type;
             //  si requête type image j'injecte l'image
             if ($request->hasFile('image')){
                 // Get current image path
@@ -212,8 +228,10 @@ class TemplateComponentsController extends Controller
                 $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
                 // Upload the new image
                 $disk = Storage::disk('s3');
-                $disk->put($newFilePath, $img, 'public-read');
-                unlink(public_path() . '/' . $name);
+                $disk->put($newFilePath, $img, 'public');
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template_component->image = $newFilePath;
                 if(!empty($template_component->image) && $disk->exists($newFilePath)){
@@ -239,14 +257,6 @@ class TemplateComponentsController extends Controller
                     'available' => $request->available,
                     'always' => $request->always
                 );
-                // $template_component->font = array(
-                //     'id' =>  $request->font_id,
-                //     'name' => $request->font_name,
-                //     // 'url' => $request->font_url,
-                //     'weight' => $request->font_weight,
-                //     'transform' => $request->font_transform,
-                //     'first_letter' => $request->font_first_letter,
-                // );
             }
             $template_component->is_customizable = $request->is_customizable;
             $template_component->is_active = $request->is_active; 
@@ -261,7 +271,14 @@ class TemplateComponentsController extends Controller
         else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'type' => 'required|string|max:255'
+                'height' => 'nullable|string|max:255',
+                'width' => 'nullable|string|max:255',
+                'origin_x' => 'nullable|string|max:255',
+                'origin_y' => 'nullable|string|max:255',
+                'min' => 'nullable|string|max:255',
+                'max' => 'nullable|string|max:255',
+                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'type' => 'nullable|string|max:255'
             ]);
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
@@ -282,7 +299,9 @@ class TemplateComponentsController extends Controller
                 // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public-read');
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $template_component->image = $newFilePath;
                 if(!empty($template_component->image) && $disk->exists($newFilePath)){

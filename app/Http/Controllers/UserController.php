@@ -121,6 +121,7 @@
                 'lastname' => 'required|string|max:255',
                 'firstname' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:employees',
+                'profile_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'password' => 'required|string|min:6|confirmed'
             ]);
 
@@ -147,7 +148,9 @@
                 // Upload the file
                 $disk->put($filePath, $img, 'public');
                 // Delete public copy
-                unlink(public_path() . '/' . $name);
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 // Put in database
                 $user->profile_img = $filePath;
             }
@@ -183,7 +186,7 @@
                         'lastname' => 'required|string|max:255',
                         'firstname' => 'required|string|max:255',
                         'password' => 'string|min:6|confirmed',
-                        'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                        'profile_img' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
                     ]);
                 }
                 else {
@@ -191,7 +194,7 @@
                         'username' => 'required|string|max:255',
                         'lastname' => 'required|string|max:255',
                         'firstname' => 'required|string|max:255',
-                        'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                        'profile_img' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
                     ]);
                 }
                 
@@ -215,7 +218,9 @@
                     $disk->put($newFilePath, $img, 'public');
                     // Put in database
                     $user->profile_img = $newFilePath;
-                    unlink(public_path() . '/' . $name);
+                    if (file_exists(public_path() . '/' . $name)) {
+                        unlink(public_path() . '/' . $name);
+                    }
                     if(!empty($user->profile_img) && $disk->exists($newFilePath)){
                         $disk->delete($oldPath);
                     }
@@ -279,7 +284,9 @@
                     // Upload the new image
                     $disk = Storage::disk('s3');
                     $disk->put($newFilePath, $img, 'public-read');
-                    unlink(public_path() . '/' . $name);
+                    if (file_exists(public_path() . '/' . $name)) {
+                        unlink(public_path() . '/' . $name);
+                    }
                     // Put in database
                     $user->profile_img = $newFilePath;
                     if(!empty($user->profile_img) && $disk->exists($newFilePath)){

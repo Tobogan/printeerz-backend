@@ -60,7 +60,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <p class="h3">Fichier de la police</p>
-                                    <p class="text-muted mb-4">Ajouter le fichier de la police au format .ttf, .otf, .woff, .eot, .svg. (max 4mo)</p>
+                                    <p class="text-muted mb-4">Ajoutez le fichier de la police au format .ttf, .otf, .woff, .eot, .svg. (max 4mo)</p>
                                 </div>
                                 <div class="col-12">
                                     <!-- First name -->

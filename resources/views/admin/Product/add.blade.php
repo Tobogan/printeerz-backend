@@ -105,7 +105,7 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image du produit.
-                                <p class="text-muted b-4 mt-3">Ajouter l'image du produit en format 1:1 (max 2mo)</p>
+                                <p class="text-muted b-4 mt-3">Ajoutez l'image du produit en format 1:1 (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -114,8 +114,8 @@
                                     <label>
                                         Télécharger l'image du produit
                                     </label>
-                                    {!! Form::file('image', ['class' => 'form-control'.$errors->first('image', 'is-invalid')]) !!}
-                                    @if($errors->has('image'))<div class="invalid-feedback">Merci de charger une image ou de respecter le format.</div>@endif
+                                    {!! Form::file('image', ['class' => 'form-control']) !!}
+                                    <div>{!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} </div>
                                 </div>
                             </div>
                         </div>
@@ -145,14 +145,14 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Description du produit.
-                                <p class="text-muted b-4 mt-3">Ecrivez une description rapide du produit (max: 750 caractères)</p>
+                                <p class="text-muted b-4 mt-3">Ecrivez une description rapide du produit (min: 3 caractères, max: 750 caractères)</p>
                             </h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <input id="textDescription" type="textarea" class="description" name="description" rows="3">
-                            </div>
+                            {!! Form::textarea('description', null, ['id' => 'description', 'class' => 'form-control']) !!}
+                            {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} 
                         </div>
+                           
                     </div>
                 </div>
             </div>

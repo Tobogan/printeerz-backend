@@ -18,7 +18,9 @@
                                     Minimum
                                 </label>
                                 <!-- Input -->
-                                {!! Form::number('min', null, ['class' => 'form-control', 'placeholder' => '1']) !!} </div>
+                                {!! Form::number('min', null, ['class' => 'form-control', 'placeholder' => '1']) !!}
+                                {!! $errors->first('min', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                            </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <!-- First name -->
@@ -29,7 +31,9 @@
                                 </label>
                                 <!-- Input -->
                                 {!! Form::number('max', null, ['class' => 'form-control', 'placeholder' =>
-                                '99']) !!} </div>
+                                '99']) !!}
+                                {!! $errors->first('max', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,7 +64,7 @@
                         <!-- First name -->
                         <div class="custom-file">
                             {!! Form::file('font_url', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                            <label class="custom-file-label" for="photo_profile">Ajouter le fichier de la police</label>
+                            <label class="custom-file-label" for="photo_profile">Ajoutez le fichier de la police</label>
                         </div>
                     </div> --}}
                     {{--<hr class="mt-4 mb-5">

@@ -49,11 +49,11 @@ class PrintzonesController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:printzones|max:255',
             'zone' => 'required|string|max:255',
             'width' => 'required|string|max:255',
             'height' => 'required|string|max:255',
-            'description' => 'max:750'
+            'description' => 'nullable|string|max:750'
         ]);
         
         $printzone = new Printzones;
@@ -119,7 +119,7 @@ class PrintzonesController extends Controller
                 'zone' => 'required|string|max:255',
                 'width' => 'required|string|max:255',
                 'height' => 'required|string|max:255',
-                'description' => 'max:750'
+                'description' => 'nullable|string|max:750'
             ]);
             
             $id = $request->printzones_id;
@@ -142,7 +142,7 @@ class PrintzonesController extends Controller
                 'zone' => 'required|string|max:255',
                 'width' => 'required|string|max:255',
                 'height' => 'required|string|max:255',
-                'description' => 'max:750'
+                'description' => 'nullable|string|max:750'
             ]);
             
             $id = $request->printzones_id;

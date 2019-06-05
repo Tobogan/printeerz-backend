@@ -19,9 +19,9 @@
                         </div>
                         @endif
                         <div class="card card-inactive">
-                            <div class="custom-file">
-                                {!! Form::file('image', array('class' => 'form-control custom-file-input', 'id'=> 'image', 'name' => 'image')) !!}
-                                <label class="custom-file-label" for="thumb">Modifier l'image</label>
+                            <div class="form-group">
+                                {!! Form::file('image', array('class' => 'form-control', 'id' =>'photo_profile')) !!}
+                                {!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                             </div>
                         </div>
                     </div>

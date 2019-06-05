@@ -106,7 +106,7 @@
             <div class="row">
                 <div class="col-12">
                     <p class="h3">Image</p>
-                    <p class="mb-4">Ajouter l'image du produit en format 1:1</p>
+                    <p class="mb-4">Ajoutez l'image du produit en format 1:1</p>
                 </div>
                 <div class="col-12">
                     <!-- First name -->

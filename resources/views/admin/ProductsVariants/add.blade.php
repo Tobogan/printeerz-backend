@@ -94,8 +94,8 @@
                     {!! Form::open(['id' => 'AddColorAjax', 'files' => true]) !!}
                     <input type="hidden" name="select_couleurs" id="select_couleurs" value="{{ serialize($select_couleurs) }}">
                     <div class="form-group">
-                        {{Form::text('nom', null, array('class'=>'form-control', 'placeholder' => 'Ajouter une couleur', 'id'=>'nom', 'name'=>'nom'))}}
-                        {!! Form::label('pantone', 'Ajouter le pantone: ') !!}
+                        {{Form::text('nom', null, array('class'=>'form-control', 'placeholder' => 'Ajoutez une couleur', 'id'=>'nom', 'name'=>'nom'))}}
+                        {!! Form::label('pantone', 'Ajoutez le pantone: ') !!}
                         <br> {!! Form::file('pantone', array('id' => 'pantone', 'name' => 'pantone')) !!}
                     </div>
                     {{ Form::submit('Valider', array('name'=>'submit', 'class'=>'btn btn-primary btn-sm', 'id' => 'submit_modal', 'onclick' =>

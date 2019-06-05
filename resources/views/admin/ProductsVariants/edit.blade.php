@@ -83,10 +83,11 @@
                                             <img width="auto"  class="" src="{{$s3 . $products_variant->image}}"
                                                 alt="Image de de la variante" style="margin-left:auto;margin-right:auto;display:block;">
                                                 <p class="text-muted">
-                                                        Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
+                                                        Si vous le souhaitez vous pouvez modifier cette image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).
                                                     </p>
                                             <div class="form-group">
                                                 {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
+                                                {!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                             </div>
                                         @else
                                             <div class="card card-inactive">
@@ -100,10 +101,11 @@
                                         @endif
                                     @else
                                         <p class="text-muted">
-                                            Si vous le souhaitez vous pouvez ajouter une image (max 4mo).
+                                            Si vous le souhaitez vous pouvez ajouter une image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).
                                         </p>
                                         <div class="form-group">
                                             {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
+                                            {!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                         </div>
                                     @endif
                                 </div>
@@ -121,14 +123,14 @@
                                         <div class="card-header">
                                             <h4 class="card-header-title mt-2">
                                                 {{$printzone['title']}}
-                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).</p>
                                             </h4>
                                         </div>
                                     @else
                                         <div class="card-header">
                                             <h4 class="card-header-title mt-2">
                                                 Image(s) par zone d'impression
-                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).</p>
                                             </h4>
                                         </div>
                                     @endif
@@ -141,7 +143,7 @@
                                                 <img width="auto"  class="" src="{{$s3 . $printzone['image']}}"
                                                     alt="Image de zone" style="margin-left:auto;margin-right:auto;display:block;">
                                                 <p class="text-muted">
-                                                    Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
+                                                    Si vous le souhaitez vous pouvez modifier cette image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).
                                                 </p>
                                             @else
                                                 <div class="card card-inactive">
@@ -156,6 +158,7 @@
                                         @endif
                                         <div class="form-group">
                                             {!! Form::file('printzone'.$i, array('class' => 'form-control')) !!}
+                                            {{-- {!! $errors->first('printzone', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} --}}
                                             <input type="hidden" class="form-control" name="{{'printzone_name_'.$i}}" value="{{ $printzone['title'] }}">
                                             <input type="hidden" class="form-control" name="{{'printzone_id_'.$i}}" value="{{ $printzone['id'] }}">
                                         </div>
@@ -173,14 +176,14 @@
                                                         <div class="card-header">
                                                             <h4 class="card-header-title mt-2">
                                                                 {{$products_variant->{'printzone'.$i}['title']}}
-                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).</p>
                                                             </h4>
                                                         </div>
                                                     @else
                                                         <div class="card-header">
                                                             <h4 class="card-header-title mt-2">
                                                                 Image(s) par zone d'impression
-                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (max 4mo).</p>
+                                                                <p class="text-muted b-4 mb-2 mt-2">Pour chacune des zones d'impression vous pouvez ajouter une image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).</p>
                                                             </h4>
                                                         </div>
                                                     @endif
@@ -193,7 +196,7 @@
                                                                 <img width="auto"  class="" src="{{$s3 . $products_variant->{'printzone'.$i}['image']}}"
                                                                     alt="Image de zone" style="margin-left:auto;margin-right:auto;display:block;">
                                                                 <p class="text-muted">
-                                                                    Si vous le souhaitez vous pouvez modifier cette image (max 4mo).
+                                                                    Si vous le souhaitez vous pouvez modifier cette image (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo).
                                                                 </p>
                                                             @else
                                                                 <div class="card card-inactive">
@@ -225,7 +228,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="buttons">
-                                {!! Form::submit('Modifier', ['style' => 'float: right', 'class' => 'btn btn-primary']) !!}
+                                @if($products_variant->printzones == null)
+                                    {!! Form::submit('Configurer', ['style' => 'float: right', 'class' => 'btn btn-primary']) !!}
+                                @else
+                                    {!! Form::submit('Configurer', ['style' => 'float: right', 'title' => 'Cette variante a déjà été configurée. Si vous souhaitez la modifier, merci de la supprimer et de la recréer.', 'class' => 'btn btn-primary', 'disabled']) !!}
+                                @endif
                                 <a class="btn btn-secondary" style="float: left" class href="{{route('show_product', $products_variant->product_id)}}"><b>Annuler</b></a>
                             </div>
                         </div>

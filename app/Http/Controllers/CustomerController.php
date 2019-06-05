@@ -55,12 +55,13 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|unique:customers|max:255',
             'activity_type' => 'required|string|max:255',
-            'SIREN' => 'string|max:9',
-            'location' => 'string|max:255',
-            'contact_person' => 'string|max:255',
-            'comments' => 'max:750'
+            'SIREN' => 'nullable|string|min:9|max:9',
+            'location' => 'nullable|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
+            'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+            'comments' => 'nullable|string|max:2750'
         ]);
 
         $customer = new Customer;
@@ -100,7 +101,9 @@ class CustomerController extends Controller
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $customer->image = $filePath;
         }
@@ -155,118 +158,124 @@ class CustomerController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'activity_type' => 'required|string|max:255',
-                'SIREN' => 'string|max:255',
-                'location' => 'string|max:255',
-                'contact_person' => 'string|max:255',
-                'comments' => 'max:750'
-        ]);
-        $id = $request->id;
-        $customer = Customer::find($id);
-        $customer->title = $request->title;
-        $customer->activity_type = $request->activity_type;
-        $customer->SIREN = $request->SIREN;
-        $customer->comments = $request->comments;
-        $customer->contact_person = array(
-            'lastname' => $request->lastname,
-            'firstname' => $request->firstname,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'job_title' => $request->job_title
-        );
-        $customer->location = array(
-            'address' => $request->address,
-            'postal_code' => $request->postal_code,
-            'city' => $request->city,
-            'country' => $request->country,
-            'longitude' => $request->longitude,
-            'lattitude' => $request->lattitude
-        );
-        $customer->events_id=$request->get('shows_id');
-        $customer->is_active = $request->is_active;
-        $customer->is_deleted = $request->is_deleted;
+                'SIREN' => 'nullable|string|min:9|max:9',
+                'location' => 'nullable|string|max:255',
+                'contact_person' => 'nullable|string|max:255',
+                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'comments' => 'nullable|string|max:2750'
+            ]);
+            $id = $request->id;
+            $customer = Customer::find($id);
+            $customer->title = $request->title;
+            $customer->activity_type = $request->activity_type;
+            $customer->SIREN = $request->SIREN;
+            $customer->comments = $request->comments;
+            $customer->contact_person = array(
+                'lastname' => $request->lastname,
+                'firstname' => $request->firstname,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'job_title' => $request->job_title
+            );
+            $customer->location = array(
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'city' => $request->city,
+                'country' => $request->country,
+                'longitude' => $request->longitude,
+                'lattitude' => $request->lattitude
+            );
+            $customer->events_id=$request->get('shows_id');
+            $customer->is_active = $request->is_active;
+            $customer->is_deleted = $request->is_deleted;
 
-        // Update Profile image
-        if ($request->hasFile('image')){
-            // Get current image path
-            $oldPath = $customer->image;
-            // Get new image
-            $file = $request->file('image');
-            // Create image name
-            $name = time() . $file->getClientOriginalName();
-            // Define the new path to image
-            $newFilePath = '/customers/' . $name;
-            // Resize new image
-            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-            // Upload the new image
-            $disk = Storage::disk('s3');
-            $disk->put($newFilePath, $img, 'public');
-            unlink(public_path() . '/' . $name);
-            // Put in database
-            $customer->image = $newFilePath;
-            if(!empty($customer->image) && $disk->exists($newFilePath)){
-                $disk->delete($oldPath);
+            // Update Profile image
+            if ($request->hasFile('image')){
+                // Get current image path
+                $oldPath = $customer->image;
+                // Get new image
+                $file = $request->file('image');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/customers/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+                // Upload the new image
+                $disk = Storage::disk('s3');
+                $disk->put($newFilePath, $img, 'public');
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
+                // Put in database
+                $customer->image = $newFilePath;
+                if(!empty($customer->image) && $disk->exists($newFilePath)){
+                    $disk->delete($oldPath);
+                }
             }
-        }
-        $customer->save();
+            $customer->save();
         }        
         else {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'activity_type' => 'required|string|max:255',
-                'SIREN' => 'string|max:255',
-                'location' => 'string|max:255',
-                'contact_person' => 'string|max:255',
-                'comments' => 'max:750'
-        ]);
-        $id = $request->id;
+                'SIREN' => 'nullable|string|min:9|max:9',
+                'location' => 'nullable|string|max:255',
+                'contact_person' => 'nullable|string|max:255',
+                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'comments' => 'nullable|string|max:2750'
+            ]);
+            $id = $request->id;
 
-        $customer = Customer::find($id);
-        $customer->title = $request->title;
-        $customer->activity_type = $request->activity_type;
-        $customer->SIREN = $request->SIREN;
-        $customer->comments = $request->comments;
-        $customer->contact_person = array(
-        'lastname' => $request->lastname,
-        'firstname' => $request->firstname,
-        'email' => $request->email,
-        'phone' => $request->phone,
-        'job_title' => $request->job_title
-        );
-        $customer->location = array(
-            'address' => $request->address,
-            'postal_code' => $request->postal_code,
-            'city' => $request->city,
-            'country' => $request->country,
-            'longitude' => $request->longitude,
-            'lattitude' => $request->lattitude
-        );
-        $customer->events_id = $request->get('shows_id');
-        $customer->is_active = $request->is_active; 
-        $customer->is_deleted = $request->is_deleted;
+            $customer = Customer::find($id);
+            $customer->title = $request->title;
+            $customer->activity_type = $request->activity_type;
+            $customer->SIREN = $request->SIREN;
+            $customer->comments = $request->comments;
+            $customer->contact_person = array(
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'job_title' => $request->job_title
+            );
+            $customer->location = array(
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'city' => $request->city,
+                'country' => $request->country,
+                'longitude' => $request->longitude,
+                'lattitude' => $request->lattitude
+            );
+            $customer->events_id = $request->get('shows_id');
+            $customer->is_active = $request->is_active; 
+            $customer->is_deleted = $request->is_deleted;
 
-        // Update Profile image
-        if ($request->hasFile('image')){
-            // Get current image path
-            $oldPath = $customer->image;
-            // Get new image
-            $file = $request->file('image');
-            // Create image name
-            $name = time() . $file->getClientOriginalName();
-            // Define the new path to image
-            $newFilePath = '/customers/' . $name;
-            // Resize new image
-            $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-            // Upload the new image
-            $disk = Storage::disk('s3');
-            $disk->put($newFilePath, $img, 'public');
-            unlink(public_path() . '/' . $name);
-            // Put in database
-            $customer->image = $newFilePath;
-            if(!empty($customer->image) && $disk->exists($newFilePath)){
-            $disk->delete($oldPath);
+            // Update Profile image
+            if ($request->hasFile('image')){
+                // Get current image path
+                $oldPath = $customer->image;
+                // Get new image
+                $file = $request->file('image');
+                // Create image name
+                $name = time() . $file->getClientOriginalName();
+                // Define the new path to image
+                $newFilePath = '/customers/' . $name;
+                // Resize new image
+                $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
+                // Upload the new image
+                $disk = Storage::disk('s3');
+                $disk->put($newFilePath, $img, 'public');
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
+                // Put in database
+                $customer->image = $newFilePath;
+                if(!empty($customer->image) && $disk->exists($newFilePath)){
+                $disk->delete($oldPath);
+                }
             }
-        }
-        $customer->save();
+            $customer->save();
         }     
         $notification = array(
             'status' => 'Le client a été correctement modifié',

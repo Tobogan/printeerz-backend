@@ -55,11 +55,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|unique:products|max:255',
             'gender' => 'required|string|max:255',
             'product_type' => 'required|string|max:255',
             'printzones_id' => 'required',
-            'description' => 'max:750'
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+            'description' => 'nullable|string|min:3|max:750'
         ]);
         $product = new Product;
         $product->title = $request->title;
@@ -70,14 +71,12 @@ class ProductController extends Controller
         $product->gender = $request->gender;
         $product->product_type = $request->product_type;
         $product->printzones_id = $request->get('printzones_id');
-        // $product->tags=$request->get('tags');
         $product->description = $request->description;
-        // $product->variants_id=$request->get('variants_id');
         $product->is_active = $request->is_active;
         $product->is_deleted = $request->is_deleted;
         $product->save();
         $disk = Storage::disk('s3');
-        if ($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             // Get file
             $file = $request->file('image');
             // Create name
@@ -88,13 +87,15 @@ class ProductController extends Controller
             $img = Image::make(file_get_contents($file))->widen(300)->save($name);
             // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Storage::disk('s3')->put($filePath, file_get_contents($file));
             // Delete public copy
-            unlink(public_path() . '/' . $name);
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             // Put in database
             $product->image = $filePath;
+            $product->imagePath = '/products/'. $product->id . '/';
+            $product->imageName = $name;
         }
-
         $product->save();
         $notification = array(
             'status' => 'Le produit a été correctement ajouté',
@@ -144,21 +145,20 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_title') == request('title')){
+        if (request('actual_title') == request('title')) {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'gender' => 'required|string|max:255',
                 'product_type' => 'required|string|max:255',
                 'printzones_id' => 'required',
-                'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
-                'description' => 'max:750'
+                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'description' => 'nullable|string|min:3|max:750'
             ]);
             
             $id = $request->product_id;
             $product = Product::find($id);
             $product->title = $request->title;
             $product->vendor = array(
-                'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
                 'name' => $request->vendor_name,
                 'reference' => $request->vendor_reference
             );
@@ -168,10 +168,10 @@ class ProductController extends Controller
             $product->tag = $request->get('tags');
             $product->description = $request->description;
             $product->variants_id=$request->get('variants_id');
-            $product->is_active = $request->is_active; //penser à mettre l'input hidden
+            $product->is_active = $request->is_active;
             $product->is_deleted = $request->is_deleted;
             // Update Profile image
-                if ($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $disk = Storage::disk('s3');
                 // Get current image path
                 $oldPath = $product->image;
@@ -187,12 +187,16 @@ class ProductController extends Controller
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
                 $product->image = $newFilePath;
-                unlink(public_path() . '/' . $name);
+                $product->imagePath = '/products/'. $product->id . '/';
+                $product->imageName = $name;
+                if (file_exists(public_path() . '/' . $name)) {
+                    unlink(public_path() . '/' . $name);
+                }
                 if(!empty($product->image) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
-            $product->save();
+            $product->update();
             }        
             else {
                 $validatedData = $request->validate([
@@ -200,14 +204,13 @@ class ProductController extends Controller
                     'gender' => 'required|string|max:255',
                     'product_type' => 'required|string|max:255',
                     'printzones_id' => 'required',
-                    'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
-                    'description' => 'max:750'
+                    'image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                    'description' => 'nullable|string|min:3|max:750'
                 ]);
                 $id = $request->product_id;
                 $product = Product::find($id);
                 $product->title = $request->title;
                 $product->vendor = array(
-                    'id' => $request->vendor_id,    // gros doute là dessus @Jo voir avec lui
                     'name' => $request->vendor_name,
                     'reference' => $request->vendor_reference
                 );
@@ -236,12 +239,16 @@ class ProductController extends Controller
                     $disk->put($newFilePath, $img, 'public');
                     // Put in database
                     $product->image = $newFilePath;
-                    unlink(public_path() . '/' . $name);
+                    $product->imagePath = '/products/'. $product->id . '/';
+                    $product->imageName = $name;
+                    if (file_exists(public_path() . '/' . $name)) {
+                        unlink(public_path() . '/' . $name);
+                    }
                     if(!empty($product->image) && $disk->exists($newFilePath)){
                         $disk->delete($oldPath);
                     }
                 }
-                $product->save();
+                $product->update();
             }
             $notification = array(
                 'status' => 'Le produit a été correctement modifié.',
@@ -259,7 +266,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        // Delete Profile image
         $disk = Storage::disk('s3');
         $filePath = $product->image;
         if(!empty($product->image) && $disk->exists($filePath)){
