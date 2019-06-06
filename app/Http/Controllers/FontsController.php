@@ -59,7 +59,7 @@ class FontsController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:fonts|string|max:255',
-            'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
+            'file_font' => 'required|mimes:ttf,opentype|max:4000'
         ]);
 
         $font = new Font;
@@ -128,7 +128,7 @@ class FontsController extends Controller
         if (request('actual_title') == request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
+                'file_font' => 'required|mimes:ttf,opentype|max:4000'
             ]);
             $id = $request->font_id;
             $font = Font::find($id);
@@ -161,7 +161,7 @@ class FontsController extends Controller
         else {
             $validatedData = $request->validate([
                 'title' => 'required|unique:fonts|string|max:255',
-                'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
+                'file_font' => 'required|mimes:ttf,opentype|max:4000'
             ]);
             $id = $request->font_id;
             $font = Font::find($id);

@@ -189,8 +189,11 @@
                                                                     {{$font['title']}}
                                                                 </td>
                                                                 <td>
-                                                                <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" data-font_id="{{$font['font_id']}}" onclick="var id=$(this).attr('data-id');var font_id=$(this).attr('data-font_id');var font=$(this).attr('data-title');deleteSelectedFontRow(id,font,font_id);$(this).closest('tr').remove();">
+                                                                {{-- <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" data-font_id="{{$font['font_id']}}" onclick="var id=$(this).attr('data-id');var font_id=$(this).attr('data-font_id');var font=$(this).attr('data-title');deleteSelectedFontRow(id,font,font_id);$(this).closest('tr').remove();">
                                                                         Supprimer 
+                                                                    </a> --}}
+                                                                    <a style="float:right" data-id="{{$component['events_component_id']}}" data-font_id="{{$font['font_id']}}" data-title="{{$font['title']}}" onclick="var id=$(this).attr('data-id');var font_id=$(this).attr('data-font_id');var font=$(this).attr('data-title');deleteShowFontRow(id,font,font_id);$(this).closest('tr').remove();">
+                                                                        Supprimer
                                                                     </a>
                                                                 </td>
                                                             </tr>
@@ -285,7 +288,7 @@
                                                                     {{$font_color['code_hexa']}}
                                                                 </td>
                                                                 <td>
-                                                                    <a data-id="{{$component['events_component_id']}}" data-title="{{$font_color['title']}}" data-hexa="{{$font_color['code_hexa']}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa=$(this).attr('data-hexa');var color=$(this).attr('data-title');deleteColorRow(id, color);deleteHexaRow(id, hexa);$(this).closest('tr').remove();">
+                                                                    <a data-id="{{$component['events_component_id']}}" data-title="{{$font_color['title']}}" data-hexa="{{$font_color['code_hexa']}}" style="float:right" onclick="var id=$(this).attr('data-id');var hexa=$(this).attr('data-hexa');var color=$(this).attr('data-title');deleteShowColorRow(id, color);deleteShowHexaRow(id, hexa);$(this).closest('tr').remove();">
                                                                         Supprimer 
                                                                     </a>
                                                                 </td>

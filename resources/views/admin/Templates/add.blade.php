@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Gabarits')
 
 @section('content')
 
@@ -137,7 +138,7 @@
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), null, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
-                                        {!! $errors->first('components_ids', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('templateComponentsList', '<p class="help-block mt-2" style="color:red;"><small>Merci de sélectionner au moins un composant.</small></p>') !!}
                                     </div>
                                     <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>

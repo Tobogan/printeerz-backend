@@ -83,14 +83,18 @@
                                 <td class="tamplates-title"><a
                                         href="{{route('edit_templates', $template->id)}}"><b>{{$template->title}}</b></a>
                                 </td>
-                                <td class="templates-category">{{ $template->category }}</td>
+                                @if($template->category !== null)
+                                    <td class="templates-category">{{ $template->category }}</td>
+                                @else
+                                    <td class="templates-category">Mainstream</td>
+                                @endif
                                 @if(isset($template->size["width"]))
-                                <td class="templates-size-width">{{ $template->size["width"] }} cm</td>
+                                <td class="templates-size-width">{{ $template->size["width"] }} mm</td>
                                 @else
                                 <td class="templates-size-width">...</td>
                                 @endif
                                 @if(isset($template->size["height"]))
-                                <td class="templates-size-height">{{ $template->size["height"] }} cm</td>
+                                <td class="templates-size-height">{{ $template->size["height"] }} mm</td>
                                 @else
                                 <td class="templates-size-height">...</td>
                                 @endif

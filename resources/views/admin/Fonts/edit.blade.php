@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', $font->title)
 
 @section('content')
 
@@ -75,7 +76,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <p class="h3">Fichier de la police</p>
-                                    <p class="text-muted mb-4">Ajoutez un nouveau fichier de police au format .ttf, .otf, .woff, .eot, .svg. (max 4mo)</p>
+                                    <p class="text-muted mb-4">Ajoutez un nouveau fichier de police au format otf,.otc,.ttf,.ttc. (max 4mo)</p>
                                 </div>
                                 <div class="col-12">
                                     <!-- First name -->

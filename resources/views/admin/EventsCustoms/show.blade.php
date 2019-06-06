@@ -1,4 +1,6 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Personnalisations')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

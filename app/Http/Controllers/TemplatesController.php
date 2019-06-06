@@ -57,6 +57,7 @@ class TemplatesController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($_REQUEST);
         $validatedData = $request->validate([
             'title' => 'required|string|unique:templates|max:255',
             'width' => 'required|string|max:255',
@@ -65,8 +66,8 @@ class TemplatesController extends Controller
             'origin_y' => 'required|string|max:255',
             'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
             'full' => 'image|mimes:jpeg,jpg,png|max:4000',
-            'category' => 'required|string|max:255',
-            'components_ids' => 'required'
+            'category' => 'nullable|string|max:255',
+            'templateComponentsList' => 'required|string|min:6|max:255'
         ]);
         $template = new Templates;
         $template->title = $request->title;
@@ -179,8 +180,8 @@ class TemplatesController extends Controller
                 'origin_y' => 'required|string|max:255',
                 'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'full' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'category' => 'required|string|max:255',
-                'components_ids' => 'required'
+                'category' => 'nullable|string|max:255',
+                'templateComponentsList' => 'required|string|min:6|max:255'
             ]);
             $id = $request->template_id;
             $template = Templates::find($id);
@@ -254,8 +255,9 @@ class TemplatesController extends Controller
                 'origin_y' => 'required|string|max:255',
                 'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'full' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'category' => 'required|string|max:255',
-                'components_ids' => 'required'
+                'category' => 'nullable|string|max:255',
+                'templateComponentsList' => 'required|string|min:6|max:255'
+
             ]);
             $id = $request->template_id;
             $template = Templates::find($id);

@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Composants')
 
 @section('content')
 

@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Zones d\'impression')
 
 @section('content')
 

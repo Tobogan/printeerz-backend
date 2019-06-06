@@ -1,12 +1,6 @@
 @extends('layouts/templateAdmin')
 @section('title', 'Utilisateurs')
-@section('alerts')
-    @if (session('status'))
-        <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert" data-dismiss="alert">
-            {{ session('status') }}
-        </div>
-    @endif
-@endsection
+
 @section('content')
 
 @if (session('status'))
