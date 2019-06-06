@@ -186,9 +186,6 @@ class EventController extends Controller
             // Upload the file
             $disk->put($filePath, file_get_contents($file), 'public');
             // Delete public copy
-            if (file_exists(public_path() . '/' . $name)) {
-                unlink(public_path() . '/' . $name);
-            }
             // Put in database
             $event->BATUrl = $filePath;
             $event->BATFileName = $name;
