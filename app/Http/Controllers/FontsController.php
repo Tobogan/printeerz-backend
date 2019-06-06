@@ -58,8 +58,8 @@ class FontsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|unique:fonts|string|max:255',
-            'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
+            'title' => 'required|unique:fonts|string|max:255'
+            // 'file_font' => 'required|file|mimes:svg,ttf,otf,eot,woff|max:4000'
         ]);
 
         $font = new Font;
