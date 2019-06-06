@@ -184,7 +184,7 @@ class EventController extends Controller
             // Define the path
             $filePath = '/events/' . $event->id . '/'. $name;
             // Upload the file
-            $disk->put($newFilePath, file_get_contents($file), 'public');
+            $disk->put($filePath, file_get_contents($file), 'public');
             // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
@@ -561,6 +561,9 @@ class EventController extends Controller
                 app('App\Http\Controllers\EventsComponentController')->destroy($events_component->id);
             }
         }
+         // Delete events_local download of this event
+        app('App\Http\Controllers\EventLocalDownloadController')->destroy($event->id);
+        
         $event->delete();
         $notification = array(
             'status' => 'L\'événement a été correctement supprimé.',
@@ -611,7 +614,7 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_ready = false;
         $event_local_download = Event_local_download::where($event_local_download->event_id,'=',$event->id);
-        if($event_local_download !== null) {
+        if ($event_local_download !== null) {
             app('App\Http\Controllers\EventLocalDownloadController')->destroy($event_local_download->id);
         }
         $event->update();

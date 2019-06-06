@@ -174,8 +174,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img'))
-                                        !!}
+                                        {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
                                         {!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                         <label class="custom-file-label" for="projectCoverUploads">Télécharger le logo</label>
                                     </div>

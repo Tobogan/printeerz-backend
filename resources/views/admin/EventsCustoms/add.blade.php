@@ -53,9 +53,9 @@
                                 </label>
                                 <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
                                 <!-- Input text title-->
-                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control'. $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])
+                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control', 'placeholder' => 'Nom'])
                                 !!}
-                                @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect ou déjà connu.</div>@endif
+                                {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                             </div>
 
                             <div class="form-group">

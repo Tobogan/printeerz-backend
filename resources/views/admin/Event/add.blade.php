@@ -129,7 +129,7 @@
                       <div class="card-header">
                           <h4 class="card-header-title mt-2">
                               Participants
-                              <p class="text-muted mt-2">Sélectionnez les participants et utilisateurs autorisées.</p>
+                              <small class="form-text text-muted my-2">Sélectionnez les participants et utilisateurs autorisées.</small>
                           </h4>
                       </div>
                       <div class="card-body">
@@ -175,7 +175,7 @@
                           BAT de l'événement
                         </label>
                         <small class="form-text text-muted">
-                            Utilisez un .pdf de moins de 5mo.
+                            Utilisez un .pdf de moins de 4mo.
                           </small>
                           {!! Form::file('BAT', array('class' => 'form-control', 'id' => 'BAT' )) !!}
                           {!! $errors->first('BAT', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}

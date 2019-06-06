@@ -80,7 +80,7 @@ class FontsController extends Controller
                 unlink(public_path() . '/' . $name);
             }
             // $disk->put($filePath, $file, 'public');
-            $disk->put($newFilePath, file_get_contents($file), 'public');
+            $disk->put($filePath, file_get_contents($file), 'public');
             // Put in database
             $font->url = $filePath;
             $font->file_name = $name;
@@ -210,6 +210,16 @@ class FontsController extends Controller
     {
         $font = Font::find($id);
         $events_customs = Events_customs::all();
+        $events_customs_with_font = Events_customs::where('font_id', '=', $id);
+        foreach($events_customs_with_font as $el) {
+            if ($events_customs_with_font !== null) {
+                $notification = array(
+                    'status' => 'Vous ne pouvez pas supprimer cette police car elle est utilisée par un événement.',
+                    'alert-type' => 'danger'
+                );
+                return redirect('admin/Fonts/index')->with($notification);
+            }
+        }
         foreach($events_customs as $events_custom){
             if(isset($events_custom['components'][0]['settings']['fonts'])){
                 foreach($events_custom['components'][0]['settings']['fonts'] as $custom_font){

@@ -52,6 +52,7 @@ class EventLocalDownloadController extends Controller
             $printzonesArray = array();
             $finalProducts = array();
             $eventLocalDownloadProducts = array();
+            $events_customs_final = array();
             // Printzones & products variant image by printzone
             foreach ($events_products as $events_product) {
                 $events_customsArray = array();
@@ -79,8 +80,8 @@ class EventLocalDownloadController extends Controller
                     foreach ($events_custom->components as $component) {
                         if ($component['component_type'] == 'image') {
                             $eventsCustomImageArray = array(
-                                'componentTitle' => $component['title'],
-                                'componentType' => $component['component_type'],
+                                'title' => $component['title'],
+                                'type' => $component['component_type'],
                                 'image' => $component['settings']['image_url'],
                                 'width' => $component['settings']['position']['width'],
                                 'height' => $component['settings']['position']['height'],
@@ -91,8 +92,8 @@ class EventLocalDownloadController extends Controller
                         }
                         else if ($component['component_type'] == 'input') {
                             $eventsCustomInputArray = array(
-                                'componentTitle' => $component['title'],
-                                'componentType' => $component['component_type'],
+                                'title' => $component['title'],
+                                'type' => $component['component_type'],
                                 'input_min'=> $component['settings']['input_min'],
                                 'input_max'=> $component['settings']['input_max'],
                                 'font_first_letter'=> $component['settings']['font_first_letter'],
@@ -106,11 +107,12 @@ class EventLocalDownloadController extends Controller
                             array_push($events_customsArray, $eventsCustomInputArray);
                         }
                     }
-                    $events_customs_final = array(
+                    $events_customs_reformed = array(
                         'title' => $events_custom->title,
                         'template_title' => $events_custom->template_title,
                         'components' => $events_customsArray
                     );
+                    array_push($events_customs_final, $events_customs_reformed);
                 }
                 // Products_variants
                 foreach ($events_product->variants as $variant) {

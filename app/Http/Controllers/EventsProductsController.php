@@ -270,7 +270,7 @@ class EventsProductsController extends Controller
             $event->is_ready = false;
             $event->update();
             $notification = array(
-                'status' => 'Le client a été correctement ajouté',
+                'status' => 'Le produit a été correctement modifié.',
                 'alert-type' => 'success'
             );
             return redirect('admin/EventsProducts/show/'.$events_product->id)->with($notification);
@@ -294,7 +294,7 @@ class EventsProductsController extends Controller
             $event->is_ready = false;
             $event->update();
             $notification = array(
-                'status' => 'Le client a été correctement ajouté',
+                'status' => 'Le produit a été correctement modifié.',
                 'alert-type' => 'success'
             );
             return redirect('admin/EventsProducts/show/'.$events_product->id)->with($notification);
@@ -312,7 +312,7 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $event = Event::find($events_product->event_id);
         // here I search the id in event array and I delete it
-        function removeElement($array,$value) {
+        function remove($array,$value) {
             if (($key = array_search($value, $array)) !== false) {
                 unset($array[$key]);
             }
@@ -324,11 +324,13 @@ class EventsProductsController extends Controller
                     $id_to_delete = $events_product_id;
                 }
             }
-        $result = removeElement($event->event_products_id, $id_to_delete);
-        $arr = $event->event_products_id;
-        $arr = $result;
-        $event->event_products_id = $arr;
-        $event->update();
+            if (isset($id_to_delete)) {
+                $result = remove($event->event_products_id, $id_to_delete);
+                $arr = $event->event_products_id;
+                $arr = $result;
+                $event->event_products_id = $arr;
+                $event->update();
+            }
         }
         $events_customs = Events_customs::where('events_product_id','=',$id)->get();
         if($events_customs != null){

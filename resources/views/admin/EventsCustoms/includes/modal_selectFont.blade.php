@@ -1,4 +1,4 @@
-{{-- Add color modal --}}
+{{-- select font modal --}}
 <div class="modal fade" id="selectFontModal" tabindex="-1" role="dialog" aria-labelledby="selectFontModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

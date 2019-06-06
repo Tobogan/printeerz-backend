@@ -65,8 +65,8 @@ $arrayEventsComponentsIds = array();
     @if($events_component->events_custom_id == $events_custom->id)
         {{-- For every components we put id in an array --}}
         <?php 
-        $i++;
-        array_push($arrayEventsComponentsIds, $events_component->id);
+            $i++;
+            array_push($arrayEventsComponentsIds, $events_component->id);
          ?>
         <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$events_component->id}}">
         <input type="hidden" name="{{'comp_type_'.$events_component->id}}" id="{{'comp_type_'.$events_component->id}}" value="{{$events_component->type}}">
@@ -148,7 +148,7 @@ $arrayEventsComponentsIds = array();
                                             </h4>
                                         </div>
                                         <div class="col-auto">
-                                                <a href="#" class="buttonFont btn btn-sm btn-primary"
+                                            <a href="#" class="buttonFont btn btn-sm btn-primary"
                                                 data-toggle="modal" data-target="#addFontModal"
                                                 data-id="{{$events_component->id}}">
                                                 +
@@ -156,11 +156,11 @@ $arrayEventsComponentsIds = array();
                                         </div>
                                         <div class="col-auto">
                                             <a href="#" class="buttonFont btn btn-sm btn-primary"
-                                            data-toggle="modal" data-target="#selectFontModal"
-                                            data-id="{{$events_component->id}}">
-                                            Sélectionner une police
-                                        </a>
-                                    </div>
+                                                data-toggle="modal" data-target="#selectFontModal"
+                                                data-id="{{$events_component->id}}">
+                                                Sélectionner une police
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">

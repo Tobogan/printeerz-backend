@@ -55,9 +55,15 @@
         </div>
     </div>
 </div>
-<?php $i=0; ?>
+<?php 
+    $i=0; 
+    $arrayEventsComponentsIds = array();
+?>
 @foreach($events_custom->components as $component)
-    <?php $i++; ?>
+    <?php 
+        $i++; 
+        array_push($arrayEventsComponentsIds, $component['events_component_id']);
+    ?>
     <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$component['events_component_id']}}">
     <input type="hidden" name="{{'comp_type_'.$component['events_component_id']}}" value="{{$component['component_type']}}">
     <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
@@ -77,11 +83,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <!-- Input -->
                                     {!! Form::text('option_title'.$i, $component['title'], ['class' => 'form-control','placeholder' => 'Entrer le nom']) !!}
                                 </div>
                                 <div class="col-12">
-                                    <p class="text-muted">Vous pouvez changer le nom de ce composant pour cette personnalisation.</p>
+                                    <small class="text-muted">Vous pouvez changer le nom de ce composant pour cette personnalisation.</small>
                                 </div>
                             </div>
                         </div>
@@ -97,25 +102,19 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-12 col-md-6">
-                                                <!-- First name -->
                                                 <div class="form-group">
-                                                    <!-- Label -->
                                                     <label>
                                                         Largeur (mm)
                                                     </label>
-                                                    <!-- Input -->
                                                     {!! Form::number('width'.$i, $component['settings']['position']['width'],
                                                     ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
-                                                <!-- First name -->
                                                 <div class="form-group">
-                                                    <!-- Label -->
                                                     <label>
                                                         Hauteur (mm)
                                                     </label>
-                                                    <!-- Input -->
                                                     {!! Form::number('height'.$i, $component['settings']['position']['height'],
                                                     ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
                                                 </div>
@@ -135,10 +134,17 @@
                                         </h4>
                                     </div>
                                     <div class="col-auto">
-                                            <a href="#" style="float:right" class="buttonFont btn btn-sm btn-primary"
-                                            data-toggle="modal" data-target="#addFontModal"
+                                            <a href="#" class="buttonFont btn btn-sm btn-primary"
+                                                data-toggle="modal" data-target="#addFontModal"
+                                                data-id="{{$component['events_component_id']}}">
+                                                +
+                                            </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="#" class="buttonFont btn btn-sm btn-primary"
+                                            data-toggle="modal" data-target="#selectFontModal"
                                             data-id="{{$component['events_component_id']}}">
-                                            Ajoutez une police
+                                            Sélectionner une police
                                         </a>
                                     </div>
                                 </div>
@@ -160,45 +166,43 @@
                                                             <th></th>
                                                         </tr>
                                                     </thead>
-                            
                                                     <tbody class="list" id="{{'font_name_list'.$component['events_component_id']}}">
+                                                        <?php 
+                                                        $array_font_title = array();
+                                                        $array_font_transform = array();
+                                                        $array_font_url = array();
+                                                        $array_font_weight = array();
+                                                        $array_font_file_name = array();
+                                                        $array_font_id = array();
+                                                        ?>
+                                                        @foreach($component['settings']['fonts'] as $font)
                                                             <?php 
-                                                            $array_font_title = array();
-                                                            $array_font_transform = array();
-                                                            $array_font_url = array();
-                                                            $array_font_weight = array();
-                                                            $array_font_file_name = array();
-                                                            $array_font_id = array();
+                                                                array_push($array_font_title, $font['title']);
+                                                                array_push($array_font_transform, $font['font_transform']);
+                                                                array_push($array_font_url, $font['font_url']);
+                                                                array_push($array_font_weight, $font['font_weight']);
+                                                                array_push($array_font_file_name, $font['font_file_name']);
+                                                                array_push($array_font_id, $font['font_id']);
                                                             ?>
-                                                            @foreach($component['settings']['fonts'] as $font)
-                                                                <?php 
-                                                                    array_push($array_font_title, $font['title']);
-                                                                    array_push($array_font_transform, $font['font_transform']);
-                                                                    array_push($array_font_url, $font['font_url']);
-                                                                    array_push($array_font_weight, $font['font_weight']);
-                                                                    array_push($array_font_file_name, $font['font_file_name']);
-                                                                    array_push($array_font_id, $font['font_id']);
-                                                                ?>
-                                                                <tr>
-                                                                    <td class="font-name">
-                                                                        {{$font['title']}}
-                                                                    </td>
-                                                                    <td>
-                                                                    <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" data-font_id="{{$font['font_id']}}" onclick="var id=$(this).attr('data-id');var font_id=$(this).attr('data-font_id');var font=$(this).attr('data-title');deleteSelectedFontRow(id,font,font_id);$(this).closest('tr').remove();">
-                                                                            Supprimer 
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                            <?php 
-                                                                $str_font_title = implode(',',$array_font_title);
-                                                                $str_font_transform = implode(',',$array_font_transform);
-                                                                $str_font_url = implode(',',$array_font_url);
-                                                                $str_font_weight = implode(',',$array_font_weight);
-                                                                $str_font_file_name = implode(',',$array_font_file_name);
-                                                                $str_font_id = implode(',',$array_font_id);
-
-                                                            ?>
+                                                            <tr>
+                                                                <td class="font-name">
+                                                                    {{$font['title']}}
+                                                                </td>
+                                                                <td>
+                                                                <a style="float:right" data-title="{{$font['title']}}" data-id="{{$component['events_component_id']}}" data-font_id="{{$font['font_id']}}" onclick="var id=$(this).attr('data-id');var font_id=$(this).attr('data-font_id');var font=$(this).attr('data-title');deleteSelectedFontRow(id,font,font_id);$(this).closest('tr').remove();">
+                                                                        Supprimer 
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        <?php 
+                                                            $str_font_title = implode(',',$array_font_title);
+                                                            $str_font_transform = implode(',',$array_font_transform);
+                                                            $str_font_url = implode(',',$array_font_url);
+                                                            $str_font_weight = implode(',',$array_font_weight);
+                                                            $str_font_file_name = implode(',',$array_font_file_name);
+                                                            $str_font_id = implode(',',$array_font_id);
+                                                        ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -215,8 +219,8 @@
                                     <div id="fontsToDelete">
                                         <input type="hidden" name="{{'fontsToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsToDeleteList'.$component['events_component_id']}}">
                                         <input type="hidden" name="{{'fontsIdsToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsIdsToDeleteList'.$component['events_component_id']}}">
-                                        <input type="hidden" name="{{'fontsFileNameToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsFileNameToDeleteList'.$component['events_component_id']}}"> {{-- font file name --}}
-                                        <input type="hidden" name="{{'font_urlToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'font_urlToDeleteList'.$component['events_component_id']}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
+                                        <input type="hidden" name="{{'fontsWeightsToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsWeightsToDeleteList'.$component['events_component_id']}}"> {{-- font file name --}}
+                                        <input type="hidden" name="{{'fontsTransformToDeleteList'.$component['events_component_id'].'[]'}}" id="{{'fontsTransformToDeleteList'.$component['events_component_id']}}" > {{-- removed value="/events/Roboto-Black.ttf" --}}
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -236,7 +240,7 @@
                                         <a href="#" class="buttonColor btn btn-sm btn-primary"
                                             data-toggle="modal" data-target="#addColorModal"
                                             data-id="{{$component['events_component_id']}}">
-                                            Ajoutez une couleur
+                                            Ajouter une couleur
                                         </a>
                                     </div>
                                 </div>
@@ -263,7 +267,6 @@
                                                             <th></th>
                                                         </tr>
                                                     </thead>
-                            
                                                     <tbody class="list" id="{{'color_name_list'.$component['events_component_id']}}">
                                                         <?php 
                                                         $array_font_color = array();
@@ -305,7 +308,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <p class="text-muted">Vous pouvez ajouter ou supprimer des couleurs de polices à la liste.</p>
+                                            <small class="text-muted">Vous pouvez ajouter ou supprimer des couleurs de polices à la liste.</small>
                                         </div>
                                     </div>
                                 </div>
@@ -314,20 +317,15 @@
                         @elseif($component['component_type'] == 'image')
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-header-title">
+                                    <h4 class="card-header-title mt-2">
                                         Image du composant
+                                        <p></p><small class="text-muted">Modifiez ici l'image du composant.</small></p>
                                     </h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <div class="custom-file">
-                                            {!! Form::file('comp_image'.$i, array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                            <label class="custom-file-label" for="photo_profile">Modifiez l'image</label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <p class="text-muted">Modifiez ici l'image du composant.</p>
+                                        <label for="photo_profile">Modifiez l'image</label>
+                                        {!! Form::file('comp_image'.$component['events_component_id'], array('class' => 'form-control', 'id' =>'photo_profile')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -463,6 +461,7 @@
         </div>
     </div>
 @endforeach
+<input type="hidden" name="arrayEventsComponentsIds[]" value="{{ json_encode($arrayEventsComponentsIds) }}" id="arrayEventsComponentsIds">
 
 
 

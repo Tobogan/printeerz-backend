@@ -95,6 +95,7 @@ Route::post('admin/EventsCustoms/store', 'EventsCustomsController@store')->name(
 Route::get('admin/EventsCustoms/show/{id}', 'EventsCustomsController@show')->name('show_eventsCustoms');
 Route::get('admin/EventsCustoms/edit/{id}', 'EventsCustomsController@edit')->name('edit_eventsCustoms');
 Route::post('admin/EventsCustoms/update', 'EventsCustomsController@update')->name('update_eventsCustoms');
+Route::post('admin/EventsCustoms/showUpdate', 'EventsCustomsController@show_update')->name('show_update_eventsCustoms');
 Route::get('admin/EventsCustoms/destroy/{id}', 'EventsCustomsController@destroy')->name('destroy_eventsCustoms');
 Route::get('admin/EventsCustoms/desactivate/{id}', 'EventsCustomsController@desactivate')->name('desactivate_eventsCustoms');
 Route::get('admin/EventsCustoms/activate/{id}', 'EventsCustomsController@activate')->name('activate_eventsCustoms');

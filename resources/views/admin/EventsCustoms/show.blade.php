@@ -45,12 +45,15 @@
             <div class="tab-content" id="myTabContent">
                 @include('admin.EventsCustoms.includes.show.tab-content')
             </div>
+            {{-- Store Event custom event_id --}}
+            <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id"
+                value="{{$events_custom->event_id}}">
             {{-- Store Event custom id --}}
             <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
             {{-- Store Event product id --}}
             <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
             {{-- Store Event product title --}}
-            <input type="hidden" class="form-control" name="actual_title" value="{{$events_product->title}}">
+            <input type="hidden" class="form-control" name="actual_title" value="{{$events_custom->title}}">
             {!! Form::hidden('is_active', $events_custom->is_active, [ 'id'=>'formActive']) !!}
             {{-- Custom actions --}}
             <hr class="mt-4 mb-5">
@@ -71,6 +74,7 @@
 {{-- Modals includes --}}
 @include('admin.EventsCustoms.includes.modal_addColor')
 @include('admin.EventsCustoms.includes.modal_addFont')
+@include('admin.EventsCustoms.includes.modal_selectFont')
 
 @section('javascripts')
 @parent()
