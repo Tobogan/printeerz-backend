@@ -66,8 +66,8 @@
                                     <!-- First name -->
                                     <div class="form-group">
                                             <label >Charger un fichier</label>
-                                        {!! Form::file('file_font', array( 'class' => 'form-control'. $errors->first('file_font', ' is-invalid'), 'id' => 'file_font')) !!}
-                                        @if($errors->has('file_font'))<div class="invalid-feedback">Fichier absent ou trop volumineux.</div>@endif
+                                        {!! Form::file('file_font', array( 'class' => 'form-control', 'id' => 'file_font')) !!}
+                                        {!! $errors->first('file_font', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
