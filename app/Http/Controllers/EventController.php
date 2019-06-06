@@ -374,9 +374,6 @@ class EventController extends Controller
                 $event->BATUrl = $newFilePath;
                 $event->BATFileName = $name;
                 $event->BATPath = '/events/' . $event->id . '/';
-                if (file_exists(public_path() . '/' . $name)) {
-                    unlink(public_path() . '/' . $name);
-                }
                 if(!empty($event->BAT) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
