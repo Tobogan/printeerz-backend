@@ -38,48 +38,19 @@
                                         <label>
                                             Nom de la zone
                                         </label>
-                                        {!! Form::text('name', null, ['class' => 'form-control'. $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
+                                        {!! Form::text('name', null, ['class' => 'form-control'. $errors->first('name',
+                                        ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce
+                                            champ</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             Zone
                                         </label>
-                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('zone', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Taille de la zone d'impression
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            Largeur (cm)
-                                        </label>
-                                        {!! Form::number('width', null, ['class' => 'form-control'. $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone ']) !!}
-                                        @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            Hauteur (cm)
-                                        </label>
-                                        {!! Form::number('height', null, ['class' => 'form-control'. $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone']) !!}
-                                        @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce champ</div>@endif
+                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('zone',
+                                        ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce
+                                            champ</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -100,20 +71,58 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Largeur (cm)
+                                            Largeur (mm)
                                         </label>
-                                        {!! Form::number('tray_width', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                                        {!! Form::number('tray_width', null, ['class' => 'form-control', 'placeholder'
+                                        => '']) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            Hauteur (cm)
+                                            Hauteur (mm)
                                         </label>
-                                        <!-- Input -->
-                                        {!! Form::number('tray_height', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                                        {!! Form::number('tray_height', null, ['class' => 'form-control', 'placeholder'
+                                        => '']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille de la zone d'impression
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Largeur (mm)
+                                        </label>
+                                        {!! Form::number('width', null, ['class' => 'form-control'.
+                                        $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone '])
+                                        !!}
+                                        @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce
+                                            champ</div>@endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Hauteur (mm)
+                                        </label>
+                                        {!! Form::number('height', null, ['class' => 'form-control'.
+                                        $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone'])
+                                        !!}
+                                        @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
+                                            champ</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +145,7 @@
                                     <div class="form-group">
                                         <!-- Label -->
                                         <label>
-                                            X (cm)
+                                            X (mm)
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
@@ -148,7 +157,7 @@
                                     <div class="form-group">
                                         <!-- Label -->
                                         <label>
-                                            Y (cm)
+                                            Y (mm)
                                         </label>
                                         <!-- Input -->
                                         {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
@@ -172,7 +181,8 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <input id="textDescription" type="textarea" class="description" name="description" rows="3">
+                                        <input id="textDescription" type="textarea" class="description"
+                                            name="description" rows="3">
                                     </div>
                                 </div>
                             </div>
@@ -180,33 +190,18 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="row" >
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                <div class="custom-control custom-switch">
-                                    <input name="is_active" type="checkbox" class="custom-control-input" id="isActive">
-                                    <label class="custom-control-label" for="isActive">Ce composant est-il actif ?</label>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
             {!! Form::hidden('is_active', 'true', [ 'id'=>'formActive']) !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
                         {!! Form::submit('Créer la zone', ['class' => 'btn btn-primary', 'style' => 'float: right']) !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('index_printzones')}}">Annuler</a>
+                        <a class='btn btn-secondary' style="float: left"
+                            href="{{route('index_printzones')}}">Annuler</a>
                     </div>
                 </div>
             </div>
-        {!! Form::close() !!}
+            {!! Form::close() !!}
+        </div>
     </div>
-</div>
-@endsection
+    @endsection

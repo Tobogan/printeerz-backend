@@ -111,7 +111,7 @@ class EventController extends Controller
         $event->name = $request->name;
         $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
-        $event->is_ready = false;
+        $event->status = "draft";
         $event->location = array(
             'address' => $request->address,
             'postal_code' => $request->postal_code,
@@ -132,66 +132,50 @@ class EventController extends Controller
         //     'comment' => $request->comment,
         //     'created_at' => $request->created_at
         // );
-
         $event->save();
-
         $disk = Storage::disk('s3');
         if ($request->hasFile('logo_img')){
-            // Get file
             $file = $request->file('logo_img');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/events/' . $event->id . '/'. $name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $event->logoUrl = $filePath;
             $event->logoFileName = $name;
             $event->logoPath = '/events/' . $event->id . '/';
         }
         if ($request->hasFile('cover_img')){
-            // Get file
             $file = $request->file('cover_img');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/events/' . $event->id . '/'. $name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->heighten(1920)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $event->coverImgUrl = $filePath;
             $event->coverImgFileName = $name;
             $event->coverImgPath = '/events/' . $event->id . '/';
         }
         if ($request->hasFile('BAT')){
-            // Get file
             $file = $request->file('BAT');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/events/' . $event->id . '/'. $name;
-            // Upload the file
             $disk->put($filePath, file_get_contents($file), 'public');
-            // Delete public copy
-            // Put in database
             $event->BATUrl = $filePath;
             $event->BATFileName = $name;
             $event->BATPath = '/events/' . $event->id . '/';
-        } 
+        }
         $event->save();
+        // here I push the id in the corresponding customer
+        $customer = Customer::find($event->customer_id);
+        $arr_event= $customer->events_id;
+        array_push($arr_event, $event->id);
+        $customer->events_id = $arr_event;
+        $customer->update();
         $notification = array(
             'status' => 'L\'événement a été correctement ajouté.',
             'alert-type' => 'success'
@@ -265,11 +249,12 @@ class EventController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_name') == request('name')){
+        if (request('actual_customer_id') == request('customer_id')){
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'advertiser' => 'required|string|max:255',
                 'type' => 'nullable|string|max:255',
+                'customer_id' => 'required|string|max:255',
                 'employees' => 'required',
                 'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
@@ -281,7 +266,6 @@ class EventController extends Controller
             $event = Event::find($id);
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
-            $event->customer_id = $request->customer_id;
             $event->location = array(
                 'address' => $request->address,
                 'postal_code' => $request->postal_code,
@@ -306,19 +290,12 @@ class EventController extends Controller
             // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->logoUrl;
-                // Get new image
                 $file = $request->file('logo_img');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                // Put in database
                 $event->logoUrl = $newFilePath;
                 $event->logoFileName = $name;
                 $event->logoPath = '/events/' . $event->id . '/';
@@ -332,19 +309,12 @@ class EventController extends Controller
             // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->coverImgUrl;
-                // Get new image
                 $file = $request->file('cover_img');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(1920)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                // Put in database
                 $event->coverImgUrl = $newFilePath;
                 $event->coverImgFileName = $name;
                 $event->coverImgPath = '/events/' . $event->id . '/';
@@ -358,19 +328,11 @@ class EventController extends Controller
             // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->BATUrl;
-                // Get new image
                 $file = $request->file('BAT');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Upload the new image
-                // $disk->put($newFilePath, $file, 'public');
                 $disk->put($newFilePath, file_get_contents($file), 'public');
-                // Storage::disk('s3')->put($newFilePath, file_get_contents($file));
-                // Put in database
                 $event->BATUrl = $newFilePath;
                 $event->BATFileName = $name;
                 $event->BATPath = '/events/' . $event->id . '/';
@@ -398,7 +360,20 @@ class EventController extends Controller
             $event = Event::find($id);
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
+            // delete event id in the customer data
+            $customer = Customer::find($event->customer_id);
+            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($customer->events_id, $event->id);
+            $arr = $customer->events_id;
+            $arr = $result;
+            $customer->events_id = $arr;
+            $customer->update();
             $event->customer_id = $request->customer_id;
+            // here I push the id in the corresponding customer
+            $customer = Customer::find($request->customer_id);
+            $arr_event= $customer->events_id;
+            array_push($arr_event, $event->id);
+            $customer->events_id = $arr_event;
+            $customer->update();
             $event->location = array(
                 'address' => $request->address,
                 'postal_code' => $request->postal_code,
@@ -422,7 +397,6 @@ class EventController extends Controller
             // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->logoUrl;
                 // Get new image
                 $file = $request->file('logo_img');
@@ -448,19 +422,14 @@ class EventController extends Controller
             // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->coverImgUrl;
                 // Get new image
                 $file = $request->file('cover_img');
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                // Put in database
                 $event->coverImgUrl = $newFilePath;
                 $event->coverImgFileName = $name;
                 $event->coverImgPath = '/events/' . $event->id . '/';
@@ -474,17 +443,11 @@ class EventController extends Controller
             // Update BAT File
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $event->BATUrl;
-                // Get new image
                 $file = $request->file('BAT');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Upload the new image
                 $disk->put($newFilePath, file_get_contents($file), 'public');
-                // Put in database
                 $event->BATUrl = $newFilePath;
                 $event->BATFileName = $name;
                 $event->BATPath = '/events/' . $event->id . '/';
@@ -496,7 +459,7 @@ class EventController extends Controller
                 }
             }
         }
-        $event->is_ready = false;
+        $event->status = "draft";
         $event_local_download = Event_local_download::where('eventId','=',$event->id);
         if ($event_local_download) {
             $event_local_download->delete();
@@ -505,11 +468,34 @@ class EventController extends Controller
         // Event to is not ready after an update
 
         $notification = array(
-            'status' => 'L\'événement a été correctement modifié."',
+            'status' => 'L\'événement a été correctement modifié.',
             'alert-type' => 'success'
             );
             
         return redirect('admin/Event/show/' . $event->id)->with($notification);
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeStatus(Request $request, $event_id, $new_status)
+    {
+        if ($request->ajax()) {
+            $event = Event::find($event_id);
+            $event->status = $new_status;
+            $event->update();
+            $response = array(
+                'status' => 'success',
+                'msg' => 'You have change status of this event.'
+            );
+            return response()->json($response);
+        }
+        else {
+            return 'no';
+        }
     }
 
     /**
@@ -523,23 +509,30 @@ class EventController extends Controller
         $event = Event::find($id);
         // Delete logo image
         $disk = Storage::disk('s3');
-        $filePath = $event->logo;
-        if(!empty($event->logo) && $disk->exists($filePath)){
-            $disk->delete($filePath);
+        if (isset($event->logoUrl)) {
+            $filePath = $event->logoUrl;
+            if (!empty($event->logoUrl) && $disk->exists($filePath)){
+                $disk->delete($filePath);
+            }
         }
         // Delete cover image
-        $filePath = $event->cover_img;
-        if(!empty($event->cover_img) && $disk->exists($filePath)){
-            $disk->delete($filePath);
+        if (isset($event->coverImgUrl)) {
+            $filePath = $event->coverImgUrl;
+            if (!empty($event->coverImgUrl) && $disk->exists($filePath)){
+                $disk->delete($filePath);
+            }
         }
+        
         // Delete BAT file
-        $filePath = $event->BAT;
-        if(!empty($event->BAT) && $disk->exists($filePath)){
-            $disk->delete($filePath);
+        if (isset($event->BATUrl)) {
+            $filePath = $event->BATUrl;
+            if (!empty($event->BATUrl) && $disk->exists($filePath)){
+                $disk->delete($filePath);
+            }
         }
         // Delete events_customs of this event
         $events_products = Events_products::where('event_id', '=', $id)->get();
-        if($events_products != null){
+        if ($events_products != null){
             foreach($events_products as $events_product){
                 app('App\Http\Controllers\EventsProductsController')->destroy($events_product->id);
             }
@@ -559,8 +552,15 @@ class EventController extends Controller
             }
         }
          // Delete events_local download of this event
-        app('App\Http\Controllers\EventLocalDownloadController')->destroy($event->id);
-        
+        app('App\Http\Controllers\EventLocalDownloadController')->destroy($id);
+        // delete event id in the customer data
+        $customer = Customer::find($event->customer_id);
+        $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($customer->events_id, $event->id);
+        $arr = $customer->events_id;
+        $arr = $result;
+        $customer->events_id = $arr;
+        $customer->update();
+        // Now I can delete the event
         $event->delete();
         $notification = array(
             'status' => 'L\'événement a été correctement supprimé.',
@@ -609,7 +609,7 @@ class EventController extends Controller
     public function is_not_ready($id)
     {
         $event = Event::find($id);
-        $event->is_ready = false;
+        $event->status = "draft";
         $event_local_download = Event_local_download::where($event_local_download->event_id,'=',$event->id);
         if ($event_local_download !== null) {
             app('App\Http\Controllers\EventLocalDownloadController')->destroy($event_local_download->id);

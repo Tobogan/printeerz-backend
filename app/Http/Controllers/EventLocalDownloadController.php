@@ -40,14 +40,12 @@ class EventLocalDownloadController extends Controller
             $event_local_download->eventId = $event->id;
             $event_local_download->eventCoverImg = $event->coverImgUrl;
             $event_local_download->eventLogoUrl = $event->logoUrl;
-            // app('App\Http\Controllers\EventLocalDownloadController')->download_file($event->logoUrl,$event->logoFileName,$event->logoPath);
             $event_local_download->advertiserName = $event->advertiser;
             $event_local_download->customerName = $customer->title;
             $event_local_download->contactFullName = $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"];
             $event_local_download->contactPhone = $customer->contact_person["phone"];
             $event_local_download->productsCount = count($events_products);
             // Instance empty array for loop
-            $events_customsArray = array();
             $productsVariantsArray = array();
             $printzonesArray = array();
             $finalProducts = array();
@@ -77,34 +75,10 @@ class EventLocalDownloadController extends Controller
                 // Events customs
                 foreach ($events_product->event_customs_ids as $events_custom_id) {
                     $events_custom = Events_customs::find($events_custom_id);
-                    foreach ($events_custom->components as $component) {
-                        if ($component['component_type'] == 'image') {
-                            $eventsCustomImageArray = array(
-                                'title' => $component['title'],
-                                'type' => $component['component_type'],
-                                'image' => $component['settings']['image_url'],
-                                'width' => $component['settings']['position']['width'],
-                                'height' => $component['settings']['position']['height'],
-                                'origin_x' => $component['settings']['position']['origin_x'],
-                                'origin_y' => $component['settings']['position']['origin_y']
-                            );
-                            array_push($events_customsArray, $eventsCustomImageArray);
-                        }
-                        else if ($component['component_type'] == 'input') {
-                            $eventsCustomInputArray = array(
-                                'title' => $component['title'],
-                                'type' => $component['component_type'],
-                                'input_min'=> $component['settings']['input_min'],
-                                'input_max'=> $component['settings']['input_max'],
-                                'font_first_letter'=> $component['settings']['font_first_letter'],
-                                'fonts' => $component['settings']['fonts'],
-                                'font_colors' => $component['settings']['font_colors'],
-                                'width' => $component['settings']['position']['width'],
-                                'height' => $component['settings']['position']['height'],
-                                'origin_x' => $component['settings']['position']['origin_x'],
-                                'origin_y' => $component['settings']['position']['origin_y']
-                            );
-                            array_push($events_customsArray, $eventsCustomInputArray);
+                    if ($events_custom !== null) {
+                        foreach ($events_custom->components as $component) {
+                            $events_customsArray = array();
+                            array_push($events_customsArray, $component);
                         }
                     }
                     $events_customs_reformed = array(
@@ -117,16 +91,18 @@ class EventLocalDownloadController extends Controller
                 // Products_variants
                 foreach ($events_product->variants as $variant) {
                     $products_variant = Products_variants::find($variant[0]);
-                    $productsVariantData = array(
-                        'size' => $products_variant->size,
-                        'color' => $products_variant->color,
-                        'image' => $products_variant->image,
-                        'quantity' => $variant[1]
-                    );
-                    array_push($productsVariantsArray, $productsVariantData);
+                    if ($products_variant !== null) {
+                        $productsVariantData = array(
+                            'size' => $products_variant->size,
+                            'color' => $products_variant->color,
+                            'image' => $products_variant->image,
+                            'printzones' => $products_variant->printzones,
+                            'quantity' => $variant[1]
+                        );
+                        array_push($productsVariantsArray, $productsVariantData);
+                    }
                 }
                 // Final JSON
-                if (isset($events_customs_final)) {
                     $eventLocalDownloadProduct = array(
                         'id' => $events_product->id,
                         'title' => $events_product->title,
@@ -136,21 +112,10 @@ class EventLocalDownloadController extends Controller
                         'products_variants' => $productsVariantsArray,
                         'events_customs' => $events_customs_final
                     );
-                }
-                else {
-                    $eventLocalDownloadProduct = array(
-                        'id' => $events_product->id,
-                        'title' => $events_product->title,
-                        'gender' => $product->gender,
-                        'type' => $product->product_type,
-                        'printzones' => $printzonesArray,
-                        'products_variants' => $productsVariantsArray
-                    );
-                }
                 array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
             }
             $event_local_download->products = $eventLocalDownloadProducts;
-            $event->is_ready = true;
+            $event->status = "ready";
             $locals = Event_local_download::where('eventId','=',$event->id)->get();
             foreach ($locals as $local) {
                 $local->delete();
@@ -210,11 +175,13 @@ class EventLocalDownloadController extends Controller
      */
     public function destroy($event_id) {
         $event = Event::find($event_id);
-        $event->is_ready = false;
+        $event->status = "draft";
         $event_local_downloads = Event_local_download::where('eventId','=',$event_id)->get();
         $event->update();
-        foreach($event_local_downloads as $event_local_download) {
-            $event_local_download->delete();
+        if ($event_local_downloads !== null) {
+            foreach($event_local_downloads as $event_local_download) {
+                $event_local_download->delete();
+            }
         }
         $response = array(
             'status' => 'success',

@@ -80,7 +80,7 @@ class EventsProductsController extends Controller
                 $arr_events_product = $event->event_products_id;
                 array_push($arr_events_product, $events_product->id);
                 $event->event_products_id = $arr_events_product;
-                $event->is_ready = false;
+                $event->status = "draft";
                 $event->update();
                 // response for ajax
                 $response = array(
@@ -124,9 +124,9 @@ class EventsProductsController extends Controller
                     array_push($array, $variants);
                     $events_product->variants = $array;
                     $events_product->save();
-                    // Change event is_ready status
+                    // Change event status
                     $event = Event::find($events_product->event_id);
-                    $event->is_ready = false;
+                    $event->status = "draft";
                     $event->update();
                     $response = array(
                         'status' => 'success',
@@ -157,7 +157,7 @@ class EventsProductsController extends Controller
                     $events_product->variants = $array;
                     $events_product->save();
                     $event = Event::find($events_product->event_id);
-                    $event->is_ready = false;
+                    $event->status = "draft";
                     $event->update();
                     $response = array(
                         'status' => 'success',
@@ -173,9 +173,7 @@ class EventsProductsController extends Controller
         }
     }
 
-
-
-        /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -267,7 +265,7 @@ class EventsProductsController extends Controller
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
             $event = Event::find($events_product->event_id);
-            $event->is_ready = false;
+            $event->status = "draft";
             $event->update();
             $notification = array(
                 'status' => 'Le produit a été correctement modifié.',
@@ -291,7 +289,7 @@ class EventsProductsController extends Controller
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();
             $event = Event::find($events_product->event_id);
-            $event->is_ready = false;
+            $event->status = "draft";
             $event->update();
             $notification = array(
                 'status' => 'Le produit a été correctement modifié.',
@@ -312,12 +310,6 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $event = Event::find($events_product->event_id);
         // here I search the id in event array and I delete it
-        function remove($array,$value) {
-            if (($key = array_search($value, $array)) !== false) {
-                unset($array[$key]);
-            }
-            return $array;
-        }
         if($event->event_products_id !== null) {
             foreach($event->event_products_id as $events_product_id) {
                 if($events_product_id == $id) {
@@ -325,7 +317,7 @@ class EventsProductsController extends Controller
                 }
             }
             if (isset($id_to_delete)) {
-                $result = remove($event->event_products_id, $id_to_delete);
+                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($event->event_products_id, $id_to_delete);
                 $arr = $event->event_products_id;
                 $arr = $result;
                 $event->event_products_id = $arr;
@@ -340,7 +332,7 @@ class EventsProductsController extends Controller
         }
         $events_product->delete();
         $event = Event::find($events_product->event_id);
-        $event->is_ready = false;
+        $event->status = "draft";
         $event->update();
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }

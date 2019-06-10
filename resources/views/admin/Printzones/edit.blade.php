@@ -69,7 +69,7 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Largeur (cm)
+                                            Largeur (mm)
                                         </label>
                                         {!! Form::number('width', $printzone->width, ['class' => 'form-control'.
                                         $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone '])
@@ -81,13 +81,48 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Hauteur (cm)
+                                            Hauteur (mm)
                                         </label>
                                         {!! Form::number('height', $printzone->height, ['class' => 'form-control'.
                                         $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone'])
                                         !!}
                                         @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Position du plateau
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            X (mm)
+                                        </label>
+                                        {!! Form::number('origin_x', $printzone->origin_x, ['class' => 'form-control',
+                                        'placeholder' =>
+                                        'Position X d\'origine sur le plateau']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Y (mm)
+                                        </label>
+                                        {!! Form::number('origin_y', $printzone->origin_y, ['class' => 'form-control',
+                                        'placeholder' =>
+                                        'Position Y d\'origine sur le plateau']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -108,63 +143,19 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Largeur (cm)
+                                            Largeur (mm)
                                         </label>
                                         {!! Form::number('tray_width', $printzone->tray_width, ['class' =>
                                         'form-control', 'placeholder' => '']) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
-                                            Hauteur (cm)
+                                            Hauteur (mm)
                                         </label>
-                                        <!-- Input -->
                                         {!! Form::number('tray_height', $printzone->tray_height, ['class' =>
                                         'form-control', 'placeholder' => '']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Position du plateau
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <!-- First name -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            X (cm)
-                                        </label>
-                                        <!-- Input -->
-                                        {!! Form::number('origin_x', $printzone->origin_x, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        'Position X d\'origine sur le plateau']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <!-- First name -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Y (cm)
-                                        </label>
-                                        <!-- Input -->
-                                        {!! Form::number('origin_y', $printzone->origin_y, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        'Position Y d\'origine sur le plateau']) !!}
                                     </div>
                                 </div>
                             </div>

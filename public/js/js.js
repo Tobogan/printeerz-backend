@@ -401,40 +401,31 @@ function deleteFontRow(id, font, font_weight, font_transform) {
   var fontsList = $('#fontsList' + id).val();
   var fontsWeightList = $('#fontsWeightList' + id).val();
   var fontsTransformList = $('#fontsTransformList' + id).val();
-
   var fonts = [];
   var fonts_weights = [];
   var fonts_transforms = [];
-
   var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
   var fontsWeightsToDeleteList = $('#fontsWeightsToDeleteList' + id).val();
   var fontsTransformToDeleteList = $('#fontsTransformToDeleteList' + id).val();
-
   fonts.push(fontsToDeleteList);
   fonts_weights.push(fontsWeightsToDeleteList);
   fonts_transforms.push(fontsTransformToDeleteList);
-
   var array_fonts = [font];
   var array_fonts_weights = [font_weight];
   var array_fonts_transforms = [font_transform];
-
   fonts.push([array_fonts]);
   fonts_weights.push([array_fonts_weights]);
   fonts_transforms.push([array_fonts_transforms]);
-
   document.getElementById("fontsToDeleteList" + id).value = fonts;
   document.getElementById("fontsWeightsToDeleteList" + id).value = fonts_weights;
   document.getElementById("fontsTransformToDeleteList" + id).value = fonts_transforms;
-
   var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
   var fontsWeightsToDeleteList = $('#fontsWeightsToDeleteList' + id).val();
   var fontsTransformToDeleteList = $('#fontsTransformToDeleteList' + id).val();
-
   // Here I replace the values by the final value after the delete
   document.getElementById("fontsList" + id).value = fontsList.replace(fontsToDeleteList, "");
   document.getElementById("fontsWeightList" + id).value = fontsWeightList.replace(fontsWeightsToDeleteList, "");
   document.getElementById("fontsTransformList" + id).value = fontsTransformList.replace(fontsTransformToDeleteList, "");
-
   // Here I delete input content
   document.getElementById("fontsToDeleteList" + id).value = "";
   document.getElementById("fontsWeightsToDeleteList" + id).value = "";
@@ -485,7 +476,7 @@ function deleteShowFontRow(id, font, font_id) {
   var fontsIdsToDeleteList = $('#fontsIdsToDeleteList' + id).val();
   // Here I replace the values by the final value after the delete
   document.getElementById("fontsList" + id).value = fontsList.replace(fontsToDeleteList.substring(1), "");
-  document.getElementById("fontsIdsList" + id).value = fontsIdsList.replace(fontsIdsToDeleteList, "");
+  document.getElementById("fontsIdsList" + id).value = fontsIdsList.replace(fontsIdsToDeleteList.substring(1), "");
   // Here I delete input content
   document.getElementById("fontsToDeleteList" + id).value = "";
   document.getElementById("fontsIdsToDeleteList" + id).value = "";

@@ -9,7 +9,8 @@
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col mb-3 ml--3 ml-md--2">
-                            <a class="btn btn-link btn-sm mb-3 px-0" href="{{route('show_eventsProducts', $events_custom->events_product_id)}}"><span
+                            <a class="btn btn-link btn-sm mb-3 px-0"
+                                href="{{route('show_eventsProducts', $events_custom->events_product_id)}}"><span
                                     class="fe fe-chevron-left"></span>Retour</a>
                         </div>
                     </div>
@@ -39,7 +40,8 @@
         </div>
     </div>
 </div>
-{!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'onsubmit' => 'return checkErrorsEditEventsCustom()']) !!}
+{!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'onsubmit' =>
+'return checkErrorsEditEventsCustom()']) !!}
 {{csrf_field()}}
 <div class="container">
     <div class="row justify-content-center">
@@ -64,7 +66,7 @@
                     <div class="buttons">
                         {!! Form::submit('Enregistrer', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
                         <a class='btn btn-secondary' style="float: left"
-                        href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a>
+                            href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a>
                     </div>
                 </div>
             </div>
