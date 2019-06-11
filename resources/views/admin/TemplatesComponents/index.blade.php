@@ -1,13 +1,6 @@
 @extends('layouts/templateAdmin')
-    @section('title', 'Composants')
-        @section('alerts')
-            @if (session('status'))
-                <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
-                    data-dismiss="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-        @endsection
+@section('title', 'Composants')
+
 @section('content')
 
 <div class="container-fluid">

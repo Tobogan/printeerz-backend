@@ -1,4 +1,5 @@
 @extends('layouts.templateAdmin')
+@section('title', 'Utilisateurs')
 
 @section('content')
 <div class="container">
@@ -35,7 +36,6 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <!-- Username -->
                             <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                                 <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}"
                                     required autofocus>

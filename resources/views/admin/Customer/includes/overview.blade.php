@@ -23,7 +23,8 @@
                             <!-- Form -->
                             <form>
                                 <div class="input-group input-group-flush input-group-merge">
-                                    <input type="search" class="form-control form-control-prepended search" placeholder="Rechercher un événement">
+                                    <input type="search" class="form-control form-control-prepended search"
+                                        placeholder="Rechercher un événement">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <span class="fe fe-search"></span>
@@ -43,9 +44,8 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <a href="{{route('show_event', $event->id)}}" class="avatar avatar-lg">
-                                        @if(file_exists(public_path('uploads/'.$event->logoName)) &&
-                                        !empty($event->logoName))
-                                        <img src="{{ $event->logoName }}" alt="" class="avatar-img rounded">
+                                        @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
+                                        <img src="{{ $s3 . $event->logoUrl }}" alt="" class="avatar-img rounded">
                                         @else
                                         <?php $eventInitials = $event->name[0]; ?>
                                         <span class="avatar-title rounded text-uppercase">{{ $eventInitials }}</span>
@@ -58,7 +58,8 @@
                                     </h4>
                                     <p class="card-text small text-muted mb-1">
                                         @if($event->start_datetime)
-                                        <time datetime="{{ $event->start_datetime }}">{{ $event->start_datetime }}</time>
+                                        <time
+                                            datetime="{{ $event->start_datetime }}">{{ $event->start_datetime }}</time>
                                         @else
                                         <i>Pas de date renseignée</i>
                                         @endif
@@ -72,7 +73,8 @@
                                     </p>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{route('show_event', $event->id)}}" class="btn btn-sm btn-white d-none d-md-inline-block">
+                                    <a href="{{route('show_event', $event->id)}}"
+                                        class="btn btn-sm btn-white d-none d-md-inline-block">
                                         Voir
                                     </a>
                                 </div>
@@ -87,7 +89,8 @@
             @else
             <div class="card card-inactive">
                 <div class="card-body text-center">
-                    <img src="/img/svg/team_spirit.svg" alt="no-customer-events" class="img-fluid" style="max-width: 182px;">
+                    <img src="/img/svg/team_spirit.svg" alt="no-customer-events" class="img-fluid"
+                        style="max-width: 182px;">
                     <h1>
                         Pas d'événements programmés.
                     </h1>

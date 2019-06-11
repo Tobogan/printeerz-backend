@@ -84,27 +84,25 @@ class CustomerController extends Controller
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
         );
-        $customer->events_id=$request->get('shows_id');
+        if ($request->get('shows_id') == null) {
+            $customer->events_id = array();
+        }
+        else {
+            $customer->events_id = $request->get('shows_id');
+        }
         $customer->is_active = $request->is_active;
         $customer->is_deleted = $request->is_deleted;
-
+        $customer->save();
         $disk = Storage::disk('s3');
         if ($request->hasFile('image')){
-            // Get file
             $file = $request->file('image');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
-            $filePath = '/customers/' . $name;
-            // Resize img
+            $filePath = '/customers/' . $customer->id . '/' . $name;
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $customer->image = $filePath;
         }
         $customer->save();
@@ -198,7 +196,7 @@ class CustomerController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/customers/' . $name;
+                $newFilePath = '/customers/' . $customer->id . '/' . $name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image
@@ -260,7 +258,7 @@ class CustomerController extends Controller
                 // Create image name
                 $name = time() . $file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/customers/' . $name;
+                $newFilePath = '/customers/' . $customer->id . '/' . $name;
                 // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the new image

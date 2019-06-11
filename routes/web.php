@@ -74,6 +74,7 @@ Route::get('admin/Event/activate/{id}', 'EventController@activate')->name('activ
 Route::get('admin/Event/desactivate/{id}', 'EventController@desactivate')->name('desactivate_event');
 Route::get('admin/Event/show/comment', 'CommentController@addComment')->name('comment_event');
 Route::get('admin/Event/show_eventVariants/{id}', 'EventController@show_eventVariants')->name('show_eventVariants');
+Route::post('admin/Event/changeStatus/{event_id}/{new_status}', 'EventController@changeStatus')->name('changeStatus_event');
 
 // EventsProducts Routes
 Route::get('admin/EventsProducts/index', 'EventsProductsController@index')->name('index_eventsProducts');

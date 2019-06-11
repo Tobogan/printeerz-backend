@@ -122,13 +122,13 @@
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
-                        Gabarits
+                    <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
+                        Composants
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item {{ request()->is('admin/TemplatesComponents/*') ? 'active' : '' }}" href="{{route('index_templatesComponents')}}">
-                        Composants
+                    <a class="dropdown-item {{ request()->is('admin/Templates/*') ? 'active' : '' }}" href="{{route('index_templates')}}">
+                        Gabarits
                     </a>
                 </li>
                 <li>

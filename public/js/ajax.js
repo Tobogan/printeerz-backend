@@ -98,16 +98,15 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (msg) {
-                if(msg.errors){
+                if (msg.errors) {
                     $('.alert-danger').html('');
-                    jQuery.each(msg.errors, function(key, value){
+                    jQuery.each(msg.errors, function (key, value) {
                         $('.alert-danger').show();
-                        $('.alert-danger').append('<li>'+value+'</li>');
+                        $('.alert-danger').append('<li>' + value + '</li>');
                     });
                     $('#submit_modal').show();
                     $('#loading_modal').addClass('d-none');
-                }
-                else{
+                } else {
                     color = $('#color').val('');
                     size = $('#size').val('');
                     console.log(msg.products_variant);
@@ -135,16 +134,15 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/store',
             data: $(this).serialize(),
             success: function (msg) {
-                if(msg.errors){
+                if (msg.errors) {
                     $('.alert-danger').html('');
-                    jQuery.each(msg.errors, function(key, value){
+                    jQuery.each(msg.errors, function (key, value) {
                         $('.alert-danger').show();
-                        $('.alert-danger').append('<li>'+value+'</li>');
+                        $('.alert-danger').append('<li>' + value + '</li>');
                     });
                     $('#submit_modal_EP').show();
                     $('#loading_modal_EP').addClass('d-none');
-                }
-                else{
+                } else {
                     title = $('#title').val('');
                     description = $('#description').val('');
                     console.log(msg.events_product);
@@ -172,16 +170,15 @@ $(document).ready(function () {
             url: '/admin/EventsProducts/addVarianteEP',
             data: $(this).serialize(),
             success: function (msg) {
-                if(msg.errors){
+                if (msg.errors) {
                     $('.alert-danger').html('');
-                    jQuery.each(msg.errors, function(key, value){
+                    jQuery.each(msg.errors, function (key, value) {
                         $('.alert-danger').show();
-                        $('.alert-danger').append('<li>'+value+'</li>');
+                        $('.alert-danger').append('<li>' + value + '</li>');
                     });
                     $('#submit_modalVarianteEP').show();
                     $('#loading_modalVarianteEP').addClass('d-none');
-                }
-                else{
+                } else {
                     console.log(msg.events_product);
                     $(this).removeClass('btn-primary');
                     $(this).addClass('btn-success');
@@ -209,14 +206,13 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                if(data.errors){
+                if (data.errors) {
                     $('.alert-danger').html('');
-                    jQuery.each(data.errors, function(key, value){
+                    jQuery.each(data.errors, function (key, value) {
                         $('.alert-danger').show();
-                        $('.alert-danger').append('<li>'+value+'</li>');
+                        $('.alert-danger').append('<li>' + value + '</li>');
                     });
-                }
-                else{
+                } else {
                     $('#submit_modalAddFont').hide();
                     $('#loading_modalAddFont').removeClass('d-none');
                     $(this).removeClass('btn-primary');
@@ -226,8 +222,8 @@ $(document).ready(function () {
                     var font_url = $('#file').val();
                     var font_transform = $('#font_transform').val();
                     var font_weight = $('#font_weight').val();
-                    var font_name = font_url.replace('C:\\fakepath\\','');
-                    addDeleteBtn(font_title, id, font_transform,font_weight, font_name);
+                    var font_name = font_url.replace('C:\\fakepath\\', '');
+                    addDeleteBtn(font_title, id, font_transform, font_weight, font_name);
                     $('#addFontModal').modal('hide');
                     $('#submit_modalAddFont').show();
                     $('#loading_modalAddFont').addClass('d-none');
@@ -284,5 +280,20 @@ $(document).ready(function () {
                 console.log(xhr.responseText);
             }
         });
+    });
+    $('.progressbar').on('click', 'li', function (e) {
+        e.preventDefault();
+        if (confirm('ëtes-vous sûr de vouloir changer le status de l\'événement')) {
+            var new_status = $(this).attr('data-status');
+            var event_id = $(this).attr('data-event_id');
+            $.ajax({
+                type: "POST",
+                url: '/admin/Event/changeStatus/' + event_id + '/' + new_status,
+                success: function (res) {
+                    console.log(res);
+                    location.reload();
+                }
+            });
+        }
     });
 });

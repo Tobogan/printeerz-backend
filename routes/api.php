@@ -38,6 +38,8 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::get('event_local_download/{id}', 'LiveController@event_local_download')->name('show_eventLocalDownload_live');
 
+    Route::post('event/downloaded/{id}', 'LiveController@downloaded');
+
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');
         Route::post('login', 'AuthController@login');

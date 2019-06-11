@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', $product->title)
 
 @section('content')
 

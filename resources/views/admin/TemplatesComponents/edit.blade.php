@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', $template_component->title)
 
 @section('content')
 

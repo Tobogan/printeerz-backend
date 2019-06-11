@@ -1,5 +1,5 @@
 @extends('layouts/templateAdmin')
-
+@section('title', 'Personnalisations')
 @section('content')
 
 <div class="container">

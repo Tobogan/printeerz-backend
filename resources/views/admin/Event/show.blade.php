@@ -7,6 +7,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
+            @include('admin.Event.includes.show.status')
             <div id="tabs" class="mb-6">
                 @include('admin.Event.includes.show.header')
                 @include('admin.Event.includes.show.products')

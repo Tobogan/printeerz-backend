@@ -1,4 +1,5 @@
 @extends('layouts/templateAdmin')
+@section('title', 'Gabarits')
 
 @section('content')
 
@@ -34,15 +35,19 @@
                                         <label>
                                             Nom du gabarit
                                         </label>
-                                        {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
-                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du gabarit</div>@endif
+                                        {!! Form::text('title', null, ['class' => 'form-control' .
+                                        $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le
+                                            nom du gabarit</div>@endif
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             Catégorie
                                         </label>
-                                        {!! Form::text('category', null, ['class' => 'form-control' . $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
-                                        @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner la catégorie du gabarit</div>@endif
+                                        {!! Form::text('category', null, ['class' => 'form-control' .
+                                        $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
+                                        @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner
+                                            la catégorie du gabarit</div>@endif
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +60,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Taille du template
+                                Taille du gabarit
                             </h4>
                         </div>
                         <div class="card-body">
@@ -67,7 +72,8 @@
                                         </label>
                                         {!! Form::number('width', null, ['class' => 'form-control', 'placeholder' =>
                                         '150']) !!}
-                                        {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('width', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -77,7 +83,8 @@
                                         </label>
                                         {!! Form::number('height', null, ['class' => 'form-control', 'placeholder' =>
                                         '150']) !!}
-                                        {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('height', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +98,9 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Position du template
+                                Position du gabarit
+                                <p><small class="text-muted">Position du gabarit par rapport à la zone
+                                        d'impression.</small></p>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -103,7 +112,8 @@
                                         </label>
                                         {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
-                                        {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('origin_x', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -113,7 +123,8 @@
                                         </label>
                                         {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
                                         '0']) !!}
-                                        {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('origin_y', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -137,11 +148,14 @@
                                         {!! Form::select('components_ids[]',
                                         App\Template_components::pluck('title','_id'), null, ['id' =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
-                                        {!! $errors->first('components_ids', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('templateComponentsList', '<p class="help-block mt-2"
+                                            style="color:red;"><small>Merci de sélectionner au moins un
+                                                composant.</small></p>') !!}
                                     </div>
                                     <div id="templateComponentsList" data-type="sortable" class="mt-3">
                                     </div>
-                                    {!! Form::hidden('templateComponentsList', "false", ['id' => 'templateComponentsListHidden']) !!}
+                                    {!! Form::hidden('templateComponentsList', "false", ['id' =>
+                                    'templateComponentsListHidden']) !!}
                                 </div>
                             </div>
                         </div>
@@ -163,7 +177,8 @@
                                         <label for="thumb">Ajoutez la miniature</label>
                                         {!! Form::file('thumb', array('class' => 'form-control', 'id'
                                         => 'thumb', 'name' => 'thumb')) !!}
-                                        {!! $errors->first('thumb', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('thumb', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -171,7 +186,8 @@
                                         <label for="full">Ajoutez l'image</label>
                                         {!! Form::file('full', array('class' => 'form-control', 'id'
                                         => 'full', 'name' => 'full')) !!}
-                                        {!! $errors->first('full', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                        {!! $errors->first('full', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +215,7 @@
 @section('javascripts')
 <script type="text/Javascript">
 
-$('#templateComponentsList').on('change', function () {
+    $('#templateComponentsList').on('change', function () {
     var comp = $('#hidden_comp').val();
     console.log('comp');
 });
