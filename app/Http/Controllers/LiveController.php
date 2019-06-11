@@ -153,4 +153,18 @@ class LiveController extends Controller
         $event_local_download = Event_local_download::find($id);
         return $event_local_download->toJson();
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function downloaded($id)
+    {
+        $event = Event::find($id);
+        $event->status = "ready";
+        $event->update();
+        return $event->toJson();
+    }
 }

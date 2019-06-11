@@ -144,7 +144,10 @@ class EventLocalDownloadController extends Controller
     public function show($id)
     {
         $event_local_download = Event_local_download::find($id);
-        return view('admin/EventLocalDownload.show', ['event_local_download' => $event_local_download]);
+        return view('admin/EventLocalDownload.show', [
+            'event_local_download' => $event_local_download
+            ]
+        );
     }
 
     /**

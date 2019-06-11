@@ -35,7 +35,10 @@ class EventsCustomsController extends Controller
     public function index()
     {
         $events_customs = Events_customs::all();
-        return view('admin/Events_customs.index', ['events_customs' => $events_customs]);
+        return view('admin/Events_customs.index', [
+            'events_customs' => $events_customs
+            ]
+        );
     }
 
     /**
@@ -67,7 +70,16 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.add', ['event' => $event, 'select_printzones' => $select_printzones, 'templates' => $templates, 'select_templates' => $select_templates, 'product' => $product, 'events_customs' => $events_customs, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.add', [
+            'event' => $event, 
+            'select_printzones' => $select_printzones, 
+            'templates' => $templates, 
+            'select_templates' => $select_templates, 
+            'product' => $product, 
+            'events_customs' => $events_customs, 
+            'events_product' => $events_product
+            ]
+        );
     }
 
     /**
@@ -215,7 +227,22 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.show', ['select_fonts' => $select_fonts, 'events_components'=>$events_components,'disk'=>$disk,'s3'=>$s3,'font_weight'=>$font_weight,'font_transform'=>$font_transform,'events_customs' => $events_customs,'template_components' => $template_components, 'templates' => $templates, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.show', [
+            'select_fonts' => $select_fonts, 
+            'events_components'=> $events_components,
+            'disk'=>$disk,
+            's3'=>$s3,
+            'font_weight' => $font_weight,
+            'font_transform' => $font_transform,
+            'events_customs' => $events_customs,
+            'template_components' => $template_components, 
+            'templates' => $templates, 
+            'events_custom' => $events_custom, 
+            'select_printzones' => $select_printzones,
+            'select_templates' => $select_templates, 
+            'events_product' => $events_product
+            ]
+        );
     }
 
     /**
@@ -248,7 +275,7 @@ class EventsCustomsController extends Controller
             $select_fonts[$font->id] = $font->title;
         }
         $select_printzones = [];
-        if ($product->printzones_id != null){
+        if ($product->printzones_id != null) {
             foreach ($printzones as $printzone) {
                 foreach ($product->printzones_id as $printzone_id) {
                     if ($printzone_id == $printzone->id) {
@@ -257,7 +284,17 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        return view('admin/EventsCustoms.edit', ['select_fonts' => $select_fonts, 'events_components' => $events_components,'disk'=>$disk,'s3'=>$s3, 'events_custom' => $events_custom, 'select_printzones' => $select_printzones, 'select_templates' => $select_templates, 'events_product' => $events_product]);
+        return view('admin/EventsCustoms.edit', [
+            'select_fonts' => $select_fonts, 
+            'events_components' => $events_components,
+            'disk'=>$disk,
+            's3'=>$s3, 
+            'events_custom' => $events_custom, 
+            'select_printzones' => $select_printzones, 
+            'select_templates' => $select_templates, 
+            'events_product' => $events_product
+            ]
+        );
     }
 
     public function removeElement($array,$value) {
