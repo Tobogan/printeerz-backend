@@ -946,7 +946,8 @@ class EventsCustomsController extends Controller
                 // Define the new path to image
                 $newFilePath = '/fonts/' . $name;
                 // Upload the new image
-                Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
+                // Storage::disk('s3')->put($newFilePath, file_get_contents($font_file));
+                $disk->put($newFilePath, file_get_contents($font_file), 'public');
                 // Put in database
                 $font->url = $newFilePath;
             }
