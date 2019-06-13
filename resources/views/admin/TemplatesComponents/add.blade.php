@@ -31,25 +31,27 @@
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
-                    <!-- First name -->
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <!-- Label -->
                                 <label>
                                     Nom du composant
                                 </label>
-                                <!-- Input -->
-                                {!! Form::text('title', null, ['class' => 'form-control' . $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom']) !!}
-                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du composant</div>@endif
+                                {!! Form::text('title', null, [
+                                'class' => 'form-control' . $errors->first('title', 'is-invalid'),
+                                'placeholder' => 'Nom'
+                                ])
+                                !!}
+                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du
+                                    composant</div>@endif
                             </div>
                             <div class="form-group">
-                                <!-- Label -->
                                 <label>
                                     Type
                                 </label>
                                 <div class="form-group">
-                                    <select name="type" id="componentElementType" class="form-control" data-toggle="select">
+                                    <select name="type" id="componentElementType" class="form-control"
+                                        data-toggle="select">
                                         <option value="none">Aucun</option>
                                         <option value="input">Champ de texte</option>
                                         <option value="image">Image</option>
@@ -70,8 +72,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Créer le composant', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('index_templatesComponents')}}">Annuler</a>
+                        {!! Form::submit('Créer le composant', [
+                        'class' => 'btn btn-primary',
+                        'style' => 'float:right'
+                        ])
+                        !!}
+                        <a class='btn btn-secondary' style="float: left"
+                            href="{{route('index_templatesComponents')}}">Annuler</a>
                     </div>
                 </div>
             </div>

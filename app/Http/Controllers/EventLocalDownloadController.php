@@ -17,6 +17,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 
 class EventLocalDownloadController extends Controller

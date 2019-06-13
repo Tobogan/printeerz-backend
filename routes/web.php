@@ -103,6 +103,7 @@ Route::get('admin/EventsCustoms/activate/{id}', 'EventsCustomsController@activat
 Route::post('admin/EventsCustoms/addColor', 'EventsCustomsController@addColor')->name('addColor_eventsCustoms');
 Route::post('admin/EventsCustoms/uploadFile', 'EventsCustomsController@uploadFile')->name('uploadFile_eventsCustoms');
 Route::delete('admin/EventsCustoms/deleteFile/fonts/{font_title}/{font_name}', 'EventsCustomsController@deleteFile')->name('deleteFile_eventsCustoms');
+Route::post('admin/EventsCustoms/updateImage', 'EventsCustomsController@updateImage/{id}')->name('updateImage_eventsCustoms');
 
 // Printzones Routes
 Route::get('admin/Printzones/index', 'PrintzonesController@index')->name('index_printzones');

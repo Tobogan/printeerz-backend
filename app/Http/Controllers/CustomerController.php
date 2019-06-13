@@ -14,6 +14,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 
 class CustomerController extends Controller
 {
@@ -32,7 +34,17 @@ class CustomerController extends Controller
     {
         $customers = Customer::all();
         $events = Event::all();
-        return view('admin/Customer.index', ['customers' => $customers, 'events' => $events]);
+        $disk = Storage::disk('s3');
+        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
+        $exists = $disk->exists('file.jpg');
+        return view('admin/Customer.index', [
+            'customers' => $customers, 
+            'events' => $events,
+            'disk' => $disk,
+            's3' => $s3,
+            'exists' => $exists
+            ]
+        );
     }
 
     /**
@@ -43,7 +55,10 @@ class CustomerController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        return view('admin/Customer.add', ['customers' => $customers]);
+        return view('admin/Customer.add', [
+            'customers' => $customers
+            ]
+        );
     }
 
     /**
@@ -66,6 +81,7 @@ class CustomerController extends Controller
 
         $customer = new Customer;
         $customer->title = $request->title;
+        $customer->created_by = Auth::user()->username;
         $customer->activity_type = $request->activity_type;
         $customer->SIREN = $request->SIREN;
         $customer->comments = $request->comments;
@@ -126,7 +142,13 @@ class CustomerController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
-        return view('admin/Customer.show', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'customer' => $customer]);
+        return view('admin/Customer.show', [
+            'events' => $events, 
+            'disk' => $disk, 
+            's3' => $s3, 
+            'customer' => $customer
+            ]
+        );
     }
 
     /**

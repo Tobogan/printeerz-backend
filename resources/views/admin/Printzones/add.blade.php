@@ -38,8 +38,10 @@
                                         <label>
                                             Nom de la zone
                                         </label>
-                                        {!! Form::text('name', null, ['class' => 'form-control'. $errors->first('name',
-                                        ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('name', null, [
+                                        'class' => 'form-control'. $errors->first('name','is-invalid'),
+                                        'placeholder' => 'Nom de la zone'
+                                        ])!!}
                                         @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
@@ -47,8 +49,10 @@
                                         <label>
                                             Zone
                                         </label>
-                                        {!! Form::text('zone', null, ['class' => 'form-control'. $errors->first('zone',
-                                        ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('zone', null, [
+                                        'class' => 'form-control'. $errors->first('zone','is-invalid'),
+                                        'placeholder' => 'Zone'
+                                        ])!!}
                                         @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
@@ -73,8 +77,13 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('tray_width', null, ['class' => 'form-control', 'placeholder'
-                                        => '']) !!}
+                                        {!! Form::number('tray_width', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '250'
+                                        ]) !!}
+                                        <div>{!! $errors->first('tray_width', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small></p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -82,8 +91,14 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('tray_height', null, ['class' => 'form-control', 'placeholder'
-                                        => '']) !!}
+                                        {!! Form::number('tray_height', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '250'
+                                        ]) !!}
+                                        <div>{!! $errors->first('tray_height', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small>
+                                            </p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,9 +121,10 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('width', null, ['class' => 'form-control'.
-                                        $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone '])
-                                        !!}
+                                        {!! Form::number('width', null, ['class' =>
+                                        'form-control'.$errors->first('width', ' is-invalid'),
+                                        'placeholder' =>'250'
+                                        ]) !!}
                                         @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
@@ -118,8 +134,9 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('height', null, ['class' => 'form-control'.
-                                        $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone'])
+                                        {!! Form::number('height', null, [
+                                        'class' => 'form-control'.$errors->first('height', ' is-invalid'),
+                                        'placeholder' =>'250'])
                                         !!}
                                         @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
@@ -141,27 +158,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             X (mm)
                                         </label>
-                                        <!-- Input -->
-                                        {!! Form::number('origin_x', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Position X d\'origine sur le plateau']) !!}
+                                        {!! Form::number('origin_x', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0'
+                                        ]) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <!-- First name -->
                                     <div class="form-group">
-                                        <!-- Label -->
                                         <label>
                                             Y (mm)
                                         </label>
-                                        <!-- Input -->
-                                        {!! Form::number('origin_y', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Position Y d\'origine sur le plateau']) !!}
+                                        {!! Form::number('origin_y', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' =>'0'
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +197,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <input id="textDescription" type="textarea" class="description"
-                                            name="description" rows="3">
+                                            name="description" rows="3" maxlength="750">
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +210,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Créer la zone', ['class' => 'btn btn-primary', 'style' => 'float: right']) !!}
+                        {!! Form::submit('Créer la zone', [
+                        'class' => 'btn btn-primary',
+                        'style' => 'float: right'
+                        ]) !!}
                         <a class='btn btn-secondary' style="float: left"
                             href="{{route('index_printzones')}}">Annuler</a>
                     </div>

@@ -6,12 +6,12 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">
-                                Date de début
+                                Crée par
                             </h5>
                         </div>
                         <div class="col-auto">
                             <time class="small text-muted">
-                                {{ date('d/m/y', strtotime($event->start_datetime)) }}
+                                {{$event->created_by}}
                             </time>
                         </div>
                     </div>
@@ -19,13 +19,26 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">
-                                Date de fin
+                                Date & heure de début
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <time class="small text-muted">
+                                {{ date('d/m/y', strtotime($event->start_datetime)) }} à {{$event->start_time}}
+                            </time>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">
+                                Date & heure de fin
                             </h5>
                         </div>
                         <div class="col-auto">
 
                             <span class="small text-muted">
-                                {{ date('d/m/y', strtotime($event->end_datetime)) }}
+                                {{ date('d/m/y', strtotime($event->end_datetime)) }} à {{$event->end_time}}
                             </span>
                         </div>
                     </div>

@@ -46,6 +46,10 @@
                         <thead>
                             <tr>
                                 <th>
+                                    <a href="#">
+                                    </a>
+                                </th>
+                                <th>
                                     <a href="#" class="text-muted sort" data-sort="customer-name">
                                         Nom
                                     </a>
@@ -76,28 +80,45 @@
                         <tbody class="list">
                             @foreach ($customers as $customer)
                             <tr>
-                                <td class="customer-name"><a
+                                <td class="align-middle user-avatar">
+                                    @if(!empty($customer->image) && $disk->exists($customer->image))
+                                    <div class="avatar avatar-sm">
+                                        <img src="{{$s3 . $customer->image}}" class="avatar-img rounded-circle"
+                                            alt="img_profile">
+                                    </div>
+                                    @else
+                                    <!--Initials-->
+                                    <div class="avatar-sm">
+                                        <?php 
+                                            $avatarFirstName = $customer->title; 
+                                            $avatarInitials = $avatarFirstName[0];
+                                            ?>
+                                        <span class="avatar-title rounded-circle">{{ $avatarInitials }}</span>
+                                    </div>
+                                    @endif
+                                </td>
+                                <td class="align-middle customer-name"><a
                                         href="{{route('show_customer', $customer->id)}}"><b>{{ $customer->title }}</b></a>
                                 </td>
                                 @if(isset($customer->contact_person['lastname']) &&
                                 isset($customer->contact_person['firstname']))
-                                <td class="customer-contact-name">
+                                <td class="align-middle customer-contact-name">
                                     {{ $customer->contact_person['firstname'] . ' ' . $customer->contact_person['lastname'] }}
                                 </td>
                                 @else
                                 <td>...</td>
                                 @endif
                                 @if(isset($customer->location['address']))
-                                <td class="customer-address">{{ $customer->location['address'] }}</td>
+                                <td class="align-middle customer-address">{{ $customer->location['address'] }}</td>
                                 @else
                                 <td>...</td>
                                 @endif
                                 @if(isset($customer->location['city']))
-                                <td class="customer-city">{{ $customer->location['city'] }}</td>
+                                <td class="align-middle customer-city">{{ $customer->location['city'] }}</td>
                                 @else
                                 <td>...</td>
                                 @endif
-                                <td class="customer-total">{{ $customer->activity_type }}</td>
+                                <td class="align-middle customer-total">{{ $customer->activity_type }}</td>
                             </tr>
                             @endforeach
                         </tbody>

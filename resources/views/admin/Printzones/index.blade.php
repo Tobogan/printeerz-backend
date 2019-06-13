@@ -63,7 +63,7 @@
                                 </th>
                                 <th>
                                     <a href="#" class="text-muted" data-sort="printzones-tray_width">
-                                        Largeur/Hauteur du plateau
+                                        Dimension du plateau
                                     </a>
                                 </th>
                                 <th>
@@ -78,11 +78,14 @@
                         <tbody class="list">
                             @foreach ($printzones as $printzone)
                             <tr>
-                                <td class="printzones-name"><a
-                                        href="{{route('edit_printzones', $printzone->id)}}"><b>{{$printzone->name}}</b></a>
-                                </td>
-                                <td class="printzones-zone">{{ $printzone->zone }}</td>
-                                <td class="printzones-width">{{ $printzone->width }}x{{ $printzone->height }}</td>
+                                <td class="printzones-name">
+                                    <a href="{{route('edit_printzones', $printzone->id)}}"><b>
+                                            @if(strlen($printzone->name) <= 25) {{$printzone->name}} @else
+                                                {{substr($printzone->name,0,25)}} ... @endif </b> </a> </td> <td
+                                                class="printzones-zone">@if(strlen($printzone->zone) <= 25)
+                                                    {{$printzone->zone}} @else {{substr($printzone->zone,0,25)}} ...
+                                                    @endif</td> <td class="printzones-width">
+                                                    {{ $printzone->width }}x{{ $printzone->height }}</td>
                                 <td class="printzones-tray_width">
                                     {{ $printzone->tray_width }}x{{ $printzone->tray_height }}</td>
                                 <td class="printzones-is_active">

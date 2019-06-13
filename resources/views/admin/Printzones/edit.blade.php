@@ -36,8 +36,11 @@
                                         <label>
                                             Nom de la zone
                                         </label>
-                                        {!! Form::text('name', $printzone->name, ['class' => 'form-control'.
-                                        $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('name', $printzone->name, [
+                                        'class' => 'form-control'.$errors->first('name', ' is-invalid'),
+                                        'placeholder' => 'Nom de la zone'
+                                        ])
+                                        !!}
                                         @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
@@ -45,8 +48,11 @@
                                         <label>
                                             Zone
                                         </label>
-                                        {!! Form::text('zone', $printzone->zone, ['class' => 'form-control'.
-                                        $errors->first('name', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('zone', $printzone->zone, [
+                                        'class' => 'form-control'.$errors->first('name', ' is-invalid'),
+                                        'placeholder' => 'Zone'
+                                        ])
+                                        !!}
                                         @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
@@ -71,8 +77,10 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('width', $printzone->width, ['class' => 'form-control'.
-                                        $errors->first('width', ' is-invalid'), 'placeholder' =>'Largeur de la zone '])
+                                        {!! Form::number('width', $printzone->width, [
+                                        'class' => 'form-control'.$errors->first('width', ' is-invalid'),
+                                        'placeholder' =>'250'
+                                        ])
                                         !!}
                                         @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
@@ -83,8 +91,10 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('height', $printzone->height, ['class' => 'form-control'.
-                                        $errors->first('height', ' is-invalid'), 'placeholder' =>'Hauteur de la zone'])
+                                        {!! Form::number('height', $printzone->height, [
+                                        'class' => 'form-control'.$errors->first('height', ' is-invalid'),
+                                        'placeholder' =>'250'
+                                        ])
                                         !!}
                                         @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
@@ -110,9 +120,15 @@
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('origin_x', $printzone->origin_x, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        'Position X d\'origine sur le plateau']) !!}
+                                        {!! Form::number('origin_x', $printzone->origin_x, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0'
+                                        ])
+                                        !!}
+                                        <div>{!! $errors->first('origin_x', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small>
+                                            </p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -120,9 +136,15 @@
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('origin_y', $printzone->origin_y, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        'Position Y d\'origine sur le plateau']) !!}
+                                        {!! Form::number('origin_y', $printzone->origin_y, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0'
+                                        ])
+                                        !!}
+                                        <div>{!! $errors->first('origin_y', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small>
+                                            </p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +168,11 @@
                                             Largeur (mm)
                                         </label>
                                         {!! Form::number('tray_width', $printzone->tray_width, ['class' =>
-                                        'form-control', 'placeholder' => '']) !!}
+                                        'form-control', 'placeholder' => '250']) !!}
+                                        <div>{!! $errors->first('tray_width', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small>
+                                            </p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -155,7 +181,11 @@
                                             Hauteur (mm)
                                         </label>
                                         {!! Form::number('tray_height', $printzone->tray_height, ['class' =>
-                                        'form-control', 'placeholder' => '']) !!}
+                                        'form-control', 'placeholder' => '250']) !!}
+                                        <div>{!! $errors->first('tray_height', '<p class="help-block mt-2"
+                                                style="color:red;"><small>Champ obligatoire</small>
+                                            </p>') !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

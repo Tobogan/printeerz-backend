@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isActivate;
 
+use Illuminate\Support\Facades\Auth;
+
 class PrintzonesController extends Controller
 {
     public function __construct(){
@@ -26,7 +28,10 @@ class PrintzonesController extends Controller
     public function index()
     {
         $printzones = Printzones::all();
-        return view('admin/Printzones.index', ['printzones' => $printzones]);
+        return view('admin/Printzones.index', [
+            'printzones' => $printzones
+            ]
+        );
     }
 
     /**
@@ -37,7 +42,10 @@ class PrintzonesController extends Controller
     public function create()
     {
         $printzones = Printzones::all();
-        return view('admin/Printzones.add', ['printzones' => $printzones]);
+        return view('admin/Printzones.add', [
+            'printzones' => $printzones
+            ]
+        );
     }
 
     /**
@@ -53,12 +61,15 @@ class PrintzonesController extends Controller
             'zone' => 'required|string|max:255',
             'width' => 'required|string|max:255',
             'height' => 'required|string|max:255',
+            'tray_width' => 'required|string|max:255',
+            'tray_height' => 'required|string|max:255',
             'description' => 'nullable|string|max:750'
         ]);
         
         $printzone = new Printzones;
 
         $printzone->name = $request->name;
+        $printzone->created_by = Auth::user()->username;
         $printzone->zone = $request->zone;
         $printzone->printer_id = $request->printer_id;
         $printzone->width = $request->width;
@@ -89,7 +100,10 @@ class PrintzonesController extends Controller
     public function show($id)
     {
         $printzone = Printzones::find($id);
-        return view('admin/Printzones.show', ['printzone' => $printzone]);
+        return view('admin/Printzones.show', [
+            'printzone' => $printzone
+            ]
+        );
     }
 
     /**
@@ -101,7 +115,10 @@ class PrintzonesController extends Controller
     public function edit($id)
     {
         $printzone = Printzones::find($id);
-        return view('admin/Printzones.edit', ['printzone' => $printzone]);
+        return view('admin/Printzones.edit', [
+            'printzone' => $printzone
+            ]
+        );
     }
 
     /**
@@ -119,6 +136,8 @@ class PrintzonesController extends Controller
                 'zone' => 'required|string|max:255',
                 'width' => 'required|string|max:255',
                 'height' => 'required|string|max:255',
+                'tray_width' => 'required|string|max:255',
+                'tray_height' => 'required|string|max:255',
                 'description' => 'nullable|string|max:750'
             ]);
             
@@ -142,6 +161,8 @@ class PrintzonesController extends Controller
                 'zone' => 'required|string|max:255',
                 'width' => 'required|string|max:255',
                 'height' => 'required|string|max:255',
+                'tray_width' => 'required|string|max:255',
+                'tray_height' => 'required|string|max:255',
                 'description' => 'nullable|string|max:750'
             ]);
             

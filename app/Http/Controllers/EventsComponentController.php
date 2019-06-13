@@ -11,6 +11,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class EventsComponentController extends Controller
 {
     public function __construct(){

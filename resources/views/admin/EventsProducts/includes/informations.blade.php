@@ -1,7 +1,7 @@
 <div class="container" id="event_product_informations">
     <div class="row">
         <div class="col-12 col-xl-8">
-    @include('admin.EventsProducts.includes.indexVariante')
+            @include('admin.EventsProducts.includes.indexVariante')
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">Description</h4>
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col-12 col-xl-4">
-            {{-- Image --}} 
+            {{-- Image --}}
             @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
@@ -29,7 +29,7 @@
                             </small>
                         </p>
                     </div>
-                    <hr> 
+                    <hr>
                     @if ($product->product_type)
                     <div class="row align-items-center">
                         <div class="col">
@@ -37,12 +37,12 @@
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                    {{ $product->product_type }}
-                                </span>
+                                {{ $product->product_type }}
+                            </span>
                         </div>
                     </div>
-                    <hr> 
-                    @endif 
+                    <hr>
+                    @endif
                     @if ($product->gender)
                     <div class="row align-items-center">
                         <div class="col">
@@ -50,12 +50,12 @@
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                    {{ $product->gender }}
-                                </span>
+                                {{ $product->gender }}
+                            </span>
                         </div>
                     </div>
-                    <hr> 
-                    @endif 
+                    <hr>
+                    @endif
                     @if ($product->vendor['reference'])
                     <div class="row align-items-center">
                         <div class="col">
@@ -63,8 +63,8 @@
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                    {{ $product->vendor['reference'] }}
-                                </span>
+                                {{ $product->vendor['reference'] }}
+                            </span>
                         </div>
                     </div>
                     @endif
@@ -76,14 +76,14 @@
                         <div class="col-auto text-right">
                             <span class="text-muted">
                                 @if($product->printzones_id)
-                                    @foreach($printzones as $printzone)
-                                        @foreach($product->printzones_id as $print)
-                                            @if($printzone->id == $print)
-                                                {{ $printzone->name }}
-                                                <br>
-                                            @endif
-                                        @endforeach
-                                    @endforeach
+                                @foreach($printzones as $printzone)
+                                @foreach($product->printzones_id as $print)
+                                @if($printzone->id == $print)
+                                {{ $printzone->name }}
+                                <br>
+                                @endif
+                                @endforeach
+                                @endforeach
                                 @endif
                             </span>
                         </div>

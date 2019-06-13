@@ -15,6 +15,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class ProductController extends Controller
 {
     public function __construct(){
@@ -32,7 +34,12 @@ class ProductController extends Controller
         $products = Product::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/Product.index', ['products' => $products, 'disk' => $disk, 's3' => $s3]);
+        return view('admin/Product.index', [
+            'products' => $products, 
+            'disk' => $disk, 
+            's3' => $s3
+            ]
+        );
     }
 
     /**
@@ -43,7 +50,10 @@ class ProductController extends Controller
     public function create()
     {
         $products = Product::all();
-        return view('admin/Product.add', ['products' => $products]);
+        return view('admin/Product.add', [
+            'products' => $products
+            ]
+        );
     }
 
     /**
@@ -60,10 +70,13 @@ class ProductController extends Controller
             'product_type' => 'required|string|max:255',
             'printzones_id' => 'required',
             'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
-            'description' => 'nullable|string|min:3|max:750'
+            'description' => 'nullable|string|min:3|max:750',
+            'vendor_reference' => 'nullable|string|max:255',
+            'vendor_name' => 'nullable|string|max:255'
         ]);
         $product = new Product;
         $product->title = $request->title;
+        $product->created_by = Auth::user()->username;
         $product->vendor = array(
             'name' => $request->vendor_name,
             'reference' => $request->vendor_reference
@@ -118,7 +131,14 @@ class ProductController extends Controller
         $printzones = Printzones::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/Product.show', ['printzones' => $printzones,'product' => $product, 'products_variants' => $products_variants, 'disk' => $disk, 's3' => $s3]);
+        return view('admin/Product.show', [
+            'printzones' => $printzones,
+            'product' => $product, 
+            'products_variants' => $products_variants, 
+            'disk' => $disk, 
+            's3' => $s3
+            ]
+        );
     }
 
     /**
@@ -133,7 +153,13 @@ class ProductController extends Controller
         $products = Product::all();        
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/Product.edit', ['s3' => $s3, 'disk' => $disk, 'product' => $product, 'products' => $products]);
+        return view('admin/Product.edit', [
+            's3' => $s3, 
+            'disk' => $disk, 
+            'product' => $product, 
+            'products' => $products
+            ]
+        );
     }
 
     /**
@@ -147,12 +173,14 @@ class ProductController extends Controller
     {
         if (request('actual_title') == request('title')) {
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
+                'title' => 'required|string|unique:products|max:255',
                 'gender' => 'required|string|max:255',
                 'product_type' => 'required|string|max:255',
                 'printzones_id' => 'required',
-                'image' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'description' => 'nullable|string|min:3|max:750'
+                'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                'description' => 'nullable|string|min:3|max:750',
+                'vendor_reference' => 'nullable|string|max:255',
+                'vendor_name' => 'nullable|string|max:255'
             ]);
             
             $id = $request->product_id;
@@ -200,12 +228,14 @@ class ProductController extends Controller
             }        
             else {
                 $validatedData = $request->validate([
-                    'title' => 'required|string|max:255',
+                    'title' => 'required|string|unique:products|max:255',
                     'gender' => 'required|string|max:255',
                     'product_type' => 'required|string|max:255',
                     'printzones_id' => 'required',
-                    'image' => 'image|mimes:jpeg,jpg,png|max:4000',
-                    'description' => 'nullable|string|min:3|max:750'
+                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                    'description' => 'nullable|string|min:3|max:750',
+                    'vendor_reference' => 'nullable|string|max:255',
+                    'vendor_name' => 'nullable|string|max:255'
                 ]);
                 $id = $request->product_id;
                 $product = Product::find($id);

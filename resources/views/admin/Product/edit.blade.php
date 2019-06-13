@@ -43,9 +43,11 @@
                                 <label>
                                     Nom du produit
                                 </label>
-                                {!! Form::text('title', $product->title, ['class' => 'form-control' . $errors->first('title', '
+                                {!! Form::text('title', $product->title, ['class' => 'form-control' .
+                                $errors->first('title', '
                                 is-invalid'), 'placeholder' => 'Nom du produit'])!!}
-                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du produit</div>@endif
+                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du
+                                    produit</div>@endif
                             </div>
                             <div class="row">
                                 <div class="col-12 col-md-6">
@@ -56,11 +58,13 @@
                                             Type de produit
                                         </label>
                                         <!-- Input -->
-                                        {!! Form::text('product_type', $product->product_type, ['class' => 'form-control'. $errors->first('product_type', '
+                                        {!! Form::text('product_type', $product->product_type, ['class' =>
+                                        'form-control'. $errors->first('product_type', '
                                         is-invalid'),
                                         'placeholder' => 'Type de produit'])
                                         !!}
-                                        @if($errors->has('product_type'))<div class="invalid-feedback">Veuillez renseigner le nom du produit</div>@endif
+                                        @if($errors->has('product_type'))<div class="invalid-feedback">Veuillez
+                                            renseigner le nom du produit</div>@endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -83,7 +87,8 @@
                                         @endif
                                     </div>
                                 </div>
-                                <input type="hidden" class="form-control" name="actual_title" value="{{$product->title}}">
+                                <input type="hidden" class="form-control" name="actual_title"
+                                    value="{{$product->title}}">
                                 <input type="hidden" class="form-control" name="product_id" value="{{$product->id}}">
                             </div>
                         </div>
@@ -99,48 +104,56 @@
                                 Informations du fournisseur.
                             </h4>
                         </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>
-                                                Nom
-                                            </label>
-                                            {!! Form::text('vendor_name', $product->vendor['name'], ['class' => 'form-control',
-                                            'placeholder' => 'Nom']) !!}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Nom
+                                        </label>
+                                        {!! Form::text('vendor_name', $product->vendor['name'], ['class' =>
+                                        'form-control',
+                                        'placeholder' => 'Nom']) !!}
+                                        <div>{!! $errors->first('vendor_name', '<p class="help-block mt-2"
+                                                style="color:red;"><small>:message</small></p>') !!}
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>
-                                                Référence
-                                            </label>
-                                            {!! Form::text('vendor_reference', $product->vendor['reference'], ['class' => 'form-control',
-                                            'placeholder' => 'Référence']) !!}
-                                        </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Référence
+                                        </label>
+                                        {!! Form::text('vendor_reference', $product->vendor['reference'], ['class' =>
+                                        'form-control',
+                                        'placeholder' => 'Référence']) !!}
+                                        <div>{!! $errors->first('vendor_reference', '<p class="help-block mt-2"
+                                                style="color:red;"><small>:message</small></p>')
+                                            !!} </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             {{-- Image --}}
             @if(!empty($product->image) && $disk->exists($product->image))
-                <div class="card">
-                    <div class="card-body">
-                        <img width="40%" title="image produit" class="" src="{{$s3 . $product->image}}"
-                            alt="Image produit" style="margin-left:auto;margin-right:auto;display:block;">
-                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <img width="40%" title="image produit" class="" src="{{$s3 . $product->image}}" alt="Image produit"
+                        style="margin-left:auto;margin-right:auto;display:block;">
                 </div>
+            </div>
             @else
-                <div class="card card-inactive">
-                    <div class="card-body text-center">
-                        <!-- No image -->
-                        <p class="text-muted">
-                            Pas d'image de produit
-                        </p>
-                    </div>
+            <div class="card card-inactive">
+                <div class="card-body text-center">
+                    <!-- No image -->
+                    <p class="text-muted">
+                        Pas d'image de produit
+                    </p>
                 </div>
+            </div>
             @endif
             {{-- Image Card --}}
             <div class="row">
@@ -149,14 +162,16 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image du produit.
-                                <p class="text-muted b-4 mt-3">Modifiez l'image du produit en format 1:1 (format: jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
+                                <p class="text-muted b-4 mt-3">Modifiez l'image du produit en format 1:1 (format:
+                                    jpeg,jpg,png | format: jpeg,jpg,png | max: 4mo)</p>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="col-12">
                                 <div class="form-group">
                                     {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
-                                    <div>{!! $errors->first('image', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} </div>
+                                    <div>{!! $errors->first('image', '<p class="help-block mt-2" style="color:red;">
+                                            <small>:message</small></p>') !!} </div>
                                 </div>
                             </div>
                         </div>
@@ -169,15 +184,19 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
-                                    Zones d'impression disponibles.
-                                <p class="text-muted b-4 mt-3">Sélectionnez les zones d'impression qui seront disponibles pour ce produit</p>
+                                Zones d'impression disponibles.
+                                <p class="text-muted b-4 mt-3">Sélectionnez les zones d'impression qui seront
+                                    disponibles pour ce produit</p>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'),
-                                $product->printzones_id, ['class' => 'form-control', 'multiple', 'data-toggle' => 'select'])
+                                $product->printzones_id, ['class' => 'form-control', 'multiple', 'data-toggle' =>
+                                'select'])
                                 !!}
+                                <div>{!! $errors->first('printzones_id', '<p class="help-block mt-2" style="color:red;">
+                                        <small>Merci de saisir au moins une zone d\'impression.</small></p>') !!} </div>
                             </div>
                         </div>
                     </div>
@@ -190,13 +209,21 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Description du produit.
-                                <p class="text-muted b-4 mt-3">Ecrivez une description rapide du produit (max: 750 caractères)</p>
+                                <p class="text-muted b-4 mt-3">Ecrivez une description rapide du produit (max: 750
+                                    caractères)</p>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                {!! Form::textarea('description', $product->description, ['id' => 'description', 'class' => 'form-control','rows' => 4, 'cols' => 54]) !!}
-                                {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!} 
+                                {!! Form::textarea('description', $product->description, [
+                                'id' => 'description',
+                                'class' => 'form-control',
+                                'rows' => 4,
+                                'cols' => 54,
+                                'maxlength' => '750'
+                                ]) !!}
+                                {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;">
+                                    <small>:message</small></p>') !!}
                             </div>
                         </div>
                     </div>

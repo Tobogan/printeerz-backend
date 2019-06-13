@@ -14,6 +14,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class TemplateComponentsController extends Controller
 {
     public function __construct(){
@@ -29,7 +31,10 @@ class TemplateComponentsController extends Controller
     public function index()
     {
         $template_components = Template_components::all();
-        return view('admin/TemplatesComponents.index', ['template_components' => $template_components]);
+        return view('admin/TemplatesComponents.index', [
+            'template_components' => $template_components
+            ]
+        );
     }
 
     /**
@@ -40,7 +45,10 @@ class TemplateComponentsController extends Controller
     public function create()
     {
         $template_components = Template_components::all();
-        return view('admin/TemplatesComponents.add', ['template_components' => $template_components]);
+        return view('admin/TemplatesComponents.add', [
+            'template_components' => $template_components
+            ]
+        );
     }
 
     /**
@@ -63,22 +71,17 @@ class TemplateComponentsController extends Controller
             'type' => 'required|string|max:255'
         ]);
         $template_component = new Template_components;
+        $template_component->created_by = Auth::user()->username;
         $template_component->title = $request->title;
         $template_component->comp_type = $request->type;
         //  si requête type image j'injecte l'image
         $disk = Storage::disk('s3');
         if ($request->hasFile('image')){
-            // Get file
             $file = $request->file('image');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/templatesComponents/' . $name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
@@ -113,12 +116,9 @@ class TemplateComponentsController extends Controller
                     $request_font_weight =  $request->{'font_weight_'.$i};
                     $request_font_transform =  $request->{'font_transform_'.$i};
                     $request_font_first_letter =  $request->{'font_first_letter_'.$i};
-                    // $url = time().$i.'.'.$request_font_url->getClientOriginalExtension();
-                    // $request_font_url->move(public_path('uploads'), $url);
                     $font = array(
                         'id' =>  $request_font_id,
                         'name' => $request_font_name,
-                        // 'url' => $url,
                         'weight' => $request_font_weight,
                         'transform' => $request_font_transform,
                         'first_letter' => $request_font_first_letter,
@@ -170,25 +170,13 @@ class TemplateComponentsController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
-        // $font_transform = [
-        //     'none'=>'Aucune',
-        //     'uppercase'=>'Tout en Majuscules',
-        //     'capitalize'=>'Première lettre en Majuscule',
-        //     'lowercase'=>'Tout en minuscule',
-        //     'full-width'=>'Pleine largeur'
-        // ];
-        // $font_weight = [
-        //     '100'=>'Thin (100)',
-        //     '200'=>'Extra Light (200)',
-        //     '300'=>'Light (300)',
-        //     '400'=>'Normal (400)',
-        //     '500'=>'Medium (500)',
-        //     '600'=>'Semi Bold (600)',
-        //     '700'=>'Bold (700)',
-        //     '800'=>'Extra Bold (800)',
-        //     '900'=>'Black (900)'
-        // ];
-        return view('admin/TemplatesComponents.edit', ['template_component' => $template_component, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
+        return view('admin/TemplatesComponents.edit', [
+            'template_component' => $template_component, 
+            'disk' => $disk, 
+            's3' => $s3, 
+            'exists' => $exists
+            ]
+        );
     }
 
     /**
@@ -215,18 +203,12 @@ class TemplateComponentsController extends Controller
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
             //  si requête type image j'injecte l'image
-            if ($request->hasFile('image')){
-                // Get current image path
+            if ($request->hasFile('image')) {
                 $oldPath = $template_component->image;
-                // Get new image
                 $file = $request->file('image');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/templatesComponents/' . $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
-                // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
@@ -283,26 +265,18 @@ class TemplateComponentsController extends Controller
             $id = $request->template_component_id;
             $template_component = Template_components::find($id);
             $template_component->title = $request->title;
-            $template_component->comp_type = $request->type;
             //  si requête type image j'injecte l'image
             if ($request->hasFile('image')){
-                // Get current image path
                 $oldPath = $template_component->image;
-                // Get new image
                 $file = $request->file('image');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/templatesComponents/' . $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
-                // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public-read');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $template_component->image = $newFilePath;
                 if(!empty($template_component->image) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
@@ -327,14 +301,6 @@ class TemplateComponentsController extends Controller
                     'available' => $request->available,
                     'always' => $request->always
                 );
-                // $template_component->font = array(
-                //     'id' =>  $request->font_id,
-                //     'name' => $request->font_name,
-                //     // 'url' => $request->font_url,
-                //     'weight' => $request->font_weight,
-                //     'transform' => $request->font_transform,
-                //     'first_letter' => $request->font_first_letter,
-                // );
             }
             $template_component->is_customizable = $request->is_customizable;
             $template_component->is_active = $request->is_active; 

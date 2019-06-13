@@ -39,7 +39,7 @@
                     <table class="table table-sm card-table">
                         <thead>
                             <tr>
-                                <th>Nom</th>
+                                <th>Zones d'impression</th>
                                 <th>Emplacement</th>
                             </tr>
                         </thead>

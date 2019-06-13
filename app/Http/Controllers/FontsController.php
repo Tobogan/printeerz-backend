@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Auth;
+
 class FontsController extends Controller
 {
     public function __construct(){
@@ -25,7 +27,10 @@ class FontsController extends Controller
      */
     public function index(){
         $fonts = Font::all();
-        return view('admin/Fonts.index', ['fonts' => $fonts]);
+        return view('admin/Fonts.index', [
+            'fonts' => $fonts
+            ]
+        );
     }
 
     /**
@@ -46,7 +51,11 @@ class FontsController extends Controller
             '800'=>'Extra Bold (800)',
             '900'=>'Black (900)'
         ];
-        return view('admin/Fonts.add', ['font_weights' => $font_weights, 'fonts' => $fonts]);
+        return view('admin/Fonts.add', [
+            'font_weights' => $font_weights, 
+            'fonts' => $fonts
+            ]
+        );
     }
 
         /**
@@ -74,7 +83,7 @@ class FontsController extends Controller
             // Create file name
             $name = $file->getClientOriginalName();
             // Define the path to file
-            $filePath = '/fonts/' . $title . '/' . $name;
+            $filePath = '/fonts/' . $name;
             // Upload the new image
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
@@ -113,7 +122,11 @@ class FontsController extends Controller
             '800'=>'Extra Bold (800)',
             '900'=>'Black (900)'
         ];
-        return view('admin/Fonts.edit', ['font_weights' => $font_weights, 'font' => $font]);
+        return view('admin/Fonts.edit', [
+            'font_weights' => $font_weights, 
+            'font' => $font
+            ]
+        );
     }
 
         /**
@@ -132,6 +145,7 @@ class FontsController extends Controller
             ]);
             $id = $request->font_id;
             $font = Font::find($id);
+            $font->created_by = Auth::user()->username;
             $font->weight = $request->weight;
             $font->is_active = $request->is_active;
             $font->is_deleted = $request->is_deleted;
@@ -142,7 +156,7 @@ class FontsController extends Controller
                 $font_file = $request->file('font_file');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/fonts/'.$name;
+                $newFilePath = '/fonts/' . $name;
                 // Upload the new image
                 // $disk->put($newFilePath, $font_file, 'public');
                 $disk->put($newFilePath, file_get_contents($file), 'public');
@@ -177,7 +191,7 @@ class FontsController extends Controller
                 $font_file = $request->file('font_file');
                 $name = $font_file->getClientOriginalName();
                 // Define the new path to image
-                $newFilePath = '/fonts/'.$name;
+                $newFilePath = '/fonts/' . $name;
                 // Upload the new image
                 // $disk->put($newFilePath, $font_file, 'public');
                 $disk->put($newFilePath, file_get_contents($file), 'public');

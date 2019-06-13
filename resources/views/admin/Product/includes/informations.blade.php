@@ -40,73 +40,84 @@
                     <h4 class="card-header-title">Organisation</h4>
                 </div>
                 <div class="card-body">
-                    @if ($product -> product_type)
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h5 class="mb-0">Type</h5>
-                            </div>
-                            <div class="col-auto">
-                                <span class="text-muted">
-                                    {{ $product -> product_type }}
-                                </span>
-                            </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Crée par</h5>
                         </div>
+                        <div class="col-auto">
+                            <span class="text-muted">
+                                {{ $product->created_by }}
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+                    @if ($product -> product_type)
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Type</h5>
+                        </div>
+                        <div class="col-auto">
+                            <span class="text-muted">
+                                {{ $product -> product_type }}
+                            </span>
+                        </div>
+                    </div>
                     <hr>
                     @endif
                     @if ($product -> gender)
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h5 class="mb-0">Sexe</h5>
-                            </div>
-                            <div class="col-auto">
-                                <span class="text-muted">
-                                    {{ $product -> gender }}
-                                </span>
-                            </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Sexe</h5>
                         </div>
+                        <div class="col-auto">
+                            <span class="text-muted">
+                                {{ $product -> gender }}
+                            </span>
+                        </div>
+                    </div>
                     <hr>
                     @endif
                     @if ($product -> vendor['name'])
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h5 class="mb-0">Fournisseur</h5>
-                            </div>
-                            <div class="col-auto">
-                                <span class="text-muted">
-                                    {{ $product -> vendor['name'] }}
-                                </span>
-                            </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Fournisseur</h5>
                         </div>
+                        <div class="col-auto">
+                            <span class="text-muted">
+                                {{ $product -> vendor['name'] }}
+                            </span>
+                        </div>
+                    </div>
                     <hr>
                     @endif
                     @if ($product -> vendor['reference'])
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h5 class="mb-0">Référence</h5>
-                            </div>
-                            <div class="col-auto">
-                                <span class="text-muted">
-                                    {{ $product -> vendor['reference'] }}
-                                </span>
-                            </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Référence</h5>
                         </div>
+                        <div class="col-auto">
+                            <span class="text-muted">
+                                {{ $product -> vendor['reference'] }}
+                            </span>
+                        </div>
+                    </div>
                     @endif
                     <hr>
                     <div class="row align-items-center">
                         <div class="col">
-                            <h5 class="mb-0">Zone(s) disponible(s)</h5>
+                            <h5 class="mb-2">Zone(s) disponible(s)</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
                                 @if($product->printzones_id)
-                                    @foreach($printzones as $printzone)
-                                        @foreach($product->printzones_id as $print)
-                                            @if($printzone->id == $print)
-                                                {{ $printzone->name }}
-                                                <br>
-                                            @endif
-                                        @endforeach
-                                    @endforeach
+                                @foreach($printzones as $printzone)
+                                @foreach($product->printzones_id as $print)
+                                @if($printzone->id == $print)
+                                {{ $printzone->name }}
+                                <br>
+                                @endif
+                                @endforeach
+                                @endforeach
                                 @endif
                             </span>
                         </div>
