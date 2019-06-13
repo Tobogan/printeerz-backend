@@ -313,12 +313,12 @@
                                                     <?php 
                                                         $array_font_color = array();
                                                         $array_font_hexa = array();
-                                                        ?>
+                                                    ?>
                                                     @foreach($component['settings']['font_colors'] as $font_color)
                                                     <?php 
-                                                                array_push($array_font_color, $font_color['title']);
-                                                                array_push($array_font_hexa, $font_color['code_hexa']);
-                                                            ?>
+                                                        array_push($array_font_color, $font_color['title']);
+                                                        array_push($array_font_hexa, $font_color['code_hexa']);
+                                                    ?>
                                                     <tr>
                                                         <td>
                                                             <div class="colorSquare"
