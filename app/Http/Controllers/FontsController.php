@@ -72,6 +72,7 @@ class FontsController extends Controller
         ]);
 
         $font = new Font;
+        $font->created_by = Auth::user()->username;
         $font->title = $request->title;
         $font->weight = $request->weight;
         $font->is_active = $request->is_active;

@@ -81,7 +81,7 @@ class TemplatesController extends Controller
             'templateComponentsList' => 'required|string|min:6|max:255'
         ]);
         $template = new Templates;
-        $templatet->created_by = Auth::user()->username;
+        $template->created_by = Auth::user()->username;
         $template->title = $request->title;
         $template->category = $request->category;
         $disk = Storage::disk('s3');

@@ -111,8 +111,8 @@ class EventsCustomsController extends Controller
         ]);
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        $events_custom->created_by = Auth::user()->username;
         $events_custom = new Events_customs;
+        $events_custom->created_by = Auth::user()->username;
         $events_custom->title = $request->title;
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
@@ -430,7 +430,7 @@ class EventsCustomsController extends Controller
                             $shifted_weight = array_shift($fonts_weight_exploded);
                             $shifted_transform = array_shift($fonts_transform_exploded);
                         }
-                        dd($font);
+                        // dd($font);
                         foreach (array_filter($font) as $ft) {
                             foreach ($fonts_all as $font_obj) {
                                 if ($font_obj->title == $ft) {

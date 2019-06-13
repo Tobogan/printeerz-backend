@@ -331,8 +331,7 @@ function addDeleteBtn(font_title, id, font_transform, font_weight, font_name) {
 		font_title +
 		'" data-transform="' +
 		font_transform +
-		"\" onclick=\"var id=$(this).attr('data-id');var weight=$(this).attr('data-weight');var font=$(this).attr('data-font');var transform=$(this).attr('data-transform');deleteFontRow(id,font,weight,transform);deleteFile(" +
-		font_name +
+		"\" onclick=\"var id=$(this).attr('data-id');var weight=$(this).attr('data-weight');var font=$(this).attr('data-font');var transform=$(this).attr('data-transform');deleteFontRow(id,font,weight,transform);deleteFile('" + font_name +
 		"');$(this).closest('tr').remove();\">Supprimer</a></td></tr>"
 	);
 }
@@ -489,6 +488,7 @@ function deleteFontRow(id, font, font_weight, font_transform) {
 	document.getElementById(
 		'fontsTransformToDeleteList' + id
 	).value = fonts_transforms;
+	console.log('fontstoteldete' + fontsToDeleteList);
 	var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
 	var fontsWeightsToDeleteList = $('#fontsWeightsToDeleteList' + id).val();
 	var fontsTransformToDeleteList = $('#fontsTransformToDeleteList' + id).val();
@@ -515,6 +515,7 @@ function deleteSelectedFontRow(id, font, font_id) {
 	var fonts = [];
 	var fonts_ids = [];
 	var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
+	console.log('fontstoteldete' + fontsToDeleteList);
 	var fontsIdsToDeleteList = $('#fontsIdsToDeleteList' + id).val();
 	fonts.push(fontsToDeleteList);
 	fonts_ids.push(fontsIdsToDeleteList);
@@ -527,10 +528,10 @@ function deleteSelectedFontRow(id, font, font_id) {
 	var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
 	var fontsIdsToDeleteList = $('#fontsIdsToDeleteList' + id).val();
 	// Here I replace the values by the final value after the delete
-	document.getElementById('fontsList' + id).value = fontsList.replace(
-		fontsToDeleteList,
-		''
-	);
+	var arr_fonts = fontsList.split(',');
+	// Delete array element
+	var arr = arr_fonts.filter(e => e !== font);
+	document.getElementById('fontsList' + id).value = arr.toString();
 	document.getElementById('fontsIdsList' + id).value = fontsIdsList.replace(
 		fontsIdsToDeleteList,
 		''
@@ -547,6 +548,8 @@ function deleteShowFontRow(id, font, font_id) {
 	var fonts_ids = [];
 	var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
 	var fontsIdsToDeleteList = $('#fontsIdsToDeleteList' + id).val();
+	console.log('arr_delete = ' + fontsToDeleteList);
+
 	fonts.push(fontsToDeleteList);
 	fonts_ids.push(fontsIdsToDeleteList);
 	var array_fonts = [font];
@@ -557,19 +560,17 @@ function deleteShowFontRow(id, font, font_id) {
 	document.getElementById('fontsIdsToDeleteList' + id).value = fonts_ids;
 	var fontsToDeleteList = $('#fontsToDeleteList' + id).val();
 	var fontsIdsToDeleteList = $('#fontsIdsToDeleteList' + id).val();
+	console.log('todelete = ' + fontsToDeleteList.substring(1));
 	// Here I replace the values by the final value after the delete
-	document.getElementById('fontsList' + id).value = fontsList.replace(
-		fontsToDeleteList.substring(1),
-		''
-	);
-	// document.getElementById('fontsList' + id).value = fontsList.replace(
-	// 	fontsToDeleteList.substring(1),
-	// 	''
-	// );
+	var arr_fonts = fontsList.split(',');
+	// Delete array element
+	var arr = arr_fonts.filter(e => e !== font);
+	document.getElementById('fontsList' + id).value = arr.toString();
 	document.getElementById('fontsIdsList' + id).value = fontsIdsList.replace(
 		fontsIdsToDeleteList.substring(1),
 		''
 	);
+	console.log('newFontsList = ' + document.getElementById('fontsList' + id).value);
 	// Here I delete input content
 	document.getElementById('fontsToDeleteList' + id).value = '';
 	document.getElementById('fontsIdsToDeleteList' + id).value = '';

@@ -67,7 +67,6 @@ class PrintzonesController extends Controller
         ]);
         
         $printzone = new Printzones;
-
         $printzone->name = $request->name;
         $printzone->created_by = Auth::user()->username;
         $printzone->zone = $request->zone;

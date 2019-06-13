@@ -154,7 +154,7 @@
                                 <div class="col-auto">
                                     <a href="#" class="buttonFont btn btn-sm btn-primary" data-toggle="modal"
                                         data-target="#selectFontModal" data-id="{{$component['events_component_id']}}">
-                                        Sélectionner une police
+                                        Sélectionnez une police
                                     </a>
                                 </div>
                             </div>
