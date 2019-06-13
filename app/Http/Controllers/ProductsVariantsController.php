@@ -15,21 +15,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse; 
 
+use Illuminate\Support\Facades\Auth;
+
 class ProductsVariantsController extends Controller
 {
     public function __construct(){
         //$this->middleware(isActivate::class);
         //$this->middleware(isAdmin::class);
         $this->middleware('auth');
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -40,7 +33,10 @@ class ProductsVariantsController extends Controller
     public function create()
     {
         $products_variants = Products_variants::all();
-        return view('admin/ProductsVariants.add', ['products_variants' => $products_variants]);
+        return view('admin/ProductsVariants.add', [
+            'products_variants' => $products_variants
+            ]
+        );
     }
 
     /**
@@ -100,7 +96,11 @@ class ProductsVariantsController extends Controller
     {
         $products_variant = Products_variants::find($id);
         $products_variants = Products_variants::all();
-        return view('admin/Product.show', ['products_variant' => $product_variant, 'products_variants' => $products_variants]);
+        return view('admin/Product.show', [
+            'products_variant' => $product_variant, 
+            'products_variants' => $products_variants
+            ]
+        );
     }
 
     /**
@@ -116,7 +116,14 @@ class ProductsVariantsController extends Controller
         $product = Product::find($products_variant->product_id);
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/ProductsVariants.edit', ['s3' => $s3, 'disk' => $disk, 'product' => $product, 'printzones' => $printzones,'products_variant' => $products_variant]);
+        return view('admin/ProductsVariants.edit', [
+            's3' => $s3, 
+            'disk' => $disk, 
+            'product' => $product, 
+            'printzones' => $printzones,
+            'products_variant' => $products_variant
+            ]
+        );
     }
 
     /**
@@ -138,6 +145,7 @@ class ProductsVariantsController extends Controller
             ]);
             $pv_id = $request->products_variant_id;
             $products_variant = Products_variants::find($pv_id);
+            $products_variant->created_by = Auth::user()->username;
             $products_variant->vendor = array(
                 'sku' => $request->vendor_sku,
                 'quantity' => $request->vendor_quantity

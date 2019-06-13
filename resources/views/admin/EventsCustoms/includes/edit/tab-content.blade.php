@@ -39,11 +39,16 @@
                 </div>
             </div>
             {{-- Image --}}
-            @if(!empty($events_custom->image) && $disk->exists($events_custom->image))
+            @if(!empty($events_custom->imageUrl) && $disk->exists($events_custom->imageUrl))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->image}}"
+                    <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->imageUrl}}"
                         alt="Image personnalisation">
+                    <div class="form-group">
+                        <hr>
+                        <label for="custom_img">Modifiez l'image</label>
+                        {!! Form::file('custom_img', array('class' => 'form-control', 'id' =>'photo_profile')) !!}
+                    </div>
                 </div>
             </div>
             @else
@@ -157,7 +162,7 @@ $arrayEventsComponentsIds = array();
                                 <div class="col-auto">
                                     <a href="#" class="buttonFont btn btn-sm btn-primary" data-toggle="modal"
                                         data-target="#selectFontModal" data-id="{{$events_component->id}}">
-                                        Sélectionner une police
+                                        Sélectionnez une police
                                     </a>
                                 </div>
                             </div>
@@ -246,6 +251,7 @@ $arrayEventsComponentsIds = array();
                                             <table class="table table-sm table-nowrap card-table">
                                                 <thead>
                                                     <tr>
+                                                        <th></th>
                                                         <th>
                                                             <a href="#" class="text-muted" data-sort="color-name">
                                                                 Nom

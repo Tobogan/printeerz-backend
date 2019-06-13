@@ -40,7 +40,8 @@ Not Ready
     @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
     <div class="col-auto">
       <div class="avatar avatar-xxl header-avatar-top">
-        <img src="{{$s3 . $event->logoUrl}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+        <img src="{{$s3 . $event->logoUrl}}" alt="..." class="avatar-img rounded-circle border border-4 border-body"
+          style="background-color: white;">
       </div>
     </div>
     @endif

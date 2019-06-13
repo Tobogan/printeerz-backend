@@ -35,8 +35,11 @@
                                         <label>
                                             Nom du gabarit
                                         </label>
-                                        {!! Form::text('title', null, ['class' => 'form-control' .
-                                        $errors->first('title', ' is-invalid'), 'placeholder' => 'Nom'])!!}
+                                        {!! Form::text('title', null, [
+                                        'class' => 'form-control'.$errors->first('title', ' is-invalid'),
+                                        'placeholder' => 'Nom'
+                                        ])
+                                        !!}
                                         @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le
                                             nom du gabarit</div>@endif
                                     </div>
@@ -44,8 +47,11 @@
                                         <label>
                                             Catégorie
                                         </label>
-                                        {!! Form::text('category', null, ['class' => 'form-control' .
-                                        $errors->first('category', ' is-invalid'), 'placeholder' => 'Catégorie']) !!}
+                                        {!! Form::text('category', null, [
+                                        'class' => 'form-control'.$errors->first('category', ' is-invalid'),
+                                        'placeholder' => 'Catégorie'
+                                        ])
+                                        !!}
                                         @if($errors->has('category'))<div class="invalid-feedback">Veuillez renseigner
                                             la catégorie du gabarit</div>@endif
                                     </div>
@@ -55,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            {{-- Template width & height --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -92,14 +99,14 @@
                     </div>
                 </div>
             </div>
-
+            {{-- Template position --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
+                        <div class="card-header mt-2">
+                            <h4 class="card-header-title mt-2">
                                 Position du gabarit
-                                <p><small class="text-muted">Position du gabarit par rapport à la zone
+                                <p class="mt-2"><small class="text-muted">Position du gabarit par rapport à la zone
                                         d'impression.</small></p>
                             </h4>
                         </div>
@@ -136,9 +143,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header mt-2">
                             <h4 class="card-header-title">
                                 Composants
+                                <p class="mt-2"><small class="text-muted">Sélectionnez au moins un composant pour ce
+                                        gabarit.</small></p>
                             </h4>
                         </div>
                         <div class="card-body">

@@ -112,17 +112,16 @@
                                 <td class="event-date">{{ date('d/m/y', strtotime($event->start_datetime)) }} </td>
                                 <td class="event-is_ready">
                                     @if ($event->status == "draft")<span
-                                        class="badge badge-soft-success">Brouillon</span>
+                                        class="badge badge-soft-secondary">Brouillon</span>
                                     @elseif($event->status == "to_test")<span class="badge badge-soft-secondary">A
                                         tester</span>
                                     @elseif($event->status == "validated")<span
-                                        class="badge badge-soft-secondary">Validé</span>
-                                    @elseif($event->status == "ready")<span
-                                        class="badge badge-soft-secondary">Prêt</span>
-                                    @elseif($event->status == "in_progress")<span class="badge badge-soft-secondary">En
+                                        class="badge badge-soft-success">Validé</span>
+                                    @elseif($event->status == "ready")<span class="badge badge-soft-success">Prêt</span>
+                                    @elseif($event->status == "in_progress")<span class="badge badge-soft-success">En
                                         cours</span>
                                     @elseif($event->status == "done")<span
-                                        class="badge badge-soft-secondary">Terminé</span>
+                                        class="badge badge-soft-success">Terminé</span>
                                     @endif
                                 </td>
                             </tr>

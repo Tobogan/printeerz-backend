@@ -141,9 +141,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header mt-2">
                             <h4 class="card-header-title">
                                 Composants
+                                <p class="mt-2"><small class="text-muted">Sélectionnez au moins un composant pour ce
+                                        gabarit.</small></p>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -154,7 +156,7 @@
                                         App\Template_components::pluck('title','_id'), $template->components_ids, ['id'
                                         =>
                                         'componentsSelect', 'class' => '', 'data-toggle' =>'select']) !!}
-                                        {!! $errors->first('templateComponentsList', '<p class="help-block mt-2"
+                                        {!! $errors->first('components_ids', '<p class="help-block mt-2"
                                             style="color:red;"><small>Merci de sélectionner au moins un
                                                 composant.</small></p>') !!}
                                     </div>

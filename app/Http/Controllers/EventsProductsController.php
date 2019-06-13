@@ -19,6 +19,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class EventsProductsController extends Controller
 {
     public function __construct(){
@@ -32,7 +34,10 @@ class EventsProductsController extends Controller
     public function index()
     {
         $events_products = Events_products::all();
-        return view('admin/EventsProducts.index', ['events_products' => $events_products]);
+        return view('admin/EventsProducts.index', [
+            'events_products' => $events_products
+            ]
+        );
     }
 
     /**
@@ -44,7 +49,11 @@ class EventsProductsController extends Controller
     {
         $events_products = Events_products::all();
         $products = Product::all();
-        return view('admin/EventsProducts.add', ['events_products' => $events_products, 'products' => $products]);
+        return view('admin/EventsProducts.add', [
+            'events_products' => $events_products, 
+            'products' => $products
+            ]
+        );
     }
 
     /**
@@ -66,6 +75,7 @@ class EventsProductsController extends Controller
             }
             else{
                 $events_product = new Events_products;
+                $events_product->created_by = Auth::user()->username;
                 $events_product->event_id = $request->event_id;
                 $events_product->product_id = $request->product_id;
                 $events_product->title = $request->title;
@@ -221,7 +231,18 @@ class EventsProductsController extends Controller
         $templates = Templates::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/EventsProducts.show', ['disk'=>$disk, 's3'=>$s3,'templates' => $templates, 'events_customs' => $events_customs, 'printzones' => $printzones, 'products_variants' => $products_variants, 'product' => $product, 'events_product' => $events_product, 'events_products' => $events_products]);
+        return view('admin/EventsProducts.show', [
+            'disk'=>$disk, 
+            's3'=>$s3,
+            'templates' => $templates, 
+            'events_customs' => $events_customs, 
+            'printzones' => $printzones, 
+            'products_variants' => $products_variants, 
+            'product' => $product, 
+            'events_product' => $events_product, 
+            'events_products' => $events_products
+            ]
+        );
     }
 
     /**
@@ -238,7 +259,11 @@ class EventsProductsController extends Controller
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/EventsProducts.edit', ['select_products' => $select_products, 'events_product' => $events_product]);
+        return view('admin/EventsProducts.edit', [
+            'select_products' => $select_products, 
+            'events_product' => $events_product
+            ]
+        );
     }
 
     /**
@@ -321,6 +346,7 @@ class EventsProductsController extends Controller
                 $arr = $event->event_products_id;
                 $arr = $result;
                 $event->event_products_id = $arr;
+                // dd($result);
                 $event->update();
             }
         }
@@ -337,7 +363,7 @@ class EventsProductsController extends Controller
         return redirect('admin/Event/show/'.$event->id)->with('status', 'Le variante a été correctement effacée.');
     }
 
-    // Activate and desactivate a events$events_product function in index events$events_product
+    // Activate and desactivate a events_product function in index events_product
     public function desactivate($id)
     {
         $events_product = Events_products::find($id);

@@ -39,17 +39,21 @@
                 </div>
             </div>
             {{-- Image --}}
-            @if(!empty($events_custom->image) && $disk->exists($events_custom->image))
+            @if(!empty($events_custom->imageUrl) && $disk->exists($events_custom->imageUrl))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->image}}"
+                    <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->imageUrl}}"
                         alt="Image personnalisation">
+                    <div class="form-group">
+                        <hr>
+                        <label for="custom_img">Modifiez l'image</label>
+                        {!! Form::file('custom_img', array('class' => 'form-control', 'id' =>'photo_profile')) !!}
+                    </div>
                 </div>
             </div>
             @else
             <div class="card card-inactive">
                 <div class="card-body text-center">
-                    <!-- Title -->
                     <p class="text-muted">
                         Pas d'image de personnalisation
                     </p>
@@ -150,7 +154,7 @@
                                 <div class="col-auto">
                                     <a href="#" class="buttonFont btn btn-sm btn-primary" data-toggle="modal"
                                         data-target="#selectFontModal" data-id="{{$component['events_component_id']}}">
-                                        Sélectionner une police
+                                        Sélectionnez une police
                                     </a>
                                 </div>
                             </div>
@@ -290,6 +294,7 @@
                                             <table class="table table-sm table-nowrap card-table">
                                                 <thead>
                                                     <tr>
+                                                        <th></th>
                                                         <th>
                                                             <a href="#" class="text-muted" data-sort="color-name">
                                                                 Nom
@@ -315,6 +320,11 @@
                                                                 array_push($array_font_hexa, $font_color['code_hexa']);
                                                             ?>
                                                     <tr>
+                                                        <td>
+                                                            <div class="colorSquare"
+                                                                style="background:#{{$font_color['code_hexa']}};">
+                                                            </div>
+                                                        </td>
                                                         <td class="color-name">
                                                             {{$font_color['title']}}
                                                         </td>
@@ -371,7 +381,7 @@
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
                                 Image du composant
-                                <p><small class="text-muted">Modifiez ici l'image du composant.</small></p>
+                                <p class="mt-2"><small class="text-muted">Modifiez ici l'image du composant.</small></p>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -486,9 +496,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-header-title">
-                                SMODE
-                            </h4>
+                            @if($component['settings']['bg_color'] !== null)
+                            <div
+                                style="background-color:#{{$component['settings']['bg_color']}};color:#{{$component['settings']['text_color']}};text-transform:capitalize;font-weight:bold;font-size:20px;text-align:center;height:30px;vertical-align:bottom;">
+                                HIGHLIGHT
+                            </div>
+                            @else
+                            <h4>SMODE</h4>
+                            @endif
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -510,7 +525,7 @@
                                         Code hexa couleur background
                                     </label>
                                     <div class="form-group">
-                                        {!! Form::text('smode_bg_color_hex'.$i, $component['settings']['text_color'],
+                                        {!! Form::text('smode_bg_color_hex'.$i, $component['settings']['bg_color'],
                                         ['class' => 'form-control',
                                         'placeholder' =>
                                         '000000']) !!}

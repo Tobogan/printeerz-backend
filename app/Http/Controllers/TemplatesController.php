@@ -15,6 +15,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class TemplatesController extends Controller
 {
     public function __construct(){
@@ -35,7 +37,14 @@ class TemplatesController extends Controller
         $exists = $disk->exists('file.jpg');
         $templates_components = Template_components::all();
 
-        return view('admin/Templates.index', ['templates' => $templates, 'templates_components' => $templates_components, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
+        return view('admin/Templates.index', [
+            'templates' => $templates, 
+            'templates_components' => $templates_components, 
+            'disk' => $disk, 
+            's3' => $s3, 
+            'exists' => $exists
+            ]
+        );
     }
 
     /**
@@ -46,7 +55,10 @@ class TemplatesController extends Controller
     public function create()
     {
         $templates = Templates::all();
-        return view('admin/Templates.add', ['templates' => $templates]);
+        return view('admin/Templates.add', [
+            'templates' => $templates
+            ]
+        );
     }
 
     /**
@@ -57,7 +69,6 @@ class TemplatesController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($_REQUEST);
         $validatedData = $request->validate([
             'title' => 'required|string|unique:templates|max:255',
             'width' => 'required|string|max:255',
@@ -70,6 +81,7 @@ class TemplatesController extends Controller
             'templateComponentsList' => 'required|string|min:6|max:255'
         ]);
         $template = new Templates;
+        $template->created_by = Auth::user()->username;
         $template->title = $request->title;
         $template->category = $request->category;
         $disk = Storage::disk('s3');
@@ -138,17 +150,6 @@ class TemplatesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -159,7 +160,12 @@ class TemplatesController extends Controller
         $template = Templates::find($id);
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/Templates.edit', ['s3' => $s3, 'disk' => $disk, 'template' => $template]);
+        return view('admin/Templates.edit', [
+            's3' => $s3, 
+            'disk' => $disk, 
+            'template' => $template
+            ]
+        );
     }
 
     /**
@@ -180,8 +186,7 @@ class TemplatesController extends Controller
                 'origin_y' => 'required|string|max:255',
                 'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'full' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'category' => 'nullable|string|max:255',
-                'templateComponentsList' => 'required|string|min:6|max:255'
+                'category' => 'nullable|string|max:255'
             ]);
             $id = $request->template_id;
             $template = Templates::find($id);
@@ -189,44 +194,30 @@ class TemplatesController extends Controller
             $template->category = $request->category;
             $disk = Storage::disk('s3');
             if ($request->hasFile('thumb')){
-                // Get current image path
                 $oldPath = $template->thumb_img;
-                // Get new image
                 $file = $request->file('thumb');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/templates/'.$template->id.'/'.$name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $template->thumb_img = $newFilePath;
                 if(!empty($template->thumb_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
                 }
             }
             if ($request->hasFile('full')){
-                // Get file
                 $file = $request->file('full');
                 $oldPath = $template->thumb_full;
-                // Create name
                 $name = time() . $file->getClientOriginalName();
-                // Define the path
                 $newFilePath = '/templates/'.$template->id.'/'.$name;
-                // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
-                // Upload the file
                 $disk->put($newFilePath, $img, 'public');
-                // Delete public copy
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $template->full_img = $newFilePath;
                 if(!empty($template->full_img) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);
@@ -255,8 +246,7 @@ class TemplatesController extends Controller
                 'origin_y' => 'required|string|max:255',
                 'thumb' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'full' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'category' => 'nullable|string|max:255',
-                'templateComponentsList' => 'required|string|min:6|max:255'
+                'category' => 'nullable|string|max:255'
 
             ]);
             $id = $request->template_id;
@@ -265,45 +255,31 @@ class TemplatesController extends Controller
             $template->category = $request->category;
             
             if ($request->hasFile('thumb')){
-                // Get current image path
                 $oldPath = $template->thumb_img;
-                // Get new image
                 $file = $request->file('thumb');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/templates/'.$template->id.'/'.$name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-                // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $template->thumb_img = $newFilePath;
                 if (!empty($template->thumb_img) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
             }
             if ($request->hasFile('full')) {
-                // Get file
                 $file = $request->file('full');
                 $oldPath = $template->thumb_full;
-                // Create name
                 $name = time() . $file->getClientOriginalName();
-                // Define the path
                 $newFilePath = '/templates/'.$template->id.'/'.$name;
-                // Resize img
                 $img = Image::make(file_get_contents($file))->save($name);
-                // Upload the file
                 $disk->put($newFilePath, $img, 'public');
-                // Delete public copy
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $template->full_img = $newFilePath;
                 if (!empty($template->full_img) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);

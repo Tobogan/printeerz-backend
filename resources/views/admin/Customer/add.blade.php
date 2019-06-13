@@ -41,7 +41,7 @@
                                     Nom du client
                                 </label>
                                 {!! Form::text('title', null, ['class' => 'form-control',
-                                'placeholder' => 'Nom duclient']) !!}
+                                'placeholder' => 'Nom du client']) !!}
                                 {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;">
                                     <small>:message</small></p>') !!}
                             </div>
@@ -204,7 +204,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -224,7 +224,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {!! Form::hidden('is_active', "true") !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <hr class="mt-4 mb-5">

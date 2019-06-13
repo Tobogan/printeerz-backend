@@ -21,6 +21,8 @@ use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
+use Illuminate\Support\Facades\Auth;
+
 class EventController extends Controller
 {
     public function __construct(){
@@ -39,7 +41,13 @@ class EventController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
-        return view('admin/Event.index', ['events' => $events, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
+        return view('admin/Event.index', [
+            'events' => $events, 
+            'disk' => $disk, 
+            's3' => $s3, 
+            'exists' => $exists
+            ]
+        );
     }
 
     /**
@@ -55,7 +63,12 @@ class EventController extends Controller
         foreach($customers as $customer) {
             $select_customers[$customer->id] = $customer->title;
         }
-        return view('admin/Event.add', ['events' => $events, 'select_customers' => $select_customers, 'products' => $products]);
+        return view('admin/Event.add', [
+            'events' => $events, 
+            'select_customers' => $select_customers, 
+            'products' => $products
+            ]
+        );
     }
 
         /**
@@ -73,7 +86,12 @@ class EventController extends Controller
                 $select_customers[$customer->id] = $customer->title;
             }
         }
-        return view('admin/Event.add', ['events' => $events, 'select_customers' => $select_customers, 'products' => $products]);
+        return view('admin/Event.add', [
+            'events' => $events, 
+            'select_customers' => $select_customers, 
+            'products' => $products
+            ]
+        );
     }
 
     /**
@@ -98,20 +116,26 @@ class EventController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|unique:events|string|max:255',
             'advertiser' => 'required|string|max:255',
-            'type' => 'nullable|string|max:255',
+            'type' => 'required|string|max:255',
             'employees' => 'required',
             'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
             'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
             'BAT' => 'mimes:pdf|max:4000',
             'start_datetime'=>'required|date|before_or_equal:end_datetime',
+
             'description' => 'nullable|string|max:2750'
         ]);
 
         $event = new Event;
+        $event->created_by = Auth::user()->username;
         $event->name = $request->name;
         $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
         $event->status = "draft";
+        $event->start_time = $request->start_time;
+        $event->end_time = $request->end_time;
+        $event->start_datetime = $request->start_datetime;
+        $event->end_datetime = $request->end_datetime;
         $event->location = array(
             'address' => $request->address,
             'postal_code' => $request->postal_code,
@@ -120,8 +144,6 @@ class EventController extends Controller
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
         );
-        $event->start_datetime = $request->start_datetime;
-        $event->end_datetime = $request->end_datetime;
         $event->type = $request->type;
         $event->description = $request->description;
         $event->event_products_id = array();
@@ -202,7 +224,17 @@ class EventController extends Controller
         foreach($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', ['event' => $event, 'users' => $users, 'printzones' => $printzones, 'select_products' => $select_products,'events_products' => $events_products, 'products' => $products, 'disk' => $disk, 's3' => $s3]);
+        return view('admin/Event.show', [
+            'event' => $event, 
+            'users' => $users, 
+            'printzones' => $printzones, 
+            'select_products' => $select_products,
+            'events_products' => $events_products, 
+            'products' => $products, 
+            'disk' => $disk, 
+            's3' => $s3
+            ]
+        );
     }
 
     /**
@@ -218,8 +250,14 @@ class EventController extends Controller
         $productVariants = ProductVariants::all();
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
-        return view('admin/Event.show_eventVariants', ['event' => $event, 'productVariants' => $productVariants,
-        'eventVariants' => $eventVariants, 'disk' => $disk, 's3' => $s3]);
+        return view('admin/Event.show_eventVariants', [
+            'event' => $event,
+            'productVariants' => $productVariants,
+            'eventVariants' => $eventVariants, 
+            'disk' => $disk, 
+            's3' => $s3
+            ]
+        );
     }
 
     /**
@@ -237,7 +275,12 @@ class EventController extends Controller
         foreach($customers as $customer) {
             $select_customers[$customer->id] = $customer->title;
         }
-        return view('admin/Event.edit', ['event' => $event, 'select_customers' => $select_customers, 'products' => $products]);
+        return view('admin/Event.edit', [
+            'event' => $event, 
+            'select_customers' => $select_customers, 
+            'products' => $products
+            ]
+        );
     }
 
     /**
@@ -253,13 +296,15 @@ class EventController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'advertiser' => 'required|string|max:255',
-                'type' => 'nullable|string|max:255',
+                'type' => 'required|string|max:255',
                 'customer_id' => 'required|string|max:255',
                 'employees' => 'required',
                 'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'BAT' => 'mimes:pdf|max:4000',
                 'start_datetime'=>'required|date|before_or_equal:end_datetime',
+                'end_time' => 'required',
+                'start_time' => 'required',
                 'description' => 'nullable|string|max:2750'
             ]);
             $id = $request->id;
@@ -276,6 +321,8 @@ class EventController extends Controller
             );
             $event->start_datetime = $request->start_datetime;
             $event->end_datetime = $request->end_datetime;
+            $event->start_time = $request->start_time;
+            $event->end_time = $request->end_time;
             $event->type = $request->type;
             $event->description = $request->description;
             $event_products_id[]=$request->get('event_products_id');
@@ -345,12 +392,14 @@ class EventController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'advertiser' => 'required|string|max:255',
-                'type' => 'nullable|string|max:255',
+                'type' => 'required|string|max:255',
                 'employees' => 'required',
                 'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'BAT' => 'mimes:pdf|max:4000',
                 'start_datetime'=>'required|date|before_or_equal:end_datetime',
+                'end_time' => 'required',
+                'start_time' => 'required',
                 'description' => 'nullable|string|max:2750'
             ]);
             $id = $request->id;
@@ -381,6 +430,8 @@ class EventController extends Controller
             );
             $event->start_datetime = $request->start_datetime;
             $event->end_datetime = $request->end_datetime;
+            $event->start_time = $request->start_time;
+            $event->end_time = $request->end_time;
             $event->type = $request->type;
             $event->description = $request->description;
             $event->event_products_id = $request->get('event_products_id');
@@ -395,17 +446,11 @@ class EventController extends Controller
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
                 $oldPath = $event->logoUrl;
-                // Get new image
                 $file = $request->file('logo_img');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/events/' . $event->id . '/'. $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                // Put in database
                 $event->logoUrl = $newFilePath;
                 $event->logoFileName = $name;
                 $event->logoPath = '/events/' . $event->id . '/';
@@ -420,9 +465,7 @@ class EventController extends Controller
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
                 $oldPath = $event->coverImgUrl;
-                // Get new image
                 $file = $request->file('cover_img');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
                 $newFilePath = '/events/' . $event->id . '/'. $name;
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);

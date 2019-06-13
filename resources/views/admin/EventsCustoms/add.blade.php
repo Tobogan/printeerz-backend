@@ -25,20 +25,11 @@
                 </div>
             </div>
             {{-- Body --}}
-            @section('alerts')
-            @if (session('status'))
-                <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" id="Alert" role="alert"
-                    data-dismiss="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-        @endsection
             {!! Form::open(['action' => array('EventsCustomsController@store'), 'files' => true,'class' =>
             'mb-4']) !!}
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
-                    
                     <!-- First name -->
                     <div class="card">
                         <div class="card-body">
@@ -53,9 +44,11 @@
                                 </label>
                                 <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
                                 <!-- Input text title-->
-                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control', 'placeholder' => 'Nom'])
+                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control',
+                                'placeholder' => 'Nom'])
                                 !!}
-                                {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>') !!}
+                                {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;">
+                                    <small>:message</small></p>') !!}
                             </div>
 
                             <div class="form-group">
@@ -63,32 +56,52 @@
                                 <label>
                                     Sélectionnez la zone d'impression
                                 </label>
-                                <p class="text-muted b-4">Sélectionnez la zone d'impression sur laquelle se trouvera cette personnalisation.</p>
+                                <p class="text-muted b-4">Sélectionnez la zone d'impression sur laquelle se trouvera
+                                    cette personnalisation.</p>
                                 <!-- Input -->
-                                {!! Form::select('printzone_id', $select_printzones, null, ['id' => 'printzone', 'class' => 'form-control'])
+                                {!! Form::select('printzone_id', $select_printzones, null, ['id' => 'printzone', 'class'
+                                => 'form-control'])
                                 !!}
                             </div>
-                            
+
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label>
+                                    Sélectionnez la couleur
+                                </label>
+                                <p class="text-muted b-4">Sélectionnez la couleur du produit que vous souhaitez
+                                    personnaliser.</p>
+                                <!-- Input -->
+                                {!! Form::select('products_variant_id', $variant_colors, null, ['id' =>
+                                'products_variant_id',
+                                'class'
+                                => 'form-control'])
+                                !!}
+                            </div>
+
                             <!-- Input select template-->
                             <div class="form-group">
                                 <!-- Label -->
                                 <label>
                                     Sélectionnez le gabarit
                                 </label>
-                                <p class="text-muted b-4">Sélectionnez quel gabarit vous souhaitez ajouter à cette personnalisation.</p>
+                                <p class="text-muted b-4">Sélectionnez le gabarit que vous souhaitez ajouter à cette
+                                    personnalisation.</p>
                                 <!-- Input -->
-                                {!! Form::select('template_id', $select_templates, null, ['id' => 'templateComponentType', 'class' => 'form-control'])
+                                {!! Form::select('template_id', $select_templates, null, ['id' =>
+                                'templateComponentType', 'class' => 'form-control'])
                                 !!}
                             </div>
                             <div class="form-group">
                                 <label>
                                     Ajoutez l'image d'illustration
                                 </label>
-                                <p class="text-muted b-4">Vous pouvez ajouter ici une image illustrant cette personnalisation.</p>
-                                <div class="custom-file">
+                                <p class="text-muted b-4">Ajouter ici une image illustrant cette personnalisation.</p>
+                                <div class="form-group">
                                     <!-- Input -->
-                                    {!! Form::file('custom_img', array('class' => 'form-control custom-file-input', 'id' =>'photo_profile')) !!}
-                                    <label class="custom-file-label" for="photo_profile">Ajoutez l'image</label>
+                                    {!! Form::file('custom_img', array('class' => 'form-control')) !!}
+                                    {!! $errors->first('custom_img', '<p class="help-block mt-2" style="color:red;">
+                                        <small>:message</small></p>') !!}
                                 </div>
                             </div>
                         </div>
@@ -100,12 +113,14 @@
             <input type="hidden" class="form-control" name="event_id" value="{{$events_product->event_id}}">
             {{-- hidden for edit --}}
             {{-- <input type="hidden" class="form-control" name="actual_title" value="{{$template_component->title}}">
-            <input type="hidden" class="form-control" name="template_component_id" value="{{$template_component->id}}"> --}}
+            <input type="hidden" class="form-control" name="template_component_id" value="{{$template_component->id}}">
+            --}}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
                         {!! Form::submit('Ajouter', ['class' => 'btn btn-primary', 'style' => 'float:right']) !!}
-                        <a class='btn btn-secondary' style="float: left" href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
+                        <a class='btn btn-secondary' style="float: left"
+                            href="{{route('show_event', $events_product->event_id)}}">Annuler</a>
                     </div>
                 </div>
             </div>

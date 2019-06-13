@@ -3,9 +3,9 @@
         <div class="col-12">
             <?php $i = 0 ?>
             @foreach($events_customs as $events_custom)
-                    @if($events_custom->events_product_id == $events_product->id)
-                        <?php $i++; ?>
-                    @endif
+            @if($events_custom->events_product_id == $events_product->id)
+            <?php $i++; ?>
+            @endif
             @endforeach
             @if($i == 0)
             <div class="card card-inactive">
@@ -14,6 +14,7 @@
                     <h1>
                         Pas de personnalisation.
                     </h1>
+                    @if(isset($events_product->variants[0]))
                     <p class="text-muted">
                         Ajoutez la première personnalisation
                     </p>
@@ -23,10 +24,22 @@
                         personnalisation inc --}}
                         Ajoutez une personnalisation
                     </a>
+                    @else
+                    <p class="text-muted">
+                        Ajoutez la première personnalisation mais avant ça pensez à ajouter les variantes.
+                    </p>
+                    <button title="Merci d'ajouter des variantes avant d'ajouter des personnalisations."
+                        class="btn btn-sm btn-secondary" disabled>
+                        {{-- là modal
+                        personnalisation inc --}}
+                        Ajoutez une personnalisation
+                    </button>
+                    @endif
                 </div>
             </div>
             @else
-            <div id="products_variantsTable" class="card mt-3" data-toggle="lists" data-lists-values='["products_variant-image", "products_variant-color", "products_variant-size", "products_variant-quantity", "products_variant-position", "products_variant-product-zone-title"]'>
+            <div id="products_variantsTable" class="card mt-3" data-toggle="lists"
+                data-lists-values='["products_variant-image", "products_variant-color", "products_variant-size", "products_variant-quantity", "products_variant-position", "products_variant-product-zone-title"]'>
                 <div class="card-header">
                     <div class="card-header-title">
                         <div class="row align-items-center">
@@ -38,7 +51,8 @@
                             </div>
                             <div class="col-auto">
                                 <!-- Button -->
-                                <a href="{{route('create_eventsCustoms', $events_product->id)}}" class="btn btn-sm btn-primary">
+                                <a href="{{route('create_eventsCustoms', $events_product->id)}}"
+                                    class="btn btn-sm btn-primary">
                                     Ajoutez une personnalisation
                                 </a>
                             </div>
@@ -54,6 +68,9 @@
                                         Nom
                                     </a>
                                 </th>
+                                <th href="#" class="text-muted sort" data-sort="events_custom-color">
+                                    Couleur
+                                </th>
                                 <th>
                                     <a href="#" class="text-muted sort" data-sort="events_custom-template">
                                         Gabarit
@@ -67,34 +84,42 @@
 
                         <tbody class="list">
                             @foreach($events_customs as $custom)
-                                @foreach($templates as $template)
-                                    @if($custom->template_id == $template->id)
-                                        @if($custom->events_product_id == $events_product->id)
-                                        <tr>
-                                            <td class="events_custom-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">
-                                                <b>{{ $custom->title }}</b></a></td>
-                                            <td>{{ $template->title }}</td>
-                                            <td>
-                                                <a href="{{route('show_eventsCustoms', $custom->id)}}" class="btn btn-sm btn-primary" style="float:right">
-                                                Détails
-                                                </a>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown">
-                                                    <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-boundary="window">
-                                                        <i class="fe fe-more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item text-danger" href="{{ url('admin/EventsCustoms/destroy/' . $custom->id)}}">
-                                                            Supprimer </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    @endif
-                                @endforeach
+                            @foreach($templates as $template)
+                            @if($custom->template_id == $template->id)
+                            @if($custom->events_product_id == $events_product->id)
+                            <tr>
+                                <td class="events_custom-title"><a href="{{route('show_eventsCustoms', $custom->id)}}">
+                                        <b>{{ $custom->title }}</b></a></td>
+                                <td>
+                                    {{$events_custom->products_variant_color}}
+                                </td>
+                                <td>
+                                    {{ $template->title }}
+                                </td>
+                                <td>
+                                    <a href="{{route('show_eventsCustoms', $custom->id)}}"
+                                        class="btn btn-sm btn-primary" style="float:right">
+                                        Détails
+                                    </a>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-ellipses dropdown-toggle" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            data-boundary="window">
+                                            <i class="fe fe-more-vertical"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item text-danger"
+                                                href="{{ url('admin/EventsCustoms/destroy/' . $custom->id)}}">
+                                                Supprimer </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endif
+                            @endif
+                            @endforeach
                             @endforeach
                         </tbody>
                     </table>

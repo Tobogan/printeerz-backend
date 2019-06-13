@@ -6,6 +6,19 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">
+                                Crée par
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <small class="text-muted">
+                                {{ $customer->created_by }}
+                            </small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">
                                 Adresse
                             </h5>
                         </div>

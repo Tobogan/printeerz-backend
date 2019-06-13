@@ -104,6 +104,32 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <!-- Heure de début-->
+              <div class="form-group">
+                <label>
+                  Heure de début
+                </label>
+                {{Form::time('start_time', $event->start_time,['class' => 'form-control'])}}
+                {!! $errors->first('start_time', '<p class="help-block mt-2" style="color:red;">
+                  <small>:message</small></p>') !!}
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <!-- Heure de fin -->
+              <div class="form-group">
+                <label>
+                  Heure de fin
+                </label>
+                {{Form::time('end_time', $event->end_time,['class' => 'form-control'])}}
+                {!! $errors->first('end_time', '<p class="help-block mt-2" style="color:red;"><small>:message</small>
+                </p>') !!}
+              </div>
+            </div>
+          </div>
+
           <!-- Lieu -->
           <div class="form-group">
             <label class="mb-1">

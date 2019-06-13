@@ -126,5 +126,16 @@
         .progressbar li.active+li:after {
             background-color: #55b776;
         }
+
+        /* font color custom */
+        .colorSquare {
+            width: 15px;
+            height: 15px;
+            float: left;
+            border-radius: 2px;
+            border: solid;
+            border-width: 0.5px;
+            border-color: grey;
+        }
     </style>
 </head>

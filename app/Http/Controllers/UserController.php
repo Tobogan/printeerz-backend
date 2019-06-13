@@ -14,6 +14,8 @@
     use Illuminate\Support\Facades\Storage;
     use Intervention\Image\ImageManager;
 
+    use Illuminate\Support\Facades\Auth;
+
     class UserController extends Controller
     {
         // public function authenticate(Request $request)
