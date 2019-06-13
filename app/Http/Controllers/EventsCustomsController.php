@@ -927,7 +927,7 @@ class EventsCustomsController extends Controller
     {
         $validatedData = \Validator::make($request->all(),[
             'title' => 'required|unique:fonts|string|max:255',
-            'file' => 'required|mimes:ttf,opentype|max:4000'
+            'file' => 'required|max:4000'
         ]);
         if ($validatedData->fails()){
             return response()->json(['errors'=>$validatedData->errors()->all()]);
