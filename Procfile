@@ -1,5 +1,4 @@
-web: vendor/bin/heroku-php-apache2 public/
+web: vendor/bin/heroku-php-apache2 -i custom_php.ini public/
 if (env('APP_ENV') === 'prod') {
     \URL::forceScheme('https');
 }
-web: vendor/bin/heroku-php-apache2 -i custom_php.ini public/
