@@ -41,11 +41,12 @@
                                     Nom du produit
                                 </label>
                                 {!! Form::text('title', null, [
-                                'class' => 'form-control' . $errors->first('title', 'is-invalid'),
+                                'class' => 'form-control',
                                 'placeholder' => 'Nom du produit'
                                 ])!!}
-                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du
-                                    produit</div>@endif
+                                <div>{!! $errors->first('title', '<p class="help-block mt-2" style="color:red;">
+                                        <small>:message</small></p>')
+                                    !!} </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 col-md-6">
