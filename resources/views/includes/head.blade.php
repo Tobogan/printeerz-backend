@@ -121,11 +121,36 @@
 
         .progressbar li.active:before {
             border-color: #55b776;
+            background-color: #55b776;
+            color: white;
         }
 
         .progressbar li.active+li:after {
             background-color: #55b776;
         }
+
+        /* .progressbarClickable.after {
+            width: 100%;
+            height: 2.5px;
+            content: '';
+            position: absolute;
+            background-color: blue;
+            top: 15px;
+            left: -50%;
+            z-index: -1;
+        }
+
+        .progressbarClickable. {
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            border: 2.5px solid blue;
+            display: block;
+            text-align: center;
+            margin: 0 auto 5px auto;
+            border-radius: 50%;
+            background-color: white;
+        } */
 
         /* font color custom */
         .colorSquare {

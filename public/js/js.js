@@ -636,4 +636,28 @@ function checkErrorsEditEventsCustom() {
 		alert('Merci de charger au moins une image pour le composant "image".');
 		return false;
 	}
+
+	// function changeEventStatus() {
+	// 	var new_status = $(this).attr('data-status');
+	// 	var event_id = $(this).attr('data-event_id');
+	// 	// if (confirm('ëtes-vous sûr de vouloir changer le status de l\'événement')) {
+	// 	if (new_status !== "ready") {
+	// 		$.ajax({
+	// 			type: "POST",
+	// 			url: '/admin/Event/changeStatus/' + event_id + '/' + new_status,
+	// 			success: function (res) {
+	// 				console.log(res);
+	// 				location.reload();
+	// 			}
+	// 		});
+	// 	} else {
+	// 		$.ajax({
+	// 			type: "POST",
+	// 			url: '/admin/Event/changeStatus/' + event_id + '/' + new_status,
+	// 			success: function (res) {
+	// 				console.log(res);
+	// 			}
+	// 		});
+	// 	}
+	// }
 }
