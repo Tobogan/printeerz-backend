@@ -342,15 +342,8 @@ class EventController extends Controller
             $event->end_time = $request->end_time;
             $event->type = $request->type;
             $event->description = $request->description;
-            $event_products_id[]=$request->get('event_products_id');
-            $event->event_products_id=$event_products_id;
+            $event->event_products_id=$request->get('event_products_id');
             $event->user_ids=$request->get('employees');
-            $event->comments = array(
-                'id' => $request->comment_id,
-                'employee_id' => $request->employee_id,
-                'comment' => $request->comment,
-                'created_at' => $request->created_at
-            );
             // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
@@ -373,20 +366,45 @@ class EventController extends Controller
             // Update Cover image
            if ($request->hasFile('cover_img')){
                 $disk = Storage::disk('s3');
-                $oldPath = $event->coverImgUrl;
+                $thumbOldPath = $event->coverThumbUrl;
+                $oldPath = $event->coverUrl;
                 $file = $request->file('cover_img');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/' . $event->id . '/'. $name;
-                $img = Image::make(file_get_contents($file))->heighten(1920)->save($name);
-                $disk->put($newFilePath, $img, 'public');
-                $event->coverImgUrl = $newFilePath;
-                $event->coverImgFileName = $name;
-                $event->coverImgPath = '/events/' . $event->id . '/';
+                $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
+                $filePath = '/events/' . $event->id . '/covers/original/'.$name;
+                // create an image
+                $image = Image::make(file_get_contents($file));
+                // backup status
+                $image->backup();
+                // perform some modifications
+                $image->resize(1080, 1920)->save($name);
+                $disk->put($thumbFilePath, $image, 'public');
+                // reset image (return to backup state)
+                $image->reset();
+                // perform other modifications
+                $image->resize(512, 786);
+                $disk->put($filePath, $image, 'public');
+
+                $event->coverThumbUrl = $thumbFilePath;
+                $event->coverUrl = $filePath;
+
+                $event->coverFileName = $name;
+                $event->coverThumbFileName = $name;
+
+                $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
+                $event->coverFrontPath = '/events/' . $event->id . '/covers/original/';
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if(!empty($event->cover_img) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                if (isset($event->coverThumbUrl)) {
+                    if(!empty($event->coverThumbUrl) && $disk->exists($thumbFilePath)){
+                        $disk->delete($thumbOldPath);
+                    }
+                }
+                if (isset($event->coverUrl)) {
+                    if(!empty($event->coverUrl) && $disk->exists($newFilePath)){
+                        $disk->delete($oldPath);
+                    }
                 }
            }
             // Update BAT File
