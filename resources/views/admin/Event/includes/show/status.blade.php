@@ -25,7 +25,9 @@
         {{-- Status To test --}}
         <li class="active">A tester</li>
         {{-- Status Validated --}}
-        <li>Validé</li>
+        <li class="progressbarClickable" data-status="validated" data-event_id="{{$event->id}}"
+            onclick="var new_status = $(this).attr('data-status');var event_id = $(this).attr('data-event_id'); changeEventStatus(new_status,event_id);">
+            Validé</li>
         {{-- Status Ready --}}
         <li>Prêt</li>
         {{-- Status In progress --}}

@@ -20,7 +20,7 @@ class LiveController extends Controller
      */
     public function events()
     {
-        $events = Event::all();
+        $events = Event::where('status','!=','draft')->get();
         return $events->toJson();
     }
 

@@ -113,15 +113,15 @@
                                 <td class="event-is_ready">
                                     @if ($event->status == "draft")<span
                                         class="badge badge-soft-secondary">Brouillon</span>
-                                    @elseif($event->status == "to_test")<span class="badge badge-soft-secondary">A
+                                    @elseif($event->status == "to_test")<span class="badge badge-soft-warning">A
                                         tester</span>
                                     @elseif($event->status == "validated")<span
-                                        class="badge badge-soft-success">Validé</span>
+                                        class="badge badge-soft-info">Validé</span>
                                     @elseif($event->status == "ready")<span class="badge badge-soft-success">Prêt</span>
-                                    @elseif($event->status == "in_progress")<span class="badge badge-soft-success">En
+                                    @elseif($event->status == "in_progress")<span class="badge badge-soft-primary">En
                                         cours</span>
                                     @elseif($event->status == "done")<span
-                                        class="badge badge-soft-success">Terminé</span>
+                                        class="badge badge-soft-warning">Terminé</span>
                                     @endif
                                 </td>
                             </tr>

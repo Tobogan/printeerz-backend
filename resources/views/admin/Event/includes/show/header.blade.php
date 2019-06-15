@@ -1,21 +1,14 @@
 <div class="header">
-  @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl))
-  <div class="bg-cover" style="background-image: url('{{$s3 . $event->coverImgUrl}}'); height:400px; z-index:auto;">
-  </div>
-  @endif
-  <div class="header-body @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) mt-n5 mt-md-n6 @endif">
-    <div
-      class="row @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) align-items-end @else align-items-center @endif">
-      @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
+  <div class="header-body">
+    <div class="row">
       <div class="col-auto">
         <div class="avatar avatar-xxl header-avatar-top">
           <img src="{{$s3 . $event->logoUrl}}" alt="..." class="avatar-img rounded-circle border border-4 border-body"
             style="background-color: white;">
         </div>
       </div>
-      @endif
       <div
-        class="col @if(!empty($event->coverImgUrl) && $disk->exists($event->coverImgUrl)) mb-3 ml-n3 ml-md-n2 @endif">
+        class="col @if(!empty($event->coverBackUrl) && $disk->exists($event->coverBackUrl)) mb-3 ml-n3 ml-md-n2 @endif">
         @if($event->customer)
         <h6 class="header-pretitle">
           {{ $event->customer->title}}

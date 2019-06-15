@@ -38,6 +38,20 @@
                     </div>
                 </div>
             </div>
+            {{-- Custom color --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    Couleur du produit : {{ ucfirst($events_custom->products_variant_color) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{-- Image --}}
             @if(!empty($events_custom->imageUrl) && $disk->exists($events_custom->imageUrl))
             <div class="card">
