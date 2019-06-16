@@ -169,7 +169,7 @@ class EventController extends Controller
             $event->logoFileName = $name;
             $event->logoPath = '/events/' . $event->id . '/';
         }
-        if ($request->hasFile('cover_img')){
+        if ($request->hasFile('cover_img')) {
             $file = $request->file('cover_img');
             $name = time() . $file->getClientOriginalName();
             $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
@@ -328,6 +328,7 @@ class EventController extends Controller
             $event = Event::find($id);
             $event->name = $request->name;
             $event->advertiser = $request->advertiser;
+            $event->status = 'draft';
             $event->location = array(
                 'address' => $request->address,
                 'postal_code' => $request->postal_code,
@@ -364,7 +365,7 @@ class EventController extends Controller
                 }
            }
             // Update Cover image
-           if ($request->hasFile('cover_img')){
+           if ($request->hasFile('cover_img')) {
                 $disk = Storage::disk('s3');
                 $thumbOldPath = $event->coverThumbUrl;
                 $oldPath = $event->coverUrl;
@@ -440,6 +441,7 @@ class EventController extends Controller
             $id = $request->id;
             $event = Event::find($id);
             $event->name = $request->name;
+            $event->status = 'draft';
             $event->advertiser = $request->advertiser;
             // delete event id in the customer data
             $customer = Customer::find($event->customer_id);
@@ -497,22 +499,47 @@ class EventController extends Controller
                 }
            }
             // Update Cover image
-           if ($request->hasFile('cover_img')){
+           if ($request->hasFile('cover_img')) {
                 $disk = Storage::disk('s3');
-                $oldPath = $event->coverImgUrl;
+                $thumbOldPath = $event->coverThumbUrl;
+                $oldPath = $event->coverUrl;
                 $file = $request->file('cover_img');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/' . $event->id . '/'. $name;
-                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-                $disk->put($newFilePath, $img, 'public');
-                $event->coverImgUrl = $newFilePath;
-                $event->coverImgFileName = $name;
-                $event->coverImgPath = '/events/' . $event->id . '/';
+                $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
+                $filePath = '/events/' . $event->id . '/covers/original/'.$name;
+                // create an image
+                $image = Image::make(file_get_contents($file));
+                // backup status
+                $image->backup();
+                // perform some modifications
+                $image->resize(1080, 1920)->save($name);
+                $disk->put($thumbFilePath, $image, 'public');
+                // reset image (return to backup state)
+                $image->reset();
+                // perform other modifications
+                $image->resize(512, 786);
+                $disk->put($filePath, $image, 'public');
+
+                $event->coverThumbUrl = $thumbFilePath;
+                $event->coverUrl = $filePath;
+
+                $event->coverFileName = $name;
+                $event->coverThumbFileName = $name;
+
+                $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
+                $event->coverFrontPath = '/events/' . $event->id . '/covers/original/';
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if(!empty($event->cover_img) && $disk->exists($newFilePath)){
-                $disk->delete($oldPath);
+                if (isset($event->coverThumbUrl)) {
+                    if(!empty($event->coverThumbUrl) && $disk->exists($thumbFilePath)){
+                        $disk->delete($thumbOldPath);
+                    }
+                }
+                if (isset($event->coverUrl)) {
+                    if(!empty($event->coverUrl) && $disk->exists($newFilePath)){
+                        $disk->delete($oldPath);
+                    }
                 }
            }
             // Update BAT File
@@ -534,7 +561,6 @@ class EventController extends Controller
                 }
             }
         }
-        $event->status = "draft";
         $event_local_download = Event_local_download::where('eventId','=',$event->id);
         if ($event_local_download) {
             $event_local_download->delete();
