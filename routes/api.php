@@ -39,6 +39,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('event_local_download/{id}', 'LiveController@event_local_download')->name('show_eventLocalDownload_live');
 
     Route::post('event/downloaded/{id}', 'LiveController@downloaded');
+    Route::get('user/{id}', 'LiveController@user');
 
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');
@@ -46,9 +47,8 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('refresh', 'AuthController@refresh');
         Route::get('users', 'LiveController@users');
         Route::group(['middleware' => 'auth:api'], function(){
-            Route::get('user', 'AuthController@user');
+            // Route::get('user', 'AuthController@user');
             Route::post('logout', 'AuthController@logout');
-            Route::get('user/{id}', 'LiveController@user');
         });
     });
 
