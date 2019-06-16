@@ -179,4 +179,16 @@ class LiveController extends Controller
         $users = User::all();
         return $users->toJson();
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function user($id)
+    {
+        $user = User::find($id);
+        return $user->toJson();
+    }
 }
