@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\User;
 use App\Events_products;
 use App\Printzones;
 use App\Events_customs;
@@ -166,5 +167,16 @@ class LiveController extends Controller
         $event->status = "ready";
         $event->update();
         return $event->toJson();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function users()
+    {
+        $users = User::all();
+        return $users->toJson();
     }
 }
