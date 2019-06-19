@@ -89,7 +89,7 @@ class EventsProductsController extends Controller
                 $event = Event::find($events_product->event_id);
                 $arr_events_product = $event->event_products_id;
                 array_push($arr_events_product, $events_product->id);
-                $event->event_products_id = $arr_events_product;
+                $event->event_products_id = array_filter($arr_events_product);
                 $event->status = "draft";
                 $event->update();
                 // response for ajax
@@ -335,9 +335,9 @@ class EventsProductsController extends Controller
         $events_product = Events_products::find($id);
         $event = Event::find($events_product->event_id);
         // here I search the id in event array and I delete it
-        if($event->event_products_id !== null) {
-            foreach($event->event_products_id as $events_product_id) {
-                if($events_product_id == $id) {
+        if ($event->event_products_id !== null) {
+            foreach ($event->event_products_id as $events_product_id) {
+                if ($events_product_id == $id) {
                     $id_to_delete = $events_product_id;
                 }
             }
@@ -346,13 +346,12 @@ class EventsProductsController extends Controller
                 $arr = $event->event_products_id;
                 $arr = $result;
                 $event->event_products_id = $arr;
-                // dd($result);
                 $event->update();
             }
         }
         $events_customs = Events_customs::where('events_product_id','=',$id)->get();
-        if($events_customs != null){
-            foreach($events_customs as $events_custom){
+        if ($events_customs != null) {
+            foreach ($events_customs as $events_custom) {
                 $events_custom->delete();
             }
         }

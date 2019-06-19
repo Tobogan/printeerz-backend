@@ -316,11 +316,15 @@ class EventsCustomsController extends Controller
         );
     }
 
-    public function removeElement($array,$value) {
-        if (($key = array_search($value, $array)) !== false) {
+    public function removeElement($array,$element) {
+        if (($key = array_search($element, $array)) !== false) {
             unset($array[$key]);
         }
-        return array_filter($array);
+        $arr = array();
+        foreach ($array as $key => $value) {
+            array_push($arr, $value);
+        }
+        return array_filter($arr);
     }
 
     /**
@@ -471,7 +475,7 @@ class EventsCustomsController extends Controller
                         }
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
-                            'component_type' => $request->{'comp_type_'.$template_component_id},
+                            'type' => $request->{'comp_type_'.$template_component_id},
                             'title' => $request->{'option_title'.$i},
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
@@ -529,7 +533,7 @@ class EventsCustomsController extends Controller
                             $image_file = $newFilePath;
                             $component = array(
                                 'events_component_id' => $request->{'template_component_id'.$i},
-                                'component_type' => $request->{'comp_type_'.$template_component_id},
+                                'type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
@@ -721,7 +725,7 @@ class EventsCustomsController extends Controller
                         }
                         $component_input = array(
                             'events_component_id' => $request->{'template_component_id'.$i},
-                            'component_type' => $request->{'comp_type_'.$template_component_id},
+                            'type' => $request->{'comp_type_'.$template_component_id},
                             'title' => $request->{'option_title'.$i},
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
@@ -779,7 +783,7 @@ class EventsCustomsController extends Controller
                             $image_file = $newFilePath;
                             $component = array(
                                 'events_component_id' => $request->{'template_component_id'.$i},
-                                'component_type' => $request->{'comp_type_'.$template_component_id},
+                                'type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,

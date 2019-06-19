@@ -173,7 +173,7 @@ class EventController extends Controller
             $file = $request->file('cover_img');
             $name = time() . $file->getClientOriginalName();
             $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
-            $filePath = '/events/' . $event->id . '/covers/original/'.$name;
+            $filePath = '/events/' . $event->id . '/covers/'.$name;
             // create an image
             $image = Image::make(file_get_contents($file));
             // backup status
@@ -194,7 +194,7 @@ class EventController extends Controller
             $event->coverThumbFileName = $name;
 
             $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
-            $event->coverFrontPath = '/events/' . $event->id . '/covers/original/';
+            $event->coverPath = '/events/' . $event->id . '/covers/';
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }

@@ -87,7 +87,7 @@
         array_push($arrayEventsComponentsIds, $component['events_component_id']);
     ?>
 <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$component['events_component_id']}}">
-<input type="hidden" name="{{'comp_type_'.$component['events_component_id']}}" value="{{$component['component_type']}}">
+<input type="hidden" name="{{'comp_type_'.$component['events_component_id']}}" value="{{$component['type']}}">
 <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
 <div class="tab-pane fade show" id="template_component_{{$component['events_component_id']}}" role="tabpanel"
     aria-labelledby="template_component_{{$component['events_component_id']}}-tab">
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                     </div>
-                    @if($component['component_type'] == 'input')
+                    @if($component['type'] == 'input')
                     <div class="card">
                         <div class="card-header">
                             <div class="row align-items-center">
@@ -390,7 +390,7 @@
                             </div>
                         </div>
                     </div>
-                    @elseif($component['component_type'] == 'image')
+                    @elseif($component['type'] == 'image')
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title mt-2">
@@ -415,12 +415,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            Composant de type : {{ $component['component_type'] }}
+                            Composant de type : {{ $component['type'] }}
                         </div>
                     </div>
                 </div>
             </div>
-            @if($component['component_type'] == 'input')
+            @if($component['type'] == 'input')
             <div class="card">
                 <div class="card-header">
                     <b>Nombre de caractères</b>
@@ -481,7 +481,7 @@
                     </div>
                 </div>
             </div>
-            @if($component['component_type'] == 'input')
+            @if($component['type'] == 'input')
             {{-- First letter --}}
             <div class="row">
                 <div class="col-12">
@@ -550,7 +550,7 @@
                     </div>
                 </div>
             </div>
-            @elseif($component['component_type'] == 'image')
+            @elseif($component['type'] == 'image')
             {{-- Image --}}
             @if(!empty($component['settings']['image_url']) && $disk->exists($component['settings']['image_url']))
             <div class="card">
