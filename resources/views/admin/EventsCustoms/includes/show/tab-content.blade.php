@@ -390,6 +390,147 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Highlight color --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h4 class="card-header-title">
+                                        SMODE : Couleurs de police & background
+                                    </h4>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" class="buttonColor btn btn-sm btn-primary" data-toggle="modal"
+                                        data-target="#addColorSmodeModal"
+                                        data-id="{{$component['events_component_id']}}">
+                                        Ajoutez une couleur
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="smodeColorTable" class="card mt-2" data-toggle="lists"
+                                        data-lists-values='["smode-color-name", "smode-color-code_hex"]'>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-nowrap card-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>
+                                                            <a href="#" class="text-muted" data-sort="smode-color-name">
+                                                                Couleur police
+                                                            </a>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <a href="#" class="text-muted"
+                                                                data-sort="smode-color-code_hex">
+                                                                Couleur de fond
+                                                            </a>
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody class="list"
+                                                    id="{{'smode_color_name_list'.$component['events_component_id']}}">
+                                                    <?php 
+                                                        $array_font_color = array();
+                                                        $array_font_hexa = array();
+                                                        $array_font_bg_color = array();
+                                                        $array_font_bg_hexa = array();
+                                                    ?>
+                                                    @if(isset($component['settings']['smode_colors']))
+                                                    @foreach($component['settings']['smode_colors'] as $font_color)
+                                                    <?php 
+                                                        array_push($array_font_color, $font_color['title']);
+                                                        array_push($array_font_hexa, $font_color['code_hexa']);
+                                                        array_push($array_font_bg_color, $font_color['bg_title']);
+                                                        array_push($array_font_bg_hexa, $font_color['bg_code_hexa']);
+                                                    ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="colorSquare"
+                                                                style="background:#{{$font_color['code_hexa']}};">
+                                                            </div>
+                                                        </td>
+                                                        <td class="color-name">
+                                                            {{$font_color['title']}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="colorSquare"
+                                                                style="background:#{{$font_color['bg_code_hexa']}};">
+                                                            </div>
+                                                        </td>
+                                                        <td class="color-code_hex">
+                                                            {{$font_color['bg_title']}}
+                                                        </td>
+                                                        <td>
+                                                            <a data-id="{{$component['events_component_id']}}"
+                                                                data-title="{{$font_color['title']}}"
+                                                                data-bg_hexa="{{$font_color['bg_code_hexa']}}"
+                                                                data-code_hex="{{$font_color['code_hexa']}}"
+                                                                data-bg_color="{{$font_color['bg_title']}}"
+                                                                style="float:right"
+                                                                onclick="var id=$(this).attr('data-id');var code_hex=$(this).attr('data-code_hex');var color=$(this).attr('data-title');var bg_color=$(this).attr('data-bg_color');var bg_hexa=$(this).attr('data-bg_hexa');deleteShowSmodeColorRow(id, color);deleteShowSmodeHexaRow(id, code_hex);deleteShowSmodeBgColorRow(id, bg_color);deleteShowSmodeBgHexaRow(id, bg_hexa);$(this).closest('tr').remove();">
+                                                                Supprimer
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                    <?php 
+                                                        $str_color = implode(',',$array_font_color);
+                                                        $str_hexa = implode(',',$array_font_hexa);
+                                                        $str_bg_color = implode(',',$array_font_bg_color);
+                                                        $str_bg_hexa = implode(',',$array_font_bg_hexa);
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="newsColors">
+                                            <input type="hidden"
+                                                name="{{'smodeColorsList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeColorsList'.$component['events_component_id']}}"
+                                                value="{{$str_color}}">
+                                            <input type="hidden"
+                                                name="{{'smodeHexaList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeHexaList'.$component['events_component_id']}}"
+                                                value="{{$str_hexa}}">
+                                            <input type="hidden"
+                                                name="{{'smodeBgColorsList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeBgColorsList'.$component['events_component_id']}}"
+                                                value="{{$str_bg_color}}">
+                                            <input type="hidden"
+                                                name="{{'smodeBgHexaList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeBgHexaList'.$component['events_component_id']}}"
+                                                value="{{$str_bg_hexa}}">
+                                        </div>
+                                        <div id="colorsToDelete">
+                                            <input type="hidden"
+                                                name="{{'smodeColorsToDeleteList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeColorsToDeleteList'.$component['events_component_id']}}">
+                                            <input type="hidden"
+                                                name="{{'smodeHexasToDeleteList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeHexasToDeleteList'.$component['events_component_id']}}">
+                                            <input type="hidden"
+                                                name="{{'smodeBgColorsToDeleteList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeBgColorsToDeleteList'.$component['events_component_id']}}">
+                                            <input type="hidden"
+                                                name="{{'smodeBgHexasToDeleteList'.$component['events_component_id'].'[]'}}"
+                                                id="{{'smodeBgHexasToDeleteList'.$component['events_component_id']}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-muted">Vous pouvez ajouter ou supprimer des couleurs de police et de
+                                        fond pour cette personnalisation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     @elseif($component['type'] == 'image')
                     <div class="card">
                         <div class="card-header">

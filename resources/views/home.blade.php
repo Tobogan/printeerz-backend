@@ -1,4 +1,5 @@
 @extends('layouts.templateAdmin')
+@section('title', 'Home')
 
 @section('content')
 <div class="container-fluid">
@@ -17,9 +18,9 @@
                         </div>
                         <div class="col-auto">
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection

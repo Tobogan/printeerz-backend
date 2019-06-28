@@ -400,6 +400,47 @@ class EventsCustomsController extends Controller
                             );
                             array_push($array_colors, $array);
                         }
+                        // SMODE Colors & Background colors
+                        $array_smode_colors = array();
+                        if ($request->{'smodeColorsList'.$template_component_id}[0] !== null ) {
+                            foreach ($request->{'smodeColorsList'.$template_component_id} as $colcode) {
+                                foreach ($request->{'smodeHexaList'.$template_component_id} as $hexa) {
+                                    foreach($request->{'smodeBgHexaList'.$template_component_id} as $bghexa) {
+                                        foreach($request->{'smodeBgColorsList'.$template_component_id} as $bgcolcode) {
+                                            $col = explode(",", $colcode);
+                                            $hex = explode(",", $hexa);
+                                            $bgcol = explode(",", $bgcolcode);
+                                            $bghex = explode(",", $bghexa);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            $alert = array(
+                                'status' => 'Merci d\'ajouter une couleur pour chacun des composants "texte".',
+                                'alert-type' => 'danger'
+                            );
+                            return redirect()->back()->with($alert);
+                        }
+                        $col_filtered = array_filter($col);
+                        $hex_filtered = array_filter($hex);
+                        $bg_col_filtered = array_filter($bgcol);
+                        $bg_hex_filtered = array_filter($bghex);
+                        $bg_colors_titles = array_slice($bg_col_filtered, 0);
+                        $bg_hex_titles = array_slice($bg_hex_filtered, 0);
+                        $colors_titles = array_slice($col_filtered, 0);
+                        $hex_titles = array_slice($hex_filtered, 0);
+                        for ($j=0;$j<count($colors_titles);$j++) {
+                            $array = array(
+                                'title' => $colors_titles[$j],
+                                'code_hexa' => $hex_titles[$j],
+                                'bg_title' => $bg_colors_titles[$j],
+                                'bg_code_hexa' => $bg_hex_titles[$j]
+                            );
+                            array_push($array_smode_colors, $array);
+                        }
+
                         $array_fonts = array();
                         $fonts = array();
                         if ($request->{'fontsList'.$template_component_id}[0] !== null ) {
@@ -434,7 +475,6 @@ class EventsCustomsController extends Controller
                             $shifted_weight = array_shift($fonts_weight_exploded);
                             $shifted_transform = array_shift($fonts_transform_exploded);
                         }
-                        // dd($font);
                         foreach (array_filter($font) as $ft) {
                             foreach ($fonts_all as $font_obj) {
                                 if ($font_obj->title == $ft) {
@@ -477,6 +517,7 @@ class EventsCustomsController extends Controller
                             'events_component_id' => $request->{'template_component_id'.$i},
                             'type' => $request->{'comp_type_'.$template_component_id},
                             'title' => $request->{'option_title'.$i},
+                            'position' => $i,
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
                                 'input_max' => $request->{'max'.$i},
@@ -485,6 +526,7 @@ class EventsCustomsController extends Controller
                                 'bg_color' => $request->{'smode_bg_color_hex'.$i},
                                 'fonts' => $array_fonts,
                                 'font_colors' => $array_colors,
+                                'smode_colors' => $array_smode_colors,
                                 'position' => array(
                                     'width' => $request->{'width'.$i},
                                     'height' => $request->{'height'.$i},
@@ -535,6 +577,7 @@ class EventsCustomsController extends Controller
                                 'events_component_id' => $request->{'template_component_id'.$i},
                                 'type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
+                                'position' => $i,
                                 'settings' => array(
                                     'image_name' => $image_name,
                                     'image_url' => $newFilePath,

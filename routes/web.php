@@ -100,8 +100,9 @@ Route::post('admin/EventsCustoms/showUpdate', 'EventsCustomsController@show_upda
 Route::get('admin/EventsCustoms/destroy/{id}', 'EventsCustomsController@destroy')->name('destroy_eventsCustoms');
 Route::get('admin/EventsCustoms/desactivate/{id}', 'EventsCustomsController@desactivate')->name('desactivate_eventsCustoms');
 Route::get('admin/EventsCustoms/activate/{id}', 'EventsCustomsController@activate')->name('activate_eventsCustoms');
-Route::post('admin/EventsCustoms/addColor', 'EventsCustomsController@addColor')->name('addColor_eventsCustoms');
 Route::post('admin/EventsCustoms/uploadFile', 'EventsCustomsController@uploadFile')->name('uploadFile_eventsCustoms');
+Route::post('admin/EventsCustoms/AddSmodeColors', 'EventsCustomsController@AddSmodeColors')->name('AddSmodeColors_eventsCustoms');
+
 Route::delete('admin/EventsCustoms/deleteFile/fonts/{font_name}', 'EventsCustomsController@deleteFile')->name('deleteFile_eventsCustoms');
 Route::post('admin/EventsCustoms/updateImage', 'EventsCustomsController@updateImage/{id}')->name('updateImage_eventsCustoms');
 

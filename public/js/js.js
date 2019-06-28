@@ -331,7 +331,8 @@ function addDeleteBtn(font_title, id, font_transform, font_weight, font_name) {
 		font_title +
 		'" data-transform="' +
 		font_transform +
-		"\" onclick=\"var id=$(this).attr('data-id');var weight=$(this).attr('data-weight');var font=$(this).attr('data-font');var transform=$(this).attr('data-transform');deleteFontRow(id,font,weight,transform);deleteFile('" + font_name +
+		"\" onclick=\"var id=$(this).attr('data-id');var weight=$(this).attr('data-weight');var font=$(this).attr('data-font');var transform=$(this).attr('data-transform');deleteFontRow(id,font,weight,transform);deleteFile('" +
+		font_name +
 		"');$(this).closest('tr').remove();\">Supprimer</a></td></tr>"
 	);
 }
@@ -570,7 +571,9 @@ function deleteShowFontRow(id, font, font_id) {
 		fontsIdsToDeleteList.substring(1),
 		''
 	);
-	console.log('newFontsList = ' + document.getElementById('fontsList' + id).value);
+	console.log(
+		'newFontsList = ' + document.getElementById('fontsList' + id).value
+	);
 	// Here I delete input content
 	document.getElementById('fontsToDeleteList' + id).value = '';
 	document.getElementById('fontsIdsToDeleteList' + id).value = '';
@@ -660,4 +663,6 @@ function checkErrorsEditEventsCustom() {
 	// 		});
 	// 	}
 	// }
+
+
 }
