@@ -40,7 +40,7 @@ class EventLocalDownloadController extends Controller
             // Mains Data
             $event_local_download->eventTitle = $event->name;
             $event_local_download->eventId = $event->id;
-            $event_local_download->eventCoverImg = $event->coverImgUrl;
+            $event_local_download->eventCoverImg = $event->coverUrl;
             $event_local_download->eventLogoUrl = $event->logoUrl;
             $event_local_download->advertiserName = $event->advertiser;
             $event_local_download->customerName = $customer->title;

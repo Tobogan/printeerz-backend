@@ -11,6 +11,7 @@ use App\Events_customs;
 use App\Product;
 use App\Products_variants;
 use App\Event_local_download;
+use App\CustomOrder;
 
 use Illuminate\Http\Request;
 
@@ -194,7 +195,7 @@ class LiveController extends Controller
         return $user->toJson();
     }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -211,7 +212,9 @@ class LiveController extends Controller
         $event_local_download->title = $event->name;
         $event_local_download->status = $event->status;
         $event_local_download->eventId = $event->id;
-        $event_local_download->coverUrl = $event->coverImgUrl;
+        $event_local_download->startDate = $event->start_datetime;
+        $event_local_download->endDate = $event->end_datetime;
+        $event_local_download->coverUrl = $event->coverUrl;
         $event_local_download->coverThumbUrl = $event->coverThumbUrl;
         $event_local_download->logoUrl = $event->logoUrl;
         $event_local_download->advertiser = $event->advertiser;
@@ -228,13 +231,15 @@ class LiveController extends Controller
         $printzonesArray = array();
         $finalProducts = array();
         $eventLocalDownloadProducts = array();
-        $events_customs_final = array();
+        // $events_customs_final = array();
         // Printzones & products variant image by printzone
         foreach ($events_products as $events_product) {
             $events_customsArray = array();
             $productsVariantsArray = array();
             $printzonesArray = array();
             $finalProducts = array();
+            $events_customs_final = array();
+            $events_customs_reformed = array();
             $product = Product::find($events_product->product_id);
             foreach ($product->printzones_id as $printzone_id) {
                 $printzone = Printzones::find($printzone_id);
@@ -255,14 +260,17 @@ class LiveController extends Controller
             foreach ($events_product->event_customs_ids as $events_custom_id) {
                 $events_custom = Events_customs::find($events_custom_id);
                 if ($events_custom !== null) {
+                    $events_customsArray = array();
                     foreach ($events_custom->components as $component) {
-                        $events_customsArray = array();
                         array_push($events_customsArray, $component);
                     }
                 }
                 $events_customs_reformed = array(
+                    'id' => $events_custom->id,
+                    'events_product_id' => $events_product->id,
                     'title' => $events_custom->title,
                     'template_title' => $events_custom->template_title,
+                    'image' => $events_custom->imageUrl,
                     'components' => $events_customsArray
                 );
                 array_push($events_customs_final, $events_customs_reformed);
@@ -310,5 +318,51 @@ class LiveController extends Controller
             'msg' => 'You have created data for this event'
         );
         return response()->json($event_local_download);
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function event_synchro(Request $request) {
+        $orders = $request->all();
+        $od = "";
+        foreach ($orders as $order) {
+            $od = $order;
+            $customOrder = new CustomOrder;
+            $customOrder->orderId  = $order['id'];
+            $customOrder->orderNumber  = $order['orderNumber'];
+            $customOrder->currentOrderId  = $order['currentOrderId'];
+            $customOrder->eventCustomId  = $order['eventCustomId'];
+            $customOrder->components  = $order['components'];
+            $customOrder->eventId  = $order['eventId'];
+            $customOrder->inputText  = $order['inputText'];
+            $customOrder->size  = $order['size'];
+            $customOrder->font  = $order['font'];
+            $customOrder->fontColor  = $order['fontColor'];
+            $customOrder->save();
+        }
+        // $od = $order->get('data');
+        $customOrder = new CustomOrder;
+        // $customOrder->orderId  = $order->id;
+        // $customOrder->orderNumber  = $order->orderNumber;
+        // $customOrder->currentOrderId  = $order->currentOrderId;
+        // $customOrder->eventCustomId  = $order->eventCustomId;
+        // $customOrder->components  = $order->components;
+        // $customOrder->eventId  = $order->eventId;
+        // $customOrder->inputText  = $order->inputText;
+        // $customOrder->size  = $order->size;
+        // $customOrder->font  = $order->font;
+        // $customOrder->fontColor  = $order->fontColor;
+        // $customerOrder->save();
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Synchro: success !',
+            'response' => $request
+        );
+        // return response()->json($order);
+        return $od;
     }
 }
