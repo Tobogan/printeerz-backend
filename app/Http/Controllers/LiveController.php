@@ -328,9 +328,7 @@ class LiveController extends Controller
      */
     public function event_synchro(Request $request) {
         $orders = $request->all();
-        $od = "";
         foreach ($orders as $order) {
-            $od = $order;
             $customOrder = new CustomOrder;
             $customOrder->orderId  = $order['id'];
             $customOrder->orderNumber  = $order['orderNumber'];
@@ -344,25 +342,10 @@ class LiveController extends Controller
             $customOrder->fontColor  = $order['fontColor'];
             $customOrder->save();
         }
-        // $od = $order->get('data');
-        $customOrder = new CustomOrder;
-        // $customOrder->orderId  = $order->id;
-        // $customOrder->orderNumber  = $order->orderNumber;
-        // $customOrder->currentOrderId  = $order->currentOrderId;
-        // $customOrder->eventCustomId  = $order->eventCustomId;
-        // $customOrder->components  = $order->components;
-        // $customOrder->eventId  = $order->eventId;
-        // $customOrder->inputText  = $order->inputText;
-        // $customOrder->size  = $order->size;
-        // $customOrder->font  = $order->font;
-        // $customOrder->fontColor  = $order->fontColor;
-        // $customerOrder->save();
         $response = array(
             'status' => 'success',
-            'msg' => 'Synchro: success !',
-            'response' => $request
+            'msg' => 'Synchro: success !'
         );
-        // return response()->json($order);
-        return $od;
+        return response()->json($response);
     }
 }
