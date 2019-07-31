@@ -328,20 +328,28 @@ class LiveController extends Controller
      */
     public function event_synchro(Request $request) {
         $orders = $request->all();
-        foreach ($orders as $order) {
-            $customOrder = new CustomOrder;
-            $customOrder->orderId  = $order['id'];
-            $customOrder->orderNumber  = $order['orderNumber'];
-            $customOrder->currentOrderId  = $order['currentOrderId'];
-            $customOrder->eventCustomId  = $order['eventCustomId'];
-            $customOrder->components  = $order['components'];
-            $customOrder->eventId  = $order['eventId'];
-            $customOrder->inputText  = $order['inputText'];
-            $customOrder->size  = $order['size'];
-            $customOrder->font  = $order['font'];
-            $customOrder->fontColor  = $order['fontColor'];
-            $customOrder->save();
+        // For each orders stored on browser create a new Custom Order
+        foreach ($orders as $ord) {
+            foreach ($ord as $order) {
+                $customOrder = new CustomOrder;
+                $customOrder->orderId  = $order['id'];
+                $customOrder->orderNumber  = $order['orderNumber'];
+                $customOrder->currentOrderId  = $order['currentOrderId'];
+                $customOrder->eventCustomId  = $order['eventCustomId'];
+                $customOrder->components  = $order['components'];
+                $customOrder->eventId  = $order['eventId'];
+                $customOrder->inputText  = $order['inputTexts'];
+                $customOrder->size  = $order['size'];
+                $customOrder->font  = $order['fonts'];
+                $customOrder->fontColor  = $order['fontColors'];
+                $customOrder->save();
+                // Change event status to DONE
+                $event = Event::find($order['eventId']);
+                $event->status = 'done';
+                $event->update();
+            }
         }
+
         $response = array(
             'status' => 'success',
             'msg' => 'Synchro: success !'

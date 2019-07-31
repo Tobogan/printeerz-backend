@@ -177,8 +177,13 @@ class ProductsVariantsController extends Controller
                         $name = time() . $file->getClientOriginalName();
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
-                        $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                        // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                        $img = Image::make(file_get_contents($file));
+                        $img->backup();
+                        $img->resize(1080, 1920)->save($name);
                         $disk->put($newFilePath, $img, 'public');
+
+                        // $disk->put($newFilePath, $img, 'public');
                         if (file_exists(public_path() . '/' . $name)) {
                             unlink(public_path() . '/' . $name);
                         }
@@ -200,8 +205,12 @@ class ProductsVariantsController extends Controller
                 if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
-                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                $img = Image::make(file_get_contents($file));
+                $img->backup();
+                $img->resize(1080, 1920)->save($name);
                 $disk->put($newFilePath, $img, 'public');
+                // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                // $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
@@ -254,14 +263,17 @@ class ProductsVariantsController extends Controller
                         $request_img =  $request->{'printzone'.$i};
                         $request_id =  $request->{'printzone_id_'.$i};
                         $request_name =  $request->{'printzone_name_'.$i};
-
                         $file = $request->file('printzone'.$i);
                         $name = time() . $file->getClientOriginalName();
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
-                        $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        // Put in database
-                        Storage::disk('s3')->put($newFilePath , file_get_contents($file));
+                        // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                        $img = Image::make(file_get_contents($file));
+                        $img->backup();
+                        $img->resize(1080, 1920)->save($name);
+                        $disk->put($newFilePath, $img, 'public');
+
+                        // $disk->put($newFilePath, $img, 'public');
                         if (file_exists(public_path() . '/' . $name)) {
                             unlink(public_path() . '/' . $name);
                         }
@@ -277,18 +289,23 @@ class ProductsVariantsController extends Controller
             $products_variant->printzones = $printzones;
             $products_variant->numberOfZones = $printzones_nb - 1;
             if ($request->hasFile('image')){
-                $oldPath = $products_variant->image;
+                 $oldPath = $products_variant->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
                 $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                if(!empty($products_variant->image) && $disk->exists($newFilePath)){
+                if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
-                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                $img = Image::make(file_get_contents($file));
+                $img->backup();
+                $img->resize(1080, 1920)->save($name);
                 $disk->put($newFilePath, $img, 'public');
+                // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                // $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
+                // Put in database
                 $products_variant->image = $newFilePath;
             }
             $products_variant->save();
