@@ -1,5 +1,5 @@
 @extends('layouts/templateAdmin')
-@section('title', 'Modifier ' . $event->name)
+@section('title', 'Modifier ' . $event->title)
 
 @section('content')
 
@@ -17,7 +17,7 @@
               </h6>
               <!-- Title -->
               <h1 class="header-title">
-                Modifier {{$event->name}}
+                Modifier {{$event->title}}
               </h1>
             </div>
             <div class="col-auto">
@@ -45,7 +45,7 @@
             <label>
               Nom de l'événement
             </label>
-            {!! Form::text('name', $event->name, ['class' => 'form-control' . $errors->first('name', '
+            {!! Form::text('name', $event->title, ['class' => 'form-control' . $errors->first('name', '
             is-invalid'), 'placeholder' => 'Nom de l\'événement']) !!}
             @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner le nom de l'événement</div>@endif
           </div>

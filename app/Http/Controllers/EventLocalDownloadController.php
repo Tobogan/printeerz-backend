@@ -44,6 +44,7 @@ class EventLocalDownloadController extends Controller
             $event_local_download->eventLogoUrl = $event->logoUrl;
             $event_local_download->advertiserName = $event->advertiser;
             $event_local_download->customerName = $customer->title;
+            $event_local_download->description = $event->description;
             $event_local_download->contactFullName = $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"];
             $event_local_download->contactPhone = $customer->contact_person["phone"];
             $event_local_download->productsCount = count($events_products);
@@ -86,6 +87,7 @@ class EventLocalDownloadController extends Controller
                     $events_customs_reformed = array(
                         'title' => $events_custom->title,
                         'template_title' => $events_custom->template_title,
+                        'printzone_id' => $events_custom->printzone_id,
                         'components' => $events_customsArray
                     );
                     array_push($events_customs_final, $events_customs_reformed);

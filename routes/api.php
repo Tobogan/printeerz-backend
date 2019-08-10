@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 });
 
 Route::get('front/{id}', 'FrontController@show')->name('show_front');
+
 Route::group(['middleware' => 'cors'], function () {
     Route::get('events', 'LiveController@events')->name('index_event_live');
     Route::get('event/{id}', 'LiveController@event')->name('show_event_live');
@@ -30,8 +31,16 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('events_customs', 'LiveController@eventsCustoms')->name('index_eventsCustoms_live');
     Route::get('events_custom/{id}', 'LiveController@eventsCustom')->name('show_eventsCustom_live');
 
-    Route::get('products', 'LiveController@Products')->name('index_Products_live');
-    Route::get('product/{id}', 'LiveController@Product')->name('show_Product_live');
+    Route::get('products', 'LiveController@products')->name('index_products_live');
+    Route::get('product/{id}', 'LiveController@product')->name('show_product_live');
+
+    Route::get('customer/{id}', 'LiveController@customer')->name('show_customer_live');
+
+    Route::get('customs/{id}', 'LiveController@customs')->name('show_customs_live');
+
+    Route::get('sizes/{id}', 'LiveController@sizes')->name('show_sizes_live');
+    
+    Route::post('downloadS3File', 'LiveController@downloadS3File')->name('show_downloadS3File_live');
 
     Route::get('printzones', 'LiveController@printzones')->name('index_printzones_live');
     Route::get('printzone/{id}', 'LiveController@printzone')->name('show_printzone_live');

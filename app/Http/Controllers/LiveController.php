@@ -13,6 +13,10 @@ use App\Products_variants;
 use App\Event_local_download;
 use App\CustomOrder;
 
+use Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+
 use Illuminate\Http\Request;
 
 class LiveController extends Controller
@@ -135,6 +139,18 @@ class LiveController extends Controller
         return $product->toJson();
     }
 
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function customer($id)
+    {
+        $customer = Customer::find($id);
+        return $customer->toJson();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -196,6 +212,46 @@ class LiveController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function customs($id)
+    {
+        $event = Event::find($id);
+        $events_customs = Events_customs::where('event_id','=',$event->id)->get();
+        return $events_customs->toJson();
+    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function sizes($id)
+    {
+        $event = Event::find($id);
+        $array = [];
+        foreach ($event->event_products_id as $events_product_id) {
+            $sizes = [];
+            $events_product = Events_products::find($events_product_id);
+            foreach ($events_product->variants as $variant) {
+                $products_variant = Products_variants::find($variant[0]);
+                if ($products_variant['size'] !==  null)
+                array_push($sizes, $products_variant['size']);
+            }
+            $arr_sizes = array(
+                'events_product_id' => $events_product_id,
+                'sizes' => array_unique($sizes, SORT_REGULAR)
+            );
+            array_push($array, $arr_sizes);
+        }
+        return $array;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -209,7 +265,7 @@ class LiveController extends Controller
         $events_products = Events_products::where('event_id','=',$event->id)->get();
         $events_customs = Events_customs::where('event_id','=',$event->id)->get();
         // Mains Data
-        $event_local_download->title = $event->name;
+        $event_local_download->title = $event->title;
         $event_local_download->status = $event->status;
         $event_local_download->eventId = $event->id;
         $event_local_download->startDate = $event->start_datetime;
@@ -218,6 +274,7 @@ class LiveController extends Controller
         $event_local_download->coverThumbUrl = $event->coverThumbUrl;
         $event_local_download->logoUrl = $event->logoUrl;
         $event_local_download->advertiser = $event->advertiser;
+        $event_local_download->description = $event->description;
         $event_local_download->customer = array(
             'title' => $customer->title,
             'contact' => array(
@@ -265,17 +322,28 @@ class LiveController extends Controller
                         array_push($events_customsArray, $component);
                     }
                 }
+                $zone = Printzones::find($events_custom->printzone_id);
                 $events_customs_reformed = array(
                     'id' => $events_custom->id,
                     'events_product_id' => $events_product->id,
                     'title' => $events_custom->title,
                     'template_title' => $events_custom->template_title,
+                    'printzone_id' => $events_custom->printzone_id,
+                    'printzone_title' => $printzone->name,
+                    'zone' => $printzone->zone,
+                    'printzone_width' => $printzone->width,
+                    'printzone_height' => $printzone->height,
+                    'printzone_origin_x' => $printzone->origin_x,
+                    'printzone_origin_y' => $printzone->origin_y,
+                    'printzone_tray_width' => $printzone->tray_width,
+                    'printzone_tray_height' => $printzone->tray_height,
                     'image' => $events_custom->imageUrl,
                     'components' => $events_customsArray
                 );
                 array_push($events_customs_final, $events_customs_reformed);
             }
             // Products_variants
+            $sizes = [];
             foreach ($events_product->variants as $variant) {
                 $products_variant = Products_variants::find($variant[0]);
                 if ($products_variant !== null) {
@@ -287,6 +355,7 @@ class LiveController extends Controller
                         'printzones' => $products_variant->printzones
                     );
                     array_push($productsVariantsArray, $productsVariantData);
+                    array_push($sizes, $products_variant->size);
                 }
             }
             // Final JSON
@@ -298,6 +367,7 @@ class LiveController extends Controller
                 'type' => $product->product_type,
                 'printzones' => $printzonesArray,
                 'products_variants' => $productsVariantsArray,
+                'sizes' => $sizes,
                 'events_customs' => $events_customs_final
             );
         array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
@@ -329,31 +399,50 @@ class LiveController extends Controller
     public function event_synchro(Request $request) {
         $orders = $request->all();
         // For each orders stored on browser create a new Custom Order
-        foreach ($orders as $ord) {
-            foreach ($ord as $order) {
-                $customOrder = new CustomOrder;
-                $customOrder->orderId  = $order['id'];
-                $customOrder->orderNumber  = $order['orderNumber'];
-                $customOrder->currentOrderId  = $order['currentOrderId'];
-                $customOrder->eventCustomId  = $order['eventCustomId'];
-                $customOrder->components  = $order['components'];
-                $customOrder->eventId  = $order['eventId'];
-                $customOrder->inputText  = $order['inputTexts'];
-                $customOrder->size  = $order['size'];
-                $customOrder->font  = $order['fonts'];
-                $customOrder->fontColor  = $order['fontColors'];
-                $customOrder->save();
-                // Change event status to DONE
-                $event = Event::find($order['eventId']);
-                $event->status = 'done';
-                $event->update();
+        if ($orders !== null) {
+            foreach ($orders as $ord) {
+                foreach ($ord as $order) {
+                    $customOrder = new CustomOrder;
+                    $customOrder->orderId  = $order['id'];
+                    $customOrder->orderNumber  = $order['orderNumber'];
+                    $customOrder->currentOrderId  = $order['currentOrderId'];
+                    $customOrder->eventCustomId  = $order['eventCustomId'];
+                    $customOrder->components  = $order['components'];
+                    $customOrder->eventId  = $order['eventId'];
+                    $customOrder->inputText  = $order['inputTexts'];
+                    $customOrder->size  = $order['size'];
+                    $customOrder->font  = $order['fonts'];
+                    $customOrder->fontColor  = $order['fontColors'];
+                    $customOrder->save();
+                    // Change event status to DONE
+                    $event = Event::find($order['eventId']);
+                    $event->status = 'done';
+                    $event->update();
+                }
             }
         }
-
         $response = array(
             'status' => 'success',
             'msg' => 'Synchro: success !'
         );
         return response()->json($response);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $url
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadS3File(Request $request)
+    {
+        $cleanUrl = substr($request->url, 1);
+        $file = Storage::disk('s3')->url($cleanUrl);
+        header("Cache-Control: public");
+        header('Access-Control-Allow-Origin:*');
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=" . basename($request->url));
+        header("Content-Type:" . $request->type);
+        return readfile($file);
     }
 }

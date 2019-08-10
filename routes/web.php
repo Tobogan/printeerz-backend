@@ -13,6 +13,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::group(['middleware' => 'cors'], function () {
 
 Route::view('/front/{path?}', 'app');
 // Route::view('/v1/events', 'app');
@@ -191,3 +192,4 @@ Route::get('/templates',function(){
     $templates = Templates::all();
     return Response::json($templates);
 });
+// }

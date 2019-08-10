@@ -178,9 +178,11 @@ class ProductsVariantsController extends Controller
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
                         // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        $img = Image::make(file_get_contents($file));
-                        $img->backup();
-                        $img->resize(1080, 1920)->save($name);
+                        // $img = Image::make(file_get_contents($file));
+                        // $img->backup();
+                        // $img->resize(1080, 1920)->save($name);
+                        $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+
                         $disk->put($newFilePath, $img, 'public');
 
                         // $disk->put($newFilePath, $img, 'public');
@@ -205,9 +207,10 @@ class ProductsVariantsController extends Controller
                 if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
-                $img = Image::make(file_get_contents($file));
-                $img->backup();
-                $img->resize(1080, 1920)->save($name);
+                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+                // $img = Image::make(file_get_contents($file));
+                // $img->backup();
+                // $img->resize(1080, 1920)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
                 // $disk->put($newFilePath, $img, 'public');
@@ -268,9 +271,11 @@ class ProductsVariantsController extends Controller
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         // Resize new image
                         // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        $img = Image::make(file_get_contents($file));
-                        $img->backup();
-                        $img->resize(1080, 1920)->save($name);
+                                                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+
+                        // $img = Image::make(file_get_contents($file));
+                        // $img->backup();
+                        // $img->resize(1080, 1920)->save($name);
                         $disk->put($newFilePath, $img, 'public');
 
                         // $disk->put($newFilePath, $img, 'public');
@@ -296,9 +301,10 @@ class ProductsVariantsController extends Controller
                 if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
-                $img = Image::make(file_get_contents($file));
-                $img->backup();
-                $img->resize(1080, 1920)->save($name);
+                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+                // $img = Image::make(file_get_contents($file));
+                // $img->backup();
+                // $img->resize(1080, 1920)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
                 // $disk->put($newFilePath, $img, 'public');

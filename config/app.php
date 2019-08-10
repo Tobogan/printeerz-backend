@@ -167,6 +167,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
         /*
          * Package Service Providers...

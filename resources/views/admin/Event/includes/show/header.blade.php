@@ -15,7 +15,7 @@
         </h6>
         @endif
         <h1 class="header-title">
-          {{ $event->name }}
+          {{ $event->title }}
           <span class="small">by {{ $event->advertiser }}</span>
         </h1>
       </div>

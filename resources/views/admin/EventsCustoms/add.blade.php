@@ -44,7 +44,7 @@
                                 </label>
                                 <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
                                 <!-- Input text title-->
-                                {!! Form::text('title', $product->title.' + '.$event->name, ['class' => 'form-control',
+                                {!! Form::text('title', $product->title.' + '.$event->title, ['class' => 'form-control',
                                 'placeholder' => 'Nom'])
                                 !!}
                                 {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;">

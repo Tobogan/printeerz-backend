@@ -128,7 +128,7 @@ class EventController extends Controller
 
         $event = new Event;
         $event->created_by = Auth::user()->username;
-        $event->name = $request->name;
+        $event->title = $request->name;
         $event->advertiser = $request->advertiser;
         $event->customer_id = $request->customer_id;
         $event->status = "draft";
@@ -158,7 +158,7 @@ class EventController extends Controller
         $disk = Storage::disk('s3');
         if ($request->hasFile('logo_img')){
             $file = $request->file('logo_img');
-            $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName();
             $filePath = '/events/' . $event->id . '/'. $name;
             $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
             $disk->put($filePath, $img, 'public');
@@ -171,34 +171,33 @@ class EventController extends Controller
         }
         if ($request->hasFile('cover_img')) {
             $file = $request->file('cover_img');
-            $name = time() . $file->getClientOriginalName();
-            $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
-            $filePath = '/events/' . $event->id . '/covers/'.$name;
-            // create an image
+            $name = $file->getClientOriginalName();
             $image = Image::make(file_get_contents($file));
-            // backup status
-            $image->backup();
-            // perform some modifications
-            $image->resize(1080, 1920)->save($name);
+            $image->resize(512, 786)->save($name);
+            $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
             $disk->put($thumbFilePath, $image, 'public');
-            // reset image (return to backup state)
-            $image->reset();
-            // perform other modifications
-            $image->resize(512, 786);
-            $disk->put($filePath, $image, 'public');
-
             $event->coverThumbUrl = $thumbFilePath;
-            $event->coverUrl = $filePath;
-
-            $event->coverFileName = $name;
             $event->coverThumbFileName = $name;
-
             $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
-            $event->coverPath = '/events/' . $event->id . '/covers/';
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
         }
+        if ($request->hasFile('cover_img')) {
+            $file = $request->file('cover_img');
+            $name = $file->getClientOriginalName();
+            $image = Image::make(file_get_contents($file));
+            $image->resize(1080, 1920)->save($name);
+            $filePath = '/events/' . $event->id . '/covers/'.$name;
+            $event->coverUrl = $filePath;
+            $event->coverFileName = $name;
+            $event->coverPath = '/events/' . $event->id . '/covers/';
+            $disk->put($filePath, $image, 'public');
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
+        }
+
         if ($request->hasFile('BAT')){
             $file = $request->file('BAT');
             $name = time() . $file->getClientOriginalName();
@@ -211,10 +210,20 @@ class EventController extends Controller
         $event->save();
         // here I push the id in the corresponding customer
         $customer = Customer::find($event->customer_id);
-        $arr_event= $customer->events_id;
-        array_push($arr_event, $event->id);
-        $customer->events_id = $arr_event;
-        $customer->update();
+        if ($customer->events_id == null) {
+            $customer->events_id = [];
+            $arr_event= $customer->events_id;
+            array_push($arr_event, $event->id);
+            $customer->events_id = $arr_event;
+            $customer->update();
+        }
+        else {
+            $arr_event= $customer->events_id;
+            array_push($arr_event, $event->id);
+            $customer->events_id = $arr_event;
+            $customer->update();
+        }
+      
         $notification = array(
             'status' => 'L\'événement a été correctement ajouté.',
             'alert-type' => 'success'
@@ -326,7 +335,7 @@ class EventController extends Controller
             ]);
             $id = $request->id;
             $event = Event::find($id);
-            $event->name = $request->name;
+            $event->title= $request->name;
             $event->advertiser = $request->advertiser;
             $event->status = 'draft';
             $event->location = array(
@@ -440,7 +449,7 @@ class EventController extends Controller
             ]);
             $id = $request->id;
             $event = Event::find($id);
-            $event->name = $request->name;
+            $event->title = $request->name;
             $event->status = 'draft';
             $event->advertiser = $request->advertiser;
             // delete event id in the customer data
@@ -653,14 +662,18 @@ class EventController extends Controller
             }
         }
          // Delete events_local download of this event
+         if ($event->event_local_download_id !== null)
         app('App\Http\Controllers\EventLocalDownloadController')->destroy($id);
         // delete event id in the customer data
         $customer = Customer::find($event->customer_id);
-        $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($customer->events_id, $event->id);
-        $arr = $customer->events_id;
-        $arr = $result;
-        $customer->events_id = $arr;
-        $customer->update();
+        if ($customer->events_id) {
+            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($customer->events_id, $event->id);
+            $arr = $customer->events_id;
+            $arr = $result;
+            $customer->events_id = $arr;
+            $customer->update();
+        }
+     
         // Now I can delete the event
         $event->delete();
         $notification = array(

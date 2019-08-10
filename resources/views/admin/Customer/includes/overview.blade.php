@@ -47,14 +47,14 @@
                                         @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
                                         <img src="{{ $s3 . $event->logoUrl }}" alt="" class="avatar-img rounded">
                                         @else
-                                        <?php $eventInitials = $event->name[0]; ?>
+                                        <?php $eventInitials = $event->title[0]; ?>
                                         <span class="avatar-title rounded text-uppercase">{{ $eventInitials }}</span>
                                         @endif
                                     </a>
                                 </div>
                                 <div class="col ml-n2">
                                     <h4 class="card-title mb-1 name">
-                                        <a href="{{route('show_event', $event->id)}}">{{ $event->name }}</a>
+                                        <a href="{{route('show_event', $event->id)}}">{{ $event->title }}</a>
                                     </h4>
                                     <p class="card-text small text-muted mb-1">
                                         @if($event->start_datetime)

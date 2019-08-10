@@ -1,5 +1,5 @@
 @extends('layouts/templateAdmin')
-@section('title', $event->name)
+@section('title', $event->title)
 
 @section('content')
 @include('admin.Event.includes.show.modalDelete')

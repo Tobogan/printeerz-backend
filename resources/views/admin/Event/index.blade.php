@@ -92,7 +92,7 @@
                             @foreach ($events as $event)
                             <tr>
                                 <td class="event-name">
-                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->name }}</b></a>
+                                    <a href="{{route('show_event', $event->id)}}"><b>{{ $event->title }}</b></a>
                                 </td>
                                 <td class="event-annonceur">{{ $event->advertiser }}</td>
 
