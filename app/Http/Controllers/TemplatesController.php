@@ -231,8 +231,13 @@ class TemplatesController extends Controller
                 'x' => $request->origin_x,
                 'y' => $request->origin_y
             );
-            $templates_components_ids = implode(',', $request->get('templateComponentsList'));
-            $template->components_ids = json_decode($templates_components_ids);
+            if ($request->get('templateComponentsList')[0] !== 'false') {
+                $templates_components_ids = implode(',', $request->get('templateComponentsList'));
+                $template->components_ids = json_decode($templates_components_ids);
+            }
+            else {
+                $template->components_ids = $template->components_ids;
+            }
             $template->position = $request->position;
             $template->is_active = $request->is_active; 
             $template->is_deleted = $request->is_deleted;
@@ -285,7 +290,6 @@ class TemplatesController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-            
             $template->size = array(
                 'width' => $request->width,
                 'height' => $request->height
@@ -294,6 +298,13 @@ class TemplatesController extends Controller
                 'x' => $request->origin_x,
                 'y' => $request->origin_y
             );
+            if ($request->get('templateComponentsList')[0] !== 'false') {
+                $templates_components_ids = implode(',', $request->get('templateComponentsList'));
+                $template->components_ids = json_decode($templates_components_ids);
+            }
+            else {
+                $template->components_ids = $template->components_ids;
+            }
             $templates_components_ids = implode(',', $request->get('templateComponentsList'));
             $template->components_ids = json_decode($templates_components_ids);
             $template->position = $request->position;

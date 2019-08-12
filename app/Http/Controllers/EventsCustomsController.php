@@ -161,6 +161,7 @@ class EventsCustomsController extends Controller
                 $template_selected = $template;
             }
         }
+        // dd($template_selected);
         $template_components = Template_components::all();
         foreach($template_components as $template_component){
             foreach($template_selected->components_ids as $component_id){
@@ -415,24 +416,25 @@ class EventsCustomsController extends Controller
                                     }
                                 }
                             }
+                            $col_filtered = array_filter($col);
+                            $hex_filtered = array_filter($hex);
+                            $bg_col_filtered = array_filter($bgcol);
+                            $bg_hex_filtered = array_filter($bghex);
+                            $bg_colors_titles = array_slice($bg_col_filtered, 0);
+                            $bg_hex_titles = array_slice($bg_hex_filtered, 0);
+                            $colors_titles = array_slice($col_filtered, 0);
+                            $hex_titles = array_slice($hex_filtered, 0);
+                            for ($j = 0; $j < count($colors_titles); $j++) {
+                                $array = array(
+                                    'title' => $colors_titles[$j],
+                                    'code_hexa' => $hex_titles[$j],
+                                    'bg_title' => $bg_colors_titles[$j],
+                                    'bg_code_hexa' => $bg_hex_titles[$j]
+                                );
+                                array_push($array_smode_colors, $array);
+                            }
                         }
-                        $col_filtered = array_filter($col);
-                        $hex_filtered = array_filter($hex);
-                        $bg_col_filtered = array_filter($bgcol);
-                        $bg_hex_filtered = array_filter($bghex);
-                        $bg_colors_titles = array_slice($bg_col_filtered, 0);
-                        $bg_hex_titles = array_slice($bg_hex_filtered, 0);
-                        $colors_titles = array_slice($col_filtered, 0);
-                        $hex_titles = array_slice($hex_filtered, 0);
-                        for ($j = 0; $j < count($colors_titles); $j++) {
-                            $array = array(
-                                'title' => $colors_titles[$j],
-                                'code_hexa' => $hex_titles[$j],
-                                'bg_title' => $bg_colors_titles[$j],
-                                'bg_code_hexa' => $bg_hex_titles[$j]
-                            );
-                            array_push($array_smode_colors, $array);
-                        }
+                      
                         $array_fonts = array();
                         $fonts = array();
                         if ($request->{'fontsList' . $template_component_id}[0] !== null ) {

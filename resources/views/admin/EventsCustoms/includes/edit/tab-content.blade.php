@@ -510,7 +510,7 @@ $arrayEventsComponentsIds = array();
                 </div>
             </div>
             {{-- SMODE --}}
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -546,7 +546,7 @@ $arrayEventsComponentsIds = array();
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             @endif
         </div>
     </div>

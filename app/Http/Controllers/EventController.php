@@ -619,27 +619,28 @@ class EventController extends Controller
         $event = Event::find($id);
         // Delete logo image
         $disk = Storage::disk('s3');
-        if (isset($event->logoUrl)) {
-            $filePath = $event->logoUrl;
-            if (!empty($event->logoUrl) && $disk->exists($filePath)){
-                $disk->delete($filePath);
-            }
-        }
-        // Delete cover image
-        if (isset($event->coverImgUrl)) {
-            $filePath = $event->coverImgUrl;
-            if (!empty($event->coverImgUrl) && $disk->exists($filePath)){
-                $disk->delete($filePath);
-            }
-        }
+        Storage::disk('s3')->deleteDirectory('/events/'.$id);
+        // if (isset($event->logoUrl)) {
+        //     $filePath = $event->logoUrl;
+        //     if (!empty($event->logoUrl) && $disk->exists($filePath)){
+        //         $disk->delete($filePath);
+        //     }
+        // }
+        // // Delete cover image
+        // if (isset($event->coverImgUrl)) {
+        //     $filePath = $event->coverImgUrl;
+        //     if (!empty($event->coverImgUrl) && $disk->exists($filePath)){
+        //         $disk->delete($filePath);
+        //     }
+        // }
         
-        // Delete BAT file
-        if (isset($event->BATUrl)) {
-            $filePath = $event->BATUrl;
-            if (!empty($event->BATUrl) && $disk->exists($filePath)){
-                $disk->delete($filePath);
-            }
-        }
+        // // Delete BAT file
+        // if (isset($event->BATUrl)) {
+        //     $filePath = $event->BATUrl;
+        //     if (!empty($event->BATUrl) && $disk->exists($filePath)){
+        //         $disk->delete($filePath);
+        //     }
+        // }
         // Delete events_customs of this event
         $events_products = Events_products::where('event_id', '=', $id)->get();
         if ($events_products != null){
