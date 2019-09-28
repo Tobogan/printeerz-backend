@@ -51,15 +51,17 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('event_local_store/{id}', 'LiveController@event_local_store');
     Route::post('event_synchro', 'LiveController@event_synchro');
     Route::get('user/{id}', 'LiveController@user');
+    Route::get('refresh', 'LiveController@refresh');
 
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');
         Route::post('login', 'AuthController@login');
-        Route::get('refresh', 'AuthController@refresh');
+        // Route::get('refresh', 'AuthController@refresh');
         Route::get('users', 'LiveController@users');
         Route::group(['middleware' => 'auth:api'], function(){
             Route::get('user', 'AuthController@user');
             Route::post('logout', 'AuthController@logout');
+            Route::get('refresh', 'AuthController@refresh')->name('api.jwt.refresh');
         });
     });
 

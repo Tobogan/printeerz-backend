@@ -122,7 +122,6 @@ class EventController extends Controller
             'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
             'BAT' => 'mimes:pdf|max:4000',
             'start_datetime'=>'required|date|before_or_equal:end_datetime',
-
             'description' => 'nullable|string|max:2750'
         ]);
 

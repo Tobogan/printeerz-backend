@@ -21,9 +21,9 @@
     {{-- To remove later --}}
     <style>
         nav.navbar-dark {
-            background: #833ab4;
-            background: -webkit-linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
-            background: linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
+            background: #3f4C9b;
+            /* background: -webkit-linear-gradient(to left, #fcb045, #fd1d1d, #833ab4);
+            background: linear-gradient(to left, #fcb045, #fd1d1d, #833ab4); */
         }
 
         .event_product_colors {

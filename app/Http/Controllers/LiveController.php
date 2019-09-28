@@ -389,7 +389,16 @@ class LiveController extends Controller
         );
         return response()->json($event_local_download);
     }
+    // public function refresh()
+    //     {
+    //         if ($token = $this->guard()->refresh()) {
+    //             return response()
+    //                 ->json(['status' => 'successs'], 200)
+    //                 ->header('Authorization', $token);
+    //         }
 
+    //         return response()->json(['error' => 'refresh_token_error'], 401);
+    //     }   
      /**
      * Display a listing of the resource.
      *
@@ -449,4 +458,5 @@ class LiveController extends Controller
         header("Content-Type:" . $request->type);
         return readfile($file);
     }
+   
 }
