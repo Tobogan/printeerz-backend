@@ -35,13 +35,25 @@ class AuthController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function login(Request $request)
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
+    //     $tk = JWTAuth::attempt($credentials);
+
+    //     if ($token = $this->guard()->attempt($credentials)) {
+    //         return response()->json(['token' => $tk, 'token_type' => 'bearer','expires' => auth('api')->factory()->getTTL() * 60,], 200)->header('Authorization', $token);
+    //     }
+
+    //     return response()->json(['error' => 'login_error'], 401);
+    // }
+
+     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $tk = JWTAuth::attempt($credentials);
 
         if ($token = $this->guard()->attempt($credentials)) {
-            return response()->json(['token' => $tk, 'token_type' => 'bearer','expires' => auth('api')->factory()->getTTL() * 60,], 200)->header('Authorization', $token);
+            $tk = JWTAuth::attempt($credentials);
+            return response()->json(['status' => 'success'], 200)->header('Authorization', $tk);
         }
 
         return response()->json(['error' => 'login_error'], 401);
