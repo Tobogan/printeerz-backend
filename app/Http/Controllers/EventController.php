@@ -172,7 +172,9 @@ class EventController extends Controller
             $file = $request->file('cover_img');
             $name = $file->getClientOriginalName();
             $image = Image::make(file_get_contents($file));
-            $image->resize(512, 910)->save($name);
+            $image->resize(512, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
             $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
             $disk->put($thumbFilePath, $image, 'public');
             $event->coverThumbUrl = $thumbFilePath;
