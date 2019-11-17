@@ -393,6 +393,51 @@ $arrayEventsComponentsIds = array();
                     </div>
                     {{-- Image components --}}
                     @elseif($events_component->type == 'image')
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        Configuration
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="custom-control custom-switch">
+                                                <input name="{{'fullwidth'.$events_component->id}}" type="checkbox"
+                                                    class="" id="{{'fullwidth'}}" value="true">
+                                                <label>Ce composant est-il sur toute la largeur ?</label>
+                                            </div>
+                                            {{-- {!! Form::hidden('fullwidth'.$events_component->id,
+                                            $events_custom->fullwidth.$events_component->id, [
+                                            'id'=>'fullwidth']) !!} --}}
+                                            {{-- </div>
+                                            </div> --}}
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>
+                                                    Alignement
+                                                </label>
+                                                <div class="form-group">
+
+                                                    <select name="{{'align'.$events_component->id}}" id="align"
+                                                        class="form-control" data-toggle="select">
+                                                        <option value="center">Centré</option>
+                                                        <option value="right">Droite</option>
+                                                        <option value="left">Gauche</option>
+                                                        <option value="top">En haut</option>
+                                                        <option value="bottom">En bas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
@@ -479,6 +524,31 @@ $arrayEventsComponentsIds = array();
                                         </label>
                                         {!! Form::number('origin_y'.$i, $events_component->origin_y, ['class' =>
                                         'form-control', 'placeholder' => '0', 'step' => 'any']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Group --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Groupe du composant
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Numéro du groupe
+                                        </label>
+                                        {!! Form::number('group'.$i, $events_component->group, ['class' =>
+                                        'form-control', 'placeholder' => '1', 'step' => 'any']) !!}
                                     </div>
                                 </div>
                             </div>

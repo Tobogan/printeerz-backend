@@ -513,6 +513,7 @@ class EventsCustomsController extends Controller
                                 'type' => $request->{'comp_type_' . $template_component_id},
                                 'title' => $request->{'option_title' . $i},
                                 'position' => $i,
+                                'group' => $request->{'group'.$i},
                                 'settings' => array(
                                     'input_min' => $request->{'min' . $i},
                                     'input_max' => $request->{'max' . $i},
@@ -537,6 +538,7 @@ class EventsCustomsController extends Controller
                                 'type' => $request->{'comp_type_' . $template_component_id},
                                 'title' => $request->{'option_title' . $i},
                                 'position' => $i,
+                                'group' => $request->{'group'.$i},
                                 'settings' => array(
                                     'input_min' => $request->{'min' . $i},
                                     'input_max' => $request->{'max' . $i},
@@ -598,6 +600,7 @@ class EventsCustomsController extends Controller
                                 'type' => $request->{'comp_type_' . $template_component_id},
                                 'title' => $request->{'option_title' . $i},
                                 'position' => $i,
+                                'group' => $request->{'group'.$i},
                                 'settings' => array(
                                     'image_name' => $image_name,
                                     'image_url' => $newFilePath,
@@ -605,7 +608,9 @@ class EventsCustomsController extends Controller
                                         'width' => $request->{'width' . $i},
                                         'height' => $request->{'height' . $i},
                                         'origin_x' => $request->{'origin_x' . $i},
-                                        'origin_y' => $request->{'origin_y' . $i}
+                                        'origin_y' => $request->{'origin_y' . $i},
+                                        'fullwidth' => $request->{'fullwidth'.$template_component_id},
+                                        'align' => $request->{'align'.$template_component_id}
                                     ),
                                 ),
                             );
