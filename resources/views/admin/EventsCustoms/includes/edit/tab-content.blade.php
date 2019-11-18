@@ -409,11 +409,6 @@ $arrayEventsComponentsIds = array();
                                                     class="" id="{{'fullwidth'}}" value="true">
                                                 <label>Ce composant est-il sur toute la largeur ?</label>
                                             </div>
-                                            {{-- {!! Form::hidden('fullwidth'.$events_component->id,
-                                            $events_custom->fullwidth.$events_component->id, [
-                                            'id'=>'fullwidth']) !!} --}}
-                                            {{-- </div>
-                                            </div> --}}
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
@@ -421,7 +416,6 @@ $arrayEventsComponentsIds = array();
                                                     Alignement
                                                 </label>
                                                 <div class="form-group">
-
                                                     <select name="{{'align'.$events_component->id}}" id="align"
                                                         class="form-control" data-toggle="select">
                                                         <option value="center">Centré</option>

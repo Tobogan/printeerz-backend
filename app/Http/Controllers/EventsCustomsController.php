@@ -345,7 +345,10 @@ class EventsCustomsController extends Controller
                 'comp_image' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'custom_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'smode_text_color_hex' => 'string|max:255',
-                'smode_bg_color_hex' => 'string|max:255'
+                'smode_bg_color_hex' => 'string|max:255',
+                'align' => 'string|max:255',
+                'group' => 'string|max:255',
+                'fullwidth' => 'string|max:255'
             ]);
             $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
@@ -588,9 +591,12 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image' . $template_component_id);
                             $option_title = $request->{'option_title' . $i};
                             $image_name = time() . $image_file->getClientOriginalName();
-                            $newFilePath = '/events/' . $events_custom_event_id . '/images/' . $image_name;
-                            $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/resized/'.$image_name;
+                            $filePath = '/events/'.$events_custom_event_id.'/images/original/'.$image_name;
+                            $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
+                            $original_img = Image::make(file_get_contents($image_file))->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');
+                            $disk->put($filePath, $original_img, 'public');
                             if (file_exists(public_path() . '/' . $image_name)) {
                                 unlink(public_path() . '/' . $image_name);
                             }
@@ -602,8 +608,8 @@ class EventsCustomsController extends Controller
                                 'position' => $i,
                                 'group' => $request->{'group'.$i},
                                 'settings' => array(
-                                    'image_name' => $image_name,
-                                    'image_url' => $newFilePath,
+                                    'original_img_url' => $filePath,
+                                    'display_img_url' => $newFilePath,
                                     'position' => array(
                                         'width' => $request->{'width' . $i},
                                         'height' => $request->{'height' . $i},
@@ -646,7 +652,6 @@ class EventsCustomsController extends Controller
             $events_custom->components = array_slice($events_custom->components, 0);
             $arr_unique = array();
             $events_custom->components = array_unique($events_custom->components, SORT_REGULAR);
-            // dd($events_custom->components);
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->update();
@@ -661,10 +666,13 @@ class EventsCustomsController extends Controller
                'title' => 'required|string|max:255',
                 'color' => 'string|max:500',
                 'code_hex' => 'string|max:500',
-                'custom_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'comp_image' => 'image|mimes:jpeg,jpg,png|max:4000',
+                'custom_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'smode_text_color_hex' => 'string|max:255',
-                'smode_bg_color_hex' => 'string|max:255'
+                'smode_bg_color_hex' => 'string|max:255',
+                'align' => 'string|max:255',
+                'group' => 'string|max:255',
+                'fullwidth' => 'string|max:255'
             ]);
             $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
@@ -844,9 +852,12 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image'.$template_component_id);
                             $option_title = $request->{'option_title'.$i};
                             $image_name = time().$image_file->getClientOriginalName();
-                            $newFilePath = '/events/'.$events_custom_event_id.'/images/'.$image_name;
-                            $img_resized = Image::make(file_get_contents($image_file))->widen(300)->save($image_name);
+                            $newFilePath = '/events/'.$events_custom_event_id.'/images/resized/'.$image_name;
+                            $filePath = '/events/'.$events_custom_event_id.'/images/original/'.$image_name;
+                            $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
+                            $original_img = Image::make(file_get_contents($image_file))->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');
+                            $disk->put($filePath, $original_img, 'public');
                             if (file_exists(public_path() . '/' . $image_name)) {
                                 unlink(public_path() . '/' . $image_name);
                             }
@@ -856,8 +867,8 @@ class EventsCustomsController extends Controller
                                 'type' => $request->{'comp_type_'.$template_component_id},
                                 'title' => $request->{'option_title'.$i},
                                 'settings' => array(
-                                    'image_name' => $image_name,
-                                    'image_url' => $newFilePath,
+                                    'original_img_url' => $filePath,
+                                    'display_img_url' => $newFilePath,
                                     'position' => array(
                                         'width' => $request->{'width'.$i},
                                         'height' => $request->{'height'.$i},
@@ -896,7 +907,6 @@ class EventsCustomsController extends Controller
                 }
             }
             $events_custom->components = array_slice($events_custom->components, 0);
-            // dd($events_custom->components);
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->update();
