@@ -90,7 +90,6 @@ class EventsProductsController extends Controller
                 $product = Product::find($request->product_id);
                 // Here I push all product printzone in an empty array
                 $printzones = array();
-               
                 foreach ($product->printzones_id as $printzone_id) {
                     $printzone = Printzones::find($printzone_id);
                     if ($printzone) {
@@ -128,8 +127,7 @@ class EventsProductsController extends Controller
                 $event->update();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'EventsProduct created successfully',
-                    'events_product' => $events_product
+                    'msg' => 'EventsProduct created successfully'
                 );
                 return response()->json($response);
             }
@@ -147,8 +145,8 @@ class EventsProductsController extends Controller
      */
     public function addVarianteEP(Request $request)
     {
-        if($request->ajax()) {
-            if ($request->actual_titleEP == $request->title){
+        if ($request->ajax()) {
+            if ($request->actual_titleEP == $request->title || $request->actual_titleEP !== $request->title){
                 $validatedData = \Validator::make($request->all(),[
                     'products_variant_id' => 'required|string|max:255',
                     'quantity' => 'required|string|max:255'
@@ -166,36 +164,18 @@ class EventsProductsController extends Controller
                         'color' => $products_variant->color,
                         'quantity' => $request->quantity
                     );
+                    if ($request->actual_titleEP !== $request->title) {
+                        $events_product->title = $request->title;
+                    }
                     $array = $events_product->variants;
                     array_push($array, $variant);
                     $events_product->variants = $array;
                     $events_product->save();
                     $event = Event::find($events_product->event_id);
                     $products = $event->products;
-                    $i = 0;
-                    $new_products = array();
-                    foreach ($products as $product) {
+                    foreach ($products as &$product) {
                         if ($product['events_product_id'] == $request->events_product_id) {
                             array_push($product['product_variants'], $variant);
-                            array_push($products, $product);
-                        }
-                    }
-                    foreach ($products as $product) {
-                        if (!isset($product['product_variants'][0]) && $product['events_product_id'] == $request->events_product_id) {
-                            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($products, $product);
-                            $products = $result;
-                        }
-                    }
-                    foreach ($products as $product) {
-                        if ($product['events_product_id'] == $request->events_product_id) {
-                            $i++;
-                        }
-                    }
-                    foreach ($products as $product) {
-                        if ($i > 1 && $product['events_product_id'] == $request->events_product_id) {
-                            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($products, $product);
-                            $products = $result;
-                            $i = 1;
                         }
                     }
                     $event->products = $products;
@@ -204,56 +184,14 @@ class EventsProductsController extends Controller
                     $response = array(
                         'status' => 'success',
                         'msg' => 'EventsProduct created successfully',
-                        'products' => $i
-                    );
-                    return response()->json($response);
-                }
-            }
-            else {
-                $validatedData = \Validator::make($request->all(),[
-                    'products_variant_id' => 'required|string|max:255',
-                    'quantity' => 'required|string|max:255'
-                ]);
-                if ($validatedData->fails()) {
-                    return response()->json(['errors' => $validatedData->errors()->all()]);
-                }
-                else {
-                    $id = $request->events_product_id;
-                    $events_product = Events_products::find($id);
-                    $products_variant = Products_variants::find($request->products_variant_id);
-                    $variant = array(
-                        'products_variant_id' => $request->products_variant_id,
-                        'size' => $products_variant->size,
-                        'color' => $products_variant->color,
-                        'quantity' => $request->quantity
-                    );
-                    $array = $events_product->variants;
-                    array_push($array, $variant);
-                    $events_product->variants = $array;
-                    $events_product->save();
-                    $event = Event::find($events_product->event_id);
-                    $products = $event->products;
-                    foreach ($products as $product) {
-                        if ($product['events_product_id'] == $id) {
-                            // $products_variants = $product['product_variants'];
-                            array_push($product['product_variants'], $variant);
-                            // $product['product_variants'] = $products_variants;
-                        }
-                    }
-                    $event->products = $products;
-                    $event->status = "draft";
-                    $event->update();
-                    $response = array(
-                        'status' => 'success',
-                        'msg' => 'EventsProduct created successfully',
-                        'products' => $id
+                        'products' => $products
                     );
                     return response()->json($response);
                 }
             }
         }
         else {
-            return 'no';
+            return 'Il y a un problème ici !';
         }
     }
 
@@ -286,19 +224,12 @@ class EventsProductsController extends Controller
         
         $event = Event::find($events_product->event_id);
         $products = $event->products;
-        foreach ($products as $product) {
+        foreach ($products as &$product) {
             if ($product['events_product_id'] == $id) {
-                foreach ($product['product_variants'] as $variant) {
-                    if ($variant['products_variant_id'] == $products_variant_id) {
-                        $result = removeElementEP($product['product_variants'], $variant);
-                        $product['product_variants'] = $arr;
-                    }
-                }
+                $product['product_variants'] = $events_product->variants;
             }
         }
-        // dd($products);
         $event->products = $products;
-        dd($products);
         $events_product->save();
         $event->update();
         return redirect('admin/EventsProducts/show/'.$events_product->id);
@@ -366,7 +297,7 @@ class EventsProductsController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_title') == request('title')){
+        if (request('actual_title') == request('title') || request('actual_title') !== request('title')){
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'product_id' => 'required|string|max:255',
@@ -374,33 +305,11 @@ class EventsProductsController extends Controller
             ]);
             $events_product_id = $request->events_product_id;
             $events_product = Events_products::find($events_product_id);
-            $events_product->title = $request->title;
+            if (request('actual_title') !== request('title')) {
+                $events_product->title = $request->title;
+            }
             $events_product->product_id = $request->product_id;
             $events_product->description = $request->description;
-            $events_product->is_active = $request->is_active;
-            $events_product->is_deleted = $request->is_deleted;
-            $events_product->save();
-            $event = Event::find($events_product->event_id);
-            $event->status = "draft";
-            $event->update();
-            $notification = array(
-                'status' => 'Le produit a été correctement modifié.',
-                'alert-type' => 'success'
-            );
-            return redirect('admin/EventsProducts/show/'.$events_product->id)->with($notification);
-        }
-
-        else {
-            $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'description' => 'max:750'
-            ]);
-            $events_product_id = $request->events_product_id;
-            $events_product = Events_products::find($events_product_id);
-            $events_product->title = $request->title;
-            $events_product->product_id = $request->product_id;
-            $events_product->description = $request->description;
-            $events_product->position = $request->position;
             $events_product->is_active = $request->is_active;
             $events_product->is_deleted = $request->is_deleted;
             $events_product->save();

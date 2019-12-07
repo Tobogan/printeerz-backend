@@ -441,6 +441,22 @@ class LiveController extends Controller
     }
 
     /**
+     * Update event status
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function status($id, $status) {
+        $event = Event::find($id);
+        $event->status = $status;
+        $event->update();
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Event status updated'
+        );
+        return response()->json($response);
+    }
+    /**
      * Display the specified resource.
      *
      * @param  string  $url

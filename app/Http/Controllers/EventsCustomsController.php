@@ -51,8 +51,7 @@ class EventsCustomsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function create($id)
-    {
+    public function create($id) {
         $events_customs = Events_customs::all();
         $events_product = Events_products::find($id);
         $event = Event::find($events_product->event_id);
@@ -78,7 +77,7 @@ class EventsCustomsController extends Controller
         $ids = [];
         if ($events_product->variants != null) {
             foreach ($events_product->variants as $variant) {
-                $products_variant = Products_variants::find($variant[0]);
+                $products_variant = Products_variants::find($variant['products_variant_id']);
                 $colors[$products_variant->color] = $products_variant->color;
             }
         }
@@ -103,8 +102,7 @@ class EventsCustomsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validatedData = $request->validate([
             'title' => 'required|unique:events_customs|string|max:255',
             'custom_img' => 'required|image|mimes:jpeg,jpg,png|max:4000'
@@ -132,23 +130,15 @@ class EventsCustomsController extends Controller
         array_push($arr_events_customs, $events_custom->id);
         $events_product->event_customs_ids = $arr_events_customs;
         $events_product->update();
-
         if ($request->hasFile('custom_img')){
-            // Get file
             $file = $request->file('custom_img');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $events_custom->imageUrl = $filePath;
             $events_custom->imageFileName = $name;
             $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
@@ -249,8 +239,8 @@ class EventsCustomsController extends Controller
         return view('admin/EventsCustoms.show', [
             'select_fonts' => $select_fonts, 
             'events_components'=> $events_components,
-            'disk'=>$disk,
-            's3'=>$s3,
+            'disk' => $disk,
+            's3' => $s3,
             'font_weight' => $font_weight,
             'font_transform' => $font_transform,
             'events_customs' => $events_customs,
@@ -334,9 +324,8 @@ class EventsCustomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    {
-        if (request('actual_title') == request('title')) {
+    public function update(Request $request) {
+        if (request('actual_title') == request('title') || request('actual_title') !== request('title')) {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'color' => 'string|max:500',
@@ -352,6 +341,9 @@ class EventsCustomsController extends Controller
             $disk = Storage::disk('s3');
             $events_custom_id = $request->events_custom_id;
             $events_custom = Events_customs::find($events_custom_id);
+            if (request('actual_title') !== request('title')) {
+                $events_custom->title = $request->title;
+            }
             $events_custom->description = $request->description;
             $count_component = $request->countJS;
             if ($request->hasFile('custom_img')) {
@@ -560,9 +552,8 @@ class EventsCustomsController extends Controller
                                 ),
                             );
                         }
-                        
                         if (!empty($events_custom->components)) {
-                            foreach($events_custom->components as $comp) {
+                            foreach ($events_custom->components as $comp) {
                                 if ($comp['events_component_id'] == $template_component_id) {
                                     $font_to_delete = $comp;
                                     $comp = $component_input;
@@ -658,262 +649,21 @@ class EventsCustomsController extends Controller
             $events_custom->update();
             // Here I change status of the event => he's not ready
             $event = Event::find($events_custom->event_id);
-            $event->status = "draft";
-            $event->update();
-            return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
-        }
-        else {
-           $validatedData = $request->validate([
-               'title' => 'required|string|max:255',
-                'color' => 'string|max:500',
-                'code_hex' => 'string|max:500',
-                'comp_image' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'custom_img' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'smode_text_color_hex' => 'string|max:255',
-                'smode_bg_color_hex' => 'string|max:255',
-                'align' => 'string|max:255',
-                'group' => 'string|max:255',
-                'fullwidth' => 'string|max:255'
-            ]);
-            $disk = Storage::disk('s3');
-            $events_custom_id = $request->events_custom_id;
-            $events_custom = Events_customs::find($events_custom_id);
-            $events_custom->title = $request->title;
-            $events_custom->description = $request->description;
-            $count_component = $request->countJS;
-            if ($request->hasFile('custom_img')) {
-                $disk = Storage::disk('s3');
-                $oldPath = $events_custom->imageUrl;
-                $file = $request->file('custom_img');
-                $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
-                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
-                $disk->put($newFilePath, $img, 'public');
-                $events_custom->imageUrl = $newFilePath;
-                $events_custom->imageFileName = $name;
-                $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
-                if (file_exists(public_path() . '/' . $name)) {
-                    unlink(public_path() . '/' . $name);
-                }
-                if(!empty($events_custom->imageUrl) && $disk->exists($newFilePath)){
-                $disk->delete($oldPath);
-                }
-            }
-            for ($i = 0; $i <= $count_component; $i++) {
-                $template_component_id = $request->{'template_component_id'.$i};
-                if ($template_component_id != null) {
-                    if ($request->{'comp_type_'.$template_component_id} == 'input') {
-                        $array_colors = array();
-                        if ($request->{'colorsList'.$template_component_id}[0] !== null ) {
-                            foreach ($request->{'colorsList'.$template_component_id} as $colcode) {
-                                foreach ($request->{'hexaList'.$template_component_id} as $hexa) {
-                                    $col = explode(",", $colcode);
-                                    $hex = explode(",", $hexa);
-                                }
-                            }
-                        }
-                        else {
-                            $alert = array(
-                                'status' => 'Merci d\'ajouter une couleur pour chacun des composants "texte".',
-                                'alert-type' => 'danger'
-                            );
-                            return redirect()->back()->with($alert);
-                        }
-                        $col_filtered = array_filter($col);
-                        $hex_filtered = array_filter($hex);
-                        $colors_titles = array_slice($col_filtered, 0);
-                        $hex_titles = array_slice($hex_filtered, 0);
-                        for ($j=0;$j<count($colors_titles);$j++) {
-                            $array = array(
-                                'title' => $colors_titles[$j],
-                                'code_hexa' => $hex_titles[$j]
-                            );
-                            array_push($array_colors, $array);
-                        }
-                        $array_fonts = array();
-                        $fonts = array();
-                        if ($request->{'fontsList'.$template_component_id}[0] !== null ) {
-                            foreach (array_filter($request->{'fontsList'.$template_component_id}) as $font_title) {
-                                $font = explode(",", $font_title);
-                            }
-                        }
-                        else {
-                            $alert = array(
-                                'status' => 'Merci d\'ajouter une police pour chacun des composants "texte".',
-                                'alert-type' => 'danger'
-                            );
-                            return redirect()->back()->with($alert);
-                        }
-                        if ($font[0] == "") {
-                            $shift = array_shift($font);
-                        }
-                        $arr_ids = array();
-                        $arr_urls = array();
-                        $arr_filenames = array();
-                        $fonts_all = Font::all();
-                        $array_fonts_weight = array();
-                        $fonts_weight = array();
-                        foreach ($request->{'fontsWeightList'.$template_component_id} as $font_weight) {
-                            foreach ($request->{'fontsTransformList'.$template_component_id} as $font_transform) {
-                                $fonts_weight_exploded = explode(",", $font_weight);
-                                $fonts_transform_exploded = explode(",", $font_transform);
-                                array_push($fonts_weight, $fonts_transform_exploded);
-                            }
-                        }
-                        if ($fonts_weight_exploded[0] == "") {
-                            $shifted_weight = array_shift($fonts_weight_exploded);
-                            $shifted_transform = array_shift($fonts_transform_exploded);
-                        }
-                        foreach (array_filter($font) as $ft) {
-                            foreach ($fonts_all as $font_obj) {
-                                if ($font_obj->title == $ft) {
-                                    foreach ($fonts_weight_exploded as $weight) {
-                                        if ($weight == 'default') {
-                                            array_push($array_fonts_weight, $font_obj->weight);
-                                        }
-                                        else {
-                                            array_push($array_fonts_weight, $weight);
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                        foreach (array_filter($font) as $ft) {
-                            foreach ($fonts_all as $font_obj) {
-                                if ($font_obj->title == $ft) {
-                                    array_push($arr_ids, $font_obj->id);
-                                    array_push($arr_urls, $font_obj->url);
-                                    array_push($arr_filenames, $font_obj->file_name);
-                                    break;
-                                }
-                            }
-                        }
-                        for ($k=0; $k<count(array_filter($font)); $k++) {
-                            if ($font[$k] !== null) {
-                                $array_ft = array(
-                                    'title' => $font[$k],
-                                    'font_id' => $arr_ids[$k],
-                                    'font_file_name' => $arr_filenames[$k],
-                                    'font_weight' => $array_fonts_weight[$k],
-                                    'font_transform' => $fonts_transform_exploded[$k],
-                                    'font_url' => $arr_urls[$k]
-                                );
-                                array_push($array_fonts, $array_ft);
-                            }
-                        }
-                        $component_input = array(
-                            'events_component_id' => $request->{'template_component_id'.$i},
-                            'type' => $request->{'comp_type_'.$template_component_id},
-                            'title' => $request->{'option_title'.$i},
-                            'settings' => array(
-                                'input_min' => $request->{'min'.$i},
-                                'input_max' => $request->{'max'.$i},
-                                'default_text' => $request->{'default_text' . $i},
-                                'font_first_letter' => $request->{'font_first_letter'.$i},
-                                'text_color' => $request->{'smode_text_color_hex'.$i},
-                                'bg_color' => $request->{'smode_bg_color_hex'.$i},
-                                'fonts' => $array_fonts,
-                                'font_colors' => $array_colors,
-                                'position' => array(
-                                    'width' => $request->{'width'.$i},
-                                    'height' => $request->{'height'.$i},
-                                    'origin_x' => $request->{'origin_x'.$i},
-                                    'origin_y' => $request->{'origin_y'.$i}
-                                ),
-                            ),
-                        );
-                        if (!empty($events_custom->components)) {
-                            foreach($events_custom->components as $comp) {
-                                if ($comp['events_component_id'] == $template_component_id) {
-                                    $font_to_delete = $comp;
-                                    $comp = $component_input;
-                                }
-                                else {
-                                    $array = $events_custom->components;
-                                    array_push($array, $component_input);
-                                    $events_custom->components = $array;
-                                }
-                            }
-                            if(isset($font_to_delete)) {
-                                $arr = $events_custom->components;
-                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $font_to_delete);
-                                $arr = $result;
-                                $events_custom->components = $arr;
-                            }
-                        }
-                        else {
-                            $array = $events_custom->components;
-                            array_push($array, $component_input);
-                            $events_custom->components = $array;
-                        }
-                    }
-                    if ($request->{'comp_type_'.$template_component_id} == 'image') {
-                        if ($request->hasFile('comp_image'.$template_component_id)) {
-                            $events_custom_event_id = $request->events_custom_event_id;
-                            $image_file = $request->file('comp_image'.$template_component_id);
-                            $option_title = $request->{'option_title'.$i};
-                            $image_name = time().$image_file->getClientOriginalName();
-                            $newFilePath = '/events/'.$events_custom_event_id.'/images/resized/'.$image_name;
-                            $filePath = '/events/'.$events_custom_event_id.'/images/original/'.$image_name;
-                            $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
-                            $original_img = Image::make(file_get_contents($image_file))->save($image_name);
-                            $disk->put($newFilePath, $img_resized, 'public');
-                            $disk->put($filePath, $original_img, 'public');
-                            if (file_exists(public_path() . '/' . $image_name)) {
-                                unlink(public_path() . '/' . $image_name);
-                            }
-                            $image_file = $newFilePath;
-                            $component = array(
-                                'events_component_id' => $request->{'template_component_id'.$i},
-                                'type' => $request->{'comp_type_'.$template_component_id},
-                                'title' => $request->{'option_title'.$i},
-                                'settings' => array(
-                                    'original_img_url' => $filePath,
-                                    'display_img_url' => $newFilePath,
-                                    'position' => array(
-                                        'width' => $request->{'width'.$i},
-                                        'height' => $request->{'height'.$i},
-                                        'origin_x' => $request->{'origin_x'.$i},
-                                        'origin_y' => $request->{'origin_y'.$i}
-                                    ),
-                                ),
-                            );
-                            if (!empty($events_custom->components)) {
-                                foreach($events_custom->components as $comp) {
-                                    if ($comp['events_component_id'] == $template_component_id) {
-                                        $to_delete = $comp;
-                                        $comp = $component;
-                                        
-                                    }
-                                    else {
-                                        $array = $events_custom->components;
-                                        array_push($array, $component);
-                                        $events_custom->components = $array;
-                                    }
-                                }
-                                if(isset($to_delete)) {
-                                    $arr = $events_custom->components;
-                                    $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $to_delete);
-                                    $arr = $result;
-                                    $events_custom->components = $arr;
-                                }
-                            }
-                            else {
-                                $array = $events_custom->components;
-                                array_push($array, $component);
-                                $events_custom->components = $array;
-                            }
-                        }
-                    }
-                }
-            }
-            $events_custom->components = array_slice($events_custom->components, 0);
-            $events_custom->description = $request->description;
-            $events_custom->is_active = $request->is_active;
-            $events_custom->update();
-            // Here I change status of the event => he's not ready
-            $event = Event::find($events_custom->event_id);
+            // $events_products = Events_products::where('event_id','=',$event->id)->get();
+            // $events_customs_final = array();
+            // foreach ($events_product->event_customs_ids as $events_custom_id) {
+            //     foreach ($events_custom->components as $component) {
+            //         $events_customsArray = array();
+            //         array_push($events_customsArray, $component);
+            //     }
+            //     $events_customs_reformed = array(
+            //         'title' => $events_custom->title,
+            //         'template_title' => $events_custom->template_title,
+            //         'printzone_id' => $events_custom->printzone_id,
+            //         'components' => $events_customsArray
+            //     );
+            //     array_push($events_customs_final, $events_customs_reformed);
+            // }
             $event->status = "draft";
             $event->update();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
@@ -1026,14 +776,10 @@ class EventsCustomsController extends Controller
             $font->is_active = "true";
             $font->is_deleted = "false";
             if($request->hasFile('file')) {
-                // Create image name
                 $font_file = $request->file('file');
                 $name = $font_file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/fonts/' . $name;
-                // Upload the new image
                 $disk->put($newFilePath, file_get_contents($font_file), 'public');
-                // Put in database
                 $font->url = $newFilePath;
             }
             $font->file_name = $name;
