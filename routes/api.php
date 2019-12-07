@@ -52,7 +52,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('event_synchro', 'LiveController@event_synchro');
     Route::get('user/{id}', 'LiveController@user');
     Route::get('refresh', 'LiveController@refresh');
-    Route::put('event/{id}/{status}', 'LiveController@event_status');
+    Route::put('event/{id}/{status}', 'LiveController@status');
 
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');
