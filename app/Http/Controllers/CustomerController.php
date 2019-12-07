@@ -211,23 +211,16 @@ class CustomerController extends Controller
 
             // Update Profile image
             if ($request->hasFile('image')){
-                // Get current image path
                 $oldPath = $customer->image;
-                // Get new image
                 $file = $request->file('image');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/customers/' . $customer->id . '/' . $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-                // Upload the new image
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                // Put in database
                 $customer->image = $newFilePath;
                 if(!empty($customer->image) && $disk->exists($newFilePath)){
                     $disk->delete($oldPath);

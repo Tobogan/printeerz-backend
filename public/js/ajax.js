@@ -179,7 +179,7 @@ $(document).ready(function () {
                     $('#submit_modalVarianteEP').show();
                     $('#loading_modalVarianteEP').addClass('d-none');
                 } else {
-                    console.log(msg.events_product);
+                    console.log(msg.products);
                     $(this).removeClass('btn-primary');
                     $(this).addClass('btn-success');
                     $('#addVarianteEPModal').modal('hide');

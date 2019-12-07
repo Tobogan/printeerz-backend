@@ -152,6 +152,99 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
+                                Alignement
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Alignement horizontal</label>
+                                        <select name="alignX" id="alignX" class="form-control" data-toggle="select">
+                                            <option value="left">Gauche</option>
+                                            <option value="right">Droite</option>
+                                            <option value="center">Centré</option>
+                                            <option value="false">Aucun</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Alignement vertical</label>
+                                        <select name="alignY" id="alignY" class="form-control" data-toggle="select">
+                                            <option value="top">En haut</option>
+                                            <option value="middle">Milieu</option>
+                                            <option value="bottom">Bas</option>
+                                            <option value="false">Aucun</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Alignement & Ratio
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Position X
+                                        </label>
+                                        {!! Form::number('positionX', null, ['class' =>
+                                        'form-control'.$errors->first('positionX', ' is-invalid'),
+                                        'placeholder' =>'0.5', 'step' => 'any'
+                                        ]) !!}
+                                        @if($errors->has('positionX'))<div class="invalid-feedback">Veuillez renseigner
+                                            ce
+                                            champ</div>@endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Position Y
+                                        </label>
+                                        {!! Form::number('positionY', null, [
+                                        'class' => 'form-control'.$errors->first('positionY', ' is-invalid'),
+                                        'placeholder' =>'0.5', 'step' => 'any'])
+                                        !!}
+                                        @if($errors->has('positionY'))<div class="invalid-feedback">Veuillez renseigner
+                                            ce
+                                            champ</div>@endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Ratio
+                                        </label>
+                                        {!! Form::number('ratio', null, [
+                                        'class' => 'form-control'.$errors->first('ratio', ' is-invalid'),
+                                        'placeholder' =>'0.5', 'step' => 'any'])
+                                        !!}
+                                        @if($errors->has('ratio'))<div class="invalid-feedback">Veuillez renseigner ce
+                                            champ</div>@endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
                                 Position de la zone par rapport au plateau
                             </h4>
                         </div>

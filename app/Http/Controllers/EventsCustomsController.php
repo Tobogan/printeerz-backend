@@ -154,14 +154,13 @@ class EventsCustomsController extends Controller
             $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
         }
         $events_custom->save();
-        // add events_component for every component in the template selected for the events_custom
+        // Add events_component for every component in the template selected for the events_custom
         $templates = Templates::all();
         foreach($templates as $template){
             if($template->id == $request->template_id){
                 $template_selected = $template;
             }
         }
-        // dd($template_selected);
         $template_components = Template_components::all();
         foreach($template_components as $template_component){
             foreach($template_selected->components_ids as $component_id){
@@ -307,8 +306,8 @@ class EventsCustomsController extends Controller
         return view('admin/EventsCustoms.edit', [
             'select_fonts' => $select_fonts, 
             'events_components' => $events_components,
-            'disk'=>$disk,
-            's3'=>$s3, 
+            'disk' => $disk,
+            's3' => $s3, 
             'events_custom' => $events_custom, 
             'select_printzones' => $select_printzones, 
             'select_templates' => $select_templates, 
@@ -520,6 +519,7 @@ class EventsCustomsController extends Controller
                                 'settings' => array(
                                     'input_min' => $request->{'min' . $i},
                                     'input_max' => $request->{'max' . $i},
+                                    'default_text' => $request->{'default_text' . $i},
                                     'font_first_letter' => $request->{'font_first_letter' . $i},
                                     'text_color' => $request->{'smode_text_color_hex' . $i},
                                     'bg_color' => $request->{'smode_bg_color_hex' . $i},
@@ -545,6 +545,7 @@ class EventsCustomsController extends Controller
                                 'settings' => array(
                                     'input_min' => $request->{'min' . $i},
                                     'input_max' => $request->{'max' . $i},
+                                    'default_text' => $request->{'default_text' . $i},
                                     'font_first_letter' => $request->{'font_first_letter' . $i},
                                     'text_color' => $request->{'smode_text_color_hex' . $i},
                                     'bg_color' => $request->{'smode_bg_color_hex' . $i},
@@ -808,6 +809,7 @@ class EventsCustomsController extends Controller
                             'settings' => array(
                                 'input_min' => $request->{'min'.$i},
                                 'input_max' => $request->{'max'.$i},
+                                'default_text' => $request->{'default_text' . $i},
                                 'font_first_letter' => $request->{'font_first_letter'.$i},
                                 'text_color' => $request->{'smode_text_color_hex'.$i},
                                 'bg_color' => $request->{'smode_bg_color_hex'.$i},

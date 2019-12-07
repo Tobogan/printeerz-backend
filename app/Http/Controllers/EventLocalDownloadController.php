@@ -36,7 +36,7 @@ class EventLocalDownloadController extends Controller
             $event = Event::find($request->eventId);
             $customer = Customer::find($event->customer_id);
             $events_products = Events_products::where('event_id','=',$event->id)->get();
-            $events_customs = Events_customs::where('event_id','=',$event->id)->get();
+            
             // Mains Data
             $event_local_download->eventTitle = $event->name;
             $event_local_download->eventId = $event->id;
@@ -63,17 +63,17 @@ class EventLocalDownloadController extends Controller
                 $product = Product::find($events_product->product_id);
                 foreach ($product->printzones_id as $printzone_id) {
                     $printzone = Printzones::find($printzone_id);
-                        $printzoneData = array(
-                            'title' => $printzone->name,
-                            'zone' => $printzone->zone,
-                            'width' => $printzone->width,
-                            'height' => $printzone->height,
-                            'origin_x' => $printzone->origin_x,
-                            'origin_y' => $printzone->origin_y,
-                            'tray_width' => $printzone->tray_width,
-                            'tray_height' => $printzone->tray_height
-                        );
-                        array_push($printzonesArray, $printzoneData);
+                    $printzoneData = array(
+                        'title' => $printzone->name,
+                        'zone' => $printzone->zone,
+                        'width' => $printzone->width,
+                        'height' => $printzone->height,
+                        'origin_x' => $printzone->origin_x,
+                        'origin_y' => $printzone->origin_y,
+                        'tray_width' => $printzone->tray_width,
+                        'tray_height' => $printzone->tray_height
+                    );
+                    array_push($printzonesArray, $printzoneData);
                 }
                 // Events customs
                 foreach ($events_product->event_customs_ids as $events_custom_id) {
@@ -107,15 +107,15 @@ class EventLocalDownloadController extends Controller
                     }
                 }
                 // Final JSON
-                    $eventLocalDownloadProduct = array(
-                        'id' => $events_product->id,
-                        'title' => $events_product->title,
-                        'gender' => $product->gender,
-                        'type' => $product->product_type,
-                        'printzones' => $printzonesArray,
-                        'products_variants' => $productsVariantsArray,
-                        'events_customs' => $events_customs_final
-                    );
+                $eventLocalDownloadProduct = array(
+                    'id' => $events_product->id,
+                    'title' => $events_product->title,
+                    'gender' => $product->gender,
+                    'type' => $product->product_type,
+                    'printzones' => $printzonesArray,
+                    'products_variants' => $productsVariantsArray,
+                    'events_customs' => $events_customs_final
+                );
                 array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
             }
             $event_local_download->products = $eventLocalDownloadProducts;

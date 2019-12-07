@@ -77,6 +77,11 @@ class PrintzonesController extends Controller
         $printzone->origin_y = $request->origin_y;
         $printzone->tray_width = $request->tray_width;
         $printzone->tray_height = $request->tray_height;
+        $printzone->alignX = $request->alignX;
+        $printzone->alignY = $request->alignY;
+        $printzone->positionX = $request->positionX;
+        $printzone->positionY = $request->positionY;
+        $printzone->ratio = $request->ratio;
         $printzone->is_active = $request->is_active;
         $printzone->is_deleted = $request->is_deleted;
         $printzone->description = $request->description;
@@ -149,6 +154,11 @@ class PrintzonesController extends Controller
             $printzone->height = $request->height;
             $printzone->origin_x = $request->origin_x;
             $printzone->origin_y = $request->origin_y;
+            $printzone->alignX = $request->alignX;
+            $printzone->alignY = $request->alignY;
+            $printzone->positionX = $request->positionX;
+            $printzone->positionY = $request->positionY;
+            $printzone->ratio = $request->ratio;
             $printzone->tray_width = $request->tray_width;
             $printzone->tray_height = $request->tray_height;
             $printzone->description = $request->description;
@@ -174,8 +184,13 @@ class PrintzonesController extends Controller
             $printzone->height = $request->height;
             $printzone->origin_x = $request->origin_x;
             $printzone->origin_y = $request->origin_y;
+            $printzone->positionX = $request->positionX;
+            $printzone->positionY = $request->positionY;
+            $printzone->ratio = $request->ratio;
             $printzone->tray_width = $request->tray_width;
             $printzone->tray_height = $request->tray_height;
+            $printzone->alignX = $request->alignX;
+            $printzone->alignY = $request->alignY;
             $printzone->is_active = $request->is_active;
             $printzone->is_deleted = $request->is_deleted;
             $printzone->description = $request->description;

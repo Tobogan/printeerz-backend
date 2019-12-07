@@ -79,13 +79,12 @@
                 <?php $first = reset($variant); 
                     $second = next($variant);
                     array_values($variant);
-                    //dd($events_product->id);
                     ?>
                 @if($products_variant->id == $first)
                 <tr>
                     <td class="products_variant-color"><b>{{ ucfirst($products_variant->color) }}</b></td>
                     <td class="products_variant-size">{{ $products_variant->size }}</td>
-                    <td class="products_variant-quantity">{{ $second }}</td>
+                    <td class="products_variant-quantity">{{ $variant['quantity'] }}</td>
                     <td class="text-right">
                         <div class="dropdown">
                             <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown"

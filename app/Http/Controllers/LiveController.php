@@ -288,7 +288,6 @@ class LiveController extends Controller
         $printzonesArray = array();
         $finalProducts = array();
         $eventLocalDownloadProducts = array();
-        // $events_customs_final = array();
         // Printzones & products variant image by printzone
         foreach ($events_products as $events_product) {
             $events_customsArray = array();

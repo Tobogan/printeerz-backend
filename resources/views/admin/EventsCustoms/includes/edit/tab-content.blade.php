@@ -487,6 +487,13 @@ $arrayEventsComponentsIds = array();
                                 'form-control', 'placeholder' => '99']) !!}
                             </div>
                         </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Texte par défaut</label>
+                                {!! Form::text('default_text'.$i, $events_component->default_text,['class' =>
+                                'form-control', 'placeholder' => 'Votre texte']) !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
