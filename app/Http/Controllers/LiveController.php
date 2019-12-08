@@ -456,6 +456,7 @@ class LiveController extends Controller
         );
         return response()->json($response);
     }
+
     /**
      * Display the specified resource.
      *
@@ -474,4 +475,14 @@ class LiveController extends Controller
         return readfile($file);
     }
    
+    /**
+     * Update event status
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getEventStatus($id) {
+        $event = Event::find($id);
+        return $event->status;
+    }
 }
