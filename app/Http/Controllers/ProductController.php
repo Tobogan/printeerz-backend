@@ -97,7 +97,7 @@ class ProductController extends Controller
             // Define the path
             $filePath = '/products/'. $product->id . '/'. $name;
             // Resize img
-            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+            $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
             // Upload the file
             $disk->put($filePath, $img, 'public');
             // Delete public copy
@@ -210,7 +210,7 @@ class ProductController extends Controller
                 // Define the new path to image
                 $newFilePath = '/products/' . $product->id . '/'. $name;
                 // Resize new image
-                $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
                 // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
                 // Put in database
@@ -264,7 +264,7 @@ class ProductController extends Controller
                     // Define the new path to image
                     $newFilePath = '/products/' . $product->id . '/'. $name;
                     // Resize new image
-                    $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+                    $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
                     // Upload the new image
                     $disk->put($newFilePath, $img, 'public');
                     // Put in database
