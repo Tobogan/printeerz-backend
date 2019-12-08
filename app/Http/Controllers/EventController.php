@@ -135,6 +135,7 @@ class EventController extends Controller
         $event->end_time = $request->end_time;
         $event->start_datetime = $request->start_datetime;
         $event->end_datetime = $request->end_datetime;
+        $event->event_products_id = array();
         $event->products = array();
         $event->location = array(
             'address' => $request->address,

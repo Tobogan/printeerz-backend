@@ -94,8 +94,12 @@
                                 @endif
                                 @if ($product->gender == 'male')
                                 <td class="product-sexe"> Homme </td>
-                                @else
+                                @elseif ($product->gender == 'unisex')
+                                <td class="product-sexe"> Unisexe </td>
+                                @elseif ($product->gender == 'female')
                                 <td class="product-sexe"> Femme </td>
+                                @else
+                                <td class="product-sexe"> Accessoire </td>
                                 @endif
                                 @if(isset($product->vendor["name"]))
                                 <td class="product-vendor-name">{{ $product->vendor["name"] }}</td>

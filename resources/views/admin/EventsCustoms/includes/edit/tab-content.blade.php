@@ -421,8 +421,7 @@ $arrayEventsComponentsIds = array();
                                                         <option value="center">Centré</option>
                                                         <option value="right">Droite</option>
                                                         <option value="left">Gauche</option>
-                                                        <option value="top">En haut</option>
-                                                        <option value="bottom">En bas</option>
+                                                        <option value="false">Aucun</option>
                                                     </select>
                                                 </div>
                                             </div>
