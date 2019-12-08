@@ -51,53 +51,53 @@
                         </div>
                     </div>
                     <hr>
-                    @if ($product -> product_type)
+                    @if ($product->product_type)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Type</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                {{ $product -> product_type }}
+                                {{ $product->product_type }}
                             </span>
                         </div>
                     </div>
                     <hr>
                     @endif
-                    @if ($product -> gender)
+                    @if ($product->gender)
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Sexe</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                {{ $product -> gender }}
+                                {{ $product->gender }}
                             </span>
                         </div>
                     </div>
                     <hr>
                     @endif
-                    @if ($product -> vendor['name'])
+                    @if ($product->vendor['name'])
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Fournisseur</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                {{ $product -> vendor['name'] }}
+                                {{ $product->vendor['name'] }}
                             </span>
                         </div>
                     </div>
                     <hr>
                     @endif
-                    @if ($product -> vendor['reference'])
+                    @if ($product->vendor['reference'])
                     <div class="row align-items-center">
                         <div class="col">
                             <h5 class="mb-0">Référence</h5>
                         </div>
                         <div class="col-auto">
                             <span class="text-muted">
-                                {{ $product -> vendor['reference'] }}
+                                {{ $product->vendor['reference'] }}
                             </span>
                         </div>
                     </div>

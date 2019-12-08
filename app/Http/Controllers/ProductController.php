@@ -169,23 +169,37 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    {
-        if (request('actual_title') == request('title')) {
-            $validatedData = $request->validate([
-                'title' => 'required|string|unique:products|max:255',
-                'gender' => 'required|string|max:255',
-                'product_type' => 'required|string|max:255',
-                'printzones_id' => 'required',
-                'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
-                'description' => 'nullable|string|min:3|max:750',
-                'vendor_reference' => 'nullable|string|max:255',
-                'vendor_name' => 'nullable|string|max:255'
-            ]);
-            
+    public function update(Request $request) {
+        if (request('actual_title') == request('title') || request('actual_title') !== request('title')) {
+            if (request('actual_title') == request('title')) {
+                $validatedData = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'gender' => 'required|string|max:255',
+                    'product_type' => 'required|string|max:255',
+                    'printzones_id' => 'required',
+                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                    'description' => 'nullable|string|min:3|max:750',
+                    'vendor_reference' => 'nullable|string|max:255',
+                    'vendor_name' => 'nullable|string|max:255'
+                ]);
+            }
+            else {
+                $validatedData = $request->validate([
+                    'title' => 'required|string|unique:products|max:255',
+                    'gender' => 'required|string|max:255',
+                    'product_type' => 'required|string|max:255',
+                    'printzones_id' => 'required',
+                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
+                    'description' => 'nullable|string|min:3|max:750',
+                    'vendor_reference' => 'nullable|string|max:255',
+                    'vendor_name' => 'nullable|string|max:255'
+                ]);
+            }
             $id = $request->product_id;
             $product = Product::find($id);
-            $product->title = $request->title;
+            if (request('actual_title') !== request('title')) {
+                $product->title = $request->title;
+            }
             $product->vendor = array(
                 'name' => $request->vendor_name,
                 'reference' => $request->vendor_reference
@@ -198,22 +212,14 @@ class ProductController extends Controller
             $product->variants_id=$request->get('variants_id');
             $product->is_active = $request->is_active;
             $product->is_deleted = $request->is_deleted;
-            // Update Profile image
             if ($request->hasFile('image')) {
                 $disk = Storage::disk('s3');
-                // Get current image path
                 $oldPath = $product->image;
-                // Get new image
                 $file = $request->file('image');
-                // Create image name
                 $name = time() . $file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/products/' . $product->id . '/'. $name;
-                // Resize new image
                 $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
-                // Upload the new image
                 $disk->put($newFilePath, $img, 'public');
-                // Put in database
                 $product->image = $newFilePath;
                 $product->imagePath = '/products/'. $product->id . '/';
                 $product->imageName = $name;
@@ -225,67 +231,13 @@ class ProductController extends Controller
                 }
             }
             $product->update();
-            }        
-            else {
-                $validatedData = $request->validate([
-                    'title' => 'required|string|unique:products|max:255',
-                    'gender' => 'required|string|max:255',
-                    'product_type' => 'required|string|max:255',
-                    'printzones_id' => 'required',
-                    'image' => 'required|image|mimes:jpeg,jpg,png|max:4000',
-                    'description' => 'nullable|string|min:3|max:750',
-                    'vendor_reference' => 'nullable|string|max:255',
-                    'vendor_name' => 'nullable|string|max:255'
-                ]);
-                $id = $request->product_id;
-                $product = Product::find($id);
-                $product->title = $request->title;
-                $product->vendor = array(
-                    'name' => $request->vendor_name,
-                    'reference' => $request->vendor_reference
-                );
-                $product->gender = $request->gender;
-                $product->product_type = $request->product_type;
-                $product->printzones_id = $request->get('printzones_id');
-                $product->tag = $request->get('tags');
-                $product->description = $request->description;
-                $product->variants_id=$request->get('variants_id');
-                $product->is_active = $request->is_active; //penser à mettre l'input hidden
-                $product->is_deleted = $request->is_deleted;
-                // Update Profile image
-                if ($request->hasFile('image')){
-                    $disk = Storage::disk('s3');
-                    // Get current image path
-                    $oldPath = $product->image;
-                    // Get new image
-                    $file = $request->file('image');
-                    // Create image name
-                    $name = time() . $file->getClientOriginalName();
-                    // Define the new path to image
-                    $newFilePath = '/products/' . $product->id . '/'. $name;
-                    // Resize new image
-                    $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
-                    // Upload the new image
-                    $disk->put($newFilePath, $img, 'public');
-                    // Put in database
-                    $product->image = $newFilePath;
-                    $product->imagePath = '/products/'. $product->id . '/';
-                    $product->imageName = $name;
-                    if (file_exists(public_path() . '/' . $name)) {
-                        unlink(public_path() . '/' . $name);
-                    }
-                    if(!empty($product->image) && $disk->exists($newFilePath)){
-                        $disk->delete($oldPath);
-                    }
-                }
-                $product->update();
-            }
-            $notification = array(
-                'status' => 'Le produit a été correctement modifié.',
-                'alert-type' => 'success'
-            );
-            return redirect('admin/Product/show/' . $product->id)->with($notification);
         }
+        $notification = array(
+            'status' => 'Le produit a été correctement modifié.',
+            'alert-type' => 'success'
+        );
+        return redirect('admin/Product/show/' . $product->id)->with($notification);
+    }
 
     /**
      * Remove the specified resource from storage.

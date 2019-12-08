@@ -43,28 +43,24 @@
                                 <label>
                                     Nom du produit
                                 </label>
-                                {!! Form::text('title', $product->title, ['class' => 'form-control' .
-                                $errors->first('title', '
-                                is-invalid'), 'placeholder' => 'Nom du produit'])!!}
-                                @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du
-                                    produit</div>@endif
+                                {!! Form::text('title', $product->title, [
+                                'class' => 'form-control' . $errors->first('title', 'is-invalid'),
+                                'placeholder' => 'Nom du produit'
+                                ])!!}
+                                {!! $errors->first('title', '<p class="help-block mt-2" style="color:red;">
+                                    <small>:message</small></p>') !!}
                             </div>
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <!-- Product type -->
                                     <div class="form-group">
-                                        <!-- Label -->
-                                        <label>
-                                            Type de produit
-                                        </label>
-                                        <!-- Input -->
-                                        {!! Form::text('product_type', $product->product_type, ['class' =>
-                                        'form-control'. $errors->first('product_type', '
-                                        is-invalid'),
-                                        'placeholder' => 'Type de produit'])
-                                        !!}
-                                        @if($errors->has('product_type'))<div class="invalid-feedback">Veuillez
-                                            renseigner le nom du produit</div>@endif
+                                        <label>Type de produit</label>
+                                        {!! Form::text('product_type', $product->product_type, [
+                                        'class' => 'form-control'. $errors->first('product_type', 'is-invalid'),
+                                        'placeholder' => 'Type de produit'
+                                        ])!!}
+                                        {!! $errors->first('product_type', '<p class="help-block mt-2"
+                                            style="color:red;">
+                                            <small>:message</small></p>') !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -95,7 +91,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Vendor Card --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
