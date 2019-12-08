@@ -344,13 +344,13 @@ class LiveController extends Controller
             // Products_variants
             $sizes = [];
             foreach ($events_product->variants as $variant) {
-                $products_variant = Products_variants::find($variant[0]);
+                $products_variant = Products_variants::find($variant['products_variant_id']);
                 if ($products_variant !== null) {
                     $productsVariantData = array(
                         'size' => $products_variant->size,
                         'color' => $products_variant->color,
                         'image' => $products_variant->image,
-                        'quantity' => $variant[1],
+                        'quantity' => $variant['quantity'],
                         'printzones' => $products_variant->printzones
                     );
                     array_push($productsVariantsArray, $productsVariantData);

@@ -38,7 +38,7 @@ class EventLocalDownloadController extends Controller
             $events_products = Events_products::where('event_id','=',$event->id)->get();
             
             // Mains Data
-            $event_local_download->eventTitle = $event->name;
+            $event_local_download->eventTitle = $event->title;
             $event_local_download->eventId = $event->id;
             $event_local_download->eventCoverImg = $event->coverUrl;
             $event_local_download->eventLogoUrl = $event->logoUrl;
@@ -94,14 +94,14 @@ class EventLocalDownloadController extends Controller
                 }
                 // Products_variants
                 foreach ($events_product->variants as $variant) {
-                    $products_variant = Products_variants::find($variant[0]);
+                    $products_variant = Products_variants::find($variant['products_variant_id']);
                     if ($products_variant !== null) {
                         $productsVariantData = array(
                             'size' => $products_variant->size,
                             'color' => $products_variant->color,
                             'image' => $products_variant->image,
                             'printzones' => $products_variant->printzones,
-                            'quantity' => $variant[1]
+                            'quantity' => $variant['quantity']
                         );
                         array_push($productsVariantsArray, $productsVariantData);
                     }
