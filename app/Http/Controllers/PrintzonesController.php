@@ -53,13 +53,13 @@ class PrintzonesController extends Controller {
      */
     public function store(Request $request) {
         $validatedData = $request->validate([
-            // 'name' => 'required|string|unique:printzones|max:255',
-            // 'zone' => 'required|string|max:255',
-            // 'width' => 'required|string|max:255',
-            // 'height' => 'required|string|max:255',
-            // 'tray_width' => 'required|string|max:255',
-            // 'tray_height' => 'required|string|max:255',
-            // 'description' => 'nullable|string|max:750'
+            'name' => 'required|string|unique:printzones|max:255',
+            'zone' => 'required|string|max:255',
+            'size_width' => 'required|string|max:255',
+            'size_height' => 'required|string|max:255',
+            'tray_width' => 'required|string|max:255',
+            'tray_height' => 'required|string|max:255',
+            'description' => 'nullable|string|max:750'
         ]);
         // Printzones::create($request->all());
         $printzone = new Printzones;
@@ -135,8 +135,8 @@ class PrintzonesController extends Controller {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'zone' => 'required|string|max:255',
-                'width' => 'required|string|max:255',
-                'height' => 'required|string|max:255',
+                'size_width' => 'required|string|max:255',
+                'size_height' => 'required|string|max:255',
                 'tray_width' => 'required|string|max:255',
                 'tray_height' => 'required|string|max:255',
                 'description' => 'nullable|string|max:750'
