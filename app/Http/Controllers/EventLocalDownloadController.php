@@ -36,7 +36,6 @@ class EventLocalDownloadController extends Controller
             $event = Event::find($request->eventId);
             $customer = Customer::find($event->customer_id);
             $events_products = Events_products::where('event_id','=',$event->id)->get();
-            
             // Mains Data
             $event_local_download->eventTitle = $event->title;
             $event_local_download->eventId = $event->id;
@@ -186,7 +185,7 @@ class EventLocalDownloadController extends Controller
         $event_local_downloads = Event_local_download::where('eventId','=',$event_id)->get();
         $event->update();
         if ($event_local_downloads !== null) {
-            foreach($event_local_downloads as $event_local_download) {
+            foreach ($event_local_downloads as $event_local_download) {
                 $event_local_download->delete();
             }
         }

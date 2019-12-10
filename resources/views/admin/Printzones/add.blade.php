@@ -6,16 +6,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
-            <!-- Header -->
             <div class="header">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 CREATION
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Créer une zone d'impression
                             </h1>
@@ -25,7 +22,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
             {!! Form::open(['action' => array('PrintzonesController@store'), 'files' => true, 'class' => 'mb-4']) !!}
             {{csrf_field()}}
             <div class="row">
@@ -121,11 +117,12 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('width', null, ['class' =>
+                                        {!! Form::number('size_width', null, ['class' =>
                                         'form-control'.$errors->first('width', ' is-invalid'),
                                         'placeholder' =>'250'
                                         ]) !!}
-                                        @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce
+                                        @if($errors->has('size_width'))<div class="invalid-feedback">Veuillez renseigner
+                                            ce
                                             champ</div>@endif
                                     </div>
                                 </div>
@@ -134,11 +131,12 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('height', null, [
+                                        {!! Form::number('size_height', null, [
                                         'class' => 'form-control'.$errors->first('height', ' is-invalid'),
                                         'placeholder' =>'250'])
                                         !!}
-                                        @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
+                                        @if($errors->has('size_height'))<div class="invalid-feedback">Veuillez
+                                            renseigner ce
                                             champ</div>@endif
                                     </div>
                                 </div>
@@ -199,11 +197,11 @@
                                         <label>
                                             Position X
                                         </label>
-                                        {!! Form::number('positionX', null, ['class' =>
-                                        'form-control'.$errors->first('positionX', ' is-invalid'),
+                                        {!! Form::number('position_x', null, ['class' =>
+                                        'form-control'.$errors->first('position_x', ' is-invalid'),
                                         'placeholder' =>'0.5', 'step' => 'any'
                                         ]) !!}
-                                        @if($errors->has('positionX'))<div class="invalid-feedback">Veuillez renseigner
+                                        @if($errors->has('position_x'))<div class="invalid-feedback">Veuillez renseigner
                                             ce
                                             champ</div>@endif
                                     </div>
@@ -213,11 +211,11 @@
                                         <label>
                                             Position Y
                                         </label>
-                                        {!! Form::number('positionY', null, [
-                                        'class' => 'form-control'.$errors->first('positionY', ' is-invalid'),
+                                        {!! Form::number('position_y', null, [
+                                        'class' => 'form-control'.$errors->first('position_y', ' is-invalid'),
                                         'placeholder' =>'0.5', 'step' => 'any'])
                                         !!}
-                                        @if($errors->has('positionY'))<div class="invalid-feedback">Veuillez renseigner
+                                        @if($errors->has('position_y'))<div class="invalid-feedback">Veuillez renseigner
                                             ce
                                             champ</div>@endif
                                     </div>

@@ -676,8 +676,7 @@ class EventsCustomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $events_custom = Events_customs::find($id);
         $disk = Storage::disk('s3'); 
         // here I search the id in event array and I delete it
@@ -695,7 +694,7 @@ class EventsCustomsController extends Controller
                 }
             }
         }
-        if(isset($id_to_delete)){
+        if (isset($id_to_delete)) {
             $result = removeElement($events_product->event_customs_ids, $id_to_delete);
             $arr = $events_product->event_customs_ids;
             $arr = $result;
@@ -703,17 +702,17 @@ class EventsCustomsController extends Controller
             $events_product->update();
         }
         // delete images
-        if(isset($events_custom->components)){
-            foreach($events_custom->components as $component){
-                if(isset($component['settings']['image_url']) && $disk->exists($component['settings']['image_url'])){
+        if (isset($events_custom->components)) {
+            foreach ($events_custom->components as $component) {
+                if (isset($component['settings']['image_url']) && $disk->exists($component['settings']['image_url'])) {
                     $disk->delete($component['settings']['image_url']);
                 }
             }
         }
         // Delete events_component of this event
         $events_components = Events_component::where('events_custom_id', '=', $id)->get();
-        if($events_components != null){
-            foreach($events_components as $events_component){
+        if ($events_components != null) {
+            foreach ($events_components as $events_component) {
                 app('App\Http\Controllers\EventsComponentController')->destroy($events_component->id);
             }
         }
@@ -729,24 +728,21 @@ class EventsCustomsController extends Controller
         return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id)->with($notification);
     }
 
-    public function desactivate($id)
-    {
+    public function desactivate($id) {
         $events_custom = Events_customs::find($id);
         $events_custom->is_active = false;
         $events_custom->update();
         return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $events_custom = Events_customs::find($id);
         $events_custom->is_deleted = true;
         $events_custom->update();
         return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
     }
 
-    public function activate($id)
-    {
+    public function activate($id) {
         $events_custom = Events_customs::find($id);
         $events_custom->is_active = true;
         $events_custom->update();
@@ -765,17 +761,17 @@ class EventsCustomsController extends Controller
             'title' => 'required|unique:fonts|string|max:255',
             'file' => 'required|max:4000'
         ]);
-        if ($validatedData->fails()){
+        if ($validatedData->fails()) {
             return response()->json(['errors'=>$validatedData->errors()->all()]);
         }
-        else{
+        else {
             $disk = Storage::disk('s3'); 
             $font = new Font;
             $font->title = $request->title;
             $font->weight = $request->font_weight;
             $font->is_active = "true";
             $font->is_deleted = "false";
-            if($request->hasFile('file')) {
+            if ($request->hasFile('file')) {
                 $font_file = $request->file('file');
                 $name = $font_file->getClientOriginalName();
                 $newFilePath = '/fonts/' . $name;

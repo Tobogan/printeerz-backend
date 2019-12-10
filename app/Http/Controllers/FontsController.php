@@ -81,17 +81,12 @@ class FontsController extends Controller
         if($request->hasFile('file_font')) {
             $file = $request->file('file_font');
             $title = $request->title;
-            // Create file name
             $name = $file->getClientOriginalName();
-            // Define the path to file
             $filePath = '/fonts/' . $name;
-            // Upload the new image
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // $disk->put($filePath, $file, 'public');
             $disk->put($filePath, file_get_contents($file), 'public');
-            // Put in database
             $font->url = $filePath;
             $font->file_name = $name;
         }
@@ -139,29 +134,35 @@ class FontsController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_title') == request('title')){
-            $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'file_font' => 'required|max:4000'
-            ]);
+        if (request('actual_title') == request('title') || request('actual_title') !== request('title')){
+            if (request('actual_title') == request('title')) {
+                $validatedData = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'file_font' => 'required|max:4000'
+                ]);
+            }
+            else {
+                $validatedData = $request->validate([
+                    'title' => 'required|unique:fonts|string|max:255',
+                    'file_font' => 'required|max:4000'
+                ]);
+            }
             $id = $request->font_id;
             $font = Font::find($id);
+            if (request('actual_title') !== request('title')) {
+                $font->title = $request->title;
+            }
             $font->created_by = Auth::user()->username;
             $font->weight = $request->weight;
             $font->is_active = $request->is_active;
             $font->is_deleted = $request->is_deleted;
-            if($request->hasFile('font_file')) {
+            if ($request->hasFile('font_file')) {
                 $disk = Storage::disk('s3');
                 $oldPath = $font->url;
-                // Create image name
                 $font_file = $request->file('font_file');
                 $name = $font_file->getClientOriginalName();
-                // Define the new path to image
                 $newFilePath = '/fonts/' . $name;
-                // Upload the new image
-                // $disk->put($newFilePath, $font_file, 'public');
                 $disk->put($newFilePath, file_get_contents($file), 'public');
-                // Put in database
                 $font->url = $newFilePath;
                 $font->file_name = $name;
                 if (file_exists(public_path() . '/' . $name)) {
@@ -173,41 +174,6 @@ class FontsController extends Controller
             }
             $font->update();
         }
-        else {
-            $validatedData = $request->validate([
-                'title' => 'required|unique:fonts|string|max:255',
-                'file_font' => 'required|max:4000'
-            ]);
-            $id = $request->font_id;
-            $font = Font::find($id);
-            $font->title = $request->title;
-            $font->weight = $request->weight;
-            $font->is_active = $request->is_active;
-            $font->is_deleted = $request->is_deleted;
-            $font->save();
-            if($request->hasFile('font_file')) {
-                $disk = Storage::disk('s3');
-                $oldPath = $font->url;
-                // Create image name
-                $font_file = $request->file('font_file');
-                $name = $font_file->getClientOriginalName();
-                // Define the new path to image
-                $newFilePath = '/fonts/' . $name;
-                // Upload the new image
-                // $disk->put($newFilePath, $font_file, 'public');
-                $disk->put($newFilePath, file_get_contents($file), 'public');
-                // Put in database
-                $font->url = $newFilePath;
-                if (file_exists(public_path() . '/' . $name)) {
-                    unlink(public_path() . '/' . $name);
-                }
-                if(!empty($font->url) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
-                }
-            }
-            $font->update();
-        }
-        
         $notification = array(
         'status' => 'La police a été correctement modifiée.',
         'alert-type' => 'success'

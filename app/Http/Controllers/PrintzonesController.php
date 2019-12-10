@@ -12,8 +12,7 @@ use App\Http\Middleware\isActivate;
 
 use Illuminate\Support\Facades\Auth;
 
-class PrintzonesController extends Controller
-{
+class PrintzonesController extends Controller {
     public function __construct(){
         //$this->middleware(isActivate::class);
         //$this->middleware(isAdmin::class);
@@ -25,8 +24,7 @@ class PrintzonesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $printzones = Printzones::all();
         return view('admin/Printzones.index', [
             'printzones' => $printzones
@@ -39,8 +37,7 @@ class PrintzonesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $printzones = Printzones::all();
         return view('admin/Printzones.add', [
             'printzones' => $printzones
@@ -54,40 +51,43 @@ class PrintzonesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validatedData = $request->validate([
-            'name' => 'required|string|unique:printzones|max:255',
-            'zone' => 'required|string|max:255',
-            'width' => 'required|string|max:255',
-            'height' => 'required|string|max:255',
-            'tray_width' => 'required|string|max:255',
-            'tray_height' => 'required|string|max:255',
-            'description' => 'nullable|string|max:750'
+            // 'name' => 'required|string|unique:printzones|max:255',
+            // 'zone' => 'required|string|max:255',
+            // 'width' => 'required|string|max:255',
+            // 'height' => 'required|string|max:255',
+            // 'tray_width' => 'required|string|max:255',
+            // 'tray_height' => 'required|string|max:255',
+            // 'description' => 'nullable|string|max:750'
         ]);
-        
+        // Printzones::create($request->all());
         $printzone = new Printzones;
         $printzone->name = $request->name;
-        $printzone->created_by = Auth::user()->username;
         $printzone->zone = $request->zone;
+        $printzone->description = $request->description;
+        $printzone->size = [
+            'width' => $request->size_width,
+            'height' => $request->size_height
+        ];
+        $printzone->product_position = [
+            'x' => $request->position_x,
+            'y' => $request->position_y,
+            'align_x' => $request->alignX,
+            'align_y' => $request->alignY,
+            'ratio' => $request->ratio
+        ];
+        $printzone->tray = [
+            'width' => $request->tray_width,
+            'height' => $request->tray_height,
+            'x' => $request->origin_x,
+            'y' => $request->origin_y
+        ];
         $printzone->printer_id = $request->printer_id;
-        $printzone->width = $request->width;
-        $printzone->height = $request->height;
-        $printzone->origin_x = $request->origin_x;
-        $printzone->origin_y = $request->origin_y;
-        $printzone->tray_width = $request->tray_width;
-        $printzone->tray_height = $request->tray_height;
-        $printzone->alignX = $request->alignX;
-        $printzone->alignY = $request->alignY;
-        $printzone->positionX = $request->positionX;
-        $printzone->positionY = $request->positionY;
-        $printzone->ratio = $request->ratio;
         $printzone->is_active = $request->is_active;
         $printzone->is_deleted = $request->is_deleted;
-        $printzone->description = $request->description;
-
+        $printzone->created_by = Auth::user()->username;
         $printzone->save();
-
         $notification = array(
             'status' => 'La zone d\'impression ont été correctement créee.',
             'alert-type' => 'success'
@@ -101,8 +101,7 @@ class PrintzonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $printzone = Printzones::find($id);
         return view('admin/Printzones.show', [
             'printzone' => $printzone
@@ -116,8 +115,7 @@ class PrintzonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $printzone = Printzones::find($id);
         return view('admin/Printzones.edit', [
             'printzone' => $printzone
@@ -132,9 +130,8 @@ class PrintzonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    {
-        if (request('actual_name') == request('name')){
+    public function update(Request $request) {
+        if (request('actual_name') == request('name') || request('actual_name') !== request('name')){
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'zone' => 'required|string|max:255',
@@ -144,56 +141,34 @@ class PrintzonesController extends Controller
                 'tray_height' => 'required|string|max:255',
                 'description' => 'nullable|string|max:750'
             ]);
-            
             $id = $request->printzones_id;
             $printzone = Printzones::find($id);
-            $printzone->name = $request->name;
+            if (request('actual_name') !== request('name')) {
+                $printzone->name = $request->name;
+            }
             $printzone->zone = $request->zone;
-            $printzone->printer_id = $request->printer_id;
-            $printzone->width = $request->width;
-            $printzone->height = $request->height;
-            $printzone->origin_x = $request->origin_x;
-            $printzone->origin_y = $request->origin_y;
-            $printzone->alignX = $request->alignX;
-            $printzone->alignY = $request->alignY;
-            $printzone->positionX = $request->positionX;
-            $printzone->positionY = $request->positionY;
-            $printzone->ratio = $request->ratio;
-            $printzone->tray_width = $request->tray_width;
-            $printzone->tray_height = $request->tray_height;
             $printzone->description = $request->description;
-        }
-
-        else {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'zone' => 'required|string|max:255',
-                'width' => 'required|string|max:255',
-                'height' => 'required|string|max:255',
-                'tray_width' => 'required|string|max:255',
-                'tray_height' => 'required|string|max:255',
-                'description' => 'nullable|string|max:750'
-            ]);
-            
-            $id = $request->printzones_id;
-            $printzone = Printzones::find($id);
-            $printzone->name = $request->name;
-            $printzone->zone = $request->zone;
+            $printzone->size = [
+                'width' => $request->size_width,
+                'height' => $request->size_height
+            ];
+            $printzone->product_position = [
+                'x' => $request->position_x,
+                'y' => $request->position_y,
+                'align_x' => $request->alignX,
+                'align_y' => $request->alignY,
+                'ratio' => $request->ratio
+            ];
+            $printzone->tray = [
+                'width' => $request->tray_width,
+                'height' => $request->tray_height,
+                'x' => $request->origin_x,
+                'y' => $request->origin_y
+            ];
             $printzone->printer_id = $request->printer_id;
-            $printzone->width = $request->width;
-            $printzone->height = $request->height;
-            $printzone->origin_x = $request->origin_x;
-            $printzone->origin_y = $request->origin_y;
-            $printzone->positionX = $request->positionX;
-            $printzone->positionY = $request->positionY;
-            $printzone->ratio = $request->ratio;
-            $printzone->tray_width = $request->tray_width;
-            $printzone->tray_height = $request->tray_height;
-            $printzone->alignX = $request->alignX;
-            $printzone->alignY = $request->alignY;
             $printzone->is_active = $request->is_active;
             $printzone->is_deleted = $request->is_deleted;
-            $printzone->description = $request->description;
+            $printzone->created_by = Auth::user()->username;
         }
         $printzone->save();
 
@@ -210,19 +185,18 @@ class PrintzonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $products = Product::all();
-        foreach($products as $product){
-            foreach($product->printzones_id as $key => $value){
-                if($id == $value){
+        foreach ($products as $product) {
+            foreach ($product->printzones_id as $key => $value) {
+                if ($id == $value) {
                     $notification = array(
                         'status' => 'Vous ne pouvez pas supprimer cette zone car elle est utilisée pour le produit : '.$product->title,
                         'alert-type' => 'danger'
                     );
                     return redirect('admin/Printzones/index')->with($notification);
                 }
-                else{
+                else {
                     $printzone = Printzones::find($id);
                     $printzone->delete();
                     $notification = array(
@@ -243,24 +217,21 @@ class PrintzonesController extends Controller
     }
 
     // activate and desactivate a printzone function in index printzone
-    public function desactivate($id)
-    {
+    public function desactivate($id) {
         $printzone = Printzones::find($id);
         $printzone->is_active = false;
         $printzone->update();
         return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement désactivée.');
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $printzone = Printzones::find($id);
         $printzone->is_deleted = true;
         $printzone->update();
         return redirect('admin/Printzones/index')->with('status', 'La zone d\impression ont été correctement effacée.');
     }
 
-    public function activate($id)
-    {
+    public function activate($id) {
         $printzone = Printzones::find($id);
         $printzone->is_active = true;
         $printzone->update();

@@ -11,6 +11,18 @@ class Printzones extends Eloquent
     protected $collection = 'printzones';
 
     protected $fillable = [
-        'id','name','printer_id','zone','width','height','origin_x','origin_y','tray_width','tray_height','description','is_active','is_delected','created_at','updated_at'
+        'id',
+        'name',
+        'zone',
+        'description',
+        'size[]',
+        'product_position[]',
+        'tray[]',
+        'printer_id',
+        'is_active',
+        'is_delected',
+        'created_by',
+        'created_at',
+        'updated_at'
     ];
 }

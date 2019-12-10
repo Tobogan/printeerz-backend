@@ -6,16 +6,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
-            <!-- Header -->
             <div class="header">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 MODIFICATION
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Modifier un produit
                             </h1>
@@ -25,7 +22,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
             {!! Form::open(['action' => array('ProductController@update'), 'id' => $product->id, 'files' => true,
             'class' => 'mb-4']) !!}
             <div class="row">
@@ -38,7 +34,6 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <!-- Product title -->
                             <div class="form-group">
                                 <label>
                                     Nom du produit
@@ -132,7 +127,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Image --}}
             @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
@@ -143,14 +137,12 @@
             @else
             <div class="card card-inactive">
                 <div class="card-body text-center">
-                    <!-- No image -->
                     <p class="text-muted">
                         Pas d'image de produit
                     </p>
                 </div>
             </div>
             @endif
-            {{-- Image Card --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -164,7 +156,9 @@
                         <div class="card-body">
                             <div class="col-12">
                                 <div class="form-group">
-                                    {!! Form::file('image', array('class' => 'form-control', 'id' => 'logo_img')) !!}
+                                    {!! Form::file('image', array(
+                                    'class' => 'form-control',
+                                    'id' => 'logo_img')) !!}
                                     <div>{!! $errors->first('image', '<p class="help-block mt-2" style="color:red;">
                                             <small>:message</small></p>') !!} </div>
                                 </div>
@@ -173,7 +167,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Printzones Card --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -187,9 +180,11 @@
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::select('printzones_id[]', App\Printzones::pluck('name','_id'),
-                                $product->printzones_id, ['class' => 'form-control', 'multiple', 'data-toggle' =>
-                                'select'])
-                                !!}
+                                $product->printzones_id, [
+                                'class' => 'form-control',
+                                'multiple',
+                                'data-toggle' => 'select'
+                                ]) !!}
                                 <div>{!! $errors->first('printzones_id', '<p class="help-block mt-2" style="color:red;">
                                         <small>Merci de saisir au moins une zone d\'impression.</small></p>') !!} </div>
                             </div>
@@ -197,7 +192,6 @@
                     </div>
                 </div>
             </div>
-            {{-- Description Card --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -224,13 +218,13 @@
                     </div>
                 </div>
             </div>
-            {{-- Submit & Return Buttons --}}
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Modifier le produit', ['class' => 'btn btn-primary', 'style' =>
-                        'float: right'])
-                        !!}
+                        {!! Form::submit('Modifier le produit', [
+                        'class' => 'btn btn-primary',
+                        'style' => 'float: right'
+                        ]) !!}
                         <a class='btn btn-secondary' style="float: left" href="{{route('index_product')}}">Annuler</a>
                     </div>
                 </div>

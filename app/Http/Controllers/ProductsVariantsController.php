@@ -135,7 +135,7 @@ class ProductsVariantsController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_color') == request('color')) {
+        if (request('actual_color') == request('color') || request('actual_color') !== request('color')) {
             $validatedData = $request->validate([
                 'color' => 'required|string|max:255',
                 'size' => 'required|string|max:255',
@@ -145,6 +145,9 @@ class ProductsVariantsController extends Controller
             ]);
             $pv_id = $request->products_variant_id;
             $products_variant = Products_variants::find($pv_id);
+            if (request('actual_color') !== request('color')) {
+                $products_variant->color = $request->color;
+            }
             $products_variant->created_by = Auth::user()->username;
             $products_variant->vendor = array(
                 'sku' => $request->vendor_sku,
@@ -155,11 +158,11 @@ class ProductsVariantsController extends Controller
             $products_variant->size = $request->size;
             $printzones_nb = $request->printzones_nb;
             $printzones = array();
-            for ($i=1; $i<$printzones_nb;$i++) {
-                if ($request->{'printzone'.$i}) {
-                    if ($request->hasFile('printzone'.$i)) {
-                        if (isset($products_variant->{'printzone'.$i}['image'])) {
-                            $oldPath = $products_variant->{'printzone'.$i}['image'];
+            for ($i = 1; $i < $printzones_nb; $i++) {
+                if ($request->{'printzone' . $i}) {
+                    if ($request->hasFile('printzone' . $i)) {
+                        if (isset($products_variant->{'printzone' . $i}['image'])) {
+                            $oldPath = $products_variant->{'printzone' . $i}['image'];
                             $file = $request->file('printzone'.$i);
                             $name = time() . $file->getClientOriginalName();
                             $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
@@ -176,15 +179,8 @@ class ProductsVariantsController extends Controller
                         $file = $request->file('printzone'.$i);
                         $name = time() . $file->getClientOriginalName();
                         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                        // Resize new image
-                        // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                        // $img = Image::make(file_get_contents($file));
-                        // $img->backup();
-                        // $img->resize(1080, 1920)->save($name);
                         $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
-
                         $disk->put($newFilePath, $img, 'public');
-
                         // $disk->put($newFilePath, $img, 'public');
                         if (file_exists(public_path() . '/' . $name)) {
                             unlink(public_path() . '/' . $name);
@@ -231,97 +227,97 @@ class ProductsVariantsController extends Controller
             );
             return redirect('admin/Product/show/'.$product->id)->with($notification);
          }
-        else {
-            $validatedData = $request->validate([
-                'color' => 'required|string|max:255',
-                'size' => 'required|string|max:255',
-                'quantity' => 'required|string|max:255',
-                'printzone' => 'image|mimes:jpeg,jpg,png|max:4000',
-                'image' => 'image|mimes:jpeg,jpg,png|max:4000'
-            ]);
-            $pv_id = $request->products_variant_id;
-            $products_variant = Products_variants::find($pv_id);
-            $products_variant->color = $request->color;
-            $products_variant->size = $request->size;
-            $products_variant->vendor = array(
-                'sku' => $request->vendor_sku,
-                'quantity' => $request->vendor_quantity
-            );
-            $disk = Storage::disk('s3');
-            $products_variant->quantity = $request->quantity;
-            $printzones_nb = $request->printzones_nb;
-            $printzones = array();
-            if($request->printzone1) {
-                for($i=1; $i<$printzones_nb;$i++){
-                    if ($request->hasFile('printzone'.$i)){
-                        if(isset($products_variant->{'printzone'.$i}['image'])){
-                            $oldPath = $products_variant->{'printzone'.$i}['image'];
-                            $file = $request->file('printzone'.$i);
-                            $name = time() . $file->getClientOriginalName();
-                            $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                            if(!empty($products_variant->{'printzone'.$i}['image']) && $disk->exists($newFilePath)){
-                                $disk->delete($oldPath);
-                            }
-                        }
-                        $request_img =  $request->{'printzone'.$i};
-                        $request_id =  $request->{'printzone_id_'.$i};
-                        $request_name =  $request->{'printzone_name_'.$i};
-                        $file = $request->file('printzone'.$i);
-                        $name = time() . $file->getClientOriginalName();
-                        $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                        // Resize new image
-                        // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                                                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+        // else {
+        //     $validatedData = $request->validate([
+        //         'color' => 'required|string|max:255',
+        //         'size' => 'required|string|max:255',
+        //         'quantity' => 'required|string|max:255',
+        //         'printzone' => 'image|mimes:jpeg,jpg,png|max:4000',
+        //         'image' => 'image|mimes:jpeg,jpg,png|max:4000'
+        //     ]);
+        //     $pv_id = $request->products_variant_id;
+        //     $products_variant = Products_variants::find($pv_id);
+        //     $products_variant->color = $request->color;
+        //     $products_variant->size = $request->size;
+        //     $products_variant->vendor = array(
+        //         'sku' => $request->vendor_sku,
+        //         'quantity' => $request->vendor_quantity
+        //     );
+        //     $disk = Storage::disk('s3');
+        //     $products_variant->quantity = $request->quantity;
+        //     $printzones_nb = $request->printzones_nb;
+        //     $printzones = array();
+        //     if($request->printzone1) {
+        //         for($i=1; $i<$printzones_nb;$i++){
+        //             if ($request->hasFile('printzone'.$i)){
+        //                 if(isset($products_variant->{'printzone'.$i}['image'])){
+        //                     $oldPath = $products_variant->{'printzone'.$i}['image'];
+        //                     $file = $request->file('printzone'.$i);
+        //                     $name = time() . $file->getClientOriginalName();
+        //                     $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+        //                     if(!empty($products_variant->{'printzone'.$i}['image']) && $disk->exists($newFilePath)){
+        //                         $disk->delete($oldPath);
+        //                     }
+        //                 }
+        //                 $request_img =  $request->{'printzone'.$i};
+        //                 $request_id =  $request->{'printzone_id_'.$i};
+        //                 $request_name =  $request->{'printzone_name_'.$i};
+        //                 $file = $request->file('printzone'.$i);
+        //                 $name = time() . $file->getClientOriginalName();
+        //                 $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+        //                 // Resize new image
+        //                 // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+        //                                         $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
 
-                        // $img = Image::make(file_get_contents($file));
-                        // $img->backup();
-                        // $img->resize(1080, 1920)->save($name);
-                        $disk->put($newFilePath, $img, 'public');
+        //                 // $img = Image::make(file_get_contents($file));
+        //                 // $img->backup();
+        //                 // $img->resize(1080, 1920)->save($name);
+        //                 $disk->put($newFilePath, $img, 'public');
 
-                        // $disk->put($newFilePath, $img, 'public');
-                        if (file_exists(public_path() . '/' . $name)) {
-                            unlink(public_path() . '/' . $name);
-                        }
-                    }
-                    $printzone = array(
-                        'id' => $request_id,
-                        'title' => $request_name,
-                        'image' => $newFilePath
-                    );
-                    array_push($printzones, $printzone);
-                }
-            }
-            $products_variant->printzones = $printzones;
-            $products_variant->numberOfZones = $printzones_nb - 1;
-            if ($request->hasFile('image')){
-                 $oldPath = $products_variant->image;
-                $file = $request->file('image');
-                $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
-                if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
-                    $disk->delete($oldPath);
-                }
-                $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
-                // $img = Image::make(file_get_contents($file));
-                // $img->backup();
-                // $img->resize(1080, 1920)->save($name);
-                $disk->put($newFilePath, $img, 'public');
-                // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-                // $disk->put($newFilePath, $img, 'public');
-                if (file_exists(public_path() . '/' . $name)) {
-                    unlink(public_path() . '/' . $name);
-                }
-                // Put in database
-                $products_variant->image = $newFilePath;
-            }
-            $products_variant->save();
-            $product = Product::find($products_variant->product_id);
-            $notification = array(
-                'status' => 'La variante a bien été correctement modifiée.',
-                'alert-type' => 'success'
-            );
-            return redirect('admin/Product/show/'.$product->id)->with($notification);
-        }
+        //                 // $disk->put($newFilePath, $img, 'public');
+        //                 if (file_exists(public_path() . '/' . $name)) {
+        //                     unlink(public_path() . '/' . $name);
+        //                 }
+        //             }
+        //             $printzone = array(
+        //                 'id' => $request_id,
+        //                 'title' => $request_name,
+        //                 'image' => $newFilePath
+        //             );
+        //             array_push($printzones, $printzone);
+        //         }
+        //     }
+        //     $products_variant->printzones = $printzones;
+        //     $products_variant->numberOfZones = $printzones_nb - 1;
+        //     if ($request->hasFile('image')){
+        //          $oldPath = $products_variant->image;
+        //         $file = $request->file('image');
+        //         $name = time() . $file->getClientOriginalName();
+        //         $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+        //         if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
+        //             $disk->delete($oldPath);
+        //         }
+        //         $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
+        //         // $img = Image::make(file_get_contents($file));
+        //         // $img->backup();
+        //         // $img->resize(1080, 1920)->save($name);
+        //         $disk->put($newFilePath, $img, 'public');
+        //         // $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+        //         // $disk->put($newFilePath, $img, 'public');
+        //         if (file_exists(public_path() . '/' . $name)) {
+        //             unlink(public_path() . '/' . $name);
+        //         }
+        //         // Put in database
+        //         $products_variant->image = $newFilePath;
+        //     }
+        //     $products_variant->save();
+        //     $product = Product::find($products_variant->product_id);
+        //     $notification = array(
+        //         'status' => 'La variante a bien été correctement modifiée.',
+        //         'alert-type' => 'success'
+        //     );
+        //     return redirect('admin/Product/show/'.$product->id)->with($notification);
+        // }
     }
 
     /**
