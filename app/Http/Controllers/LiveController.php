@@ -508,7 +508,7 @@ class LiveController extends Controller
                 ]
             ],
             'products' => $eventLocalDownloadProducts,
-            'descritpion' => $event->description,
+            'description' => $event->description,
             'users' => $event->user_ids,
             'created_by' => $event->created_by,
             'created_at' => $event->created_at,
