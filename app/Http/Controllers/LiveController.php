@@ -454,6 +454,7 @@ class LiveController extends Controller
                         'size' => $products_variant->size,
                         'color' => $products_variant->color,
                         'quantity' => $variant['quantity'],
+                        'image' => $products_variant->image
                     );
                     array_push($productsVariantsArray, $productsVariantData);
                     array_push($sizes, $products_variant->size);
