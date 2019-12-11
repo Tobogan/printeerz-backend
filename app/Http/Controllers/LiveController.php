@@ -442,12 +442,12 @@ class LiveController extends Controller
                         'id' => $printzone->id,
                         'title' => $printzone->name,
                         'zone' => $printzone->zone,
-                        'width' => $printzone->width,
-                        'height' => $printzone->height,
-                        'origin_x' => $printzone->origin_x,
-                        'origin_y' => $printzone->origin_y,
-                        'tray_width' => $printzone->tray_width,
-                        'tray_height' => $printzone->tray_height
+                        'width' => $printzone->size['width'],
+                        'height' => $printzone->size['height'],
+                        'origin_x' => $printzone->tray['x'],
+                        'origin_y' => $printzone->tray['y'],
+                        'tray_width' => $printzone->tray['width'],
+                        'tray_height' => $printzone->tray['height']
                     );
                     array_push($printzonesArray, $printzoneData);
             }
@@ -463,18 +463,13 @@ class LiveController extends Controller
                 $zone = Printzones::find($events_custom->printzone_id);
                 $events_customs_reformed = array(
                     'id' => $events_custom->id,
-                    'events_product_id' => $events_product->id,
+                    'product_id' => $events_product->product_id,
                     'title' => $events_custom->title,
-                    'template_title' => $events_custom->template_title,
-                    'printzone_id' => $events_custom->printzone_id,
-                    'printzone_title' => $printzone->name,
+                    'templates' => [
+                        'id' => $events_custom->template_id,
+                        'title' => $events_custom->template_title
+                    ],
                     'zone' => $printzone->zone,
-                    'printzone_width' => $printzone->width,
-                    'printzone_height' => $printzone->height,
-                    'printzone_origin_x' => $printzone->origin_x,
-                    'printzone_origin_y' => $printzone->origin_y,
-                    'printzone_tray_width' => $printzone->tray_width,
-                    'printzone_tray_height' => $printzone->tray_height,
                     'image' => $events_custom->imageUrl,
                     'components' => $events_customsArray
                 );
@@ -486,11 +481,10 @@ class LiveController extends Controller
                 $products_variant = Products_variants::find($variant['products_variant_id']);
                 if ($products_variant !== null) {
                     $productsVariantData = array(
+                        'id' => $products_variant->id,
                         'size' => $products_variant->size,
                         'color' => $products_variant->color,
-                        'image' => $products_variant->image,
                         'quantity' => $variant['quantity'],
-                        'printzones' => $products_variant->printzones
                     );
                     array_push($productsVariantsArray, $productsVariantData);
                     array_push($sizes, $products_variant->size);
@@ -499,8 +493,8 @@ class LiveController extends Controller
             // Final JSON
             $eventLocalDownloadProduct = array(
                 'id' => $events_product->id,
+                'original_product_id' => $events_product->product_id,
                 'title' => $events_product->title,
-                'image' => $product->image,
                 'gender' => $product->gender,
                 'type' => $product->product_type,
                 'printzones' => $printzonesArray,
