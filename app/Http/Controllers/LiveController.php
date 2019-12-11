@@ -402,26 +402,6 @@ class LiveController extends Controller
         $customer = Customer::find($event->customer_id);
         $events_products = Events_products::where('event_id','=',$event->id)->get();
         $events_customs = Events_customs::where('event_id','=',$event->id)->get();
-        // Mains Data
-        // $event_local_download->title = $event->title;
-        // $event_local_download->status = $event->status;
-        // $event_local_download->eventId = $event->id;
-        // $event_local_download->startDate = $event->start_datetime;
-        // $event_local_download->endDate = $event->end_datetime;
-        // $event_local_download->coverUrl = $event->coverUrl;
-        // $event_local_download->coverThumbUrl = $event->coverThumbUrl;
-        // $event_local_download->logoUrl = $event->logoUrl;
-        // $event_local_download->advertiser = $event->advertiser;
-        // $event_local_download->description = $event->description;
-
-        // $event_local_download->customer = array(
-        //     'title' => $customer->title,
-        //     'contact' => array(
-        //         'fullname' => $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"],
-        //         'phone' => $customer->contact_person["phone"]
-        //     ),
-        // );
-        // $event_local_download->productsCount = count($events_products);
         // Instance empty array for loop
         $productsVariantsArray = array();
         $printzonesArray = array();
@@ -438,18 +418,18 @@ class LiveController extends Controller
             $product = Product::find($events_product->product_id);
             foreach ($product->printzones_id as $printzone_id) {
                 $printzone = Printzones::find($printzone_id);
-                    $printzoneData = array(
-                        'id' => $printzone->id,
-                        'title' => $printzone->name,
-                        'zone' => $printzone->zone,
-                        'width' => $printzone->size['width'],
-                        'height' => $printzone->size['height'],
-                        'origin_x' => $printzone->tray['x'],
-                        'origin_y' => $printzone->tray['y'],
-                        'tray_width' => $printzone->tray['width'],
-                        'tray_height' => $printzone->tray['height']
-                    );
-                    array_push($printzonesArray, $printzoneData);
+                    // $printzoneData = array(
+                    //     'id' => $printzone->id,
+                    //     'title' => $printzone->name,
+                    //     'zone' => $printzone->zone,
+                    //     'width' => $printzone->size['width'],
+                    //     'height' => $printzone->size['height'],
+                    //     'origin_x' => $printzone->tray['x'],
+                    //     'origin_y' => $printzone->tray['y'],
+                    //     'tray_width' => $printzone->tray['width'],
+                    //     'tray_height' => $printzone->tray['height']
+                    // );
+                    array_push($printzonesArray, $printzone);
             }
             // Events customs
             foreach ($events_product->event_customs_ids as $events_custom_id) {
@@ -504,19 +484,6 @@ class LiveController extends Controller
             );
         array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
         }
-        // $event_local_download->products = $eventLocalDownloadProducts;
-        // the event is now ready
-        // $event_local_download->title = $event->title;
-        // $event_local_download->status = $event->status;
-        // $event_local_download->eventId = $event->id;
-        // $event_local_download->startDate = $event->start_datetime;
-        // $event_local_download->endDate = $event->end_datetime;
-        // $event_local_download->coverUrl = $event->coverUrl;
-        // $event_local_download->coverThumbUrl = $event->coverThumbUrl;
-        // $event_local_download->logoUrl = $event->logoUrl;
-        // $event_local_download->advertiser = $event->advertiser;
-        // $event_local_download->description = $event->description;
-
         $global_event = [
             'event_id' => $event->id,
             'title' => $event->title,
@@ -558,15 +525,7 @@ class LiveController extends Controller
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at
         ];
-        // $event->status = "ready";
-        // $locals = Event_local_download::where('eventId','=',$event->id)->get();
-        // foreach ($locals as $local) {
-        //     $local->delete();
-        // }
-        // $event->update();
-        // $event_local_download->save();
-        // $event->event_local_download_id = $event_local_download->id;
-        // $event->update();
+
         return response()->json($global_event);
     }
 
