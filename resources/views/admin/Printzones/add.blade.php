@@ -22,7 +22,11 @@
                     </div>
                 </div>
             </div>
-            {!! Form::open(['action' => array('PrintzonesController@store'), 'files' => true, 'class' => 'mb-4']) !!}
+            {!! Form::open([
+            'action' => array('PrintzonesController@store'),
+            'files' => true,
+            'class' => 'mb-4'
+            ]) !!}
             {{csrf_field()}}
             <div class="row">
                 <div class="col-12">
@@ -37,9 +41,10 @@
                                         {!! Form::text('name', null, [
                                         'class' => 'form-control'. $errors->first('name','is-invalid'),
                                         'placeholder' => 'Nom de la zone'
-                                        ])!!}
-                                        @if($errors->has('name'))<div class="invalid-feedback">Veuillez renseigner ce
-                                            champ</div>@endif
+                                        ]) !!}
+                                        @if($errors->has('name'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label>
@@ -48,9 +53,10 @@
                                         {!! Form::text('zone', null, [
                                         'class' => 'form-control'. $errors->first('zone','is-invalid'),
                                         'placeholder' => 'Zone'
-                                        ])!!}
-                                        @if($errors->has('zone'))<div class="invalid-feedback">Veuillez renseigner ce
-                                            champ</div>@endif
+                                        ]) !!}
+                                        @if($errors->has('zone'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -121,9 +127,9 @@
                                         'form-control'.$errors->first('width', ' is-invalid'),
                                         'placeholder' =>'250'
                                         ]) !!}
-                                        @if($errors->has('size_width'))<div class="invalid-feedback">Veuillez renseigner
-                                            ce
-                                            champ</div>@endif
+                                        @if ($errors->has('size_width'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -133,11 +139,11 @@
                                         </label>
                                         {!! Form::number('size_height', null, [
                                         'class' => 'form-control'.$errors->first('height', ' is-invalid'),
-                                        'placeholder' =>'250'])
-                                        !!}
-                                        @if($errors->has('size_height'))<div class="invalid-feedback">Veuillez
-                                            renseigner ce
-                                            champ</div>@endif
+                                        'placeholder' =>'250'
+                                        ]) !!}
+                                        @if ($errors->has('size_height'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -197,13 +203,14 @@
                                         <label>
                                             Position X
                                         </label>
-                                        {!! Form::number('position_x', null, ['class' =>
-                                        'form-control'.$errors->first('position_x', ' is-invalid'),
-                                        'placeholder' =>'0.5', 'step' => 'any'
+                                        {!! Form::number('position_x', null, [
+                                        'class' => 'form-control'.$errors->first('position_x', ' is-invalid'),
+                                        'placeholder' =>'0.5',
+                                        'step' => 'any'
                                         ]) !!}
-                                        @if($errors->has('position_x'))<div class="invalid-feedback">Veuillez renseigner
-                                            ce
-                                            champ</div>@endif
+                                        @if($errors->has('position_x'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
@@ -213,8 +220,8 @@
                                         </label>
                                         {!! Form::number('position_y', null, [
                                         'class' => 'form-control'.$errors->first('position_y', ' is-invalid'),
-                                        'placeholder' =>'0.5', 'step' => 'any'])
-                                        !!}
+                                        'placeholder' =>'0.5', 'step' => 'any'
+                                        ]) !!}
                                         @if($errors->has('position_y'))<div class="invalid-feedback">Veuillez renseigner
                                             ce
                                             champ</div>@endif
@@ -227,10 +234,12 @@
                                         </label>
                                         {!! Form::number('ratio', null, [
                                         'class' => 'form-control'.$errors->first('ratio', ' is-invalid'),
-                                        'placeholder' =>'0.5', 'step' => 'any'])
-                                        !!}
-                                        @if($errors->has('ratio'))<div class="invalid-feedback">Veuillez renseigner ce
-                                            champ</div>@endif
+                                        'placeholder' =>'0.5',
+                                        'step' => 'any'
+                                        ]) !!}
+                                        @if($errors->has('ratio'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +305,9 @@
                     </div>
                 </div>
             </div>
-            {!! Form::hidden('is_active', 'true', [ 'id'=>'formActive']) !!}
+            {!! Form::hidden('is_active', 'true', [
+            'id'=>'formActive'
+            ]) !!}
             {!! Form::hidden('is_deleted', "false") !!}
             <div class="row">
                 <div class="col-12">

@@ -145,7 +145,7 @@ $(document).ready(function () {
                 } else {
                     title = $('#title').val('');
                     description = $('#description').val('');
-                    console.log(msg.events_product);
+                    console.log(msg.products);
                     $(this).removeClass('btn-primary');
                     $(this).addClass('btn-success');
                     $('#addEventsProductModal').modal('hide');

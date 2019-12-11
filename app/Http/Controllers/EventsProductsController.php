@@ -93,17 +93,17 @@ class EventsProductsController extends Controller
                 foreach ($product->printzones_id as $printzone_id) {
                     $printzone = Printzones::find($printzone_id);
                     if ($printzone) {
-                        $printzoneData = array(
-                            'title' => $printzone->name,
-                            'zone' => $printzone->zone,
-                            'width' => $printzone->width,
-                            'height' => $printzone->height,
-                            'origin_x' => $printzone->origin_x,
-                            'origin_y' => $printzone->origin_y,
-                            'tray_width' => $printzone->tray_width,
-                            'tray_height' => $printzone->tray_height
-                        );
-                        array_push($printzones, $printzoneData);
+                        // $printzoneData = array(
+                        //     'title' => $printzone->name,
+                        //     'zone' => $printzone->zone,
+                        //     'width' => $printzone->width,
+                        //     'height' => $printzone->height,
+                        //     'origin_x' => $printzone->origin_x,
+                        //     'origin_y' => $printzone->origin_y,
+                        //     'tray_width' => $printzone->tray_width,
+                        //     'tray_height' => $printzone->tray_height
+                        // );
+                        array_push($printzones, $printzone);
                     }
                 }
                 $productData = array(
@@ -127,7 +127,8 @@ class EventsProductsController extends Controller
                 $event->update();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'EventsProduct created successfully'
+                    'msg' => 'EventsProduct created successfully',
+                    'products' => $printzone
                 );
                 return response()->json($response);
             }
