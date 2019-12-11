@@ -485,7 +485,7 @@ class LiveController extends Controller
         array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
         }
         $global_event = [
-            'event_id' => $event->id,
+            '_id' => $event->id,
             'title' => $event->title,
             'advertiser' => $event->advertiser,
             'customer_id' => $customer->id,
