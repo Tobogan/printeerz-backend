@@ -5,16 +5,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
-            <!-- Header -->
             <div class="header">
                 <div class="header-body">
                     <div class="row align-items-center">
                         <div class="col mb-3 ml--3 ml-md--2">
-                            <!-- Pretitle -->
                             <h6 class="header-pretitle">
                                 CONFIGURATION
                             </h6>
-                            <!-- Title -->
                             <h1 class="header-title">
                                 Configurer une personnalisation
                             </h1>
@@ -31,35 +28,35 @@
                     </div>
                 </div>
             </div>
-            {{-- Body --}}
-            {!! Form::open(['action' => array('EventsCustomsController@update'), 'files' => true,'class' => 'mb-4', 'id'
-            => 'editEventsCustomForm', 'onsubmit' => 'return checkErrorsEditEventsCustom()']) !!}
+            {!! Form::open([
+            'action' => array('EventsCustomsController@update'),
+            'files' => true,
+            'class' => 'mb-4',
+            'id' => 'editEventsCustomForm',
+            'onsubmit' => 'return checkErrorsEditEventsCustom()'
+            ]) !!}
             {{csrf_field()}}
-            {{-- Custom title --}}
             <div class="row">
                 <div class="col-12">
                     <div class="tab-content" id="myTabContent">
                         @include('admin.EventsCustoms.includes.edit.tab-content')
                     </div>
-                    {{-- Store Event custom event_id --}}
                     <input type="hidden" class="form-control" id="events_custom_event_id" name="events_custom_event_id"
                         value="{{$events_custom->event_id}}">
-                    {{-- Store Event custom id --}}
                     <input type="hidden" class="form-control" name="events_custom_id" value="{{$events_custom->id}}">
-                    {{-- Store Event product id --}}
                     <input type="hidden" class="form-control" name="events_product_id" value="{{$events_product->id}}">
-                    {{-- Store Event product title --}}
                     <input type="hidden" class="form-control" name="actual_title" value="{{$events_custom->title}}">
-                    {{-- Custom actions --}}
-                    {!! Form::hidden('is_active', $events_custom->is_active, [ 'id'=>'formActive']) !!}
+                    {!! Form::hidden('is_active', $events_custom->is_active, [
+                    'id'=>'formActive'
+                    ]) !!}
                     <div class="row">
                         <div class="col-12">
                             <div class="buttons">
-                                {!! Form::submit('Valider', ['class' => 'btn btn-primary', 'style' => 'float:right','id'
-                                => 'submitEditEventsCustom'])
-                                !!}
-                                {{-- <a class='btn btn-secondary' style="float: left"
-                                    href="{{route('show_eventsProducts', $events_product->id)}}">Annuler</a> --}}
+                                {!! Form::submit('Valider', [
+                                'class' => 'btn btn-primary',
+                                'style' => 'float:right',
+                                'id' => 'submitEditEventsCustom'
+                                ]) !!}
                             </div>
                         </div>
                     </div>
@@ -68,9 +65,8 @@
             </div>
         </div>
     </div>
-</div>{{-- /container --}}
+</div>
 @endsection
-{{-- Modals includes --}}
 @include('admin.EventsCustoms.includes.modal_addColor')
 @include('admin.EventsCustoms.includes.modal_addSmode')
 @include('admin.EventsCustoms.includes.modal_addFont')

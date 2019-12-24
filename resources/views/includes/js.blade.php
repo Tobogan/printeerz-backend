@@ -10,6 +10,7 @@
 <script src="{{ asset('libs/list.js/dist/list.min.js') }}"></script>
 <script src="{{ asset('libs/dropzone/dist/min/dropzone.min.js') }}"></script>
 <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('libs/spin/spin.js') }}"></script>
 <script src="{{ asset('libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js') }}"></script>
 <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=s99l58uwetzynq2itxpdyihtsubamlcqjlthxxm6q3wik46o">
 </script>

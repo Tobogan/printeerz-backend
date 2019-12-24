@@ -13,8 +13,16 @@
                     </div>
                     <div class="form-group">
                         <label>Description de la personnalisation</label>
-                        <input id="textDescription" type="textarea" class="description" name="description" rows="3">
-                    </div>
+                        {!! Form::textarea('description', null, [
+                        'id' => 'description',
+                        'class' => 'form-control',
+                        'rows' => 4,
+                        'cols' => 54,
+                        'maxlength' => '750'
+                        ]) !!}
+                        {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;">
+                            <small>:message</small>
+                        </p>') !!} </div>
                 </div>
             </div>
         </div>
@@ -85,22 +93,18 @@ $arrayEventsComponentsIds = array();
  ?>
 @foreach($events_components as $events_component)
 @if($events_component->events_custom_id == $events_custom->id)
-{{-- For every components we put id in an array --}}
 <?php 
-            $i++;
-            array_push($arrayEventsComponentsIds, $events_component->id);
-         ?>
+    $i++;
+    array_push($arrayEventsComponentsIds, $events_component->id);
+?>
 <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$events_component->id}}">
 <input type="hidden" name="{{'comp_type_'.$events_component->id}}" id="{{'comp_type_'.$events_component->id}}"
     value="{{$events_component->type}}">
-{{-- <input type="hidden" name="tp_id" id="tp_id" value="{{$events_component->id}}"> --}}
 <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
 <div class="tab-pane fade show" id="template_component_{{$events_component->id}}" role="tabpanel"
     aria-labelledby="template_component_{{$events_component->id}}-tab">
-    {{-- Store template_composant id --}}
     <div class="row">
         <div class="col-8">
-            {{-- Custom option --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -111,9 +115,10 @@ $arrayEventsComponentsIds = array();
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <!-- Input -->
-                                {!! Form::text('option_title'.$i, $events_component->title, ['class' =>
-                                'form-control','placeholder' => 'Entrer le nom']) !!}
+                                {!! Form::text('option_title'.$i, $events_component->title, [
+                                'class' => 'form-control',
+                                'placeholder' => 'Entrer le nom'
+                                ]) !!}
                             </div>
                             <div class="col-12">
                                 <p class="text-muted">Vous pouvez changer le nom de ce composant pour cette
@@ -136,8 +141,11 @@ $arrayEventsComponentsIds = array();
                                                 <label>
                                                     Largeur (mm)
                                                 </label>
-                                                {!! Form::number('width'.$i, $events_component->width,
-                                                ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
+                                                {!! Form::number('width'.$i, $events_component->width, [
+                                                'class' => 'form-control',
+                                                'placeholder' => '',
+                                                'step' => 'any'
+                                                ]) !!}
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
@@ -145,13 +153,18 @@ $arrayEventsComponentsIds = array();
                                                 <label>
                                                     Hauteur (mm)
                                                 </label>
-                                                {!! Form::number('height'.$i, $events_component->height,
-                                                ['class' => 'form-control', 'placeholder' => '', 'step' => 'any']) !!}
+                                                {!! Form::number('height'.$i, $events_component->height,[
+                                                'class' => 'form-control',
+                                                'placeholder' => '',
+                                                'step' => 'any'
+                                                ]) !!}
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <p class="text-muted">La taille par défault est de
-                                                {{$events_component->width}} x {{$events_component->height}} mm</p>
+                                            <p class="text-muted">
+                                                La taille par défault est de {{$events_component->width}} x
+                                                {{$events_component->height}} mm
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,18 +218,16 @@ $arrayEventsComponentsIds = array();
                                 <div id="{{'newsFonts'.$events_component->id}}">
                                     <input type="hidden" name="{{'fontsList'.$events_component->id.'[]'}}"
                                         id="{{'fontsList'.$events_component->id}}">
-                                    {{-- removed value="Roboto-Black" --}}
                                     <input type="hidden" name="{{'font_urlList'.$events_component->id.'[]'}}"
                                         id="{{'font_urlList'.$events_component->id}}">
-                                    {{-- removed value="/events/Roboto-Black.ttf" --}}
                                     <input type="hidden" name="{{'fontsFileNameList'.$events_component->id.'[]'}}"
-                                        id="{{'fontsFileNameList'.$events_component->id}}"> {{-- font file name --}}
+                                        id="{{'fontsFileNameList'.$events_component->id}}">
                                     <input type="hidden" name="{{'fontsWeightList'.$events_component->id.'[]'}}"
-                                        id="{{'fontsWeightList'.$events_component->id}}"> {{-- font_weight --}}
+                                        id="{{'fontsWeightList'.$events_component->id}}">
                                     <input type="hidden" name="{{'fontsTransformList'.$events_component->id.'[]'}}"
-                                        id="{{'fontsTransformList'.$events_component->id}}"> {{-- font_transform --}}
+                                        id="{{'fontsTransformList'.$events_component->id}}">
                                     <input type="hidden" name="{{'fontsIdsList'.$events_component->id.'[]'}}"
-                                        id="{{'fontsIdsList'.$events_component->id}}"> {{-- font_ids --}}
+                                        id="{{'fontsIdsList'.$events_component->id}}">
                                 </div>
                                 <div id="{{'fontsToDelete'.$events_component->id}}">
                                     <input type="hidden" name="{{'fontsToDeleteList'.$events_component->id.'[]'}}"
@@ -226,11 +237,9 @@ $arrayEventsComponentsIds = array();
                                     <input type="hidden"
                                         name="{{'fontsWeightsToDeleteList'.$events_component->id.'[]'}}"
                                         id="{{'fontsWeightsToDeleteList'.$events_component->id}}">
-                                    {{-- font file name --}}
                                     <input type="hidden"
                                         name="{{'fontsTransformToDeleteList'.$events_component->id.'[]'}}"
                                         id="{{'fontsTransformToDeleteList'.$events_component->id}}">
-                                    {{-- removed value="/events/Roboto-Black.ttf" --}}
                                 </div>
                             </div>
                             <div class="col-12">
@@ -239,7 +248,6 @@ $arrayEventsComponentsIds = array();
                             </div>
                         </div>
                     </div>
-                    {{-- Fonts colors --}}
                     <div class="card">
                         <div class="card-header">
                             <div class="row align-items-center">
@@ -308,7 +316,6 @@ $arrayEventsComponentsIds = array();
                             </div>
                         </div>
                     </div>
-                    {{-- Highlight color --}}
                     <div class="card">
                         <div class="card-header">
                             <div class="row align-items-center">
@@ -440,14 +447,20 @@ $arrayEventsComponentsIds = array();
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="custom-file">
-                                    {!! Form::file('comp_image'.$events_component->id, array('class' => 'form-control
-                                    custom-file-input', 'id' =>'comp_image'.$events_component->id)) !!}
-                                    <label class="custom-file-label" for="photo_profile">Ajoutez l'image</label>
+                                    {!! Form::file('comp_image'.$events_component->id, [
+                                    'class' => 'form-control custom-file-input',
+                                    'id' =>'comp_image'.$events_component->id
+                                    ]) !!}
+                                    <label class="custom-file-label" for="photo_profile">
+                                        Ajoutez l'image
+                                    </label>
                                 </div>
                             </div>
 
                             <div class="col-12">
-                                <p class="text-muted">Ajoutez ici l'image correspondant à ce composant.</p>
+                                <p class="text-muted">
+                                    Ajoutez ici l'image correspondant à ce composant.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -468,36 +481,43 @@ $arrayEventsComponentsIds = array();
             @if($events_component->type == 'input')
             <div class="card">
                 <div class="card-header">
-                    <b>Nombre de caractères</b>
+                    <b>
+                        Nombre de caractères
+                    </b>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Minimum</label>
-                                {!! Form::number('min'.$i, $events_component->input_min,['class' =>
-                                'form-control', 'placeholder' => '1']) !!}
+                                {!! Form::number('min'.$i, $events_component->input_min,[
+                                'class' => 'form-control',
+                                'placeholder' => '1'
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Maximum</label>
-                                {!! Form::number('max'.$i, $events_component->input_max,['class' =>
-                                'form-control', 'placeholder' => '99']) !!}
+                                {!! Form::number('max'.$i, $events_component->input_max,[
+                                'class' => 'form-control',
+                                'placeholder' => '99'
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Texte par défaut</label>
-                                {!! Form::text('default_text'.$i, $events_component->default_text,['class' =>
-                                'form-control', 'placeholder' => 'Votre texte']) !!}
+                                {!! Form::text('default_text'.$i, $events_component->default_text,[
+                                'class' => 'form-control',
+                                'placeholder' => 'Votre texte'
+                                ]) !!}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @endif
-            {{-- Custom position --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -513,8 +533,11 @@ $arrayEventsComponentsIds = array();
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('origin_x'.$i, $events_component->origin_x, ['class' =>
-                                        'form-control', 'placeholder' =>'0', 'step' => 'any']) !!}
+                                        {!! Form::number('origin_x'.$i, $events_component->origin_x, [
+                                        'class' => 'form-control',
+                                        'placeholder' =>'0',
+                                        'step' => 'any'
+                                        ]) !!}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -522,8 +545,11 @@ $arrayEventsComponentsIds = array();
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('origin_y'.$i, $events_component->origin_y, ['class' =>
-                                        'form-control', 'placeholder' => '0', 'step' => 'any']) !!}
+                                        {!! Form::number('origin_y'.$i, $events_component->origin_y, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0',
+                                        'step' => 'any'
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -531,7 +557,6 @@ $arrayEventsComponentsIds = array();
                     </div>
                 </div>
             </div>
-            {{-- Group --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -547,8 +572,11 @@ $arrayEventsComponentsIds = array();
                                         <label>
                                             Numéro du groupe
                                         </label>
-                                        {!! Form::number('group'.$i, $events_component->group, ['class' =>
-                                        'form-control', 'placeholder' => '1', 'step' => 'any']) !!}
+                                        {!! Form::number('group'.$i, $events_component->group, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '1',
+                                        'step' => 'any'
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -557,7 +585,6 @@ $arrayEventsComponentsIds = array();
                 </div>
             </div>
             @if($events_component->type == 'input')
-            {{-- First letter --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -570,8 +597,10 @@ $arrayEventsComponentsIds = array();
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        {!! Form::text('font_first_letter'.$i, null, ['class' => 'form-control',
-                                        'placeholder' => '#']) !!}
+                                        {!! Form::text('font_first_letter'.$i, null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '#'
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -579,44 +608,6 @@ $arrayEventsComponentsIds = array();
                     </div>
                 </div>
             </div>
-            {{-- SMODE --}}
-            {{-- <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                SMODE
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>
-                                        Code hexa couleur de texte
-                                    </label>
-                                    <div class="form-group">
-                                        {!! Form::text('smode_text_color_hex'.$i, null, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        '000000']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>
-                                        Code hexa couleur background
-                                    </label>
-                                    <div class="form-group">
-                                        {!! Form::text('smode_bg_color_hex'.$i, null, ['class' => 'form-control',
-                                        'placeholder' =>
-                                        '000000']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
             @endif
         </div>
     </div>

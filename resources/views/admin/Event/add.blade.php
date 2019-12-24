@@ -24,6 +24,7 @@
     </div>
   </div>
 </div>
+
 {!! Form::open([
 'action' => 'EventController@store',
 'files' => true
@@ -63,7 +64,6 @@
             'data-toggle' => 'select'
             ]) !!}
           </div>
-          <!-- Advertiser -->
           <div class="form-group">
             <label class="mb-1">
               Annonceur
@@ -82,7 +82,6 @@
 
           <div class="row">
             <div class="col-12 col-md-6">
-              <!-- Date -->
               <div class="form-group">
                 <label>
                   Date de début
@@ -101,7 +100,6 @@
             </div>
 
             <div class="col-12 col-md-6">
-              <!-- Lieu -->
               <div class="form-group">
                 <label>
                   Date de fin
@@ -122,7 +120,6 @@
 
           <div class="row">
             <div class="col-12 col-md-6">
-              <!-- heure de début-->
               <div class="form-group">
                 <label>
                   Heure de début
@@ -136,7 +133,6 @@
             </div>
 
             <div class="col-12 col-md-6">
-              <!-- Heure de fin -->
               <div class="form-group">
                 <label>
                   Heure de fin
@@ -149,8 +145,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Lieu -->
           <div class="form-group">
             <label class="mb-1">
               Lieu de l'événement
@@ -193,8 +187,9 @@
             <div class="card-header">
               <h4 class="card-header-title mt-2">
                 Participants
-                <small class="form-text text-muted my-2">Sélectionnez les participants et utilisateurs
-                  autorisées.</small>
+                <small class="form-text text-muted my-2">
+                  Sélectionnez les participants et utilisateurs autorisées.
+                </small>
               </h4>
             </div>
             <div class="card-body">
@@ -236,7 +231,7 @@
               </div>
               <div class="form-group">
                 <label class="mb-1">
-                  Cover de l'événement
+                  Photo de couverture de l'événement
                 </label>
                 <small class="form-text text-muted">
                   Utilisez une image au format 1:1 avec une taille 400x400 (format: jpeg,jpg,png | max: 4mo).
@@ -272,9 +267,11 @@
             <div class="card-header">
               <h4 class="card-header-title mt-2">
                 Description de l'événement
-                <p><small class="form-text text-muted">
+                <p>
+                  <small class="form-text text-muted">
                     Vous pouvez décrire l'événement (max: 750 caractères)
-                  </small></p>
+                  </small>
+                </p>
               </h4>
             </div>
             <div class="card-body">
@@ -303,9 +300,4 @@
     </div>
   </div>
 </div>
-@endsection
-
-@section('javascripts')
-<script type="text/Javascript">
-</script>
 @endsection

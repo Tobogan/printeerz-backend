@@ -38,8 +38,7 @@
                                 {!! Form::text('title', $template_component->title, [
                                 'class' => 'form-control',
                                 'placeholder' => 'Nom'
-                                ])
-                                !!}
+                                ]) !!}
                                 @if($errors->has('title'))<div class="invalid-feedback">Veuillez renseigner le nom du
                                     composant</div>@endif
                             </div>
@@ -51,8 +50,7 @@
                                 'class' => 'form-control text-muted b-2',
                                 'placeholder' => 'Type',
                                 'disabled' => ''
-                                ])
-                                !!}
+                                ]) !!}
                                 {!! $errors->first('type', '<p class="help-block mt-2" style="color:red;">
                                     <small>:message</small></p>') !!}
                             </div>

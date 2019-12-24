@@ -496,16 +496,16 @@ class LiveController extends Controller
             ],
             'images' => [
                 'cover' => [
-                    'url' => $event->coverUrl,
-                    'thumb_url' => $event->coverThumbUrl
+                    'url' => $event->images['cover']['url'],
+                    'thumb_url' => $event->images['cover']['thumb_url']
                 ],
                 'logo' => [
-                    'url' => $event->logoUrl
+                    'url' => $event->images['logo']['url']
                 ]
             ],
             'files' => [
                 'bat' => [
-                    'url' => $event->BATUrl
+                    'url' => $event->files['bat']['url']
                 ]
             ],
             'products' => $eventLocalDownloadProducts,
@@ -555,7 +555,6 @@ class LiveController extends Controller
                             $customOrder->font  = $order['fonts'];
                             $customOrder->fontColor  = $order['fontColors'];
                             $customOrder->save();
-                            // Change event status to DONE
                             $event = Event::find($order['eventId']);
                             $event->status = 'done';
                             $event->update();

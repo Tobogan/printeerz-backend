@@ -25,7 +25,12 @@
                     </div>
                 </div>
             </div>
-            {!! Form::open(['action' => array('EventsProductsController@update'), 'id' => $events_product->id, 'files' => true, 'class' => 'mb-4']) !!}
+            {!! Form::open([
+            'action' => array('EventsProductsController@update'),
+            'id' => $events_product->id,
+            'files' => true,
+            'class' => 'mb-4'
+            ]) !!}
             <div class="row">
                 {{csrf_field()}}
                 <div class="col-12">
@@ -33,30 +38,29 @@
                         <label>
                             Nom du produit
                         </label>
-                        <!-- Input -->
-                        {!! Form::text('title', $events_product->title, ['class' => 'form-control', 'placeholder' => 'Nom du produit'])
-                        !!}
+                        {!! Form::text('title', $events_product->title, [
+                        'class' => 'form-control',
+                        'placeholder' => 'Nom du produit'
+                        ]) !!}
                     </div>
                 </div>
                 <div class="col-12">
-                        <!-- First name -->
-                        <div class="form-group">
-                            <!-- Label -->
-                            <label>
-                                Type de produit
-                            </label>
-                            <!-- Input -->
-                            {{ Form::select('product_id', $select_products, $events_product->product_id, array('id' => 'addEventProductSelect', 'data-toggle' => 'select')) }}
-                        </div>
+                    <div class="form-group">
+                        <label>
+                            Type de produit
+                        </label>
+                        {{ Form::select('product_id', $select_products, $events_product->product_id, [
+                            'id' => 'addEventProductSelect', 
+                            'data-toggle' => 'select'
+                            ]) }}
                     </div>
-                    <hr class="mt-4 mb-5">
+                </div>
+                <hr class="mt-4 mb-5">
                 <div class="col-12">
                     <div class="form-group">
-                        <!-- Label -->
                         <label>
                             Description
                         </label>
-                        <!-- Input -->
                         <div class="form-group">
                             <input type="textarea" id="textDescription" name="product_description" rows="3">
                         </div>
@@ -68,8 +72,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="buttons">
-                        {!! Form::submit('Modifier le produit', ['class' => 'btn btn-primary', 'style' => 'float: right'])
-                        !!}
+                        {!! Form::submit('Modifier le produit', [
+                        'class' => 'btn btn-primary',
+                        'style' => 'float:right'
+                        ]) !!}
                         <a class='btn btn-secondary' style="float: left" href="{{route('index_event')}}">Annuler</a>
                     </div>
                 </div>

@@ -89,37 +89,27 @@ class EventsProductsController extends Controller
                 $event = Event::find($events_product->event_id);
                 $product = Product::find($request->product_id);
                 // Here I push all product printzone in an empty array
-                $printzones = array();
-                foreach ($product->printzones_id as $printzone_id) {
-                    $printzone = Printzones::find($printzone_id);
-                    if ($printzone) {
-                        // $printzoneData = array(
-                        //     'title' => $printzone->name,
-                        //     'zone' => $printzone->zone,
-                        //     'width' => $printzone->width,
-                        //     'height' => $printzone->height,
-                        //     'origin_x' => $printzone->origin_x,
-                        //     'origin_y' => $printzone->origin_y,
-                        //     'tray_width' => $printzone->tray_width,
-                        //     'tray_height' => $printzone->tray_height
-                        // );
-                        array_push($printzones, $printzone);
-                    }
-                }
-                $productData = array(
-                        'id' => $product->id,
-                        'events_product_id' => $events_product->id,
-                        'title' => $product->title,
-                        'gender' => $product->gender,
-                        'type' => $product->product_type,
-                        'printzones' => $printzones,
-                        'product_variants' => array()
-                    );
-                if (!isset($event->products[0])) 
-                $products = array();
-                else $products = $event->products;
-                array_push($products, $productData);
-                $event->products = $products;
+                // $printzones = array();
+                // foreach ($product->printzones_id as $printzone_id) {
+                //     $printzone = Printzones::find($printzone_id);
+                //     if ($printzone) {
+                //         array_push($printzones, $printzone);
+                //     }
+                // }
+                // $productData = array(
+                //         'id' => $product->id,
+                //         'events_product_id' => $events_product->id,
+                //         'title' => $product->title,
+                //         'gender' => $product->gender,
+                //         'type' => $product->product_type,
+                //         'printzones' => $printzones,
+                //         'product_variants' => array()
+                //     );
+                // if (!isset($event->products[0])) 
+                // $products = array();
+                // else $products = $event->products;
+                // array_push($products, $productData);
+                // $event->products = $products;
                 $arr_events_product = $event->event_products_id;
                 array_push($arr_events_product, $events_product->id);
                 $event->event_products_id = array_filter($arr_events_product);
@@ -127,8 +117,7 @@ class EventsProductsController extends Controller
                 $event->update();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'EventsProduct created successfully',
-                    'products' => $printzone
+                    'msg' => 'EventsProduct created successfully'
                 );
                 return response()->json($response);
             }
@@ -173,19 +162,18 @@ class EventsProductsController extends Controller
                     $events_product->variants = $array;
                     $events_product->save();
                     $event = Event::find($events_product->event_id);
-                    $products = $event->products;
-                    foreach ($products as &$product) {
-                        if ($product['events_product_id'] == $request->events_product_id) {
-                            array_push($product['product_variants'], $variant);
-                        }
-                    }
-                    $event->products = $products;
+                    // $products = $event->products;
+                    // foreach ($products as &$product) {
+                    //     if ($product['events_product_id'] == $request->events_product_id) {
+                    //         array_push($product['product_variants'], $variant);
+                    //     }
+                    // }
+                    // $event->products = $products;
                     $event->status = "draft";
                     $event->update();
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'EventsProduct created successfully',
-                        'products' => $products
+                        'msg' => 'EventsProduct created successfully'
                     );
                     return response()->json($response);
                 }
@@ -223,16 +211,16 @@ class EventsProductsController extends Controller
         $arr = $result;
         $events_product->variants = $arr;
         
-        $event = Event::find($events_product->event_id);
-        $products = $event->products;
-        foreach ($products as &$product) {
-            if ($product['events_product_id'] == $id) {
-                $product['product_variants'] = $events_product->variants;
-            }
-        }
-        $event->products = $products;
+        // $event = Event::find($events_product->event_id);
+        // $products = $event->products;
+        // foreach ($products as &$product) {
+        //     if ($product['events_product_id'] == $id) {
+        //         $product['product_variants'] = $events_product->variants;
+        //     }
+        // }
+        // $event->products = $products;
         $events_product->save();
-        $event->update();
+        // $event->update();
         return redirect('admin/EventsProducts/show/'.$events_product->id);
     }
 

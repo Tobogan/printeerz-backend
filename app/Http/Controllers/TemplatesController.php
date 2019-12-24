@@ -106,39 +106,25 @@ class TemplatesController extends Controller
         $template->is_deleted = $request->is_deleted;
         $template->save();
         if ($request->hasFile('thumb')){
-            // Get file
             $file = $request->file('thumb');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/templates/'.$template->id.'/'.$name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $template->thumb_img = $filePath;
         }
         if ($request->hasFile('full')){
-            // Get file
             $file = $request->file('full');
-            // Create name
             $name = time() . $file->getClientOriginalName();
-            // Define the path
             $filePath = '/templates/'.$template->id.'/'.$name;
-            // Resize img
             $img = Image::make(file_get_contents($file))->save($name);
-            // Upload the file
             $disk->put($filePath, $img, 'public');
-            // Delete public copy
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // Put in database
             $template->full_img = $filePath;
         }
         $template->save();
