@@ -135,7 +135,7 @@ class EventController extends Controller
         $event->end_time = $request->end_time;
         $event->start_datetime = $request->start_datetime;
         $event->end_datetime = $request->end_datetime;
-        $event->event_products_id = array();
+        $event->event_products_id   = array();
         $event->products = array();
         $event->location = array(
             'address' => $request->address,
@@ -147,7 +147,6 @@ class EventController extends Controller
         );
         $event->type = $request->type;
         $event->description = $request->description;
-        $event->event_products_id = array();
         $event->user_ids = $request->get('employees');
         $event->save();
         $disk = Storage::disk('s3');
@@ -160,9 +159,6 @@ class EventController extends Controller
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // $event->logoUrl = $filePath;
-            // $event->logoFileName = $name;
-            // $event->logoPath = '/events/' . $event->id . '/';
             $logo = [
                 'url' => $filePath
             ];
@@ -176,9 +172,6 @@ class EventController extends Controller
             });
             $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
             $disk->put($thumbFilePath, $image, 'public');
-            // $event->coverThumbUrl = $thumbFilePath;
-            // $event->coverThumbFileName = $name;
-            // $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
@@ -189,9 +182,6 @@ class EventController extends Controller
             $image = Image::make(file_get_contents($file));
             $image->resize(1080, 1920)->save($name);
             $filePath = '/events/' . $event->id . '/covers/'.$name;
-            // $event->coverUrl = $filePath;
-            // $event->coverFileName = $name;
-            // $event->coverPath = '/events/' . $event->id . '/covers/';
             $cover = [
                 'url' => $filePath,
                 'thumb_url' => $thumbFilePath
@@ -209,17 +199,25 @@ class EventController extends Controller
             $bat = [
                 'url' => $filePath
             ];
-            // $event->BATUrl = $filePath;
-            // $event->BATFileName = $name;
-            // $event->BATPath = '/events/' . $event->id . '/';
         }
-        $event->images = [
-            'cover' => $cover,
-            'logo' => $logo
-        ];
-        $event->files = [
-            'bat' => $bat
-        ];
+        if (isset($cover) && isset($logo)) {
+            $event->images = [
+                'cover' => $cover,
+                'logo' => $logo
+            ];
+        }
+        elseif (isset($cover) && !isset($logo)) {
+            $event->images = [
+                'cover' => $cover,
+                'logo' => $event->images['logo']['url']
+            ];
+        }
+        elseif (!isset($cover) && isset($logo)) {
+            $event->images = [
+                'cover' => $event->images['cover']['url'],
+                'logo' => $logo
+            ];
+        }
         $event->save();
         // here I push the id in the corresponding customer
         $customer = Customer::find($event->customer_id);
@@ -345,8 +343,7 @@ class EventController extends Controller
                 'start_time' => 'required',
                 'description' => 'nullable|string|max:2750'
             ]);
-            $id = $request->id;
-            $event = Event::find($id);
+            $event = Event::find($request->id);
             if (request('actual_customer_id') !== request('customer_id')) {
                 // delete event id in the customer data
                 $customer = Customer::find($event->customer_id);
@@ -380,35 +377,29 @@ class EventController extends Controller
             $event->end_time = $request->end_time;
             $event->type = $request->type;
             $event->description = $request->description;
-            $event->event_products_id=$request->get('event_products_id');
+            // $event->event_products_id = $request->get('event_products_id');
             $event->user_ids=$request->get('employees');
             // Update logo image
            if ($request->hasFile('logo_img')){
                 $disk = Storage::disk('s3');
-                $oldPath = $event->logoUrl;
                 $file = $request->file('logo_img');
                 $name = time() . $file->getClientOriginalName();
                 $newFilePath = '/events/' . $event->id . '/'. $name;
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 $disk->put($newFilePath, $img, 'public');
-                // $event->logoUrl = $newFilePath;
-                // $event->logoFileName = $name;
                 $logo = [
                     'url' => $newFilePath
                 ];
-                $event->logoPath = '/events/' . $event->id . '/';
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
                 if(!empty($event->logo ) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                    $disk->delete($event->logoUrl);
                 }
            }
             // Update Cover image
            if ($request->hasFile('cover_img')) {
                 $disk = Storage::disk('s3');
-                $thumbOldPath = $event->coverThumbUrl;
-                $oldPath = $event->coverUrl;
                 $file = $request->file('cover_img');
                 $name = time() . $file->getClientOriginalName();
                 $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
@@ -421,68 +412,66 @@ class EventController extends Controller
                 $image->resize(512, 786);
                 $disk->put($filePath, $image, 'public');
                 $cover = [
-                    'cover' => [
-                        'url' => $filePath,
-                        'thumb_url' => $thumbFilePath
-                    ]
+                    'url' => $filePath,
+                    'thumb_url' => $thumbFilePath
                 ];
-                // $event->coverThumbUrl = $thumbFilePath;
-                // $event->coverUrl = $filePath;
-                // $event->coverFileName = $name;
-                // $event->coverThumbFileName = $name;
-                // $event->coverThumbPath = '/events/' . $event->id . '/covers/thumb/';
-                // $event->coverFrontPath = '/events/' . $event->id . '/covers/original/';
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
                 if (isset($event->coverThumbUrl)) {
                     if(!empty($event->coverThumbUrl) && $disk->exists($thumbFilePath)){
-                        $disk->delete($thumbOldPath);
+                        $disk->delete($event->coverThumbUrl);
                     }
                 }
                 if (isset($event->coverUrl)) {
-                    if(!empty($event->coverUrl) && $disk->exists($newFilePath)){
-                        $disk->delete($oldPath);
+                    if(!empty($event->coverUrl) && $disk->exists($event->coverUrl)){
+                        $disk->delete($event->coverUrl);
                     }
                 }
            }
             if ($request->hasFile('BAT')){
                 $disk = Storage::disk('s3');
-                $oldPath = $event->BATUrl;
                 $file = $request->file('BAT');
                 $name = time() . $file->getClientOriginalName();
                 $newFilePath = '/events/' . $event->id . '/'. $name;
                 $disk->put($newFilePath, file_get_contents($file), 'public');
-                $bat = [
+                $event->files = [
                     'bat' => [
                         'url' => $newFilePath
                     ]
                 ];
-                // $event->BATUrl = $newFilePath;
-                // $event->BATFileName = $name;
-                // $event->BATPath = '/events/' . $event->id . '/';
                 if(!empty($event->BAT) && $disk->exists($newFilePath)){
-                    $disk->delete($oldPath);
+                    $disk->delete($event->BATUrl);
                 }
             }
         }
-        $event->images = [
-            'cover' => $cover,
-            'logo' => $logo
-        ];
-        $event->files = [
-            'bat' => $bat
-        ];
+        if (isset($cover) && isset($logo)) {
+            $event->images = [
+                'cover' => $cover,
+                'logo' => $logo
+            ];
+        }
+        elseif (isset($cover) && !isset($logo)) {
+            $event->images = [
+                'cover' => $cover,
+                'logo' => $event->images['logo']['url']
+            ];
+        }
+        elseif (!isset($cover) && isset($logo)) {
+            $event->images = [
+                'cover' => $event->images['cover']['url'],
+                'logo' => $logo
+            ];
+        }
         $event_local_download = Event_local_download::where('eventId','=',$event->id);
         if ($event_local_download) {
             $event_local_download->delete();
         }
         $event->update();
-        // Event to is not ready after an update
         $notification = array(
             'status' => 'L\'événement a été correctement modifié.',
             'alert-type' => 'success'
-            );
+        );
         return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 
