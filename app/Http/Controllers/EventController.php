@@ -206,7 +206,10 @@ class EventController extends Controller
         }
         elseif (!isset($cover) && isset($logo)) {
             $event->images = [
-                'cover' => $event->images['cover']['url'],
+                'cover' => [
+                    'url' => $event->images['cover']['url'],
+                    'thumb_url' => $event->images['cover']['thumb_url']
+                ],
                 'logo' => $logo
             ];
         }
@@ -409,14 +412,14 @@ class EventController extends Controller
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if (isset($event->coverThumbUrl)) {
-                    if(!empty($event->coverThumbUrl) && $disk->exists($thumbFilePath)){
-                        $disk->delete($event->coverThumbUrl);
+                if (isset($event->images['cover']['thumb_url'])) {
+                    if(!empty($event->images['cover']['thumb_url']) && $disk->exists($event->images['cover']['thumb_url'])){
+                        $disk->delete($event->images['cover']['thumb_url']);
                     }
                 }
-                if (isset($event->coverUrl)) {
-                    if(!empty($event->coverUrl) && $disk->exists($event->coverUrl)){
-                        $disk->delete($event->coverUrl);
+                if (isset($event->images['cover']['url'])) {
+                    if(!empty($event->images['cover']['url']) && $disk->exists($event->images['cover']['url'])){
+                        $disk->delete($event->images['cover']['url']);
                     }
                 }
            }
