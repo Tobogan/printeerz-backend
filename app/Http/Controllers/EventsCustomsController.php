@@ -621,7 +621,7 @@ class EventsCustomsController extends Controller
                                         'align' => $request->{'align' . $tp_id}
                                     ],
                                 ],
-                            );
+                            ];
                             if (!empty($events_custom->components)) {
                                 foreach ($events_custom->components as $comp) {
                                     if ($comp['events_component_id'] == $tp_id) {
