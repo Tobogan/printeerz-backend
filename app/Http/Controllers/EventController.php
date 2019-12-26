@@ -124,7 +124,6 @@ class EventController extends Controller
             'start_datetime'=>'required|date|before_or_equal:end_datetime',
             'description' => 'nullable|string|max:2750'
         ]);
-
         $event = new Event;
         $event->created_by = Auth::user()->username;
         $event->title = $request->name;
@@ -163,41 +162,34 @@ class EventController extends Controller
                 'url' => $filePath
             ];
         }
+
         if ($request->hasFile('cover_img')) {
+            $disk = Storage::disk('s3');
             $file = $request->file('cover_img');
-            $name = $file->getClientOriginalName();
-            $image = Image::make(file_get_contents($file));
-            $image->resize(512, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $name = time() . $file->getClientOriginalName();
             $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
-            $disk->put($thumbFilePath, $image, 'public');
-            if (file_exists(public_path() . '/' . $name)) {
-                unlink(public_path() . '/' . $name);
-            }
-        }
-        if ($request->hasFile('cover_img')) {
-            $file = $request->file('cover_img');
-            $name = $file->getClientOriginalName();
+            $filePath = '/events/' . $event->id . '/covers/original/'.$name;
             $image = Image::make(file_get_contents($file));
+            $image->backup();
             $image->resize(1080, 1920)->save($name);
-            $filePath = '/events/' . $event->id . '/covers/'.$name;
+            $disk->put($thumbFilePath, $image, 'public');
+            $image->reset();
+            $image->resize(512, 786);
+            $disk->put($filePath, $image, 'public');
             $cover = [
                 'url' => $filePath,
                 'thumb_url' => $thumbFilePath
             ];
-            $disk->put($filePath, $image, 'public');
-            if (file_exists(public_path() . '/' . $name)) {
-                unlink(public_path() . '/' . $name);
-            }
         }
         if ($request->hasFile('BAT')){
             $file = $request->file('BAT');
             $name = time() . $file->getClientOriginalName();
             $filePath = '/events/' . $event->id . '/'. $name;
             $disk->put($filePath, file_get_contents($file), 'public');
-            $bat = [
-                'url' => $filePath
+            $event->files = [
+                'bat' => [
+                    'url' => $filePath
+                ]
             ];
         }
         if (isset($cover) && isset($logo)) {
@@ -257,7 +249,7 @@ class EventController extends Controller
         $disk = Storage::disk('s3');
         $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_products = [];
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $select_products[$product->id] = $product->title;
         }
         return view('admin/Event.show', [
@@ -349,8 +341,7 @@ class EventController extends Controller
                 $customer = Customer::find($event->customer_id);
                 $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($customer->events_id, $event->id);
                 $arr = $customer->events_id;
-                $arr = $result;
-                $customer->events_id = $arr;
+                $customer->events_id = $result;
                 $customer->update();
                 $event->customer_id = $request->customer_id;
                 // here I push the id in the corresponding customer
@@ -393,7 +384,7 @@ class EventController extends Controller
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if(!empty($event->logo ) && $disk->exists($newFilePath)){
+                if (!empty($event->logo ) && $disk->exists($newFilePath)) {
                     $disk->delete($event->logoUrl);
                 }
            }
@@ -429,7 +420,7 @@ class EventController extends Controller
                     }
                 }
            }
-            if ($request->hasFile('BAT')){
+            if ($request->hasFile('BAT')) {
                 $disk = Storage::disk('s3');
                 $file = $request->file('BAT');
                 $name = time() . $file->getClientOriginalName();
@@ -440,7 +431,7 @@ class EventController extends Controller
                         'url' => $newFilePath
                     ]
                 ];
-                if(!empty($event->BAT) && $disk->exists($newFilePath)){
+                if (!empty($event->BAT) && $disk->exists($newFilePath)) {
                     $disk->delete($event->BATUrl);
                 }
             }
@@ -468,10 +459,10 @@ class EventController extends Controller
             $event_local_download->delete();
         }
         $event->update();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement a été correctement modifié.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 
@@ -486,10 +477,10 @@ class EventController extends Controller
             $event = Event::find($event_id);
             $event->status = $new_status;
             $event->update();
-            $response = array(
+            $response = [
                 'status' => 'success',
                 'msg' => 'You have change event\'s status.'
-            );
+            ];
             return response()->json($response);
         }
         else {
@@ -543,10 +534,10 @@ class EventController extends Controller
         }
         // Now I can delete the event
         $event->delete();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement a été correctement supprimé.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/index')->with($notification);
     }
 
@@ -554,10 +545,10 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_active = false;
         $event->update();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement a été correctement désactivé.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/index')->with($notification);
     }
 
@@ -565,10 +556,10 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_deleted = true;
         $event->update();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement a été correctement supprimé.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/index')->with($notification);
     }
 
@@ -576,10 +567,10 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->is_active = true;
         $event->update();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement a été correctement activé.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/index')->with($notification);
     }
 
@@ -591,10 +582,10 @@ class EventController extends Controller
             app('App\Http\Controllers\EventLocalDownloadController')->destroy($event_local_download->id);
         }
         $event->update();
-        $notification = array(
+        $notification = [
             'status' => 'L\'événement n\'est plus prêt.',
             'alert-type' => 'success'
-        );
+        ];
         return redirect('admin/Event/index')->with($notification);
     }
 }
