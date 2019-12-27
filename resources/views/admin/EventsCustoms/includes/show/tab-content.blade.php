@@ -686,7 +686,7 @@
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('origin_x'.$i, $component['settings']['position']['origin_x'],
+                                        {!! Form::number('origin_x'.$i, $component['settings']['position']['x'],
                                         ['class' => 'form-control',
                                         'placeholder' =>'0',
                                         'step' => 'any'
@@ -698,7 +698,7 @@
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('origin_y'.$i, $component['settings']['position']['origin_y'],
+                                        {!! Form::number('origin_y'.$i, $component['settings']['position']['y'],
                                         ['class' => 'form-control',
                                         'placeholder' => '0',
                                         'step' => 'any'
