@@ -635,7 +635,7 @@ class EventsCustomsController extends Controller
                                         $events_custom->components = $array;
                                     }
                                 }
-                                if (isset($to_delete)) {
+                                if (isset($to_delete) && count($events_custom->components) !== 1) {
                                     $arr = $events_custom->components;
                                     $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $to_delete);
                                     $events_custom->components = $result;
@@ -656,7 +656,6 @@ class EventsCustomsController extends Controller
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->update();
-            // Here I change status of the event => he's not ready
             $event = Event::find($events_custom->event_id);
             // $events_products = Events_products::where('event_id','=',$event->id)->get();
             // $events_customs_final = array();
