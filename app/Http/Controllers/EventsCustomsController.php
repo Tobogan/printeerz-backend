@@ -521,7 +521,7 @@ class EventsCustomsController extends Controller
                                 'title' => $request->{'option_title' . $i},
                                 'index' => $i,
                                 'group' => $request->{'group'.$i},
-                                'settings' => 'input',
+                                'settings' => 
                                 [
                                     'input_min' => $request->{'min' . $i},
                                     'input_max' => $request->{'max' . $i},
@@ -588,6 +588,7 @@ class EventsCustomsController extends Controller
                         }
                     }
                     if ($request->{'comp_type_' . $tp_id} == 'image') {
+                        
                         if ($request->hasFile('comp_image' . $tp_id)) {
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image' . $tp_id);
@@ -627,7 +628,6 @@ class EventsCustomsController extends Controller
                                     if ($comp['events_component_id'] == $tp_id) {
                                         $to_delete = $comp;
                                         $comp = $component;
-                                        
                                     }
                                     else {
                                         $array = $events_custom->components;
@@ -638,8 +638,7 @@ class EventsCustomsController extends Controller
                                 if (isset($to_delete)) {
                                     $arr = $events_custom->components;
                                     $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $to_delete);
-                                    $arr = $result;
-                                    $events_custom->components = $arr;
+                                    $events_custom->components = $result;
                                 }
                             }
                             else {

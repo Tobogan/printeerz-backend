@@ -132,6 +132,7 @@
                                                 <label>
                                                     Largeur (mm)
                                                 </label>
+                                                <?php // dd($component['settings']['position']['width']) ?>
                                                 {!! Form::number('width'.$i,
                                                 $component['settings']['position']['width'],[
                                                 'class' => 'form-control',
