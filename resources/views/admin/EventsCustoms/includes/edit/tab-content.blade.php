@@ -7,8 +7,9 @@
                         <label>
                             Nom de la personnalisation
                         </label>
-                        {!! Form::text('title', $events_custom->title, ['class' => 'form-control'.
-                        $errors->first('title', ' is-invalid')]) !!}
+                        {!! Form::text('title', $events_custom->title, [
+                        'class' => 'form-control' . $errors->first('title', ' is-invalid')
+                        ]) !!}
                         @if($errors->has('title'))<div class="invalid-feedback">Nom de police incorrect.</div>@endif
                     </div>
                     <div class="form-group">
@@ -22,7 +23,8 @@
                         ]) !!}
                         {!! $errors->first('description', '<p class="help-block mt-2" style="color:red;">
                             <small>:message</small>
-                        </p>') !!} </div>
+                        </p>') !!}
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,7 +71,10 @@
                     <div class="form-group">
                         <hr>
                         <label for="custom_img">Modifiez l'image</label>
-                        {!! Form::file('custom_img', array('class' => 'form-control', 'id' =>'photo_profile')) !!}
+                        {!! Form::file('custom_img', [
+                        'class' => 'form-control',
+                        'id' =>'photo_profile'
+                        ]) !!}
                     </div>
                 </div>
             </div>
@@ -88,8 +93,8 @@
     </div>
 </div>
 <?php 
-$i=0;
-$arrayEventsComponentsIds = array();
+    $i=0;
+    $arrayEventsComponentsIds = array();
  ?>
 @foreach($events_components as $events_component)
 @if($events_component->events_custom_id == $events_custom->id)
@@ -121,8 +126,9 @@ $arrayEventsComponentsIds = array();
                                 ]) !!}
                             </div>
                             <div class="col-12">
-                                <p class="text-muted">Vous pouvez changer le nom de ce composant pour cette
-                                    personnalisation.</p>
+                                <p class="text-muted">
+                                    Vous pouvez changer le nom de ce composant pour cette personnalisation.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -165,6 +171,45 @@ $arrayEventsComponentsIds = array();
                                                 La taille par défault est de {{$events_component->width}} x
                                                 {{$events_component->height}} mm
                                             </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        Alignement du composant
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>
+                                                    X
+                                                </label>
+                                                {!! Form::text('alignX'.$events_component->id, null, [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'left',
+                                                'step' => 'any'
+                                                ]) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>
+                                                    Y
+                                                </label>
+                                                {!! Form::text('alignY'.$events_component->id, null,[
+                                                'class' => 'form-control',
+                                                'placeholder' => 'top',
+                                                'step' => 'any'
+                                                ]) !!}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -295,9 +340,9 @@ $arrayEventsComponentsIds = array();
                                         </div>
                                         <div id="newsColors">
                                             <input type="hidden" name="{{'colorsList'.$events_component->id.'[]'}}"
-                                                id="{{'colorsList'.$events_component->id}}"> {{-- value="Black" --}}
+                                                id="{{'colorsList'.$events_component->id}}">
                                             <input type="hidden" name="{{'hexaList'.$events_component->id.'[]'}}"
-                                                id="{{'hexaList'.$events_component->id}}"> {{-- value="000000" --}}
+                                                id="{{'hexaList'.$events_component->id}}">
                                         </div>
                                         <div id="colorsToDelete">
                                             <input type="hidden"
@@ -410,14 +455,7 @@ $arrayEventsComponentsIds = array();
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="custom-control custom-switch">
-                                                <input name="{{'fullwidth'.$events_component->id}}" type="checkbox"
-                                                    class="" id="{{'fullwidth'}}" value="true">
-                                                <label>Ce composant est-il sur toute la largeur ?</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label>
                                                     Alignement
@@ -482,14 +520,14 @@ $arrayEventsComponentsIds = array();
             <div class="card">
                 <div class="card-header">
                     <b>
-                        Nombre de caractères
+                        Paramètres
                     </b>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Minimum</label>
+                                <label>Nombre de caractères minimum</label>
                                 {!! Form::number('min'.$i, $events_component->input_min,[
                                 'class' => 'form-control',
                                 'placeholder' => '1'
@@ -498,7 +536,7 @@ $arrayEventsComponentsIds = array();
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Maximum</label>
+                                <label>Nombre de caractères maximum</label>
                                 {!! Form::number('max'.$i, $events_component->input_max,[
                                 'class' => 'form-control',
                                 'placeholder' => '99'
@@ -512,6 +550,38 @@ $arrayEventsComponentsIds = array();
                                 'class' => 'form-control',
                                 'placeholder' => 'Votre texte'
                                 ]) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Taille de police minimum</label>
+                                {!! Form::number('min_size'.$events_component->id, null,[
+                                'class' => 'form-control',
+                                'placeholder' => '1'
+                                ]) !!}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Taille de police maximum</label>
+                                {!! Form::number('max_size' . $events_component->id, null,[
+                                'class' => 'form-control',
+                                'placeholder' => '99'
+                                ]) !!}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Requis ?</label>
+                                <div class="form-group">
+                                    <select name="{{'required' . $events_component->id}}" id="required"
+                                        class="form-control" data-toggle="select">
+                                        <option value="true" selected>Oui</option>
+                                        <option value="false">Non</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -562,21 +632,33 @@ $arrayEventsComponentsIds = array();
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Groupe du composant
+                                Position du composant
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>
-                                            Numéro du groupe
-                                        </label>
-                                        {!! Form::number('group'.$i, $events_component->group, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '1',
-                                        'step' => 'any'
-                                        ]) !!}
+                                        <label>Sélectionnable ?</label>
+                                        <div class="form-group">
+                                            <select name="{{'selectable' . $events_component->id}}" id="align"
+                                                class="form-control" data-toggle="select">
+                                                <option value="true" selected>Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Pleine largeur ?</label>
+                                        <div class="form-group">
+                                            <select name="{{'fullwidth' . $events_component->id}}" id="align"
+                                                class="form-control" data-toggle="select">
+                                                <option value="true" selected>Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -585,6 +667,31 @@ $arrayEventsComponentsIds = array();
                 </div>
             </div>
             @if($events_component->type == 'input')
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Type de clavier
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <select name="{{'keyboard_type' . $events_component->id}}" id="align"
+                                            class="form-control" data-toggle="select">
+                                            <option value="default" selected>Alphabétique avec emojis</option>
+                                            <option value="no_emojis">Alphabétique sans emojis</option>
+                                            <option value="numeric">Numérique</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -601,6 +708,42 @@ $arrayEventsComponentsIds = array();
                                         'class' => 'form-control',
                                         'placeholder' => '#'
                                         ]) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Configuration du texte
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <label>Alignement du texte</label>
+                                    <div class="form-group">
+                                        <select name="{{'text_align' . $events_component->id}}" id="align"
+                                            class="form-control" data-toggle="select">
+                                            <option value="center" selected>Centré</option>
+                                            <option value="left">Gauche</option>
+                                            <option value="right">Droite</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label>Multiligne</label>
+                                    <div class="form-group">
+                                        <select name="{{'multiline' . $events_component->id}}" id="align"
+                                            class="form-control" data-toggle="select">
+                                            <option value="false" selected>Non</option>
+                                            <option value="true">Yes</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

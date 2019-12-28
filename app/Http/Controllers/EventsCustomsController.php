@@ -112,15 +112,46 @@ class EventsCustomsController extends Controller
         $events_custom = new Events_customs;
         $events_custom->created_by = Auth::user()->username;
         $events_custom->title = $request->title;
+                $events_custom->save();
+
+        if ($request->hasFile('custom_img')) {
+            $file = $request->file('custom_img');
+            $name = time() . $file->getClientOriginalName();
+            $filePath = '/events/'. $request->get('event_id') . '/'. $events_custom->id . '/'. $name;
+            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+            $disk->put($filePath, $img, 'public');
+            $events_custom->imageUrl = $filePath;
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
+            // $events_custom->imageFileName = $name;
+            // $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
+        }
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
-        $events_custom->events_product_variants_ids = $request->get('event_product_variants_ids');
+        // $events_custom->printzone_id = $request->printzone_id;
+        // $template = Templates::find($request->template_id);
+        // $events_custom->template = [
+        //     'id' => $request->template_id,
+        //     'title' => $template->title,
+        //     'size' => [
+        //         'width' => $template->size['width'],
+        //         'height' => $template->size['height']
+        //         // 'fullwidth' => $template->size['fullwidth']
+        //     ],
+        //     'position' => [
+        //         'X' => $template->origin['x'],
+        //         'y' => $template->origin['y']
+        //         // 'alignX' => $template->origin['alignX'],
+        //         // 'alignY' => $template->origin['alignY']
+        //     ],
+        //     'components' => []
+        // ];
+        // $events_custom->events_product_variants_ids = $request->get('event_product_variants_ids');
         $events_custom->template_id = $request->template_id;
-        $template = Templates::find($request->template_id);
-        $events_custom->template_title = $template->title;
-        $events_custom->printzone_id = $request->printzone_id;
+        
+        // $events_custom->template_title = $template->title;
         $events_custom->products_variant_color = $request->products_variant_id;
-        $events_custom->components = array();
         $events_custom->is_active = 'true';
         $events_custom->is_deleted = 'false';
         $events_custom->save();
@@ -130,19 +161,6 @@ class EventsCustomsController extends Controller
         array_push($arr_events_customs, $events_custom->id);
         $events_product->event_customs_ids = $arr_events_customs;
         $events_product->update();
-        if ($request->hasFile('custom_img')){
-            $file = $request->file('custom_img');
-            $name = time() . $file->getClientOriginalName();
-            $filePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
-            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
-            $disk->put($filePath, $img, 'public');
-            if (file_exists(public_path() . '/' . $name)) {
-                unlink(public_path() . '/' . $name);
-            }
-            $events_custom->imageUrl = $filePath;
-            $events_custom->imageFileName = $name;
-            $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
-        }
         // Add events_component for every component in the template selected for the events_custom
         $templates = Templates::all();
         foreach ($templates as $template) {
@@ -516,75 +534,108 @@ class EventsCustomsController extends Controller
                         }
                         if (isset($array_smode_colors)) {
                             $component_input = [
-                                'events_component_id' => $request->{'template_component_id' . $i},
+                                'id' => $request->{'template_component_id' . $i},
+                                'index' => $i,
                                 'type' => $request->{'comp_type_' . $tp_id},
                                 'title' => $request->{'option_title' . $i},
-                                'index' => $i,
-                                'group' => $request->{'group'.$i},
-                                'settings' => 
-                                [
-                                    'input_min' => $request->{'min' . $i},
-                                    'input_max' => $request->{'max' . $i},
-                                    'default_text' => $request->{'default_text' . $i},
-                                    'font_first_letter' => $request->{'font_first_letter' . $i},
+                                'size' => [
+                                    'width' => $request->{'width' . $i},
+                                    'height' => $request->{'height' . $i},
+                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
+                                ],
+                                'position' => [
+                                    'x' => $request->{'origin_x' . $i},
+                                    'y' => $request->{'origin_y' . $i},
+                                    'alignX' => $request->{'alignX' . $tp_id},
+                                    'alignY' => $request->{'alignY' . $tp_id},
+                                ],
+                                'selectable'=> $request->{'selectable' . $tp_id},
+                                'required'=> $request->{'required' . $tp_id},
+                                'settings' => [
+                                    'input' => [
+                                        'length' => [
+                                            'min' => $request->{'min' . $i},
+                                            'max' => $request->{'max' . $i}
+                                        ],
+                                        'keyboard_type' => $request->{'keyboard_type' . $tp_id},
+                                        'default_text' => $request->{'default_text' . $i},
+                                        'first_letter' => $request->{'font_first_letter' . $i},
+                                        'font_size' => [
+                                            'min' => $request->{'min_size' . $tp_id},
+                                            'max' => $request->{'max_size' . $tp_id},
+                                        ],
+                                        'text_align' => $request->{'text_align' . $tp_id},
+                                        'multiline' => $request->{'multiline' . $tp_id},
+                                    ],
                                     'fonts' => $array_fonts,
                                     'font_colors' => $array_colors,
                                     'smode_colors' => $array_smode_colors,
-                                    'position' => [
-                                        'width' => $request->{'width' . $i},
-                                        'height' => $request->{'height' . $i},
-                                        'x' => $request->{'origin_x' . $i},
-                                        'y' => $request->{'origin_y' . $i}
-                                    ],
                                 ],
                             ];
                         }
                         else {
-                              $component_input = [
-                                'events_component_id' => $request->{'template_component_id' . $i},
+                            $component_input = [
+                                'id' => $request->{'template_component_id' . $i},
+                                'index' => $i,
                                 'type' => $request->{'comp_type_' . $tp_id},
                                 'title' => $request->{'option_title' . $i},
-                                'index' => $i,
-                                'group' => $request->{'group'.$i},
+                                'size' => [
+                                    'width' => $request->{'width' . $i},
+                                    'height' => $request->{'height' . $i},
+                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
+                                ],
+                                'position' => [
+                                    'x' => $request->{'origin_x' . $i},
+                                    'y' => $request->{'origin_y' . $i},
+                                    'alignX' => $request->{'alignX' . $tp_id},
+                                    'alignY' => $request->{'alignY' . $tp_id},
+                                ],
+                                'selectable'=> $request->{'selectable' . $tp_id},
+                                'required'=> $request->{'required' . $tp_id},
                                 'settings' => [
-                                    'input_min' => $request->{'min' . $i},
-                                    'input_max' => $request->{'max' . $i},
-                                    'default_text' => $request->{'default_text' . $i},
-                                    'font_first_letter' => $request->{'font_first_letter' . $i},
-                                    'fonts' => $array_fonts,
-                                    'font_colors' => $array_colors,
-                                    'position' => [
-                                        'width' => $request->{'width' . $i},
-                                        'height' => $request->{'height' . $i},
-                                        'x' => $request->{'origin_x' . $i},
-                                        'y' => $request->{'origin_y' . $i}
+                                    'input' => [
+                                        'length' => [
+                                            'min' => $request->{'min' . $i},
+                                            'max' => $request->{'max' . $i}
+                                        ],
+                                        'keyboard_type' => $request->{'keyboard_type' . $tp_id},
+                                        'default_text' => $request->{'default_text' . $i},
+                                        'first_letter' => $request->{'font_first_letter' . $i},
+                                        'font_size' => [
+                                            'min' => $request->{'min_size' . $tp_id},
+                                            'max' => $request->{'max_size' . $tp_id},
+                                        ],
+                                        'text_align' => $request->{'text_align' . $tp_id},
+                                        'multiline' => $request->{'multiline' . $tp_id},
                                     ],
+                                    'fonts' => $array_fonts,
+                                    'font_colors' => $array_colors
                                 ],
                             ];
                         }
-                        if (!empty($events_custom->components)) {
-                            foreach ($events_custom->components as $comp) {
-                                if ($comp['events_component_id'] == $tp_id) {
+                        $components = $events_custom->template['components'];
+                        if ($components) {
+                            foreach ($components as $comp) {
+                                if ($comp['id'] == $tp_id) {
                                     $font_to_delete = $comp;
                                     $comp = $component_input;
                                 }
                                 else {
-                                    $array = $events_custom->components;
+                                    $array = $components;
                                     array_push($array, $component_input);
-                                    $events_custom->components = $array;
+                                    $components = $array;
                                 }
                             }
                             if (isset($font_to_delete)) {
-                                $arr = $events_custom->components;
+                                $arr = $components;
                                 $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $font_to_delete);
                                 $arr = $result;
-                                $events_custom->components = $arr;
+                                $components = $arr;
                             }
                         }
                         else {
-                            $array = $events_custom->components;
-                            array_push($array, $component_input);
-                            $events_custom->components = $array;
+                            $components = [];
+                            array_push($components, $component_input);
                         }
                     }
                     if ($request->{'comp_type_' . $tp_id} == 'image') {
@@ -605,73 +656,86 @@ class EventsCustomsController extends Controller
                             }
                             $image_file = $newFilePath;
                             $component = [
-                                'events_component_id' => $request->{'template_component_id' . $i},
+                                'id' => $request->{'template_component_id' . $i},
                                 'type' => $request->{'comp_type_' . $tp_id},
                                 'title' => $request->{'option_title' . $i},
                                 'index' => $i,
-                                'group' => $request->{'group' . $i},
-                                'settings' => [
-                                    'original_img_url' => $filePath,
-                                    'display_img_url' => $newFilePath,
-                                    'position' => [
-                                        'width' => $request->{'width' . $i},
-                                        'height' => $request->{'height' . $i},
-                                        'x' => $request->{'origin_x' . $i},
-                                        'y' => $request->{'origin_y' . $i},
-                                        'fullwidth' => $request->{'fullwidth' . $tp_id},
-                                        'align' => $request->{'align' . $tp_id}
-                                    ],
+                                'size' => [
+                                    'width' => $request->{'width' . $i},
+                                    'height' => $request->{'height' . $i},
+                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
                                 ],
+                                'position' => [
+                                    'x' => $request->{'origin_x' . $i},
+                                    'y' => $request->{'origin_y' . $i},
+                                    'alignX' => $request->{'alignX' . $tp_id},
+                                    'alignY' => $request->{'alignY' . $tp_id}
+                                ],
+                                'selectable' => $request->{'selectable' . $tp_id},
+                                'settings' => [
+                                    'image' => [
+                                        'original_url' => $filePath,
+                                        'display_url' => $newFilePath,
+                                    ],
+                                ]
                             ];
-                            if (!empty($events_custom->components)) {
-                                foreach ($events_custom->components as $comp) {
-                                    if ($comp['events_component_id'] == $tp_id) {
+                            if ($components) {
+                                foreach ($components as $comp) {
+                                    if ($comp['id'] == $tp_id) {
                                         $to_delete = $comp;
                                         $comp = $component;
                                     }
                                     else {
-                                        $array = $events_custom->components;
+                                        $array = $components;
                                         array_push($array, $component);
-                                        $events_custom->components = $array;
+                                        $components = $array;
                                     }
                                 }
-                                if (isset($to_delete) && count($events_custom->components) !== 1) {
-                                    $arr = $events_custom->components;
+                                if (isset($to_delete)) {
+                                    $arr = $components;
                                     $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $to_delete);
-                                    $events_custom->components = $result;
+                                    $components = $result;
+                                    if (empty($components)) {
+                                        $array = $components;
+                                        array_push($array, $component);
+                                        $components = $array;
+                                    }
                                 }
+                                
                             }
                             else {
-                                $array = $events_custom->components;
-                                array_push($array, $component);
-                                $events_custom->components = $array;
+                                $components = [];
+                                array_push($components, $component);
                             }
                         }
                     }
                 }
             }
-            $events_custom->components = array_slice($events_custom->components, 0);
+            $components = array_slice($components, 0);
             $arr_unique = array();
-            $events_custom->components = array_unique($events_custom->components, SORT_REGULAR);
+            $components = array_unique($components, SORT_REGULAR);
+            $template = Templates::find($events_custom->template_id);
+            $events_custom->template = [
+                'id' => $events_custom->template_id,
+                'title' => $template->title,
+                'size' => [
+                    'width' => $template->size['width'],
+                    'height' => $template->size['height']
+                    // 'fullwidth' => $template->size['fullwidth']
+                ],
+                'position' => [
+                    'X' => $template->origin['x'],
+                    'y' => $template->origin['y']
+                    // 'alignX' => $template->origin['alignX'],
+                    // 'alignY' => $template->origin['alignY']
+                ],
+                'components' => $components
+            ];
+            // $events_custom->template['components'] = $components;
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->update();
             $event = Event::find($events_custom->event_id);
-            // $events_products = Events_products::where('event_id','=',$event->id)->get();
-            // $events_customs_final = array();
-            // foreach ($events_product->event_customs_ids as $events_custom_id) {
-            //     foreach ($events_custom->components as $component) {
-            //         $events_customsArray = array();
-            //         array_push($events_customsArray, $component);
-            //     }
-            //     $events_customs_reformed = array(
-            //         'title' => $events_custom->title,
-            //         'template_title' => $events_custom->template_title,
-            //         'printzone_id' => $events_custom->printzone_id,
-            //         'components' => $events_customsArray
-            //     );
-            //     array_push($events_customs_final, $events_customs_reformed);
-            // }
             $event->status = "draft";
             $event->update();
             return redirect('admin/EventsProducts/show/'.$events_custom->events_product_id);
