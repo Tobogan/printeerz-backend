@@ -613,33 +613,32 @@ class EventsCustomsController extends Controller
                                 ],
                             ];
                         }
-                        $components = $events_custom->template['components'];
-                        if ($components) {
+                        if (isset($events_custom->template['components'])) {
+                            $components = $events_custom->template['components'];
+                        }
+                        else if (!isset($components)) {
+                            $components = [];
+                        }
+                        if (!empty($components)) {
                             foreach ($components as $comp) {
                                 if ($comp['id'] == $tp_id) {
                                     $font_to_delete = $comp;
                                     $comp = $component_input;
                                 }
                                 else {
-                                    $array = $components;
-                                    array_push($array, $component_input);
-                                    $components = $array;
+                                    array_push($components, $component_input);
                                 }
                             }
                             if (isset($font_to_delete)) {
-                                $arr = $components;
-                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $font_to_delete);
-                                $arr = $result;
-                                $components = $arr;
+                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $font_to_delete);
+                                $components = $result;
                             }
                         }
                         else {
-                            $components = [];
                             array_push($components, $component_input);
                         }
                     }
                     if ($request->{'comp_type_' . $tp_id} == 'image') {
-                        
                         if ($request->hasFile('comp_image' . $tp_id)) {
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image' . $tp_id);
@@ -655,7 +654,7 @@ class EventsCustomsController extends Controller
                                 unlink(public_path() . '/' . $image_name);
                             }
                             $image_file = $newFilePath;
-                            $component = [
+                            $component_image = [
                                 'id' => $request->{'template_component_id' . $i},
                                 'type' => $request->{'comp_type_' . $tp_id},
                                 'title' => $request->{'option_title' . $i},
@@ -679,33 +678,32 @@ class EventsCustomsController extends Controller
                                     ],
                                 ]
                             ];
-                            if ($components) {
+                            if (isset($events_custom->template['components'])) {
+                                $components = $events_custom->template['components'];
+                            }
+                            else if (!isset($components)) {
+                                $components = [];
+                            }
+                            if (!empty($components)) {
                                 foreach ($components as $comp) {
                                     if ($comp['id'] == $tp_id) {
                                         $to_delete = $comp;
-                                        $comp = $component;
+                                        $comp = $component_image;
                                     }
                                     else {
-                                        $array = $components;
-                                        array_push($array, $component);
-                                        $components = $array;
+                                        array_push($components, $component_image);
                                     }
                                 }
                                 if (isset($to_delete)) {
-                                    $arr = $components;
-                                    $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($arr, $to_delete);
+                                    $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $to_delete);
                                     $components = $result;
                                     if (empty($components)) {
-                                        $array = $components;
-                                        array_push($array, $component);
-                                        $components = $array;
+                                        array_push($components, $component_image);
                                     }
                                 }
-                                
                             }
                             else {
-                                $components = [];
-                                array_push($components, $component);
+                                array_push($components, $component_image);
                             }
                         }
                     }
