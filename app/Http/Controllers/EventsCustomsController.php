@@ -124,8 +124,6 @@ class EventsCustomsController extends Controller
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
-            // $events_custom->imageFileName = $name;
-            // $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
         }
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
@@ -170,9 +168,9 @@ class EventsCustomsController extends Controller
         }
         $template_components = Template_components::all();
         $components = array();
-        foreach ($template_components as $template_component) {
-            foreach ($template_selected->components_ids as $component_id) {
-                if ($template_component->id == $component_id['id']) {
+        foreach ($template_selected->components_ids as $component) {
+            foreach ($template_components as $template_component) {
+                if ($component['id'] == $template_component->id ) {
                     $events_component = new Events_component;
                     $events_component->title = $template_component->title;
                     $events_component->events_custom_id =  $events_custom->id;
@@ -317,7 +315,7 @@ class EventsCustomsController extends Controller
         $components = array();
         foreach ($events_custom->components_ids as $component_id) {
             foreach ($events_components as $events_component) {
-                if ($events_component->id == $component_id) {
+                if ($component_id == $events_component->id) {
                     array_push($components, $events_component);
                 }
             }
@@ -398,7 +396,7 @@ class EventsCustomsController extends Controller
             for ($i = 0; $i <= $count_component; $i++) {
                 $tp_id = $request->{'template_component_id' . $i};
                 if ($tp_id != null) {
-                    if ($request->{'comp_type_' . $tp_id} == 'input') {
+                    if ($request->{'comp_type_' . $i} == 'input') {
                         $array_colors = array();
                         if ($request->{'colorsList' . $tp_id}[0] !== null ) {
                             foreach ($request->{'colorsList' . $tp_id} as $colcode) {
@@ -536,7 +534,7 @@ class EventsCustomsController extends Controller
                             $component_input = [
                                 'id' => $request->{'template_component_id' . $i},
                                 'index' => $i,
-                                'type' => $request->{'comp_type_' . $tp_id},
+                                'type' => $request->{'comp_type_' . $i},
                                 'title' => $request->{'option_title' . $i},
                                 'size' => [
                                     'width' => $request->{'width' . $i},
@@ -577,7 +575,7 @@ class EventsCustomsController extends Controller
                             $component_input = [
                                 'id' => $request->{'template_component_id' . $i},
                                 'index' => $i,
-                                'type' => $request->{'comp_type_' . $tp_id},
+                                'type' => $request->{'comp_type_' . $i},
                                 'title' => $request->{'option_title' . $i},
                                 'size' => [
                                     'width' => $request->{'width' . $i},
@@ -638,7 +636,7 @@ class EventsCustomsController extends Controller
                             array_push($components, $component_input);
                         }
                     }
-                    if ($request->{'comp_type_' . $tp_id} == 'image') {
+                    if ($request->{'comp_type_' . $i} == 'image') {
                         if ($request->hasFile('comp_image' . $tp_id)) {
                             $events_custom_event_id = $request->events_custom_event_id;
                             $image_file = $request->file('comp_image' . $tp_id);
@@ -656,7 +654,7 @@ class EventsCustomsController extends Controller
                             $image_file = $newFilePath;
                             $component_image = [
                                 'id' => $request->{'template_component_id' . $i},
-                                'type' => $request->{'comp_type_' . $tp_id},
+                                'type' => $request->{'comp_type_' . $i},
                                 'title' => $request->{'option_title' . $i},
                                 'index' => $i,
                                 'size' => [
@@ -729,6 +727,7 @@ class EventsCustomsController extends Controller
                 ],
                 'components' => $components
             ];
+            
             // $events_custom->template['components'] = $components;
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;

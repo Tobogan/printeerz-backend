@@ -98,7 +98,7 @@
     array_push($arrayEventsComponentsIds, $component['id']);
 ?>
 <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$component['id']}}">
-<input type="hidden" name="{{'comp_type_'.$component['id']}}" value="{{$component['type']}}">
+<input type="hidden" name="{{'comp_type_'.$i}}" value="{{$component['type']}}">
 <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
 <div class="tab-pane fade show" id="template_component_{{$component['id']}}" role="tabpanel"
     aria-labelledby="template_component_{{$component['id']}}-tab">
@@ -116,13 +116,8 @@
                             <div class="form-group">
                                 {!! Form::text('option_title'.$i, $component['title'], [
                                 'class' => 'form-control',
-                                'placeholder' => 'Entrer le nom'
+                                'disabled'
                                 ]) !!}
-                            </div>
-                            <div class="col-12">
-                                <small class="text-muted">
-                                    Vous pouvez changer le nom de ce composant pour cette personnalisation.
-                                </small>
                             </div>
                         </div>
                     </div>
