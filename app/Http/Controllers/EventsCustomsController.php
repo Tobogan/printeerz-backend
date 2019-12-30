@@ -112,8 +112,7 @@ class EventsCustomsController extends Controller
         $events_custom = new Events_customs;
         $events_custom->created_by = Auth::user()->username;
         $events_custom->title = $request->title;
-                $events_custom->save();
-
+        $events_custom->save();
         if ($request->hasFile('custom_img')) {
             $file = $request->file('custom_img');
             $name = time() . $file->getClientOriginalName();
@@ -127,7 +126,7 @@ class EventsCustomsController extends Controller
         }
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
-        // $events_custom->printzone_id = $request->printzone_id;
+        $events_custom->printzone_id = $request->printzone_id;
         // $template = Templates::find($request->template_id);
         // $events_custom->template = [
         //     'id' => $request->template_id,

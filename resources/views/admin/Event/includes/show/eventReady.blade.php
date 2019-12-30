@@ -14,7 +14,9 @@
             <input type="hidden" name="eventId" id="eventId" value="{{$event->id}}">
             <div class="modal-footer">
                 <button id="close_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                {{ Form::submit('Lancer !', array('class'=>'btn btn-primary', 'id' => 'submit_modal_eventIsReady')) }}
+                {{ Form::submit('Lancer !', array('class'=>'btn btn-primary')) }}
+                {{-- {{ Form::submit('Lancer !', array('class'=>'btn btn-primary', 'id' => 'submit_modal_eventIsReady')) }}
+                --}}
                 <button class="btn btn-primary d-none" type="button" disabled id="loading_modal_eventIsReady">
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     Génération...

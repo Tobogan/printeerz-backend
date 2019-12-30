@@ -121,8 +121,7 @@
         {{-- Status To test --}}
         <li class="progressbarClickable" data-status="to_test" data-event_id="{{$event->id}}" id="isNotReadyBtn"
             onclick="var new_status = $(this).attr('data-status');var event_id = $(this).attr('data-event_id'); changeEventStatus(new_status,event_id);">
-            A
-            tester
+            A tester
         </li>
         {{-- Status Validated --}}
         <li class="progressbarClickable" data-status="validated" data-event_id="{{$event->id}}" id="isNotReadyBtn"

@@ -396,12 +396,11 @@ class LiveController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function event_global($event_id) {
-        $event_local_download = New Event_local_download;
         // DB requests
         $event = Event::find($event_id);
         $customer = Customer::find($event->customer_id);
-        $events_products = Events_products::where('event_id','=',$event->id)->get();
-        $events_customs = Events_customs::where('event_id','=',$event->id)->get();
+        $events_products = Events_products::where('event_id','=',$event_id)->get();
+        $events_customs = Events_customs::where('event_id','=',$event_id)->get();
         // Instance empty array for loop
         $productsVariantsArray = array();
         $printzonesArray = array();
@@ -423,9 +422,10 @@ class LiveController extends Controller
             // Events customs
             foreach ($events_product->event_customs_ids as $events_custom_id) {
                 $events_custom = Events_customs::find($events_custom_id);
+
                 if ($events_custom !== null) {
                     $events_customsArray = array();
-                    foreach ($events_custom->components as $component) {
+                    foreach ($events_custom->template['components'] as $component) {
                         array_push($events_customsArray, $component);
                     }
                 }
@@ -436,7 +436,7 @@ class LiveController extends Controller
                     'title' => $events_custom->title,
                     'templates' => [
                         'id' => $events_custom->template_id,
-                        'title' => $events_custom->template_title
+                        'title' => $events_custom->template['title']
                     ],
                     'zone' => $printzone->zone,
                     'image' => $events_custom->imageUrl,

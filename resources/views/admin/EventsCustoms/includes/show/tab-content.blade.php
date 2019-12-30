@@ -116,7 +116,6 @@
                             <div class="form-group">
                                 {!! Form::text('option_title'.$i, $component['title'], [
                                 'class' => 'form-control',
-                                'disabled'
                                 ]) !!}
                             </div>
                         </div>

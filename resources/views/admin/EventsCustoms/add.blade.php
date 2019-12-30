@@ -39,8 +39,7 @@
                                 <label>
                                     Nom de la personnalisation
                                 </label>
-                                <p class="text-muted b-4">(Nom du produit + Nom de l'événement par défaut)</p>
-                                {!! Form::text('title', $product->title.' + '.$event->title, [
+                                {!! Form::text('title', null, [
                                 'class' => 'form-control',
                                 'placeholder' => 'Nom'
                                 ])
