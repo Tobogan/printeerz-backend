@@ -156,7 +156,7 @@ class EventsCustomsController extends Controller
         $events_product = Events_products::find($events_custom->events_product_id);
         $arr_events_customs = $events_product->event_customs_ids;
         array_push($arr_events_customs, $events_custom->id);
-        $events_product->event_customs_ids = $arr_events_customs;
+        $events_product->event_customs_ids = array_slice($arr_events_customs, 0);
         $events_product->update();
         // Add events_component for every component in the template selected for the events_custom
         $templates = Templates::all();

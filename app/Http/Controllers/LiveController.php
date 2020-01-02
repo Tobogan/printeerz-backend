@@ -422,14 +422,13 @@ class LiveController extends Controller
             // Events customs
             foreach ($events_product->event_customs_ids as $events_custom_id) {
                 $events_custom = Events_customs::find($events_custom_id);
-
+                $zone = Printzones::find($events_custom->printzone_id);
                 if ($events_custom !== null && isset($events_custom->template['components'])) {
                     $events_customsArray = array();
                     foreach ($events_custom->template['components'] as $component) {
                         array_push($events_customsArray, $component);
                     }
                 }
-                $zone = Printzones::find($events_custom->printzone_id);
                 $events_customs_reformed = array(
                     'id' => $events_custom->id,
                     'product_id' => $events_product->product_id,
