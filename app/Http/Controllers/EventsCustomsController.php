@@ -367,15 +367,13 @@ class EventsCustomsController extends Controller
                 'fullwidth' => 'string|max:255'
             ]);
             $disk = Storage::disk('s3');
-            $events_custom_id = $request->events_custom_id;
-            $events_custom = Events_customs::find($events_custom_id);
+            $events_custom = Events_customs::find($request->events_custom_id);
             if (request('actual_title') !== request('title')) {
                 $events_custom->title = $request->title;
             }
             $events_custom->description = $request->description;
             $count_component = $request->countJS;
             if ($request->hasFile('custom_img')) {
-                $disk = Storage::disk('s3');
                 $oldPath = $events_custom->imageUrl;
                 $file = $request->file('custom_img');
                 $name = time() . $file->getClientOriginalName();
@@ -383,12 +381,10 @@ class EventsCustomsController extends Controller
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $events_custom->imageUrl = $newFilePath;
-                $events_custom->imageFileName = $name;
-                $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if(!empty($events_custom->imageUrl) && $disk->exists($newFilePath)){
+                if (!empty($events_custom->imageUrl) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
             }
@@ -541,6 +537,7 @@ class EventsCustomsController extends Controller
                                     'fullwidth' => $request->{'fullwidth' . $tp_id}
                                 ],
                                 'position' => [
+                                    'fixed' => $request->{'fixed' . $i},
                                     'x' => $request->{'origin_x' . $i},
                                     'y' => $request->{'origin_y' . $i},
                                     'alignX' => $request->{'alignX' . $tp_id},
@@ -582,6 +579,7 @@ class EventsCustomsController extends Controller
                                     'fullwidth' => $request->{'fullwidth' . $tp_id}
                                 ],
                                 'position' => [
+                                    'fixed' => $request->{'fixed' . $i},
                                     'x' => $request->{'origin_x' . $i},
                                     'y' => $request->{'origin_y' . $i},
                                     'alignX' => $request->{'alignX' . $tp_id},
@@ -662,6 +660,7 @@ class EventsCustomsController extends Controller
                                     'fullwidth' => $request->{'fullwidth' . $tp_id}
                                 ],
                                 'position' => [
+                                    'fixed' => $request->{'fixed' . $i},
                                     'x' => $request->{'origin_x' . $i},
                                     'y' => $request->{'origin_y' . $i},
                                     'alignX' => $request->{'alignX' . $tp_id},
@@ -756,8 +755,8 @@ class EventsCustomsController extends Controller
             return $array;
         }
         if ($events_product) {
-            foreach($events_product->event_customs_ids as $events_custom_id) {
-                if($events_custom_id == $id) {
+            foreach ($events_product->event_customs_ids as $events_custom_id) {
+                if ($events_custom_id == $id) {
                     $id_to_delete = $events_custom_id;
                 }
             }

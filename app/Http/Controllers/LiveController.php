@@ -423,7 +423,7 @@ class LiveController extends Controller
             foreach ($events_product->event_customs_ids as $events_custom_id) {
                 $events_custom = Events_customs::find($events_custom_id);
 
-                if ($events_custom !== null) {
+                if ($events_custom !== null && isset($events_custom->template['components'])) {
                     $events_customsArray = array();
                     foreach ($events_custom->template['components'] as $component) {
                         array_push($events_customsArray, $component);

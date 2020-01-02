@@ -39,8 +39,8 @@
                                     <div class="custom-control custom-switch">
                                         <input name="is_active" type="checkbox" class="custom-control-input"
                                             id="isActive" value="{{ $events_custom->is_active }}">
-                                        <label class="custom-control-label" for="isActive">Ce composant est-il actif
-                                            ?</label>
+                                        <label class="custom-control-label" for="isActive">
+                                            Ce composant est-il actif ?</label>
                                     </div>
                                 </div>
                             </div>
@@ -185,23 +185,28 @@
                                                 <label>
                                                     X
                                                 </label>
-                                                {!! Form::text('alignX'.$events_component->id, null, [
-                                                'class' => 'form-control',
-                                                'placeholder' => 'left',
-                                                'step' => 'any'
-                                                ]) !!}
+                                                <select name="{{'alignX' . $events_component->id}}" id="alignX"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="left">Gauche</option>
+                                                    <option value="right">Droite</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
                                             </div>
                                         </div>
+
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
                                                 <label>
                                                     Y
                                                 </label>
-                                                {!! Form::text('alignY'.$events_component->id, null,[
-                                                'class' => 'form-control',
-                                                'placeholder' => 'top',
-                                                'step' => 'any'
-                                                ]) !!}
+                                                <select name="{{'alignY' . $events_component->id}}" id="alignY"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="top">Haut</option>
+                                                    <option value="bottom">Bas</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -459,7 +464,7 @@
                                                         <option value="center">Centré</option>
                                                         <option value="right">Droite</option>
                                                         <option value="left">Gauche</option>
-                                                        <option value="false">Aucun</option>
+                                                        <option value="none">Aucun</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -571,8 +576,8 @@
                                 <div class="form-group">
                                     <select name="{{'required' . $events_component->id}}" id="required"
                                         class="form-control" data-toggle="select">
-                                        <option value="true" selected>Oui</option>
-                                        <option value="false">Non</option>
+                                        <option value="1" selected>Oui</option>
+                                        <option value="0">Non</option>
                                     </select>
                                 </div>
                             </div>
@@ -623,11 +628,6 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Position du composant
-                            </h4>
-                        </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
@@ -636,8 +636,8 @@
                                         <div class="form-group">
                                             <select name="{{'selectable' . $events_component->id}}" id="align"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true" selected>Oui</option>
-                                                <option value="false">Non</option>
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
                                             </select>
                                         </div>
                                     </div>
@@ -648,8 +648,20 @@
                                         <div class="form-group">
                                             <select name="{{'fullwidth' . $events_component->id}}" id="align"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true" selected>Oui</option>
-                                                <option value="false">Non</option>
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Position fixe ?</label>
+                                        <div class="form-group">
+                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
+                                                data-toggle="select">
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
                                             </select>
                                         </div>
                                     </div>
@@ -734,8 +746,8 @@
                                     <div class="form-group">
                                         <select name="{{'multiline' . $events_component->id}}" id="align"
                                             class="form-control" data-toggle="select">
-                                            <option value="false" selected>Non</option>
-                                            <option value="true">Yes</option>
+                                            <option value="0" selected>Non</option>
+                                            <option value="1">Yes</option>
                                         </select>
                                     </div>
                                 </div>

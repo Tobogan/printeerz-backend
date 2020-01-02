@@ -176,12 +176,39 @@
                                                 <label>
                                                     X
                                                 </label>
-                                                {!! Form::text('alignX'.$component['id'],
-                                                $component['position']['alignX'], [
-                                                'class' => 'form-control',
-                                                'placeholder' => 'left',
-                                                'step' => 'any'
-                                                ]) !!}
+                                                @if ($component['position']['alignX'] == 'none')
+                                                <select name="{{'alignX' . $component['id']}}" id="alignX"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="left">Gauche</option>
+                                                    <option value="right">Droite</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @elseif ($component['position']['alignX'] == 'left')
+                                                <select name="{{'alignX' . $component['id']}}" id="alignX"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="left" selected>Gauche</option>
+                                                    <option value="right">Droite</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @elseif ($component['position']['alignX'] == 'right')
+                                                <select name="{{'alignX' . $component['id']}}" id="alignX"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="left">Gauche</option>
+                                                    <option value="right" selected>Droite</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @else
+                                                <select name="{{'alignX' . $component['id']}}" id="alignX"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="left">Gauche</option>
+                                                    <option value="right">Droite</option>
+                                                    <option value="center" selected>Centré</option>
+                                                </select>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
@@ -189,12 +216,39 @@
                                                 <label>
                                                     Y
                                                 </label>
-                                                {!! Form::text('alignY'.$component['id'],
-                                                $component['position']['alignY'],[
-                                                'class' => 'form-control',
-                                                'placeholder' => 'top',
-                                                'step' => 'any'
-                                                ]) !!}
+                                                @if ($component['position']['alignY'] == 'none')
+                                                <select name="{{'alignY' . $component['id']}}" id="alignY"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="top">Haut</option>
+                                                    <option value="bottom">Bas</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @elseif ($component['position']['alignY'] == 'top')
+                                                <select name="{{'alignY' . $component['id']}}" id="alignY"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="top" selected>Haut</option>
+                                                    <option value="bottom">Bas</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @elseif ($component['position']['alignY'] == 'bottom')
+                                                <select name="{{'alignY' . $component['id']}}" id="alignY"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="top">Haut</option>
+                                                    <option value="bottom" selected>Bas</option>
+                                                    <option value="center">Centré</option>
+                                                </select>
+                                                @else
+                                                <select name="{{'alignY' . $component['id']}}" id="alignY"
+                                                    class="form-control" data-toggle="select">
+                                                    <option value="none">Aucun</option>
+                                                    <option value="top">Haut</option>
+                                                    <option value="bottom">Bas</option>
+                                                    <option value="center" selected>Centré</option>
+                                                </select>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -643,17 +697,17 @@
                             <div class="form-group">
                                 <label>Requis ?</label>
                                 <div class="form-group">
-                                    @if ($component['required'] == 'true')
+                                    @if ($component['required'] == 1)
                                     <select name="{{'required' . $component['id']}}" id="required" class="form-control"
                                         data-toggle="select">
-                                        <option value="true" selected>Oui</option>
-                                        <option value="false">Non</option>
+                                        <option value="1" selected>Oui</option>
+                                        <option value="0">Non</option>
                                     </select>
                                     @else
                                     <select name="{{'required' . $component['id']}}" id="required" class="form-control"
                                         data-toggle="select">
-                                        <option value="true">Oui</option>
-                                        <option value="false" selected>Non</option>
+                                        <option value="1">Oui</option>
+                                        <option value="0" selected>Non</option>
                                     </select>
                                     @endif
                                 </div>
@@ -716,17 +770,17 @@
                                     <div class="form-group">
                                         <label>Sélectionnable ?</label>
                                         <div class="form-group">
-                                            @if ($component['selectable'] == 'true')
+                                            @if ($component['selectable'] == 1)
                                             <select name="{{'selectable' . $component['id']}}" id="selectable"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true" selected>Oui</option>
-                                                <option value="false">Non</option>
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
                                             </select>
                                             @else
                                             <select name="{{'selectable' . $component['id']}}" id="selectable"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true">Oui</option>
-                                                <option value="false" selected>Non</option>
+                                                <option value="1">Oui</option>
+                                                <option value="0" selected>Non</option>
                                             </select>
                                             @endif
                                         </div>
@@ -736,17 +790,37 @@
                                     <div class="form-group">
                                         <label>Pleine largeur ?</label>
                                         <div class="form-group">
-                                            @if ($component['size']['fullwidth'] == 'true')
+                                            @if ($component['size']['fullwidth'] == 1)
                                             <select name="{{'fullwidth' . $component['id']}}" id="fullwidth"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true" selected>Oui</option>
-                                                <option value="false">Non</option>
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
                                             </select>
                                             @else
                                             <select name="{{'fullwidth' . $component['id']}}" id="fullwidth"
                                                 class="form-control" data-toggle="select">
-                                                <option value="true">Oui</option>
-                                                <option value="false" selected>Non</option>
+                                                <option value="1">Oui</option>
+                                                <option value="0" selected>Non</option>
+                                            </select>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Position fixe ?</label>
+                                        <div class="form-group">
+                                            @if ($component['position']['fixed'] == 1)
+                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
+                                                data-toggle="select">
+                                                <option value="1" selected>Oui</option>
+                                                <option value="0">Non</option>
+                                            </select>
+                                            @else
+                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
+                                                data-toggle="select">
+                                                <option value="1">Oui</option>
+                                                <option value="0" selected>Non</option>
                                             </select>
                                             @endif
                                         </div>
@@ -863,17 +937,17 @@
                                 <div class="col-12 col-md-6">
                                     <label>Multiligne</label>
                                     <div class="form-group">
-                                        @if ($component['settings']['input']['multiline'] == 'false')
+                                        @if ($component['settings']['input']['multiline'] == 0)
                                         <select name="{{'multiline' . $component['id']}}" id="align"
                                             class="form-control" data-toggle="select">
-                                            <option value="false" selected>Non</option>
-                                            <option value="true">Yes</option>
+                                            <option value="0" selected>Non</option>
+                                            <option value="1">Yes</option>
                                         </select>
                                         @else
                                         <select name="{{'multiline' . $component['id']}}" id="align"
                                             class="form-control" data-toggle="select">
-                                            <option value="false">Non</option>
-                                            <option value="true" selected>Yes</option>
+                                            <option value="0">Non</option>
+                                            <option value="1" selected>Yes</option>
                                         </select>
                                         @endif
                                     </div>
