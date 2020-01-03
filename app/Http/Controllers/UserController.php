@@ -105,9 +105,8 @@
         {
             $users = User::all();
             $disk = Storage::disk('s3');
-            $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
             $exists = $disk->exists('file.jpg');
-            return view('admin/User.index', ['users' => $users, 'disk' => $disk, 's3' => $s3, 'exists' => $exists]);
+            return view('admin/User.index', ['users' => $users, 'disk' => $disk, 'exists' => $exists]);
         }
 
         /**
@@ -144,7 +143,7 @@
                 // Create name
                 $name = time() . $file->getClientOriginalName();
                 // Define the path
-                $filePath = '/users/' . $name;
+                $filePath = 'users/' . $name;
                 // Resize img
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 // Upload the file
@@ -213,7 +212,7 @@
                     // Create image name
                     $name = time() . $file->getClientOriginalName();
                     // Define the new path to image
-                    $newFilePath = '/users/' . $name;
+                    $newFilePath = 'users/' . $name;
                     // Resize new image
                     $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                     // Upload the new image
@@ -280,7 +279,7 @@
                     // Create image name
                     $name = time() . $file->getClientOriginalName();
                     // Define the new path to image
-                    $newFilePath = '/users/' . $name;
+                    $newFilePath = 'users/' . $name;
                     // Resize new image
                     $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                     // Upload the new image

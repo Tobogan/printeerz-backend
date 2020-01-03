@@ -18,11 +18,10 @@
                         <a class="avatar avatar-sm">
                             <?php 
                             $disk = Storage::disk('s3');
-                            $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev'; 
                             ?>
                             @if(!empty(Auth::user()->profile_img) && $disk->exists(Auth::user()->profile_img))
                             <div class="avatar avatar-sm">
-                                <img src="{{$s3 . Auth::user()->profile_img}}" class="avatar-img rounded-circle"
+                                <img src="{{$disk->url(Auth::user()->profile_img) }}" class="avatar-img rounded-circle"
                                     alt="img_profile">
                             </div>
                             @else <!--Initials-->
