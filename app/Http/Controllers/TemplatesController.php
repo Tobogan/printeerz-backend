@@ -33,7 +33,6 @@ class TemplatesController extends Controller
     {
         $templates = Templates::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
         $templates_components = Template_components::all();
 
@@ -41,7 +40,6 @@ class TemplatesController extends Controller
             'templates' => $templates, 
             'templates_components' => $templates_components, 
             'disk' => $disk, 
-            's3' => $s3, 
             'exists' => $exists
             ]
         );
@@ -108,7 +106,7 @@ class TemplatesController extends Controller
         if ($request->hasFile('thumb')){
             $file = $request->file('thumb');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/templates/'.$template->id.'/'.$name;
+            $filePath = 'templates/'.$template->id.'/'.$name;
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -119,7 +117,7 @@ class TemplatesController extends Controller
         if ($request->hasFile('full')){
             $file = $request->file('full');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/templates/'.$template->id.'/'.$name;
+            $filePath = 'templates/'.$template->id.'/'.$name;
             $img = Image::make(file_get_contents($file))->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -145,9 +143,7 @@ class TemplatesController extends Controller
     {
         $template = Templates::find($id);
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/Templates.edit', [
-            's3' => $s3, 
             'disk' => $disk, 
             'template' => $template
             ]
@@ -183,7 +179,7 @@ class TemplatesController extends Controller
                 $oldPath = $template->thumb_img;
                 $file = $request->file('thumb');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templates/'.$template->id.'/'.$name;
+                $newFilePath = 'templates/'.$template->id.'/'.$name;
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
@@ -198,7 +194,7 @@ class TemplatesController extends Controller
                 $file = $request->file('full');
                 $oldPath = $template->thumb_full;
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templates/'.$template->id.'/'.$name;
+                $newFilePath = 'templates/'.$template->id.'/'.$name;
                 $img = Image::make(file_get_contents($file))->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {
@@ -249,7 +245,7 @@ class TemplatesController extends Controller
                 $oldPath = $template->thumb_img;
                 $file = $request->file('thumb');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templates/'.$template->id.'/'.$name;
+                $newFilePath = 'templates/'.$template->id.'/'.$name;
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
@@ -265,7 +261,7 @@ class TemplatesController extends Controller
                 $file = $request->file('full');
                 $oldPath = $template->thumb_full;
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templates/'.$template->id.'/'.$name;
+                $newFilePath = 'templates/'.$template->id.'/'.$name;
                 $img = Image::make(file_get_contents($file))->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 if (file_exists(public_path() . '/' . $name)) {

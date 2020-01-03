@@ -208,7 +208,7 @@
                                 <div class="col-12 col-md-6">
                                     @if(!empty($template->thumb_img) && $disk->exists($template->thumb_img))
                                     <div class="avatar avatar-xxl card-avatar">
-                                        <img src="{{$s3 . $template->thumb_img}}" alt="..." class="avatar-img rounded">
+                                        <img src="{{$disk->url($template->thumb_img)}}" alt="..." class="avatar-img rounded">
                                     </div>
                                     @endif
                                     <div class="form-group">
@@ -222,7 +222,7 @@
                                 <div class="col-12 col-md-6">
                                     @if(!empty($template->full_img) && $disk->exists($template->full_img))
                                     <div class="avatar avatar-xxl card-avatar">
-                                        <img src="{{$s3 . $template->full_img}}" alt="..." class="avatar-img rounded">
+                                        <img src="{{$disk->url($template->full_img)}}" alt="..." class="avatar-img rounded">
                                     </div>
                                     @endif
                                     <div class="form-group">
