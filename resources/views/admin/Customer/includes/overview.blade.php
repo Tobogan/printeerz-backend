@@ -45,7 +45,7 @@
                                 <div class="col-auto">
                                     <a href="{{route('show_event', $event->id)}}" class="avatar avatar-lg">
                                         @if(!empty($event->logoUrl) && $disk->exists($event->logoUrl))
-                                        <img src="{{ $s3 . $event->logoUrl }}" alt="" class="avatar-img rounded">
+                                        <img src="{{ $disk->url($event->logoUrl) }}" alt="" class="avatar-img rounded">
                                         @else
                                         <?php $eventInitials = $event->title[0]; ?>
                                         <span class="avatar-title rounded text-uppercase">{{ $eventInitials }}</span>

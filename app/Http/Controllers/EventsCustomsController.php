@@ -108,7 +108,6 @@ class EventsCustomsController extends Controller
             'custom_img' => 'required|image|mimes:jpeg,jpg,png|max:4000'
         ]);
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $events_custom = new Events_customs;
         $events_custom->created_by = Auth::user()->username;
         $events_custom->title = $request->title;
@@ -116,7 +115,7 @@ class EventsCustomsController extends Controller
         if ($request->hasFile('custom_img')) {
             $file = $request->file('custom_img');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/events/'. $request->get('event_id') . '/'. $events_custom->id . '/'. $name;
+            $filePath = 'events/'. $request->get('event_id') . '/'. $events_custom->id . '/'. $name;
             $img = Image::make(file_get_contents($file))->widen(300)->save($name);
             $disk->put($filePath, $img, 'public');
             $events_custom->imageUrl = $filePath;
@@ -127,24 +126,6 @@ class EventsCustomsController extends Controller
         $events_custom->event_id = $request->get('event_id');
         $events_custom->events_product_id = $request->get('events_product_id');
         $events_custom->printzone_id = $request->printzone_id;
-        // $template = Templates::find($request->template_id);
-        // $events_custom->template = [
-        //     'id' => $request->template_id,
-        //     'title' => $template->title,
-        //     'size' => [
-        //         'width' => $template->size['width'],
-        //         'height' => $template->size['height']
-        //         // 'fullwidth' => $template->size['fullwidth']
-        //     ],
-        //     'position' => [
-        //         'X' => $template->origin['x'],
-        //         'y' => $template->origin['y']
-        //         // 'alignX' => $template->origin['alignX'],
-        //         // 'alignY' => $template->origin['alignY']
-        //     ],
-        //     'components' => []
-        // ];
-        // $events_custom->events_product_variants_ids = $request->get('event_product_variants_ids');
         $events_custom->template_id = $request->template_id;
         
         // $events_custom->template_title = $template->title;
@@ -210,7 +191,6 @@ class EventsCustomsController extends Controller
         $template_components = Template_components::all();
         $events_components = Events_component::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_templates = [];
         foreach($templates as $template) {
             $select_templates[$template->id] = $template->title;
@@ -257,7 +237,6 @@ class EventsCustomsController extends Controller
             'select_fonts' => $select_fonts, 
             'events_components'=> $events_components,
             'disk' => $disk,
-            's3' => $s3,
             'font_weight' => $font_weight,
             'font_transform' => $font_transform,
             'events_customs' => $events_customs,
@@ -285,7 +264,6 @@ class EventsCustomsController extends Controller
         $fonts = Font::all();
         $template_components = Template_components::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_templates = [];
         foreach ($templates as $template) {
             $select_templates[$template->id] = $template->title;
@@ -323,7 +301,6 @@ class EventsCustomsController extends Controller
             'select_fonts' => $select_fonts, 
             'events_components' => $events_components,
             'disk' => $disk,
-            's3' => $s3, 
             'components' => $components,
             'events_custom' => $events_custom,
             'select_printzones' => $select_printzones, 
@@ -377,7 +354,7 @@ class EventsCustomsController extends Controller
                 $oldPath = $events_custom->imageUrl;
                 $file = $request->file('custom_img');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
+                $newFilePath = 'events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $events_custom->imageUrl = $newFilePath;
@@ -639,8 +616,8 @@ class EventsCustomsController extends Controller
                             $image_file = $request->file('comp_image' . $tp_id);
                             $option_title = $request->{'option_title' . $i};
                             $image_name = time() . $image_file->getClientOriginalName();
-                            $newFilePath = '/events/'.$events_custom_event_id.'/images/resized/'.$image_name;
-                            $filePath = '/events/'.$events_custom_event_id.'/images/original/'.$image_name;
+                            $newFilePath = 'events/'.$events_custom_event_id.'/images/resized/'.$image_name;
+                            $filePath = 'events/'.$events_custom_event_id.'/images/original/'.$image_name;
                             $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
                             $original_img = Image::make(file_get_contents($image_file))->save($image_name);
                             $disk->put($newFilePath, $img_resized, 'public');
@@ -841,7 +818,7 @@ class EventsCustomsController extends Controller
             if ($request->hasFile('file')) {
                 $font_file = $request->file('file');
                 $name = $font_file->getClientOriginalName();
-                $newFilePath = '/fonts/' . $name;
+                $newFilePath = 'fonts/' . $name;
                 $disk->put($newFilePath, file_get_contents($font_file), 'public');
                 $font->url = $newFilePath;
             }
@@ -865,7 +842,7 @@ class EventsCustomsController extends Controller
     public function deleteFile($font_name)
     {
         $disk = Storage::disk('s3'); 
-        $font_url = '/fonts/'.$font_name; 
+        $font_url = 'fonts/'.$font_name; 
         $disk->delete($font_url);
         $response = array(
             'status' => 'success',
@@ -888,12 +865,12 @@ class EventsCustomsController extends Controller
             $oldPath = $events_custom->imageUrl;
             $file = $request->file('custom_img');
             $name = time() . $file->getClientOriginalName();
-            $newFilePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
+            $newFilePath = 'events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
             $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
             $disk->put($newFilePath, $img, 'public');
             $events_custom->imageUrl = $newFilePath;
             $events_custom->imageFileName = $name;
-            $events_custom->imagePath = '/events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
+            $events_custom->imagePath = 'events/'. $events_custom->event_id . '/'. $events_custom->id . '/';
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }

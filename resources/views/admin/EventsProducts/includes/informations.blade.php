@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="avatar avatar-xxl card-avatar">
-                        <img src="{{$s3 . $product->image}}" alt="..." class="avatar-img rounded">
+                        <img src="{{$disk->url($product->image)}}" alt="..." class="avatar-img rounded">
                     </div>
                     <div class="text-center">
                         <h2 class="card-title">

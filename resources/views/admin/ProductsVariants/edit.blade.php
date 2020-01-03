@@ -77,7 +77,7 @@
                                 <div class="card-body">
                                     @if(isset($products_variant->image))
                                     @if(!empty($products_variant->image) && $disk->exists($products_variant->image))
-                                    <img width="auto" class="" src="{{$s3 . $products_variant->image}}"
+                                    <img width="auto" class="" src="{{$disk->url}}"
                                         alt="Image de de la variante"
                                         style="margin-left:auto;margin-right:auto;display:block;">
                                     <p class="text-muted">
@@ -148,7 +148,7 @@
                                     @endif
                                     @if(isset($printzone['image']))
                                     @if(!empty($printzone['image']) && $disk->exists($printzone['image']))
-                                    <img width="auto" class="" src="{{$s3 . $printzone['image']}}" alt="Image de zone"
+                                    <img width="auto" class="" src="{{$disk->url($printzone['image'])}}" alt="Image de zone"
                                         style="margin-left:auto;margin-right:auto;display:block;">
                                     <p class="text-muted">
                                         Si vous le souhaitez vous pouvez modifier cette image (format: jpeg,jpg,png |
@@ -210,7 +210,7 @@
                                     @if(!empty($products_variant->{'printzone'.$i}['image']) &&
                                     $disk->exists($products_variant->{'printzone'.$i}['image']))
                                     <img width="auto" class=""
-                                        src="{{$s3 . $products_variant->{'printzone'.$i}['image']}}" alt="Image de zone"
+                                        src="{{$disk->url($products_variant->{'printzone'.$i}['image'])}}" alt="Image de zone"
                                         style="margin-left:auto;margin-right:auto;display:block;">
                                     <p class="text-muted">
                                         Si vous le souhaitez vous pouvez modifier cette image (format: jpeg,jpg,png |

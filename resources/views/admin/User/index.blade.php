@@ -89,7 +89,7 @@
                                 <td class="align-middle user-avatar">
                                     @if(!empty($user->profile_img) && $disk->exists($user->profile_img))
                                     <div class="avatar avatar-sm">
-                                        <img src="{{$s3 . $user->profile_img}}" class="avatar-img rounded-circle"
+                                        <img src="{{$disk->url($user->profile_img)}}" class="avatar-img rounded-circle"
                                             alt="img_profile">
                                     </div>
                                     @else <!--Initials-->

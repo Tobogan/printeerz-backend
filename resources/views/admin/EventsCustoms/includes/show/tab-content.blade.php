@@ -64,7 +64,7 @@
             @if(!empty($events_custom->imageUrl) && $disk->exists($events_custom->imageUrl))
             <div class="card">
                 <div class="card-body">
-                    <img width="100%" title="image principale" class="" src="{{$s3 . $events_custom->imageUrl}}"
+                    <img width="100%" title="image principale" class="" src="{{$disk->url($events_custom->imageUrl)}}"
                         alt="Image personnalisation">
                     <div class="form-group">
                         <hr>
@@ -915,7 +915,7 @@
                 </div>
                 <div class="card-body">
                     <img width="100%" title="Image du composant" class=""
-                        src="{{$s3 . $component['settings']['image']['display_url']}}" alt="Image personnalisation">
+                        src="{{$disk->url($component['settings']['image']['display_url'])}}" alt="Image personnalisation">
                 </div>
             </div>
             @else

@@ -79,7 +79,7 @@ class TemplateComponentsController extends Controller
         if ($request->hasFile('image')){
             $file = $request->file('image');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/templatesComponents/' . $name;
+            $filePath = 'templatesComponents/' . $name;
             $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -168,12 +168,10 @@ class TemplateComponentsController extends Controller
     {
         $template_component = Template_components::find($id);
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
         return view('admin/TemplatesComponents.edit', [
             'template_component' => $template_component, 
             'disk' => $disk, 
-            's3' => $s3, 
             'exists' => $exists
             ]
         );
@@ -207,7 +205,7 @@ class TemplateComponentsController extends Controller
                 $oldPath = $template_component->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templatesComponents/' . $name;
+                $newFilePath = 'templatesComponents/' . $name;
                 $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');
@@ -270,7 +268,7 @@ class TemplateComponentsController extends Controller
                 $oldPath = $template_component->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/templatesComponents/' . $name;
+                $newFilePath = 'templatesComponents/' . $name;
                 $img = Image::make(file_get_contents($file))->heighten(800)->save($name);
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public-read');
