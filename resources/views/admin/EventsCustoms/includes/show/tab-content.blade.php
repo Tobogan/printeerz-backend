@@ -640,7 +640,7 @@
             @if($component['type'] == 'input')
             <div class="card">
                 <div class="card-header">
-                    <b>Nombre de caractères</b>
+                    <b>Configuration</b>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -695,21 +695,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Requis ?</label>
                                 <div class="form-group">
-                                    @if ($component['required'] == 1)
-                                    <select name="{{'required' . $component['id']}}" id="required" class="form-control"
-                                        data-toggle="select">
-                                        <option value="1" selected>Oui</option>
-                                        <option value="0">Non</option>
-                                    </select>
-                                    @else
-                                    <select name="{{'required' . $component['id']}}" id="required" class="form-control"
-                                        data-toggle="select">
-                                        <option value="1">Oui</option>
-                                        <option value="0" selected>Non</option>
-                                    </select>
-                                    @endif
+                                    {!! Form::checkbox('required' . $component['id'], $component['required']) !!}
+                                    {!! Form::label('required', 'Requis ?') !!}
                                 </div>
                             </div>
                         </div>
@@ -768,61 +756,30 @@
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Sélectionnable ?</label>
                                         <div class="form-group">
-                                            @if ($component['selectable'] == 1)
-                                            <select name="{{'selectable' . $component['id']}}" id="selectable"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
-                                            @else
-                                            <select name="{{'selectable' . $component['id']}}" id="selectable"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1">Oui</option>
-                                                <option value="0" selected>Non</option>
-                                            </select>
-                                            @endif
+                                            {!! Form::checkbox('selectable' . $component['id'],
+                                            $component['selectable'])
+                                            !!}
+                                            {!! Form::label('selectable', 'Sélectionnable') !!}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Pleine largeur ?</label>
                                         <div class="form-group">
-                                            @if ($component['size']['fullwidth'] == 1)
-                                            <select name="{{'fullwidth' . $component['id']}}" id="fullwidth"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
-                                            @else
-                                            <select name="{{'fullwidth' . $component['id']}}" id="fullwidth"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1">Oui</option>
-                                                <option value="0" selected>Non</option>
-                                            </select>
-                                            @endif
+                                            {!! Form::checkbox('fullwidth' . $component['id'],
+                                            $component['size']['fullwidth'])
+                                            !!}
+                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Position fixe ?</label>
                                         <div class="form-group">
-                                            @if ($component['position']['fixed'] == 1)
-                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
-                                                data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
-                                            @else
-                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
-                                                data-toggle="select">
-                                                <option value="1">Oui</option>
-                                                <option value="0" selected>Non</option>
-                                            </select>
-                                            @endif
+                                            {!! Form::checkbox('fixed' . $i, $component['position']['fixed'], true)
+                                            !!}
+                                            {!! Form::label('fixed', 'Position fixe') !!}
                                         </div>
                                     </div>
                                 </div>
@@ -935,21 +892,11 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <label>Multiligne</label>
                                     <div class="form-group">
-                                        @if ($component['settings']['input']['multiline'] == 0)
-                                        <select name="{{'multiline' . $component['id']}}" id="align"
-                                            class="form-control" data-toggle="select">
-                                            <option value="0" selected>Non</option>
-                                            <option value="1">Yes</option>
-                                        </select>
-                                        @else
-                                        <select name="{{'multiline' . $component['id']}}" id="align"
-                                            class="form-control" data-toggle="select">
-                                            <option value="0">Non</option>
-                                            <option value="1" selected>Yes</option>
-                                        </select>
-                                        @endif
+                                        {!! Form::checkbox('multiline' . $component['id'],
+                                        $component['settings']['input']['multiline'])
+                                        !!}
+                                        {!! Form::label('multiline', 'Multiligne ?') !!}
                                     </div>
                                 </div>
                             </div>

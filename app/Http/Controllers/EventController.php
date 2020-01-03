@@ -180,6 +180,9 @@ class EventController extends Controller
                 'url' => $filePath,
                 'thumb_url' => $thumbFilePath
             ];
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
         }
         if ($request->hasFile('BAT')){
             $file = $request->file('BAT');

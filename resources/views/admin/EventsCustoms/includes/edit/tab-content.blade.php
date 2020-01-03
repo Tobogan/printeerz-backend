@@ -40,7 +40,8 @@
                                         <input name="is_active" type="checkbox" class="custom-control-input"
                                             id="isActive" value="{{ $events_custom->is_active }}">
                                         <label class="custom-control-label" for="isActive">
-                                            Ce composant est-il actif ?</label>
+                                            Ce composant est-il actif ?
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -525,7 +526,9 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Nombre de caractères minimum</label>
+                                <label>
+                                    Nombre de caractères minimum
+                                </label>
                                 {!! Form::number('min'.$i, $events_component->input_min,[
                                 'class' => 'form-control',
                                 'placeholder' => '1'
@@ -534,7 +537,9 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Nombre de caractères maximum</label>
+                                <label>
+                                    Nombre de caractères maximum
+                                </label>
                                 {!! Form::number('max'.$i, $events_component->input_max,[
                                 'class' => 'form-control',
                                 'placeholder' => '99'
@@ -543,7 +548,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Texte par défaut</label>
+                                <label>
+                                    Texte par défaut
+                                </label>
                                 {!! Form::text('default_text'.$i, $events_component->default_text,[
                                 'class' => 'form-control',
                                 'placeholder' => 'Votre texte'
@@ -554,7 +561,9 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Taille de police minimum</label>
+                                <label>
+                                    Taille de police minimum
+                                </label>
                                 {!! Form::number('min_size'.$events_component->id, null,[
                                 'class' => 'form-control',
                                 'placeholder' => '1'
@@ -563,7 +572,9 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label>Taille de police maximum</label>
+                                <label>
+                                    Taille de police maximum
+                                </label>
                                 {!! Form::number('max_size' . $events_component->id, null,[
                                 'class' => 'form-control',
                                 'placeholder' => '99'
@@ -572,14 +583,8 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Requis ?</label>
-                                <div class="form-group">
-                                    <select name="{{'required' . $events_component->id}}" id="required"
-                                        class="form-control" data-toggle="select">
-                                        <option value="1" selected>Oui</option>
-                                        <option value="0">Non</option>
-                                    </select>
-                                </div>
+                                {!! Form::checkbox('required' . $events_component->id, true, true) !!}
+                                {!! Form::label('required', 'Requis ?') !!}
                             </div>
                         </div>
                     </div>
@@ -632,37 +637,27 @@
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Sélectionnable ?</label>
                                         <div class="form-group">
-                                            <select name="{{'selectable' . $events_component->id}}" id="align"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
+                                            {!! Form::checkbox('selectable' . $events_component->id, true, true)
+                                            !!}
+                                            {!! Form::label('selectable', 'Sélectionnable') !!}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Pleine largeur ?</label>
                                         <div class="form-group">
-                                            <select name="{{'fullwidth' . $events_component->id}}" id="align"
-                                                class="form-control" data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
+                                            {!! Form::checkbox('fullwidth' . $events_component->id, true, true)
+                                            !!}
+                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Position fixe ?</label>
                                         <div class="form-group">
-                                            <select name="{{'fixed' . $i}}" id="fixed" class="form-control"
-                                                data-toggle="select">
-                                                <option value="1" selected>Oui</option>
-                                                <option value="0">Non</option>
-                                            </select>
+                                            {!! Form::checkbox('fixed' . $i, true, true) !!}
+                                            {!! Form::label('fixed', 'Position fixe ?') !!}
                                         </div>
                                     </div>
                                 </div>
@@ -742,13 +737,9 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <label>Multiligne</label>
                                     <div class="form-group">
-                                        <select name="{{'multiline' . $events_component->id}}" id="align"
-                                            class="form-control" data-toggle="select">
-                                            <option value="0" selected>Non</option>
-                                            <option value="1">Yes</option>
-                                        </select>
+                                        {!! Form::checkbox('multiline' . $events_component->id, true, true) !!}
+                                        {!! Form::label('multiline', 'Multiligne') !!}
                                     </div>
                                 </div>
                             </div>
