@@ -115,9 +115,7 @@ class ProductsVariantsController extends Controller
         $printzones = Printzones::all();
         $product = Product::find($products_variant->product_id);
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/ProductsVariants.edit', [
-            's3' => $s3, 
             'disk' => $disk, 
             'product' => $product, 
             'printzones' => $printzones,
@@ -165,7 +163,7 @@ class ProductsVariantsController extends Controller
                             $oldPath = $products_variant->{'printzone' . $i}['image'];
                             $file = $request->file('printzone'.$i);
                             $name = time() . $file->getClientOriginalName();
-                            $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+                            $newFilePath = 'products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                             if (file_exists(public_path() . '/' . $name)) {
                                 unlink(public_path() . '/' . $name);
                             }
@@ -178,7 +176,7 @@ class ProductsVariantsController extends Controller
                         $request_name =  $request->{'printzone_name_'.$i};
                         $file = $request->file('printzone'.$i);
                         $name = time() . $file->getClientOriginalName();
-                        $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+                        $newFilePath = 'products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                         $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
                         $disk->put($newFilePath, $img, 'public');
                         // $disk->put($newFilePath, $img, 'public');
@@ -199,7 +197,7 @@ class ProductsVariantsController extends Controller
                 $oldPath = $products_variant->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
+                $newFilePath = 'products/' . $products_variant->product_id . '/variants/'.$products_variant->id.'/'. $name;
                 if (!empty($products_variant->image) && $disk->exists($newFilePath)) {
                     $disk->delete($oldPath);
                 }
