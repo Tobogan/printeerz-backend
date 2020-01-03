@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-auto">
         <div class="avatar avatar-xxl header-avatar-top">
-          <img src="{{$s3 . $event->logoUrl}}" alt="..." class="avatar-img rounded-circle border border-4 border-body"
+          <img src="{{$disk->url($event->logoUrl)}}" alt="..." class="avatar-img rounded-circle border border-4 border-body"
             style="background-color: white;">
         </div>
       </div>
@@ -33,7 +33,7 @@
             </a>
             @if($event->BATUrl != null)
             <a class="dropdown-item" role="button" href="#"
-              onclick="window.open('{{ $s3.$event->BATUrl }}', '_blank', 'fullscreen=yes'); return false;"> Voir le
+              onclick="window.open('{{ $disk->url($event->BATUrl )}}', '_blank', 'fullscreen=yes'); return false;"> Voir le
               BAT</a>
             @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">

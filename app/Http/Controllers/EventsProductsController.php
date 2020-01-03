@@ -241,10 +241,8 @@ class EventsProductsController extends Controller
         $product = Product::find($events_product->product_id);
         $templates = Templates::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/EventsProducts.show', [
             'disk'=>$disk, 
-            's3'=>$s3,
             'templates' => $templates, 
             'events_customs' => $events_customs, 
             'printzones' => $printzones, 

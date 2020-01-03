@@ -39,12 +39,10 @@ class EventController extends Controller
     public function index(){
         $events = Event::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
         return view('admin/Event.index', [
             'events' => $events, 
-            'disk' => $disk, 
-            's3' => $s3, 
+            'disk' => $disk,
             'exists' => $exists
             ]
         );
@@ -152,7 +150,7 @@ class EventController extends Controller
         if ($request->hasFile('logo_img')){
             $file = $request->file('logo_img');
             $name = $file->getClientOriginalName();
-            $filePath = '/events/' . $event->id . '/'. $name;
+            $filePath = 'events/' . $event->id . '/'. $name;
             $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -167,8 +165,8 @@ class EventController extends Controller
             $disk = Storage::disk('s3');
             $file = $request->file('cover_img');
             $name = time() . $file->getClientOriginalName();
-            $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
-            $filePath = '/events/' . $event->id . '/covers/original/'.$name;
+            $thumbFilePath = 'events/' . $event->id . '/covers/thumb/'. $name;
+            $filePath = 'events/' . $event->id . '/covers/original/'.$name;
             $image = Image::make(file_get_contents($file));
             $image->backup();
             $image->resize(1080, 1920)->save($name);
@@ -184,7 +182,7 @@ class EventController extends Controller
         if ($request->hasFile('BAT')){
             $file = $request->file('BAT');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/events/' . $event->id . '/'. $name;
+            $filePath = 'events/' . $event->id . '/'. $name;
             $disk->put($filePath, file_get_contents($file), 'public');
             $event->files = [
                 'bat' => [
@@ -250,7 +248,6 @@ class EventController extends Controller
         $events_products = Events_products::all();
         $printzones = Printzones::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $select_products = [];
         foreach ($products as $product) {
             $select_products[$product->id] = $product->title;
@@ -262,8 +259,7 @@ class EventController extends Controller
             'select_products' => $select_products,
             'events_products' => $events_products, 
             'products' => $products, 
-            'disk' => $disk, 
-            's3' => $s3
+            'disk' => $disk
             ]
         );
     }
@@ -280,13 +276,11 @@ class EventController extends Controller
         $eventVariants = EventVariants::all();
         $productVariants = ProductVariants::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/Event.show_eventVariants', [
             'event' => $event,
             'productVariants' => $productVariants,
             'eventVariants' => $eventVariants, 
-            'disk' => $disk, 
-            's3' => $s3
+            'disk' => $disk
             ]
         );
     }
@@ -378,7 +372,7 @@ class EventController extends Controller
                 $disk = Storage::disk('s3');
                 $file = $request->file('logo_img');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/' . $event->id . '/'. $name;
+                $newFilePath = 'events/' . $event->id . '/'. $name;
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $logo = [
@@ -396,8 +390,8 @@ class EventController extends Controller
                 $disk = Storage::disk('s3');
                 $file = $request->file('cover_img');
                 $name = time() . $file->getClientOriginalName();
-                $thumbFilePath = '/events/' . $event->id . '/covers/thumb/'. $name;
-                $filePath = '/events/' . $event->id . '/covers/original/'.$name;
+                $thumbFilePath = 'events/' . $event->id . '/covers/thumb/'. $name;
+                $filePath = 'events/' . $event->id . '/covers/original/'.$name;
                 $image = Image::make(file_get_contents($file));
                 $image->backup();
                 $image->resize(1080, 1920)->save($name);
@@ -427,7 +421,7 @@ class EventController extends Controller
                 $disk = Storage::disk('s3');
                 $file = $request->file('BAT');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/events/' . $event->id . '/'. $name;
+                $newFilePath = 'events/' . $event->id . '/'. $name;
                 $disk->put($newFilePath, file_get_contents($file), 'public');
                 $event->files = [
                     'bat' => [

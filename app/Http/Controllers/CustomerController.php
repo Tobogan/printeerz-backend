@@ -33,13 +33,11 @@ class CustomerController extends Controller {
         $customers = Customer::all();
         $events = Event::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
         return view('admin/Customer.index', [
             'customers' => $customers, 
             'events' => $events,
             'disk' => $disk,
-            's3' => $s3,
             'exists' => $exists
             ]
         );
@@ -109,7 +107,7 @@ class CustomerController extends Controller {
         if ($request->hasFile('image')){
             $file = $request->file('image');
             $name = time() . $file->getClientOriginalName();
-            $filePath = '/customers/' . $customer->id . '/' . $name;
+            $filePath = 'customers/' . $customer->id . '/' . $name;
             $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -135,12 +133,10 @@ class CustomerController extends Controller {
         $customer = Customer::find($id);
         $events = Event::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         $exists = $disk->exists('file.jpg');
         return view('admin/Customer.show', [
             'events' => $events, 
             'disk' => $disk, 
-            's3' => $s3, 
             'customer' => $customer
             ]
         );
@@ -167,7 +163,6 @@ class CustomerController extends Controller {
      */
     public function update(Request $request) {
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         if (request('actual_title') == request('title') || request('actual_title') !== request('title')) {
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
@@ -209,7 +204,7 @@ class CustomerController extends Controller {
                 $oldPath = $customer->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/customers/' . $customer->id . '/' . $name;
+                $newFilePath = 'customers/' . $customer->id . '/' . $name;
                 $img = Image::make(file_get_contents($file))->heighten(80)->save($name);
                 $disk = Storage::disk('s3');
                 $disk->put($newFilePath, $img, 'public');

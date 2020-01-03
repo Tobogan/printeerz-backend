@@ -4,7 +4,7 @@
             <div class="col-auto">
                 <div class="avatar avatar-xl header-avatar-top">
                     @if(!empty($customer->image) && $disk->exists($customer->image))
-                    <img src="{{$s3 . $customer->image}}" alt=""
+                    <img src="{{$disk->url($customer->image)}}" alt=""
                         class="avatar-img rounded-circle border border-4 border-body">
                     @else
                     <?php 

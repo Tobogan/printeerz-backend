@@ -82,7 +82,7 @@ class FontsController extends Controller
             $file = $request->file('file_font');
             $title = $request->title;
             $name = $file->getClientOriginalName();
-            $filePath = '/fonts/' . $name;
+            $filePath = 'fonts/' . $name;
             if (file_exists(public_path() . '/' . $name)) {
                 unlink(public_path() . '/' . $name);
             }
@@ -161,7 +161,7 @@ class FontsController extends Controller
                 $oldPath = $font->url;
                 $font_file = $request->file('font_file');
                 $name = $font_file->getClientOriginalName();
-                $newFilePath = '/fonts/' . $name;
+                $newFilePath = 'fonts/' . $name;
                 $disk->put($newFilePath, file_get_contents($file), 'public');
                 $font->url = $newFilePath;
                 $font->file_name = $name;

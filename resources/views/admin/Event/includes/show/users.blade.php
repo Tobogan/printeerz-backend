@@ -12,7 +12,7 @@
                                     <div class="row align-items-center py-2">
                                         <div class="col-auto">
                                             @if(!empty($user->profile_img) && $disk->exists($user->profile_img))
-                                                <img src="{{$s3 . $user->profile_img }}" alt="User image" class="avatar-img rounded">
+                                                <img src="{{$disk->url($user->profile_img) }}" alt="User image" class="avatar-img rounded">
                                             @else <!--Initials-->
                                                 <div class="avatar-lg">
                                                     <?php $userFirstLetter = $user->username[0]; ?>

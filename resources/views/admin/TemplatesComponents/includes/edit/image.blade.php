@@ -13,7 +13,7 @@
                         @if(!empty($template_component->image) && $disk->exists($template_component->image))
                         <div class="card">
                             <div class="card-body">
-                                <img width="100%" title="image principale" class="" src="{{$s3 . $template_component->image}}"
+                                <img width="100%" title="image principale" class="" src="{{$disk->url($template_component->image)}}"
                                     alt="Image produit">
                             </div>
                         </div>

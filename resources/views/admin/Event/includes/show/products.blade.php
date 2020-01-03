@@ -13,7 +13,7 @@
                         <div class="col-auto">
                             @if(!empty($product->image) && $disk->exists($product->image))
                             <a href="{{route('show_eventsProducts', $events_product->id)}}" class="avatar avatar-lg">
-                                <img src="{{$s3 . $product->image }}" alt="Product image" class="avatar-img rounded">
+                                <img src="{{$disk->url($product->image) }}" alt="Product image" class="avatar-img rounded">
                             </a>
                             @else
                             <div class="avatar-lg">
