@@ -130,7 +130,7 @@
             @if(!empty($product->image) && $disk->exists($product->image))
             <div class="card">
                 <div class="card-body">
-                    <img width="40%" title="image produit" class="" src="{{$s3 . $product->image}}" alt="Image produit"
+                    <img width="40%" title="image produit" class="" src="{{$disk->url($product->image)}}" alt="Image produit"
                         style="margin-left:auto;margin-right:auto;display:block;">
                 </div>
             </div>

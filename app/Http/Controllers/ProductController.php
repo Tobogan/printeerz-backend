@@ -33,11 +33,9 @@ class ProductController extends Controller
     {
         $products = Product::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/Product.index', [
             'products' => $products, 
-            'disk' => $disk, 
-            's3' => $s3
+            'disk' => $disk
             ]
         );
     }
@@ -95,7 +93,7 @@ class ProductController extends Controller
             // Create name
             $name = time() . $file->getClientOriginalName();
             // Define the path
-            $filePath = '/products/'. $product->id . '/'. $name;
+            $filePath = 'products/'. $product->id . '/'. $name;
             // Resize img
             $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
             // Upload the file
@@ -106,7 +104,7 @@ class ProductController extends Controller
             }
             // Put in database
             $product->image = $filePath;
-            $product->imagePath = '/products/'. $product->id . '/';
+            $product->imagePath = 'products/'. $product->id . '/';
             $product->imageName = $name;
         }
         $product->save();
@@ -130,13 +128,11 @@ class ProductController extends Controller
         $products_variants = Products_variants::all();
         $printzones = Printzones::all();
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/Product.show', [
             'printzones' => $printzones,
             'product' => $product, 
             'products_variants' => $products_variants, 
-            'disk' => $disk, 
-            's3' => $s3
+            'disk' => $disk
             ]
         );
     }
@@ -152,9 +148,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $products = Product::all();        
         $disk = Storage::disk('s3');
-        $s3 = 'https://s3.eu-west-3.amazonaws.com/printeerz-dev';
         return view('admin/Product.edit', [
-            's3' => $s3, 
             'disk' => $disk, 
             'product' => $product, 
             'products' => $products
@@ -217,7 +211,7 @@ class ProductController extends Controller
                 $oldPath = $product->image;
                 $file = $request->file('image');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = '/products/' . $product->id . '/'. $name;
+                $newFilePath = 'products/' . $product->id . '/'. $name;
                 $img = Image::make(file_get_contents($file))->widen(1080)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $product->image = $newFilePath;
