@@ -174,6 +174,9 @@ class EventController extends Controller
             $image->reset();
             $image->resize(512, 786);
             $disk->put($filePath, $image, 'public');
+            if (file_exists(public_path() . '/' . $name)) {
+                unlink(public_path() . '/' . $name);
+            }
             $cover = [
                 'url' => $filePath,
                 'thumb_url' => $thumbFilePath
