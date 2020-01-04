@@ -615,10 +615,19 @@ class EventsCustomsController extends Controller
                             $component_image['settings']['image'] = $imgs;
                         }
                         else {
-                            foreach ($events_custom->template['components'] as $comp) {
-                                if ($comp['id'] == $ec_id) {
-                                    $component_image['settings']['image'] = $comp['settings']['image'];
+                            if (isset($events_custom->template['components'])) {
+                                foreach ($events_custom->template['components'] as $comp) {
+                                    if ($comp['id'] == $ec_id) {
+                                        $component_image['settings']['image'] = $comp['settings']['image'];
+                                    }
                                 }
+                            }
+                            else {
+                                $alert = array(
+                                'status' => 'Merci d\'ajouter une image au composant.',
+                                'alert-type' => 'danger'
+                            );
+                            return redirect()->back()->with($alert);
                             }
                         }
                         if (isset($events_custom->template['components'])) {
