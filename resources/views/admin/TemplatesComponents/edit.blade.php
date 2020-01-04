@@ -44,8 +44,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Type</label>
-                                <p class="text-muted b-4">Vous ne pouvez pas modifier le type de ce composant. Merci de
-                                    le supprimer et de le recréer.</p>
+                                <p class="text-muted b-4">
+                                    Vous ne pouvez pas modifier le type de ce composant. Merci de le supprimer et de le
+                                    recréer.
+                                </p>
                                 {!! Form::text('type', $template_component->comp_type, [
                                 'class' => 'form-control text-muted b-2',
                                 'placeholder' => 'Type',

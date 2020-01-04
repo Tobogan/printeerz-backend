@@ -197,5 +197,6 @@
     document.getElementById('smodeBgHexaList' + id).value = finalHexas;
     document.getElementById('smodeBgHexasToDeleteList' + id).value = '';
     }
+    
 </script>
 @endsection

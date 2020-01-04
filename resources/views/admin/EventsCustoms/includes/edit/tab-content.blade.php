@@ -102,7 +102,7 @@
 <?php 
     $i++;
     array_push($arrayEventsComponentsIds, $events_component->id);
-?>
+1?>
 <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$events_component->id}}">
 <input type="hidden" name="{{'comp_type_'.$i}}" id="{{'comp_type_'.$i}}" value="{{$events_component->type}}">
 <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
@@ -121,7 +121,8 @@
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::text('option_title'.$i, $events_component->title, [
-                                'class' => 'form-control',
+                                'class' => 'form-control text-muted',
+                                'disabled' => ''
                                 ]) !!}
                             </div>
                         </div>
@@ -208,6 +209,45 @@
                                                     <option value="bottom">Bas</option>
                                                     <option value="center">Centré</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        Configuration
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('selectable' . $events_component->id, true, [
+                                                'class' => 'myCheckbox'
+                                                ]) !!}
+                                                {!! Form::label('selectable', 'Sélectionnable') !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fullwidth' . $events_component->id, true, [
+                                                'class' => 'myCheckbox'
+                                                ]) !!}
+                                                {!! Form::label('fullwidth', 'Pleine largeur') !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fixed' . $i, true, [
+                                                'class' => 'myCheckbox'
+                                                ]) !!}
+                                                {!! Form::label('fixed', 'Position fixe') !!}
                                             </div>
                                         </div>
                                     </div>
@@ -449,26 +489,19 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h4 class="card-header-title">
-                                        Configuration
+                                        Alignement du composant par rapport à sa zone
                                     </h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group">
-                                                <label>
-                                                    Alignement
-                                                </label>
-                                                <div class="form-group">
-                                                    <select name="{{'align'.$events_component->id}}" id="align"
-                                                        class="form-control" data-toggle="select">
-                                                        <option value="center">Centré</option>
-                                                        <option value="right">Droite</option>
-                                                        <option value="left">Gauche</option>
-                                                        <option value="none">Aucun</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <select name="{{'align'.$events_component->id}}" id="align"
+                                                class="form-control" data-toggle="select">
+                                                <option value="center">Centré</option>
+                                                <option value="right">Droite</option>
+                                                <option value="left">Gauche</option>
+                                                <option value="none">Aucun</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -583,7 +616,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                {!! Form::checkbox('required' . $events_component->id, true, true) !!}
+                                {!! Form::checkbox('required' . $events_component->id, true, [
+                                'class' => 'myCheckbox'
+                                ]) !!}
                                 {!! Form::label('required', 'Requis ?') !!}
                             </div>
                         </div>
@@ -623,42 +658,6 @@
                                         'placeholder' => '0',
                                         'step' => 'any'
                                         ]) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('selectable' . $events_component->id, true, true)
-                                            !!}
-                                            {!! Form::label('selectable', 'Sélectionnable') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('fullwidth' . $events_component->id, true, true)
-                                            !!}
-                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('fixed' . $i, true, true) !!}
-                                            {!! Form::label('fixed', 'Position fixe ?') !!}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -725,7 +724,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12">
                                     <label>Alignement du texte</label>
                                     <div class="form-group">
                                         <select name="{{'text_align' . $events_component->id}}" id="align"
@@ -736,9 +735,11 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        {!! Form::checkbox('multiline' . $events_component->id, true, true) !!}
+                                        {!! Form::checkbox('multiline' . $events_component->id, true, [
+                                        'class' => 'myCheckbox'
+                                        ]) !!}
                                         {!! Form::label('multiline', 'Multiligne') !!}
                                     </div>
                                 </div>

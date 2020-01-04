@@ -104,7 +104,7 @@ class EventsCustomsController extends Controller
      */
     public function store(Request $request) {
         $validatedData = $request->validate([
-            'title' => 'required|unique:events_customs|string|max:255',
+            'title' => 'required|string|max:255',
             'custom_img' => 'required|image|mimes:jpeg,jpg,png|max:4000'
         ]);
         $disk = Storage::disk('s3');
@@ -127,11 +127,10 @@ class EventsCustomsController extends Controller
         $events_custom->events_product_id = $request->get('events_product_id');
         $events_custom->printzone_id = $request->printzone_id;
         $events_custom->template_id = $request->template_id;
-        
         // $events_custom->template_title = $template->title;
         $events_custom->products_variant_color = $request->products_variant_id;
-        $events_custom->is_active = 'true';
-        $events_custom->is_deleted = 'false';
+        $events_custom->is_active = true;
+        $events_custom->is_deleted = false;
         $events_custom->save();
         // here I push the id in the corresponding events_product
         $events_product = Events_products::find($events_custom->events_product_id);
@@ -366,43 +365,44 @@ class EventsCustomsController extends Controller
                 }
             }
             for ($i = 0; $i <= $count_component; $i++) {
-                $tp_id = $request->{'template_component_id' . $i};
-                if ($tp_id != null) {
-                    if ($request->{'comp_type_' . $i} == 'input') {
+                $ec_id = $request->{'template_component_id' . $i};
+                $events_component = Events_component::find($ec_id);
+                if ($ec_id != null) {
+                    if ($events_component->type == 'input') {
                         $array_colors = array();
-                        if ($request->{'colorsList' . $tp_id}[0] !== null ) {
-                            foreach ($request->{'colorsList' . $tp_id} as $colcode) {
-                                foreach ($request->{'hexaList' . $tp_id} as $hexa) {
+                        if ($request->{'colorsList' . $ec_id}[0] !== null) {
+                            foreach ($request->{'colorsList' . $ec_id} as $colcode) {
+                                foreach ($request->{'hexaList' . $ec_id} as $hexa) {
                                     $col = explode(",", $colcode);
                                     $hex = explode(",", $hexa);
                                 }
                             }
+                            $col_filtered = array_filter($col);
+                            $hex_filtered = array_filter($hex);
+                            $colors_titles = array_slice($col_filtered, 0);
+                            $hex_titles = array_slice($hex_filtered, 0);
+                            for ($j = 0; $j < count($colors_titles); $j++) {
+                                $array = array(
+                                    'title' => $colors_titles[$j],
+                                    'code_hexa' => $hex_titles[$j]
+                                );
+                                array_push($array_colors, $array);
+                            }
                         }
-                        else {
+                        else if ($request->{'colorsList' . $ec_id}[0] == null && $request->{'smodeColorsList' . $ec_id}[0] == null){
                             $alert = array(
                                 'status' => 'Merci d\'ajouter une couleur pour chacun des composants "texte".',
                                 'alert-type' => 'danger'
                             );
                             return redirect()->back()->with($alert);
                         }
-                        $col_filtered = array_filter($col);
-                        $hex_filtered = array_filter($hex);
-                        $colors_titles = array_slice($col_filtered, 0);
-                        $hex_titles = array_slice($hex_filtered, 0);
-                        for ($j = 0; $j < count($colors_titles); $j++) {
-                            $array = array(
-                                'title' => $colors_titles[$j],
-                                'code_hexa' => $hex_titles[$j]
-                            );
-                            array_push($array_colors, $array);
-                        }
                         // SMODE Colors & Background colors
                         $array_smode_colors = array();
-                        if ($request->{'smodeColorsList' . $tp_id}[0] !== null ) {
-                            foreach ($request->{'smodeColorsList' . $tp_id} as $colcode) {
-                                foreach ($request->{'smodeHexaList' . $tp_id} as $hexa) {
-                                    foreach ($request->{'smodeBgHexaList' . $tp_id} as $bghexa) {
-                                        foreach ($request->{'smodeBgColorsList' . $tp_id} as $bgcolcode) {
+                        if ($request->{'smodeColorsList' . $ec_id}[0] !== null ) {
+                            foreach ($request->{'smodeColorsList' . $ec_id} as $colcode) {
+                                foreach ($request->{'smodeHexaList' . $ec_id} as $hexa) {
+                                    foreach ($request->{'smodeBgHexaList' . $ec_id} as $bghexa) {
+                                        foreach ($request->{'smodeBgColorsList' . $ec_id} as $bgcolcode) {
                                             $col = explode(",", $colcode);
                                             $hex = explode(",", $hexa);
                                             $bgcol = explode(",", $bgcolcode);
@@ -432,8 +432,8 @@ class EventsCustomsController extends Controller
                       
                         $array_fonts = array();
                         $fonts = array();
-                        if ($request->{'fontsList' . $tp_id}[0] !== null ) {
-                            foreach (array_filter($request->{'fontsList' . $tp_id}) as $font_title) {
+                        if ($request->{'fontsList' . $ec_id}[0] !== null ) {
+                            foreach (array_filter($request->{'fontsList' . $ec_id}) as $font_title) {
                                 $font = explode(",", $font_title);
                             }
                         }
@@ -453,8 +453,8 @@ class EventsCustomsController extends Controller
                         $fonts_all = Font::all();
                         $array_fonts_weight = array();
                         $fonts_weight = array();
-                        foreach ($request->{'fontsWeightList' . $tp_id} as $font_weight) {
-                            foreach ($request->{'fontsTransformList' . $tp_id} as $font_transform) {
+                        foreach ($request->{'fontsWeightList' . $ec_id} as $font_weight) {
+                            foreach ($request->{'fontsTransformList' . $ec_id} as $font_transform) {
                                 $fonts_weight_exploded = explode(",", $font_weight);
                                 $fonts_transform_exploded = explode(",", $font_transform);
                                 array_push($fonts_weight, $fonts_transform_exploded);
@@ -502,88 +502,48 @@ class EventsCustomsController extends Controller
                                 array_push($array_fonts, $array_ft);
                             }
                         }
+                        $component_input = [
+                            'id' => $request->{'template_component_id' . $i},
+                            'index' => $i,
+                            'type' => $request->{'comp_type_' . $i},
+                            'title' => $events_component->title,
+                            'size' => [
+                                'width' => $request->{'width' . $i},
+                                'height' => $request->{'height' . $i},
+                                'fullwidth' => $request->{'fullwidth' . $ec_id}
+                            ],
+                            'position' => [
+                                'fixed' => $request->{'fixed' . $i},
+                                'x' => $request->{'origin_x' . $i},
+                                'y' => $request->{'origin_y' . $i},
+                                'alignX' => $request->{'alignX' . $ec_id},
+                                'alignY' => $request->{'alignY' . $ec_id},
+                            ],
+                            'selectable'=> $request->{'selectable' . $ec_id},
+                            'required'=> $request->{'required' . $ec_id},
+                            'settings' => [
+                                'input' => [
+                                    'length' => [
+                                        'min' => $request->{'min' . $i},
+                                        'max' => $request->{'max' . $i}
+                                    ],
+                                    'keyboard_type' => $request->{'keyboard_type' . $ec_id},
+                                    'default_text' => $request->{'default_text' . $i},
+                                    'first_letter' => $request->{'font_first_letter' . $i},
+                                    'font_size' => [
+                                        'min' => $request->{'min_size' . $ec_id},
+                                        'max' => $request->{'max_size' . $ec_id},
+                                    ],
+                                    'text_align' => $request->{'text_align' . $ec_id},
+                                    'multiline' => $request->{'multiline' . $ec_id},
+                                ],
+                                'fonts' => $array_fonts,
+                                'font_colors' => $array_colors,
+                                'smode_colors' => null,
+                            ],
+                        ];
                         if (isset($array_smode_colors)) {
-                            $component_input = [
-                                'id' => $request->{'template_component_id' . $i},
-                                'index' => $i,
-                                'type' => $request->{'comp_type_' . $i},
-                                'title' => $request->{'option_title' . $i},
-                                'size' => [
-                                    'width' => $request->{'width' . $i},
-                                    'height' => $request->{'height' . $i},
-                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
-                                ],
-                                'position' => [
-                                    'fixed' => $request->{'fixed' . $i},
-                                    'x' => $request->{'origin_x' . $i},
-                                    'y' => $request->{'origin_y' . $i},
-                                    'alignX' => $request->{'alignX' . $tp_id},
-                                    'alignY' => $request->{'alignY' . $tp_id},
-                                ],
-                                'selectable'=> $request->{'selectable' . $tp_id},
-                                'required'=> $request->{'required' . $tp_id},
-                                'settings' => [
-                                    'input' => [
-                                        'length' => [
-                                            'min' => $request->{'min' . $i},
-                                            'max' => $request->{'max' . $i}
-                                        ],
-                                        'keyboard_type' => $request->{'keyboard_type' . $tp_id},
-                                        'default_text' => $request->{'default_text' . $i},
-                                        'first_letter' => $request->{'font_first_letter' . $i},
-                                        'font_size' => [
-                                            'min' => $request->{'min_size' . $tp_id},
-                                            'max' => $request->{'max_size' . $tp_id},
-                                        ],
-                                        'text_align' => $request->{'text_align' . $tp_id},
-                                        'multiline' => $request->{'multiline' . $tp_id},
-                                    ],
-                                    'fonts' => $array_fonts,
-                                    'font_colors' => $array_colors,
-                                    'smode_colors' => $array_smode_colors,
-                                ],
-                            ];
-                        }
-                        else {
-                            $component_input = [
-                                'id' => $request->{'template_component_id' . $i},
-                                'index' => $i,
-                                'type' => $request->{'comp_type_' . $i},
-                                'title' => $request->{'option_title' . $i},
-                                'size' => [
-                                    'width' => $request->{'width' . $i},
-                                    'height' => $request->{'height' . $i},
-                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
-                                ],
-                                'position' => [
-                                    'fixed' => $request->{'fixed' . $i},
-                                    'x' => $request->{'origin_x' . $i},
-                                    'y' => $request->{'origin_y' . $i},
-                                    'alignX' => $request->{'alignX' . $tp_id},
-                                    'alignY' => $request->{'alignY' . $tp_id},
-                                ],
-                                'selectable'=> $request->{'selectable' . $tp_id},
-                                'required'=> $request->{'required' . $tp_id},
-                                'settings' => [
-                                    'input' => [
-                                        'length' => [
-                                            'min' => $request->{'min' . $i},
-                                            'max' => $request->{'max' . $i}
-                                        ],
-                                        'keyboard_type' => $request->{'keyboard_type' . $tp_id},
-                                        'default_text' => $request->{'default_text' . $i},
-                                        'first_letter' => $request->{'font_first_letter' . $i},
-                                        'font_size' => [
-                                            'min' => $request->{'min_size' . $tp_id},
-                                            'max' => $request->{'max_size' . $tp_id},
-                                        ],
-                                        'text_align' => $request->{'text_align' . $tp_id},
-                                        'multiline' => $request->{'multiline' . $tp_id},
-                                    ],
-                                    'fonts' => $array_fonts,
-                                    'font_colors' => $array_colors
-                                ],
-                            ];
+                            $component_input['settings']['smode_colors'] = $array_smode_colors;
                         }
                         if (isset($events_custom->template['components'])) {
                             $components = $events_custom->template['components'];
@@ -593,7 +553,7 @@ class EventsCustomsController extends Controller
                         }
                         if (!empty($components)) {
                             foreach ($components as $comp) {
-                                if ($comp['id'] == $tp_id) {
+                                if ($comp['id'] == $ec_id) {
                                     $font_to_delete = $comp;
                                     $comp = $component_input;
                                 }
@@ -610,10 +570,32 @@ class EventsCustomsController extends Controller
                             array_push($components, $component_input);
                         }
                     }
-                    if ($request->{'comp_type_' . $i} == 'image') {
-                        if ($request->hasFile('comp_image' . $tp_id)) {
+                    if ($events_component->type == 'image') {
+                        $component_image = [
+                            'id' => $request->{'template_component_id' . $i},
+                            'type' => $request->{'comp_type_' . $i},
+                            'title' => $events_component->title,
+                            'index' => $i,
+                            'size' => [
+                                'width' => $request->{'width' . $i},
+                                'height' => $request->{'height' . $i},
+                                'fullwidth' => $request->{'fullwidth' . $ec_id}
+                            ],
+                            'position' => [
+                                'fixed' => $request->{'fixed' . $i},
+                                'x' => $request->{'origin_x' . $i},
+                                'y' => $request->{'origin_y' . $i},
+                                'alignX' => $request->{'alignX' . $ec_id},
+                                'alignY' => $request->{'alignY' . $ec_id}
+                            ],
+                            'selectable' => $request->{'selectable' . $ec_id},
+                            'settings' => [
+                                'image' => [],
+                            ]
+                        ];
+                        if ($request->hasFile('comp_image' . $ec_id)) {
                             $events_custom_event_id = $request->events_custom_event_id;
-                            $image_file = $request->file('comp_image' . $tp_id);
+                            $image_file = $request->file('comp_image' . $ec_id);
                             $option_title = $request->{'option_title' . $i};
                             $image_name = time() . $image_file->getClientOriginalName();
                             $newFilePath = 'events/'.$events_custom_event_id.'/images/resized/'.$image_name;
@@ -626,58 +608,45 @@ class EventsCustomsController extends Controller
                                 unlink(public_path() . '/' . $image_name);
                             }
                             $image_file = $newFilePath;
-                            $component_image = [
-                                'id' => $request->{'template_component_id' . $i},
-                                'type' => $request->{'comp_type_' . $i},
-                                'title' => $request->{'option_title' . $i},
-                                'index' => $i,
-                                'size' => [
-                                    'width' => $request->{'width' . $i},
-                                    'height' => $request->{'height' . $i},
-                                    'fullwidth' => $request->{'fullwidth' . $tp_id}
-                                ],
-                                'position' => [
-                                    'fixed' => $request->{'fixed' . $i},
-                                    'x' => $request->{'origin_x' . $i},
-                                    'y' => $request->{'origin_y' . $i},
-                                    'alignX' => $request->{'alignX' . $tp_id},
-                                    'alignY' => $request->{'alignY' . $tp_id}
-                                ],
-                                'selectable' => $request->{'selectable' . $tp_id},
-                                'settings' => [
-                                    'image' => [
-                                        'original_url' => $filePath,
-                                        'display_url' => $newFilePath,
-                                    ],
-                                ]
+                            $imgs = [
+                                'original_url' => $filePath,
+                                'display_url' => $newFilePath
                             ];
-                            if (isset($events_custom->template['components'])) {
-                                $components = $events_custom->template['components'];
-                            }
-                            else if (!isset($components)) {
-                                $components = [];
-                            }
-                            if (!empty($components)) {
-                                foreach ($components as $comp) {
-                                    if ($comp['id'] == $tp_id) {
-                                        $to_delete = $comp;
-                                        $comp = $component_image;
-                                    }
-                                    else {
-                                        array_push($components, $component_image);
-                                    }
-                                }
-                                if (isset($to_delete)) {
-                                    $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $to_delete);
-                                    $components = $result;
-                                    if (empty($components)) {
-                                        array_push($components, $component_image);
-                                    }
+                            $component_image['settings']['image'] = $imgs;
+                        }
+                        else {
+                            foreach ($events_custom->template['components'] as $comp) {
+                                if ($comp['id'] == $ec_id) {
+                                    $component_image['settings']['image'] = $comp['settings']['image'];
                                 }
                             }
-                            else {
-                                array_push($components, $component_image);
+                        }
+                        if (isset($events_custom->template['components'])) {
+                            $components = $events_custom->template['components'];
+                        }
+                        else if (!isset($components)) {
+                            $components = [];
+                        }
+                        if (!empty($components)) {
+                            foreach ($components as $comp) {
+                                if ($comp['id'] == $ec_id) {
+                                    $to_delete = $comp;
+                                    $comp = $component_image;
+                                }
+                                else {
+                                    array_push($components, $component_image);
+                                }
                             }
+                            if (isset($to_delete)) {
+                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $to_delete);
+                                $components = $result;
+                                if (empty($components)) {
+                                    array_push($components, $component_image);
+                                }
+                            }
+                        }
+                        else {
+                            array_push($components, $component_image);
                         }
                     }
                 }
@@ -692,18 +661,13 @@ class EventsCustomsController extends Controller
                 'size' => [
                     'width' => $template->size['width'],
                     'height' => $template->size['height']
-                    // 'fullwidth' => $template->size['fullwidth']
                 ],
                 'position' => [
                     'X' => $template->origin['x'],
                     'y' => $template->origin['y']
-                    // 'alignX' => $template->origin['alignX'],
-                    // 'alignY' => $template->origin['alignY']
                 ],
                 'components' => $components
             ];
-            
-            // $events_custom->template['components'] = $components;
             $events_custom->description = $request->description;
             $events_custom->is_active = $request->is_active;
             $events_custom->update();

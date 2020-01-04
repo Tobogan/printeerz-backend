@@ -115,7 +115,8 @@
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::text('option_title'.$i, $component['title'], [
-                                'class' => 'form-control',
+                                'class' => 'form-control text-muted b-2',
+                                'disabled' => ''
                                 ]) !!}
                             </div>
                         </div>
@@ -249,6 +250,42 @@
                                                     <option value="center" selected>Centré</option>
                                                 </select>
                                                 @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        Configuration
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('selectable' . $component['id'],
+                                                $component['selectable'],$component['selectable']) !!}
+                                                {!! Form::label('selectable', 'Sélectionnable') !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fullwidth' . $component['id'],
+                                                $component['size']['fullwidth'],$component['size']['fullwidth']) !!}
+                                                {!! Form::label('fullwidth', 'Pleine largeur') !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fixed' . $i,
+                                                $component['position']['fixed'],$component['position']['fixed']) !!}
+                                                {!! Form::label('fixed', 'Position fixe') !!}
                                             </div>
                                         </div>
                                     </div>
@@ -744,50 +781,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Position du composant
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('selectable' . $component['id'],
-                                            $component['selectable'])
-                                            !!}
-                                            {!! Form::label('selectable', 'Sélectionnable') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('fullwidth' . $component['id'],
-                                            $component['size']['fullwidth'])
-                                            !!}
-                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            {!! Form::checkbox('fixed' . $i, $component['position']['fixed'], true)
-                                            !!}
-                                            {!! Form::label('fixed', 'Position fixe') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             @if($component['type'] == 'input')
             <div class="row">
                 <div class="col-12">
@@ -864,7 +857,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12">
                                     <label>Alignement du texte</label>
                                     <div class="form-group">
                                         @if ($component['settings']['input']['text_align'] == 'center')
@@ -891,7 +884,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12">
                                     <div class="form-group">
                                         {!! Form::checkbox('multiline' . $component['id'],
                                         $component['settings']['input']['multiline'])
@@ -915,7 +908,8 @@
                 </div>
                 <div class="card-body">
                     <img width="100%" title="Image du composant" class=""
-                        src="{{$disk->url($component['settings']['image']['display_url'])}}" alt="Image personnalisation">
+                        src="{{$disk->url($component['settings']['image']['display_url'])}}"
+                        alt="Image personnalisation">
                 </div>
             </div>
             @else
