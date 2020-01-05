@@ -367,6 +367,7 @@ class EventsCustomsController extends Controller
             for ($i = 0; $i <= $count_component; $i++) {
                 $ec_id = $request->{'template_component_id' . $i};
                 $events_component = Events_component::find($ec_id);
+
                 if ($ec_id != null) {
                     if ($events_component->type == 'input') {
                         $array_colors = array();
@@ -489,7 +490,7 @@ class EventsCustomsController extends Controller
                                 }
                             }
                         }
-                        for ($k=0; $k<count(array_filter($font)); $k++) {
+                        for ($k = 0; $k < count(array_filter($font)); $k++) {
                             if ($font[$k] !== null) {
                                 $array_ft = array(
                                     'title' => $font[$k],
@@ -502,6 +503,36 @@ class EventsCustomsController extends Controller
                                 array_push($array_fonts, $array_ft);
                             }
                         }
+                        if ($request->{'fullwidth' . $ec_id} == 1) {
+                            $fullwidth = true;
+                        }
+                        else {
+                            $fullwidth = false;
+                        }
+                        if ($request->{'fixed' . $i} == 1) {
+                            $fixed = true;
+                        }
+                        else {
+                            $fixed = false;
+                        }
+                        if ($request->{'selectable' . $ec_id} == 1) {
+                            $selectable = true;
+                        }
+                        else {
+                            $selectable = false;
+                        }
+                        if ($request->{'required' . $ec_id} == 1) {
+                            $required = true;
+                        }
+                        else {
+                            $required = true;
+                        }
+                        if ($request->{'multiline' . $ec_id} == 1) {
+                            $multiline = true;
+                        }
+                        else {
+                            $multiline = false;
+                        }
                         $component_input = [
                             'id' => $request->{'template_component_id' . $i},
                             'index' => $i,
@@ -510,17 +541,17 @@ class EventsCustomsController extends Controller
                             'size' => [
                                 'width' => $request->{'width' . $i},
                                 'height' => $request->{'height' . $i},
-                                'fullwidth' => $request->{'fullwidth' . $ec_id}
+                                'fullwidth' => $fullwidth
                             ],
                             'position' => [
-                                'fixed' => $request->{'fixed' . $i},
+                                'fixed' => $fixed,
                                 'x' => $request->{'origin_x' . $i},
                                 'y' => $request->{'origin_y' . $i},
                                 'alignX' => $request->{'alignX' . $ec_id},
                                 'alignY' => $request->{'alignY' . $ec_id},
                             ],
-                            'selectable'=> $request->{'selectable' . $ec_id},
-                            'required'=> $request->{'required' . $ec_id},
+                            'selectable'=> $selectable,
+                            'required'=> $required,
                             'settings' => [
                                 'input' => [
                                     'length' => [
@@ -535,7 +566,7 @@ class EventsCustomsController extends Controller
                                         'max' => $request->{'max_size' . $ec_id},
                                     ],
                                     'text_align' => $request->{'text_align' . $ec_id},
-                                    'multiline' => $request->{'multiline' . $ec_id},
+                                    'multiline' => $multiline,
                                 ],
                                 'fonts' => $array_fonts,
                                 'font_colors' => $array_colors,
@@ -571,6 +602,24 @@ class EventsCustomsController extends Controller
                         }
                     }
                     if ($events_component->type == 'image') {
+                        if ($request->{'fullwidth' . $ec_id} == 1) {
+                            $fullwidth = true;
+                        }
+                        else {
+                            $fullwidth = false;
+                        }
+                        if ($request->{'fixed' . $i} == 1) {
+                            $fixed = true;
+                        }
+                        else {
+                            $fixed = false;
+                        }
+                        if ($request->{'selectable' . $ec_id} == 1) {
+                            $selectable = true;
+                        }
+                        else {
+                            $selectable = false;
+                        }
                         $component_image = [
                             'id' => $request->{'template_component_id' . $i},
                             'type' => $request->{'comp_type_' . $i},
@@ -579,16 +628,16 @@ class EventsCustomsController extends Controller
                             'size' => [
                                 'width' => $request->{'width' . $i},
                                 'height' => $request->{'height' . $i},
-                                'fullwidth' => $request->{'fullwidth' . $ec_id}
+                                'fullwidth' => $fullwidth
                             ],
                             'position' => [
-                                'fixed' => $request->{'fixed' . $i},
+                                'fixed' => $fixed,
                                 'x' => $request->{'origin_x' . $i},
                                 'y' => $request->{'origin_y' . $i},
                                 'alignX' => $request->{'alignX' . $ec_id},
                                 'alignY' => $request->{'alignY' . $ec_id}
                             ],
-                            'selectable' => $request->{'selectable' . $ec_id},
+                            'selectable' => $selectable,
                             'settings' => [
                                 'image' => [],
                             ]
