@@ -116,7 +116,7 @@ class EventsCustomsController extends Controller
             $file = $request->file('custom_img');
             $name = time() . $file->getClientOriginalName();
             $filePath = 'events/'. $request->get('event_id') . '/'. $events_custom->id . '/'. $name;
-            $img = Image::make(file_get_contents($file))->widen(300)->save($name);
+            $img = Image::make(file_get_contents($file))->widen(500)->save($name);
             $disk->put($filePath, $img, 'public');
             $events_custom->imageUrl = $filePath;
             if (file_exists(public_path() . '/' . $name)) {
@@ -364,349 +364,352 @@ class EventsCustomsController extends Controller
                     $disk->delete($oldPath);
                 }
             }
-            for ($i = 0; $i <= $count_component; $i++) {
-                $ec_id = $request->{'template_component_id' . $i};
+            // for ($i = 0; $i <= $count_component; $i++) {
+            $i = 1;
+            foreach ($events_custom->components_ids as $ec_id) {
+                // $ec_id = $request->{'template_component_id' . $ec_id};
                 $events_component = Events_component::find($ec_id);
-
-                if ($ec_id != null) {
-                    if ($events_component->type == 'input') {
-                        $array_colors = array();
-                        if ($request->{'colorsList' . $ec_id}[0] !== null) {
-                            foreach ($request->{'colorsList' . $ec_id} as $colcode) {
-                                foreach ($request->{'hexaList' . $ec_id} as $hexa) {
-                                    $col = explode(",", $colcode);
-                                    $hex = explode(",", $hexa);
-                                }
-                            }
-                            $col_filtered = array_filter($col);
-                            $hex_filtered = array_filter($hex);
-                            $colors_titles = array_slice($col_filtered, 0);
-                            $hex_titles = array_slice($hex_filtered, 0);
-                            for ($j = 0; $j < count($colors_titles); $j++) {
-                                $array = array(
-                                    'title' => $colors_titles[$j],
-                                    'code_hexa' => $hex_titles[$j]
-                                );
-                                array_push($array_colors, $array);
+                if ($events_component->type == 'input') {
+                    $array_colors = array();
+                    if ($request->{'colorsList' . $ec_id}[0] !== null) {
+                        foreach ($request->{'colorsList' . $ec_id} as $colcode) {
+                            foreach ($request->{'hexaList' . $ec_id} as $hexa) {
+                                $col = explode(",", $colcode);
+                                $hex = explode(",", $hexa);
                             }
                         }
-                        else if ($request->{'colorsList' . $ec_id}[0] == null && $request->{'smodeColorsList' . $ec_id}[0] == null){
-                            $alert = array(
-                                'status' => 'Merci d\'ajouter une couleur pour chacun des composants "texte".',
-                                'alert-type' => 'danger'
+                        $col_filtered = array_filter($col);
+                        $hex_filtered = array_filter($hex);
+                        $colors_titles = array_slice($col_filtered, 0);
+                        $hex_titles = array_slice($hex_filtered, 0);
+                        for ($j = 0; $j < count($colors_titles); $j++) {
+                            $array = array(
+                                'title' => $colors_titles[$j],
+                                'code_hexa' => $hex_titles[$j]
                             );
-                            return redirect()->back()->with($alert);
-                        }
-                        // SMODE Colors & Background colors
-                        $array_smode_colors = array();
-                        if ($request->{'smodeColorsList' . $ec_id}[0] !== null ) {
-                            foreach ($request->{'smodeColorsList' . $ec_id} as $colcode) {
-                                foreach ($request->{'smodeHexaList' . $ec_id} as $hexa) {
-                                    foreach ($request->{'smodeBgHexaList' . $ec_id} as $bghexa) {
-                                        foreach ($request->{'smodeBgColorsList' . $ec_id} as $bgcolcode) {
-                                            $col = explode(",", $colcode);
-                                            $hex = explode(",", $hexa);
-                                            $bgcol = explode(",", $bgcolcode);
-                                            $bghex = explode(",", $bghexa);
-                                        }
-                                    }
-                                }
-                            }
-                            $col_filtered = array_filter($col);
-                            $hex_filtered = array_filter($hex);
-                            $bg_col_filtered = array_filter($bgcol);
-                            $bg_hex_filtered = array_filter($bghex);
-                            $bg_colors_titles = array_slice($bg_col_filtered, 0);
-                            $bg_hex_titles = array_slice($bg_hex_filtered, 0);
-                            $colors_titles = array_slice($col_filtered, 0);
-                            $hex_titles = array_slice($hex_filtered, 0);
-                            for ($j = 0; $j < count($colors_titles); $j++) {
-                                $array = array(
-                                    'title' => $colors_titles[$j],
-                                    'code_hexa' => $hex_titles[$j],
-                                    'bg_title' => $bg_colors_titles[$j],
-                                    'bg_code_hexa' => $bg_hex_titles[$j]
-                                );
-                                array_push($array_smode_colors, $array);
-                            }
-                        }
-                      
-                        $array_fonts = array();
-                        $fonts = array();
-                        if ($request->{'fontsList' . $ec_id}[0] !== null ) {
-                            foreach (array_filter($request->{'fontsList' . $ec_id}) as $font_title) {
-                                $font = explode(",", $font_title);
-                            }
-                        }
-                        else {
-                            $alert = array(
-                                'status' => 'Merci d\'ajouter une police pour chacun des composants "texte".',
-                                'alert-type' => 'danger'
-                            );
-                            return redirect()->back()->with($alert);
-                        }
-                        if ($font[0] == "") {
-                            $shift = array_shift($font);
-                        }
-                        $arr_ids = array();
-                        $arr_urls = array();
-                        $arr_filenames = array();
-                        $fonts_all = Font::all();
-                        $array_fonts_weight = array();
-                        $fonts_weight = array();
-                        foreach ($request->{'fontsWeightList' . $ec_id} as $font_weight) {
-                            foreach ($request->{'fontsTransformList' . $ec_id} as $font_transform) {
-                                $fonts_weight_exploded = explode(",", $font_weight);
-                                $fonts_transform_exploded = explode(",", $font_transform);
-                                array_push($fonts_weight, $fonts_transform_exploded);
-                            }
-                        }
-                        if ($fonts_weight_exploded[0] == "") {
-                            $shifted_weight = array_shift($fonts_weight_exploded);
-                            $shifted_transform = array_shift($fonts_transform_exploded);
-                        }
-                        foreach (array_filter($font) as $ft) {
-                            foreach ($fonts_all as $font_obj) {
-                                if ($font_obj->title == $ft) {
-                                    foreach ($fonts_weight_exploded as $weight) {
-                                        if ($weight == 'default') {
-                                            array_push($array_fonts_weight, $font_obj->weight);
-                                        }
-                                        else {
-                                            array_push($array_fonts_weight, $weight);
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                        foreach (array_filter($font) as $ft) {
-                            foreach ($fonts_all as $font_obj) {
-                                if ($font_obj->title == $ft) {
-                                    array_push($arr_ids, $font_obj->id);
-                                    array_push($arr_urls, $font_obj->url);
-                                    array_push($arr_filenames, $font_obj->file_name);
-                                    break;
-                                }
-                            }
-                        }
-                        for ($k = 0; $k < count(array_filter($font)); $k++) {
-                            if ($font[$k] !== null) {
-                                $array_ft = array(
-                                    'title' => $font[$k],
-                                    'font_id' => $arr_ids[$k],
-                                    'font_file_name' => $arr_filenames[$k],
-                                    'font_weight' => $array_fonts_weight[$k],
-                                    'font_transform' => $fonts_transform_exploded[$k],
-                                    'font_url' => $arr_urls[$k]
-                                );
-                                array_push($array_fonts, $array_ft);
-                            }
-                        }
-                        if ($request->{'fullwidth' . $ec_id} == 1) {
-                            $fullwidth = true;
-                        }
-                        else {
-                            $fullwidth = false;
-                        }
-                        if ($request->{'fixed' . $i} == 1) {
-                            $fixed = true;
-                        }
-                        else {
-                            $fixed = false;
-                        }
-                        if ($request->{'selectable' . $ec_id} == 1) {
-                            $selectable = true;
-                        }
-                        else {
-                            $selectable = false;
-                        }
-                        if ($request->{'required' . $ec_id} == 1) {
-                            $required = true;
-                        }
-                        else {
-                            $required = true;
-                        }
-                        if ($request->{'multiline' . $ec_id} == 1) {
-                            $multiline = true;
-                        }
-                        else {
-                            $multiline = false;
-                        }
-                        $component_input = [
-                            'id' => $request->{'template_component_id' . $i},
-                            'index' => $i,
-                            'type' => $request->{'comp_type_' . $i},
-                            'title' => $events_component->title,
-                            'size' => [
-                                'width' => $request->{'width' . $i},
-                                'height' => $request->{'height' . $i},
-                                'fullwidth' => $fullwidth
-                            ],
-                            'position' => [
-                                'fixed' => $fixed,
-                                'x' => $request->{'origin_x' . $i},
-                                'y' => $request->{'origin_y' . $i},
-                                'alignX' => $request->{'alignX' . $ec_id},
-                                'alignY' => $request->{'alignY' . $ec_id},
-                            ],
-                            'selectable'=> $selectable,
-                            'required'=> $required,
-                            'settings' => [
-                                'input' => [
-                                    'length' => [
-                                        'min' => $request->{'min' . $i},
-                                        'max' => $request->{'max' . $i}
-                                    ],
-                                    'keyboard_type' => $request->{'keyboard_type' . $ec_id},
-                                    'default_text' => $request->{'default_text' . $i},
-                                    'first_letter' => $request->{'font_first_letter' . $i},
-                                    'font_size' => [
-                                        'min' => $request->{'min_size' . $ec_id},
-                                        'max' => $request->{'max_size' . $ec_id},
-                                    ],
-                                    'text_align' => $request->{'text_align' . $ec_id},
-                                    'multiline' => $multiline,
-                                ],
-                                'fonts' => $array_fonts,
-                                'font_colors' => $array_colors,
-                                'smode_colors' => null,
-                            ],
-                        ];
-                        if (isset($array_smode_colors)) {
-                            $component_input['settings']['smode_colors'] = $array_smode_colors;
-                        }
-                        if (isset($events_custom->template['components'])) {
-                            $components = $events_custom->template['components'];
-                        }
-                        else if (!isset($components)) {
-                            $components = [];
-                        }
-                        if (!empty($components)) {
-                            foreach ($components as $comp) {
-                                if ($comp['id'] == $ec_id) {
-                                    $font_to_delete = $comp;
-                                    $comp = $component_input;
-                                }
-                                else {
-                                    array_push($components, $component_input);
-                                }
-                            }
-                            if (isset($font_to_delete)) {
-                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $font_to_delete);
-                                $components = $result;
-                            }
-                        }
-                        else {
-                            array_push($components, $component_input);
+                            array_push($array_colors, $array);
                         }
                     }
-                    if ($events_component->type == 'image') {
-                        if ($request->{'fullwidth' . $ec_id} == 1) {
-                            $fullwidth = true;
-                        }
-                        else {
-                            $fullwidth = false;
-                        }
-                        if ($request->{'fixed' . $i} == 1) {
-                            $fixed = true;
-                        }
-                        else {
-                            $fixed = false;
-                        }
-                        if ($request->{'selectable' . $ec_id} == 1) {
-                            $selectable = true;
-                        }
-                        else {
-                            $selectable = false;
-                        }
-                        $component_image = [
-                            'id' => $request->{'template_component_id' . $i},
-                            'type' => $request->{'comp_type_' . $i},
-                            'title' => $events_component->title,
-                            'index' => $i,
-                            'size' => [
-                                'width' => $request->{'width' . $i},
-                                'height' => $request->{'height' . $i},
-                                'fullwidth' => $fullwidth
-                            ],
-                            'position' => [
-                                'fixed' => $fixed,
-                                'x' => $request->{'origin_x' . $i},
-                                'y' => $request->{'origin_y' . $i},
-                                'alignX' => $request->{'alignX' . $ec_id},
-                                'alignY' => $request->{'alignY' . $ec_id}
-                            ],
-                            'selectable' => $selectable,
-                            'settings' => [
-                                'image' => [],
-                            ]
-                        ];
-                        if ($request->hasFile('comp_image' . $ec_id)) {
-                            $events_custom_event_id = $request->events_custom_event_id;
-                            $image_file = $request->file('comp_image' . $ec_id);
-                            $option_title = $request->{'option_title' . $i};
-                            $image_name = time() . $image_file->getClientOriginalName();
-                            $newFilePath = 'events/'.$events_custom_event_id.'/images/resized/'.$image_name;
-                            $filePath = 'events/'.$events_custom_event_id.'/images/original/'.$image_name;
-                            $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
-                            $original_img = Image::make(file_get_contents($image_file))->save($image_name);
-                            $disk->put($newFilePath, $img_resized, 'public');
-                            $disk->put($filePath, $original_img, 'public');
-                            if (file_exists(public_path() . '/' . $image_name)) {
-                                unlink(public_path() . '/' . $image_name);
-                            }
-                            $image_file = $newFilePath;
-                            $imgs = [
-                                'original_url' => $filePath,
-                                'display_url' => $newFilePath
-                            ];
-                            $component_image['settings']['image'] = $imgs;
-                        }
-                        else {
-                            if (isset($events_custom->template['components'])) {
-                                foreach ($events_custom->template['components'] as $comp) {
-                                    if ($comp['id'] == $ec_id) {
-                                        $component_image['settings']['image'] = $comp['settings']['image'];
+                    else if ($request->{'colorsList' . $ec_id}[0] == null && $request->{'smodeColorsList' . $ec_id}[0] == null){
+                        $alert = array(
+                            'status' => 'Merci d\'ajouter une couleur pour chacun des composants "texte".',
+                            'alert-type' => 'danger'
+                        );
+                        return redirect()->back()->with($alert);
+                    }
+                    // SMODE Colors & Background colors
+                    $array_smode_colors = array();
+                    if ($request->{'smodeColorsList' . $ec_id}[0] !== null ) {
+                        foreach ($request->{'smodeColorsList' . $ec_id} as $colcode) {
+                            foreach ($request->{'smodeHexaList' . $ec_id} as $hexa) {
+                                foreach ($request->{'smodeBgHexaList' . $ec_id} as $bghexa) {
+                                    foreach ($request->{'smodeBgColorsList' . $ec_id} as $bgcolcode) {
+                                        $col = explode(",", $colcode);
+                                        $hex = explode(",", $hexa);
+                                        $bgcol = explode(",", $bgcolcode);
+                                        $bghex = explode(",", $bghexa);
                                     }
                                 }
+                            }
+                        }
+                        $col_filtered = array_filter($col);
+                        $hex_filtered = array_filter($hex);
+                        $bg_col_filtered = array_filter($bgcol);
+                        $bg_hex_filtered = array_filter($bghex);
+                        $bg_colors_titles = array_slice($bg_col_filtered, 0);
+                        $bg_hex_titles = array_slice($bg_hex_filtered, 0);
+                        $colors_titles = array_slice($col_filtered, 0);
+                        $hex_titles = array_slice($hex_filtered, 0);
+                        for ($j = 0; $j < count($colors_titles); $j++) {
+                            $array = array(
+                                'title' => $colors_titles[$j],
+                                'code_hexa' => $hex_titles[$j],
+                                'bg_title' => $bg_colors_titles[$j],
+                                'bg_code_hexa' => $bg_hex_titles[$j]
+                            );
+                            array_push($array_smode_colors, $array);
+                        }
+                    }
+                    $array_fonts = array();
+                    $fonts = array();
+                    if ($request->{'fontsList' . $ec_id}[0] !== null ) {
+                        foreach (array_filter($request->{'fontsList' . $ec_id}) as $font_title) {
+                            $font = explode(",", $font_title);
+                        }
+                    }
+                    else {
+                        $alert = array(
+                            'status' => 'Merci d\'ajouter une police pour chacun des composants "texte".',
+                            'alert-type' => 'danger'
+                        );
+                        return redirect()->back()->with($alert);
+                    }
+                    if ($font[0] == "") {
+                        $shift = array_shift($font);
+                    }
+                    $arr_ids = array();
+                    $arr_urls = array();
+                    $arr_filenames = array();
+                    $fonts_all = Font::all();
+                    $array_fonts_weight = array();
+                    $fonts_weight = array();
+                    foreach ($request->{'fontsWeightList' . $ec_id} as $font_weight) {
+                        foreach ($request->{'fontsTransformList' . $ec_id} as $font_transform) {
+                            $fonts_weight_exploded = explode(",", $font_weight);
+                            $fonts_transform_exploded = explode(",", $font_transform);
+                            array_push($fonts_weight, $fonts_transform_exploded);
+                        }
+                    }
+                    if ($fonts_weight_exploded[0] == "") {
+                        $shifted_weight = array_shift($fonts_weight_exploded);
+                        $shifted_transform = array_shift($fonts_transform_exploded);
+                    }
+                    foreach (array_filter($font) as $ft) {
+                        foreach ($fonts_all as $font_obj) {
+                            if ($font_obj->title == $ft) {
+                                foreach ($fonts_weight_exploded as $weight) {
+                                    if ($weight == 'default') {
+                                        array_push($array_fonts_weight, $font_obj->weight);
+                                    }
+                                    else {
+                                        array_push($array_fonts_weight, $weight);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    foreach (array_filter($font) as $ft) {
+                        foreach ($fonts_all as $font_obj) {
+                            if ($font_obj->title == $ft) {
+                                array_push($arr_ids, $font_obj->id);
+                                array_push($arr_urls, $font_obj->url);
+                                array_push($arr_filenames, $font_obj->file_name);
+                                break;
+                            }
+                        }
+                    }
+                    for ($k = 0; $k < count(array_filter($font)); $k++) {
+                        if ($font[$k] !== null) {
+                            $array_ft = array(
+                                'title' => $font[$k],
+                                'font_id' => $arr_ids[$k],
+                                'font_file_name' => $arr_filenames[$k],
+                                'font_weight' => $array_fonts_weight[$k],
+                                'font_transform' => $fonts_transform_exploded[$k],
+                                'font_url' => $arr_urls[$k]
+                            );
+                            array_push($array_fonts, $array_ft);
+                        }
+                    }
+                    if ($request->{'fullwidth' . $ec_id} == "true") {
+                        $fullwidth = true;
+                    }
+                    else {
+                        $fullwidth = false;
+                    }
+                    if ($request->{'fixed' . $ec_id} == "true") {
+                        $fixed = true;
+                    }
+                    else {
+                        $fixed = false;
+                    }
+                    if ($request->{'selectable' . $ec_id} == "true") {
+                        $selectable = true;
+                    }
+                    else {
+                        $selectable = false;
+                    }
+                    if ($request->{'required' . $ec_id} == "true") {
+                        $required = true;
+                    }
+                    else {
+                        $required = false;
+                    }
+                    if ($request->{'multiline' . $ec_id} == "true") {
+                        $multiline = true;
+                    }
+                    else {
+                        $multiline = false;
+                    }
+                    $component_input = [
+                        // 'id' => $request->{'template_component_id' . $i},
+                        'id' => $ec_id,
+                        'index' => $i,
+                        'type' => $events_component->type,
+                        'title' => $events_component->title,
+                        'size' => [
+                            'width' => $request->{'width' . $ec_id},
+                            'height' => $request->{'height' . $ec_id},
+                            'fullwidth' => $fullwidth
+                        ],
+                        'position' => [
+                            'fixed' => $fixed,
+                            'x' => $request->{'origin_x' . $ec_id},
+                            'y' => $request->{'origin_y' . $ec_id},
+                            'alignX' => $request->{'alignX' . $ec_id},
+                            'alignY' => $request->{'alignY' . $ec_id},
+                        ],
+                        'selectable'=> $selectable,
+                        'required'=> $required,
+                        'settings' => [
+                            'input' => [
+                                'length' => [
+                                    'min' => $request->{'min' . $ec_id},
+                                    'max' => $request->{'max' . $ec_id}
+                                ],
+                                'keyboard_type' => $request->{'keyboard_type' . $ec_id},
+                                'default_text' => $request->{'default_text' . $ec_id},
+                                'first_letter' => $request->{'font_first_letter' . $ec_id},
+                                'font_size' => [
+                                    'min' => $request->{'min_size' . $ec_id},
+                                    'max' => $request->{'max_size' . $ec_id},
+                                ],
+                                'text_align' => $request->{'text_align' . $ec_id},
+                                'multiline' => $multiline,
+                            ],
+                            'fonts' => $array_fonts,
+                            'font_colors' => $array_colors,
+                            'smode_colors' => null,
+                        ],
+                    ];
+                    if (isset($array_smode_colors)) {
+                        $component_input['settings']['smode_colors'] = $array_smode_colors;
+                    }
+                    if (isset($events_custom->template['components']) && !isset($components)) {
+                        $components = $events_custom->template['components'];
+                    }
+                    else if (!isset($components)) {
+                        $components = [];
+                    }
+                    if (!empty($components)) {
+                        foreach ($components as $comp) {
+                            if ($comp['id'] == $ec_id) {
+                                $font_to_delete = $comp;
+                                $comp = $component_input;
                             }
                             else {
-                                $alert = array(
-                                'status' => 'Merci d\'ajouter une image au composant.',
-                                'alert-type' => 'danger'
-                            );
-                            return redirect()->back()->with($alert);
+                                array_push($components, $component_input);
                             }
                         }
+                        if (isset($font_to_delete)) {
+                            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $font_to_delete);
+                            $components = $result;
+                        }
+                    }
+                    else {
+                        array_push($components, $component_input);
+                    }
+                    $i++;
+                }
+                if ($events_component->type == 'image') {
+                    if ($request->{'fullwidth' . $ec_id} == "true") {
+                        $fullwidth_img = true;
+                    }
+                    else {
+                        $fullwidth_img = false;
+                    }
+                    if ($request->{'fixed' . $ec_id} == "true") {
+                        $fixed_img = true;
+                    }
+                    else {
+                        $fixed_img = false;
+                    }
+                    if ($request->{'selectable' . $ec_id} == "true") {
+                        $selectable_img = true;
+                    }
+                    else {
+                        $selectable_img = false;
+                    }
+                    $component_image = [
+                        'id' => $ec_id,
+                        'type' => $events_component->type,
+                        'title' => $events_component->title,
+                        'index' => $i,
+                        'size' => [
+                            'width' => $request->{'width' . $ec_id},
+                            'height' => $request->{'height' . $ec_id},
+                            'fullwidth' => $fullwidth_img
+                        ],
+                        'position' => [
+                            'fixed' => $fixed_img,
+                            'x' => $request->{'origin_x' . $ec_id},
+                            'y' => $request->{'origin_y' . $ec_id},
+                            'alignX' => $request->{'alignX' . $ec_id},
+                            'alignY' => $request->{'alignY' . $ec_id}
+                        ],
+                        'selectable' => $selectable_img,
+                        'settings' => [
+                            'image' => [],
+                        ]
+                    ];
+                    if ($request->hasFile('comp_image' . $ec_id)) {
+                        $events_custom_event_id = $request->events_custom_event_id;
+                        $image_file = $request->file('comp_image' . $ec_id);
+                        $option_title = $request->{'option_title' . $ec_id};
+                        $image_name = time() . $image_file->getClientOriginalName();
+                        $newFilePath = 'events/'.$events_custom_event_id.'/images/resized/'.$image_name;
+                        $filePath = 'events/'.$events_custom_event_id.'/images/original/'.$image_name;
+                        $img_resized = Image::make(file_get_contents($image_file))->widen(600)->save($image_name);
+                        $original_img = Image::make(file_get_contents($image_file))->save($image_name);
+                        $disk->put($newFilePath, $img_resized, 'public');
+                        $disk->put($filePath, $original_img, 'public');
+                        if (file_exists(public_path() . '/' . $image_name)) {
+                            unlink(public_path() . '/' . $image_name);
+                        }
+                        $image_file = $newFilePath;
+                        $imgs = [
+                            'original_url' => $filePath,
+                            'display_url' => $newFilePath
+                        ];
+                        $component_image['settings']['image'] = $imgs;
+                    }
+                    else {
                         if (isset($events_custom->template['components'])) {
-                            $components = $events_custom->template['components'];
-                        }
-                        else if (!isset($components)) {
-                            $components = [];
-                        }
-                        if (!empty($components)) {
-                            foreach ($components as $comp) {
+                            foreach ($events_custom->template['components'] as $comp) {
                                 if ($comp['id'] == $ec_id) {
-                                    $to_delete = $comp;
-                                    $comp = $component_image;
-                                }
-                                else {
-                                    array_push($components, $component_image);
-                                }
-                            }
-                            if (isset($to_delete)) {
-                                $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $to_delete);
-                                $components = $result;
-                                if (empty($components)) {
-                                    array_push($components, $component_image);
+                                    $component_image['settings']['image'] = $comp['settings']['image'];
                                 }
                             }
                         }
                         else {
-                            array_push($components, $component_image);
+                            $alert = array(
+                            'status' => 'Merci d\'ajouter une image au composant.',
+                            'alert-type' => 'danger'
+                        );
+                        return redirect()->back()->with($alert);
                         }
                     }
+                    if (isset($events_custom->template['components'])  && !isset($components)) {
+                        $components = $events_custom->template['components'];
+                    }
+                    else if (!isset($components)) {
+                        $components = [];
+                    }
+                    if (!empty($components)) {
+                        foreach ($components as $comp) {
+                            if ($comp['id'] == $ec_id) {
+                                $to_delete = $comp;
+                                $comp = $component_image;
+                            }
+                            else {
+                                array_push($components, $component_image);
+                            }
+                        }
+                            
+
+                        if (isset($to_delete)) {
+                            $result = app('App\Http\Controllers\EventsCustomsController')->removeElement($components, $to_delete);
+                            $components = $result;
+                            if (empty($components)) {
+                                array_push($components, $component_image);
+                            }
+                        }
+                    }
+                    else {
+                        array_push($components, $component_image);
+                    }
+                    $i++;
                 }
             }
             $components = array_slice($components, 0);

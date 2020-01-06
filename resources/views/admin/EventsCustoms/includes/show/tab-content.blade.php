@@ -114,7 +114,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                {!! Form::text('option_title'.$i, $component['title'], [
+                                {!! Form::text('option_title'.$component['id'], $component['title'], [
                                 'class' => 'form-control text-muted b-2',
                                 'disabled' => ''
                                 ]) !!}
@@ -136,7 +136,7 @@
                                                 <label>
                                                     Largeur (mm)
                                                 </label>
-                                                {!! Form::number('width'.$i,
+                                                {!! Form::number('width'.$component['id'],
                                                 $component['size']['width'],[
                                                 'class' => 'form-control',
                                                 'placeholder' => '',
@@ -149,7 +149,7 @@
                                                 <label>
                                                     Hauteur (mm)
                                                 </label>
-                                                {!! Form::number('height'.$i,
+                                                {!! Form::number('height'.$component['id'],
                                                 $component['size']['height'], [
                                                 'class' => 'form-control',
                                                 'placeholder' => '',
@@ -268,25 +268,67 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
+                                            {{-- <div class="form-check form-check-inline">
                                                 {!! Form::checkbox('selectable' . $component['id'],
-                                                $component['selectable'],$component['selectable']) !!}
+                                                true,$component['selectable']) !!}
                                                 {!! Form::label('selectable', 'Sélectionnable') !!}
-                                            </div>
+                                            </div> --}}
+                                            {!! Form::label('selectable', 'Sélectionnable') !!}
+                                            @if ($component['selectable'] == true)
+                                            <select name="{{'selectable' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true" selected>Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
+                                            @else
+                                            <select name="{{'selectable' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false" selected>Non</option>
+                                            </select>
+                                            @endif
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
+                                            {{-- <div class="form-check form-check-inline">
                                                 {!! Form::checkbox('fullwidth' . $component['id'],
-                                                $component['size']['fullwidth'],$component['size']['fullwidth']) !!}
+                                                true, $component['size']['fullwidth']) !!}
                                                 {!! Form::label('fullwidth', 'Pleine largeur') !!}
-                                            </div>
+                                            </div> --}}
+                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
+                                            @if ($component['size']['fullwidth'] == true)
+                                            <select name="{{'fullwidth' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true" selected>Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
+                                            @else
+                                            <select name="{{'fullwidth' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false" selected>Non</option>
+                                            </select>
+                                            @endif
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
-                                                {!! Form::checkbox('fixed' . $i,
-                                                $component['position']['fixed'],$component['position']['fixed']) !!}
+                                            {{-- <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fixed' . $component['id'],
+                                                true,$component['position']['fixed']) !!}
                                                 {!! Form::label('fixed', 'Position fixe') !!}
-                                            </div>
+                                            </div> --}}
+                                            {!! Form::label('fixed', 'Position fixe') !!}
+                                            @if ($component['position']['fixed'] == true)
+                                            <select name="{{'fixed' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true" selected>Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
+                                            @else
+                                            <select name="{{'fixed' . $component['id']}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false" selected>Non</option>
+                                            </select>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -684,7 +726,8 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Minimum</label>
-                                {!! Form::number('min'.$i,$component['settings']['input']['length']['min'],[
+                                {!!
+                                Form::number('min'.$component['id'],$component['settings']['input']['length']['min'],[
                                 'class' => 'form-control',
                                 'placeholder' => '1'
                                 ]) !!}
@@ -693,7 +736,8 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Maximum</label>
-                                {!! Form::number('max'.$i, $component['settings']['input']['length']['max'],[
+                                {!! Form::number('max'.$component['id'],
+                                $component['settings']['input']['length']['max'],[
                                 'class' => 'form-control',
                                 'placeholder' => '99'
                                 ]) !!}
@@ -702,7 +746,8 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Texte par défaut</label>
-                                {!! Form::text('default_text'.$i, $component['settings']['input']['default_text'],[
+                                {!! Form::text('default_text'.$component['id'],
+                                $component['settings']['input']['default_text'],[
                                 'class' => 'form-control',
                                 'placeholder' => 'Votre texte'
                                 ]) !!}
@@ -732,10 +777,24 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <div class="form-group">
-                                    {!! Form::checkbox('required' . $component['id'], $component['required']) !!}
+                                {{-- <div class="form-group">
+                                    {!! Form::checkbox('required' . $component['id'], true, $component['required']) !!}
                                     {!! Form::label('required', 'Requis ?') !!}
-                                </div>
+                                </div> --}}
+                                {!! Form::label('required', 'Requis ?') !!}
+                                @if ($component['required'] == true)
+                                <select name="{{'required' . $component['id']}}" class="form-control"
+                                    data-toggle="select">
+                                    <option value="true" selected>Oui</option>
+                                    <option value="false">Non</option>
+                                </select>
+                                @else
+                                <select name="{{'required' . $component['id']}}" class="form-control"
+                                    data-toggle="select">
+                                    <option value="true">Oui</option>
+                                    <option value="false" selected>Non</option>
+                                </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -757,7 +816,7 @@
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('origin_x'.$i, $component['position']['x'],
+                                        {!! Form::number('origin_x'.$component['id'], $component['position']['x'],
                                         ['class' => 'form-control',
                                         'placeholder' =>'0',
                                         'step' => 'any'
@@ -769,7 +828,7 @@
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('origin_y'.$i, $component['position']['y'],
+                                        {!! Form::number('origin_y'.$component['id'], $component['position']['y'],
                                         ['class' => 'form-control',
                                         'placeholder' => '0',
                                         'step' => 'any'
@@ -835,7 +894,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        {!! Form::text('font_first_letter'.$i,
+                                        {!! Form::text('font_first_letter'.$component['id'],
                                         $component['settings']['input']['first_letter'], [
                                         'class' => 'form-control',
                                         'placeholder' => '#'
@@ -885,12 +944,26 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         {!! Form::checkbox('multiline' . $component['id'],
-                                        $component['settings']['input']['multiline'])
+                                        true,$component['settings']['input']['multiline'])
                                         !!}
                                         {!! Form::label('multiline', 'Multiligne ?') !!}
-                                    </div>
+                                    </div> --}}
+                                    {!! Form::label('multiline', 'Multiligne ?') !!}
+                                    @if ($component['settings']['input']['multiline'] == true)
+                                    <select name="{{'multiline' . $component['id']}}" class="form-control"
+                                        data-toggle="select">
+                                        <option value="true" selected>Oui</option>
+                                        <option value="false">Non</option>
+                                    </select>
+                                    @else
+                                    <select name="{{'multiline' . $component['id']}}" class="form-control"
+                                        data-toggle="select">
+                                        <option value="true">Oui</option>
+                                        <option value="false" selected>Non</option>
+                                    </select>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -97,12 +97,15 @@
     $i=0;
     $arrayEventsComponentsIds = array();
  ?>
+@foreach ($events_custom->components_ids as $comp_id)
 @foreach($events_components as $events_component)
-@if($events_component->events_custom_id == $events_custom->id)
+{{-- @if($events_component->events_custom_id == $events_custom->id) --}}
+@if($events_component->id == $comp_id)
+{{-- @if ($co) --}}
 <?php 
-    $i++;
     array_push($arrayEventsComponentsIds, $events_component->id);
-1?>
+    $i++;
+?>
 <input type="hidden" name="{{'template_component_id'.$i}}" value="{{$events_component->id}}">
 <input type="hidden" name="{{'comp_type_'.$i}}" id="{{'comp_type_'.$i}}" value="{{$events_component->type}}">
 <input type="hidden" name="countJS" id="countJS" value="{{$i}}">
@@ -120,7 +123,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                {!! Form::text('option_title'.$i, $events_component->title, [
+                                {!! Form::text('option_title'.$events_component->id, $events_component->title, [
                                 'class' => 'form-control text-muted',
                                 'disabled' => ''
                                 ]) !!}
@@ -142,7 +145,8 @@
                                                 <label>
                                                     Largeur (mm)
                                                 </label>
-                                                {!! Form::number('width'.$i, $events_component->width, [
+                                                {!! Form::number('width'.$events_component->id,
+                                                $events_component->width, [
                                                 'class' => 'form-control',
                                                 'placeholder' => '',
                                                 'step' => 'any'
@@ -154,7 +158,8 @@
                                                 <label>
                                                     Hauteur (mm)
                                                 </label>
-                                                {!! Form::number('height'.$i, $events_component->height,[
+                                                {!! Form::number('height'.$events_component->id,
+                                                $events_component->height,[
                                                 'class' => 'form-control',
                                                 'placeholder' => '',
                                                 'step' => 'any'
@@ -189,7 +194,7 @@
                                                 </label>
                                                 <select name="{{'alignX' . $events_component->id}}" id="alignX"
                                                     class="form-control" data-toggle="select">
-                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="none">Aucun</option>
                                                     <option value="left">Gauche</option>
                                                     <option value="right">Droite</option>
                                                     <option value="center">Centré</option>
@@ -204,7 +209,7 @@
                                                 </label>
                                                 <select name="{{'alignY' . $events_component->id}}" id="alignY"
                                                     class="form-control" data-toggle="select">
-                                                    <option value="none" selected>Aucun</option>
+                                                    <option value="none">Aucun</option>
                                                     <option value="top">Haut</option>
                                                     <option value="bottom">Bas</option>
                                                     <option value="center">Centré</option>
@@ -227,28 +232,42 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
-                                                {!! Form::checkbox('selectable' . $events_component->id, true, [
-                                                'class' => 'myCheckbox'
-                                                ]) !!}
-                                                {!! Form::label('selectable', 'Sélectionnable') !!}
-                                            </div>
+                                            {{-- <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('selectable' . $events_component->id, true) !!}
+                                                
+                                            </div> --}}
+                                            {!! Form::label('selectable', 'Sélectionnable') !!}
+                                            <select name="{{'selectable' . $events_component->id}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
+                                            {{-- <div class="form-check form-check-inline">
                                                 {!! Form::checkbox('fullwidth' . $events_component->id, true, [
                                                 'class' => 'myCheckbox'
                                                 ]) !!}
-                                                {!! Form::label('fullwidth', 'Pleine largeur') !!}
-                                            </div>
+                                            </div> --}}
+                                            {!! Form::label('fullwidth', 'Pleine largeur') !!}
+                                            <select name="{{'fullwidth' . $events_component->id}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <div class="form-check form-check-inline">
-                                                {!! Form::checkbox('fixed' . $i, true, [
+                                            {{-- <div class="form-check form-check-inline">
+                                                {!! Form::checkbox('fixed' . $events_component->id, true, [
                                                 'class' => 'myCheckbox'
                                                 ]) !!}
-                                                {!! Form::label('fixed', 'Position fixe') !!}
-                                            </div>
+                                            </div> --}}
+                                            {!! Form::label('fixed', 'Position fixe') !!}
+                                            <select name="{{'fixed' . $events_component->id}}" class="form-control"
+                                                data-toggle="select">
+                                                <option value="true">Oui</option>
+                                                <option value="false">Non</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -562,7 +581,7 @@
                                 <label>
                                     Nombre de caractères minimum
                                 </label>
-                                {!! Form::number('min'.$i, $events_component->input_min,[
+                                {!! Form::number('min'.$events_component->id, $events_component->input_min,[
                                 'class' => 'form-control',
                                 'placeholder' => '1'
                                 ]) !!}
@@ -573,7 +592,7 @@
                                 <label>
                                     Nombre de caractères maximum
                                 </label>
-                                {!! Form::number('max'.$i, $events_component->input_max,[
+                                {!! Form::number('max'.$events_component->id, $events_component->input_max,[
                                 'class' => 'form-control',
                                 'placeholder' => '99'
                                 ]) !!}
@@ -584,7 +603,7 @@
                                 <label>
                                     Texte par défaut
                                 </label>
-                                {!! Form::text('default_text'.$i, $events_component->default_text,[
+                                {!! Form::text('default_text'.$events_component->id, $events_component->default_text,[
                                 'class' => 'form-control',
                                 'placeholder' => 'Votre texte'
                                 ]) !!}
@@ -615,12 +634,17 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 {!! Form::checkbox('required' . $events_component->id, true, [
                                 'class' => 'myCheckbox'
                                 ]) !!}
-                                {!! Form::label('required', 'Requis ?') !!}
-                            </div>
+                            </div> --}}
+                            {!! Form::label('required', 'Requis ?') !!}
+                            <select name="{{'required' . $events_component->id}}" class="form-control"
+                                data-toggle="select">
+                                <option value="true">Oui</option>
+                                <option value="false">Non</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -641,7 +665,8 @@
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('origin_x'.$i, $events_component->origin_x, [
+                                        {!! Form::number('origin_x'.$events_component->id, $events_component->origin_x,
+                                        [
                                         'class' => 'form-control',
                                         'placeholder' =>'0',
                                         'step' => 'any'
@@ -653,7 +678,8 @@
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('origin_y'.$i, $events_component->origin_y, [
+                                        {!! Form::number('origin_y'.$events_component->id, $events_component->origin_y,
+                                        [
                                         'class' => 'form-control',
                                         'placeholder' => '0',
                                         'step' => 'any'
@@ -680,7 +706,7 @@
                                     <div class="form-group">
                                         <select name="{{'keyboard_type' . $events_component->id}}" id="align"
                                             class="form-control" data-toggle="select">
-                                            <option value="default" selected>Alphabétique avec emojis</option>
+                                            <option value="default">Alphabétique avec emojis</option>
                                             <option value="no_emojis">Alphabétique sans emojis</option>
                                             <option value="numeric">Numérique</option>
                                         </select>
@@ -703,7 +729,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        {!! Form::text('font_first_letter'.$i, null, [
+                                        {!! Form::text('font_first_letter'.$events_component->id, null, [
                                         'class' => 'form-control',
                                         'placeholder' => '#'
                                         ]) !!}
@@ -729,19 +755,24 @@
                                     <div class="form-group">
                                         <select name="{{'text_align' . $events_component->id}}" id="align"
                                             class="form-control" data-toggle="select">
-                                            <option value="center" selected>Centré</option>
+                                            <option value="center">Centré</option>
                                             <option value="left">Gauche</option>
                                             <option value="right">Droite</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         {!! Form::checkbox('multiline' . $events_component->id, true, [
                                         'class' => 'myCheckbox'
                                         ]) !!}
-                                        {!! Form::label('multiline', 'Multiligne') !!}
-                                    </div>
+                                    </div> --}}
+                                    {!! Form::label('multiline', 'Multiligne') !!}
+                                    <select name="{{'multiline' . $events_component->id}}" class="form-control"
+                                        data-toggle="select">
+                                        <option value="true">Oui</option>
+                                        <option value="false">Non</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -753,6 +784,7 @@
     </div>
 </div>
 @endif
+@endforeach
 @endforeach
 {{-- Send an array with eventsCustom ids for alert errors --}}
 <input type="hidden" name="arrayEventsComponentsIds[]" value="{{ json_encode($arrayEventsComponentsIds) }}"
