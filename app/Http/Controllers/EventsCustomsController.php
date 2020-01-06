@@ -354,7 +354,7 @@ class EventsCustomsController extends Controller
                 $file = $request->file('custom_img');
                 $name = time() . $file->getClientOriginalName();
                 $newFilePath = 'events/'. $events_custom->event_id . '/'. $events_custom->id . '/'. $name;
-                $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
+                $img = Image::make(file_get_contents($file))->heighten(500)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $events_custom->imageUrl = $newFilePath;
                 if (file_exists(public_path() . '/' . $name)) {
