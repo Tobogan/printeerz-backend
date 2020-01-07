@@ -134,14 +134,14 @@ class EventController extends Controller
         $event->end_datetime = $request->end_datetime;
         $event->event_products_id   = array();
         $event->products = array();
-        $event->location = array(
+        $event->location = [
             'address' => $request->address,
             'postal_code' => $request->postal_code,
             'city' => $request->city,
             'country' => $request->country,
             'longitude' => $request->longitude,
             'lattitude' => $request->lattitude
-        );
+        ];
         $event->type = $request->type;
         $event->description = $request->description;
         $event->user_ids = $request->get('employees');
@@ -160,7 +160,6 @@ class EventController extends Controller
                 'url' => $filePath
             ];
         }
-
         if ($request->hasFile('cover_img')) {
             $disk = Storage::disk('s3');
             $file = $request->file('cover_img');
@@ -205,7 +204,7 @@ class EventController extends Controller
         elseif (isset($cover) && !isset($logo)) {
             $event->images = [
                 'cover' => $cover,
-                'logo' => $event->images['logo']['url']
+                'logo' => $event->images['logo']
             ];
         }
         elseif (!isset($cover) && isset($logo)) {
@@ -448,12 +447,12 @@ class EventController extends Controller
         elseif (isset($cover) && !isset($logo)) {
             $event->images = [
                 'cover' => $cover,
-                'logo' => $event->images['logo']['url']
+                'logo' => $event->images['logo']
             ];
         }
         elseif (!isset($cover) && isset($logo)) {
             $event->images = [
-                'cover' => $event->images['cover']['url'],
+                'cover' => $event->images['cover'],
                 'logo' => $logo
             ];
         }

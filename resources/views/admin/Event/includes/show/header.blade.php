@@ -3,12 +3,12 @@
     <div class="row">
       <div class="col-auto">
         <div class="avatar avatar-xxl header-avatar-top">
-          <img src="{{ $disk->url($event->images["logo"]['url']) }}" alt="..." class="avatar-img rounded-circle border border-4 border-body"
-            style="background-color: white;">
+          <img src="{{ $disk->url($event->images["logo"]['url']) }}" alt="..."
+            class="avatar-img rounded-circle border border-4 border-body" style="background-color: white;">
         </div>
       </div>
       <div
-        class="col @if(!empty($event->coverBackUrl) && $disk->exists($event->coverBackUrl)) mb-3 ml-n3 ml-md-n2 @endif">
+        class="col @if(!empty($event->images['cover']['url']) && $disk->exists($event->images['cover']['url'])) mb-3 ml-n3 ml-md-n2 @endif">
         @if($event->customer)
         <h6 class="header-pretitle">
           {{ $event->customer->title}}
@@ -31,9 +31,11 @@
             <a href="{{route('edit_event', $event->id)}}" class="dropdown-item">
               Modifier
             </a>
-            @if($event->BATUrl != null)
+            @if(isset($event->files['bat']['url']))
             <a class="dropdown-item" role="button" href="#"
-              onclick="window.open('{{ $disk->url($event->BATUrl)}}', '_blank', 'fullscreen=yes'); return false;"> Voir le
+              onclick="window.open('{{ $disk->url($event->files['bat']['url'])}}', '_blank', 'fullscreen=yes'); return false;">
+              Voir
+              le
               BAT</a>
             @endif
             <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#modalDeleteEvent">
