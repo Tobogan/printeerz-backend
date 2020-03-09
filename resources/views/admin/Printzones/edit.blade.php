@@ -193,6 +193,128 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Alignement de la zone d'impression par rapport au plateau
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Alignement horizontal</label>
+                                        <select name="tray_align_x" id="tray_align_x" class="form-control" data-toggle="select">
+                                            @if ($printzone->tray['align']['x'] == "left")
+                                            <option value="left" selected>Gauche</option>
+                                            <option value="right">Droite</option>
+                                            <option value="center">Centré</option>
+                                            <option value="false">Aucun</option>
+                                        @elseif ($printzone->tray['align']['x'] == "right")
+                                            <option value="left">Gauche</option>
+                                            <option value="right" selected>Droite</option>
+                                            <option value="center">Centré</option>
+                                            <option value="false">Aucun</option>
+                                        @elseif ($printzone->tray['align']['x'] == "center")
+                                            <option value="left">Gauche</option>
+                                            <option value="right">Droite</option>
+                                            <option value="center" selected>Centré</option>
+                                            <option value="false">Aucun</option>
+                                        @else
+                                            <option value="left">Gauche</option>
+                                            <option value="right">Droite</option>
+                                            <option value="center">Centré</option>
+                                            <option value="false" selected>Aucun</option>
+                                        @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Alignement vertical</label>
+                                        <select name="tray_align_y" id="tray_align_y" class="form-control" data-toggle="select">
+                                            @if ($printzone->tray['align']['y'] == "top")
+                                                <option value="top" selected>En haut</option>
+                                                <option value="middle">Milieu</option>
+                                                <option value="bottom">Bas</option>
+                                                <option value="false">Aucun</option>
+                                            @elseif ($printzone->tray['align']['y'] == "middle")
+                                                <option value="top">En haut</option>
+                                                <option value="middle" selected>Milieu</option>
+                                                <option value="bottom">Bas</option>
+                                                <option value="false">Aucun</option>
+                                            @elseif ($printzone->tray['align']['y'] == "bottom")
+                                                <option value="top">En haut</option>
+                                                <option value="middle">Milieu</option>
+                                                <option value="bottom" selected>Bas</option>
+                                                <option value="false">Aucun</option>
+                                            @elseif ($printzone->tray['align']['y'] == "middle")
+                                                <option value="top">En haut</option>
+                                                <option value="middle">Milieu</option>
+                                                <option value="bottom">Bas</option>
+                                                <option value="false" selected>Aucun</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Position de la zone d'impression par rapport au plateau
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Position X
+                                        </label>
+                                        {!! Form::number('tray_position_x', $printzone->tray['position']['x'], [
+                                        'class' => 'form-control'.$errors->first('tray_position_x', 'is-invalid'),
+                                        'placeholder' =>'0'
+                                        ]) !!}
+                                        @if($errors->has('tray_position_x'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Position Y
+                                        </label>
+                                        {!! Form::number('tray_position_y', $printzone->tray['position']['y'], [
+                                        'class' => 'form-control'.$errors->first('tray_position_y', 'is-invalid'),
+                                        'placeholder' =>'0'
+                                        ]) !!}
+                                        @if($errors->has('tray_position_y'))
+                                            <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">

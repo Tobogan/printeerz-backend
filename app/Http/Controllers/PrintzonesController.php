@@ -81,7 +81,15 @@ class PrintzonesController extends Controller {
             'width' => $request->tray_width,
             'height' => $request->tray_height,
             'x' => $request->origin_x,
-            'y' => $request->origin_y
+            'y' => $request->origin_y,
+            'position' => [
+                'x' => $request->tray_position_x,
+                'y' => $request->tray_position_y
+            ],
+            'align' => [
+                'x' => $request->tray_align_x,
+                'y' => $request->tray_align_y
+            ]
         ];
         $printzone->printer_id = $request->printer_id;
         $printzone->is_active = $request->is_active;
@@ -163,7 +171,15 @@ class PrintzonesController extends Controller {
                 'width' => $request->tray_width,
                 'height' => $request->tray_height,
                 'x' => $request->origin_x,
-                'y' => $request->origin_y
+                'y' => $request->origin_y,
+                'position' => [
+                    'x' => $request->tray_position_x,
+                    'y' => $request->tray_position_y
+                ],
+                'align' => [
+                    'x' => $request->tray_align_x,
+                    'y' => $request->tray_align_y
+                ]
             ];
             $printzone->printer_id = $request->printer_id;
             $printzone->is_active = $request->is_active;
