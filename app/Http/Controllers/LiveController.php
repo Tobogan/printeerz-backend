@@ -12,6 +12,7 @@ use App\Product;
 use App\Products_variants;
 use App\Event_local_download;
 use App\CustomOrder;
+use App\Order;
 
 use Image;
 use Illuminate\Support\Facades\Storage;
@@ -613,5 +614,29 @@ class LiveController extends Controller
     public function getEventStatus($id) {
         $event = Event::find($id);
         return $event->status;
+    }
+
+    /**
+     * Store every orders
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store_orders(Request $request) {
+        $orders = $request->json()->all();
+        // foreach ($orders as $order) {
+        //     $order = new Order;
+        //     $order->save();
+        // }
+        // for ($i = 0; $i <= count($orders); $i++) {
+        //     $orders[$i] = new Order;
+        //     $orders[$i]->save();
+        // }
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Synchro: success !',
+            'orders' => count($orders)
+        );
+        return response()->json($response);
     }
 }

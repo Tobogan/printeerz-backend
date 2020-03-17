@@ -55,6 +55,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('refresh', 'LiveController@refresh');
     Route::put('event/{id}/{status}', 'LiveController@status');
     Route::get('event/status/{id}', 'LiveController@getEventStatus');
+    Route::post('event/{id}/orders', 'LiveController@store_orders');
+
 
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register');

@@ -288,7 +288,7 @@
                                         'placeholder' =>'0'
                                         ]) !!}
                                         @if($errors->has('tray_position_x'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                            <div class="invalid-feedback">Veuillez renseigner ce champ</div>
                                         @endif
                                     </div>
                                 </div>
