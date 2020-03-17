@@ -14,6 +14,10 @@ use App\Event_local_download;
 use App\CustomOrder;
 use App\Order;
 
+use Illuminate\Support\Facades\DB;
+
+use MongoDB\Client;
+
 use Image;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -622,20 +626,31 @@ class LiveController extends Controller
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store_orders(Request $request) {
+    public function store_orders(Request $request) {  
         $orders = $request->json()->all();
-        // foreach ($orders as $order) {
-        //     $order = new Order;
-        //     $order->save();
-        // }
-        // for ($i = 0; $i <= count($orders); $i++) {
-        //     $orders[$i] = new Order;
-        //     $orders[$i]->save();
-        // }
+        // $mongoClient=new Client();
+        // $mongodata=$mongoClient->order;
+        // $mongodata->insertMany($orders);
+        foreach ($orders as $order) {
+            $od = new Order;
+            // $ord = json_decode(json_encode($order), true);
+            // $test = $order;
+            // $ord['data'] = json_decode($test);
+            $encode_order = json_encode($order);
+            $decode_order = json_decode($encode_order, true);
+            $od['id'] = $decode_order['id'];
+            $od['eventId'] = $decode_order['eventId'];
+            $od['product'] = $decode_order['product'];
+            $od['datetime'] = $decode_order['datetime'];
+            $od['custom'] = $decode_order['custom'];
+            $od->save();
+            // $string = json_encode($order);
+            // Order::insert(json_decode($string, true));
+        }
+        // Order::insert($orders);
+        // Order::batchInsert($orders);
         $response = array(
             'status' => 'success',
-            'msg' => 'Synchro: success !',
-            'orders' => count($orders)
         );
         return response()->json($response);
     }
