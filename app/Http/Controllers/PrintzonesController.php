@@ -63,6 +63,7 @@ class PrintzonesController extends Controller {
         ]);
         // Printzones::create($request->all());
         $printzone = new Printzones;
+        $printzone->created_by = Auth::user()->username;
         $printzone->name = $request->name;
         $printzone->zone = $request->zone;
         $printzone->description = $request->description;
@@ -70,31 +71,24 @@ class PrintzonesController extends Controller {
             'width' => $request->size_width,
             'height' => $request->size_height
         ];
-        $printzone->product_position = [
-            'x' => $request->position_x,
-            'y' => $request->position_y,
-            'align_x' => $request->alignX,
-            'align_y' => $request->alignY,
-            'ratio' => $request->ratio
+        $printzone->position_on_screen = [
+            'x' => $request->screen_pos_x,
+            'y' => $request->screen_pos_y,
+            'align_x' => $request->screen_pos_align_x,
+            'align_y' => $request->screen_pos_align_y,
+            'ratio' => $request->screen_pos_ratio
+        ];
+        $printzone->position_on_tray = [
+            'x' => $request->tray_position_x,
+            'y' => $request->tray_position_y,
         ];
         $printzone->tray = [
             'width' => $request->tray_width,
             'height' => $request->tray_height,
-            'x' => $request->origin_x,
-            'y' => $request->origin_y,
-            'position' => [
-                'x' => $request->tray_position_x,
-                'y' => $request->tray_position_y
-            ],
-            'align' => [
-                'x' => $request->tray_align_x,
-                'y' => $request->tray_align_y
-            ]
         ];
         $printzone->printer_id = $request->printer_id;
         $printzone->is_active = $request->is_active;
         $printzone->is_deleted = $request->is_deleted;
-        $printzone->created_by = Auth::user()->username;
         $printzone->save();
         $notification = array(
             'status' => 'La zone d\'impression ont été correctement créee.',
@@ -154,37 +148,31 @@ class PrintzonesController extends Controller {
             if (request('actual_name') !== request('name')) {
                 $printzone->name = $request->name;
             }
+            $printzone->created_by = Auth::user()->username;
             $printzone->zone = $request->zone;
             $printzone->description = $request->description;
             $printzone->size = [
                 'width' => $request->size_width,
                 'height' => $request->size_height
             ];
-            $printzone->product_position = [
-                'x' => $request->position_x,
-                'y' => $request->position_y,
-                'align_x' => $request->alignX,
-                'align_y' => $request->alignY,
-                'ratio' => $request->ratio
+            $printzone->position_on_screen = [
+                'x' => $request->screen_pos_x,
+                'y' => $request->screen_pos_y,
+                'align_x' => $request->screen_pos_align_x,
+                'align_y' => $request->screen_pos_align_y,
+                'ratio' => $request->screen_pos_ratio
+            ];
+            $printzone->position_on_tray = [
+                'x' => $request->tray_position_x,
+                'y' => $request->tray_position_y,
             ];
             $printzone->tray = [
                 'width' => $request->tray_width,
                 'height' => $request->tray_height,
-                'x' => $request->origin_x,
-                'y' => $request->origin_y,
-                'position' => [
-                    'x' => $request->tray_position_x,
-                    'y' => $request->tray_position_y
-                ],
-                'align' => [
-                    'x' => $request->tray_align_x,
-                    'y' => $request->tray_align_y
-                ]
             ];
             $printzone->printer_id = $request->printer_id;
             $printzone->is_active = $request->is_active;
             $printzone->is_deleted = $request->is_deleted;
-            $printzone->created_by = Auth::user()->username;
         }
         $printzone->save();
 

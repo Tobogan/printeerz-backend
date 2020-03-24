@@ -62,6 +62,7 @@
                     </div>
                 </div>
             </div>
+            {{-- PRINTZONE SIZE --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -77,12 +78,12 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('width', $printzone->width, [
-                                        'class' => 'form-control'.$errors->first('width', ' is-invalid'),
+                                        {!! Form::number('size_width', $printzone->size_width, [
+                                        'class' => 'form-control'.$errors->first('size_width', ' is-invalid'),
                                         'placeholder' =>'250'
                                         ])
                                         !!}
-                                        @if($errors->has('width'))<div class="invalid-feedback">Veuillez renseigner ce
+                                        @if($errors->has('size_width'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
                                 </div>
@@ -91,12 +92,12 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('height', $printzone->height, [
-                                        'class' => 'form-control'.$errors->first('height', ' is-invalid'),
+                                        {!! Form::number('size_height', $printzone->size_height, [
+                                        'class' => 'form-control'.$errors->first('size_height', ' is-invalid'),
                                         'placeholder' =>'250'
                                         ])
                                         !!}
-                                        @if($errors->has('height'))<div class="invalid-feedback">Veuillez renseigner ce
+                                        @if($errors->has('size_height'))<div class="invalid-feedback">Veuillez renseigner ce
                                             champ</div>@endif
                                     </div>
                                 </div>
@@ -105,53 +106,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Position du plateau
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            X (mm)
-                                        </label>
-                                        {!! Form::number('origin_x', $printzone->origin_x, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '0'
-                                        ])
-                                        !!}
-                                        <div>{!! $errors->first('origin_x', '<p class="help-block mt-2"
-                                                style="color:red;"><small>Champ obligatoire</small>
-                                            </p>') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            Y (mm)
-                                        </label>
-                                        {!! Form::number('origin_y', $printzone->origin_y, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '0'
-                                        ])
-                                        !!}
-                                        <div>{!! $errors->first('origin_y', '<p class="help-block mt-2"
-                                                style="color:red;"><small>Champ obligatoire</small>
-                                            </p>') !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{-- TRAY SIZE --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -167,11 +122,12 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('tray_width', $printzone->tray_width, ['class' =>
-                                        'form-control', 'placeholder' => '250']) !!}
+                                        {!! Form::number('tray_width', $printzone->tray_width, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '250'
+                                        ]) !!}
                                         <div>{!! $errors->first('tray_width', '<p class="help-block mt-2"
-                                                style="color:red;"><small>Champ obligatoire</small>
-                                            </p>') !!}
+                                                style="color:red;"><small>Champ obligatoire</small></p>') !!}
                                         </div>
                                     </div>
                                 </div>
@@ -180,8 +136,10 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('tray_height', $printzone->tray_height, ['class' =>
-                                        'form-control', 'placeholder' => '250']) !!}
+                                        {!! Form::number('tray_height', $printzone->tray_height, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '250'
+                                        ]) !!}
                                         <div>{!! $errors->first('tray_height', '<p class="help-block mt-2"
                                                 style="color:red;"><small>Champ obligatoire</small>
                                             </p>') !!}
@@ -193,34 +151,70 @@
                     </div>
                 </div>
             </div>
-
-
-
+            {{-- Printzone position on the screen --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Alignement de la zone d'impression par rapport au plateau
+                                Position de la zone sur l'écran
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
+                                        <label>
+                                            X (mm)
+                                        </label>
+                                        {!! Form::number('screen_pos_x', $printzone->position_on_screen['x'], [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0'
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Y (mm)
+                                        </label>
+                                        {!! Form::number('screen_pos_y', $printzone->position_on_screen['y'], [
+                                        'class' => 'form-control',
+                                        'placeholder' =>'0'
+                                        ]) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Alignement & ratio de la zone d'impression sur l'écran
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
                                         <label>Alignement horizontal</label>
-                                        <select name="tray_align_x" id="tray_align_x" class="form-control" data-toggle="select">
-                                            @if ($printzone->tray['align']['x'] == "left")
+                                        <select name="screen_pos_align_x" id="screen_pos_align_x" class="form-control" data-toggle="select">
+                                            @if ($printzone->position_on_screen['align_x'] == "left")
                                             <option value="left" selected>Gauche</option>
                                             <option value="right">Droite</option>
                                             <option value="center">Centré</option>
                                             <option value="false">Aucun</option>
-                                        @elseif ($printzone->tray['align']['x'] == "right")
+                                        @elseif ($printzone->position_on_screen['align_x'] == "right")
                                             <option value="left">Gauche</option>
                                             <option value="right" selected>Droite</option>
                                             <option value="center">Centré</option>
                                             <option value="false">Aucun</option>
-                                        @elseif ($printzone->tray['align']['x'] == "center")
+                                        @elseif ($printzone->position_on_screen['align_x'] == "center")
                                             <option value="left">Gauche</option>
                                             <option value="right">Droite</option>
                                             <option value="center" selected>Centré</option>
@@ -234,26 +228,26 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-4">
                                     <div class="form-group">
                                         <label>Alignement vertical</label>
-                                        <select name="tray_align_y" id="tray_align_y" class="form-control" data-toggle="select">
-                                            @if ($printzone->tray['align']['y'] == "top")
+                                        <select name="screen_pos_align_y" id="screen_pos_align_y" class="form-control" data-toggle="select">
+                                            @if ($printzone->position_on_screen['align_y'] == "top")
                                                 <option value="top" selected>En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom">Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->tray['align']['y'] == "middle")
+                                            @elseif ($printzone->position_on_screen['align_y'] == "middle")
                                                 <option value="top">En haut</option>
                                                 <option value="middle" selected>Milieu</option>
                                                 <option value="bottom">Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->tray['align']['y'] == "bottom")
+                                            @elseif ($printzone->position_on_screen['align_y'] == "bottom")
                                                 <option value="top">En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom" selected>Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->tray['align']['y'] == "middle")
+                                            @elseif ($printzone->position_on_screen['align_y'] == "middle")
                                                 <option value="top">En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom">Bas</option>
@@ -262,12 +256,27 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Ratio
+                                        </label>
+                                        {!! Form::number('screen_pos_ratio', $printzone->position_on_screen['ratio'], [
+                                        'class' => 'form-control'.$errors->first('screen_pos_ratio', ' is-invalid'),
+                                        'placeholder' =>'0.5',
+                                        'step' => 'any'
+                                        ]) !!}
+                                        @if($errors->has('screen_pos_ratio'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            {{-- Printzone position on tray --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -283,7 +292,7 @@
                                         <label>
                                             Position X
                                         </label>
-                                        {!! Form::number('tray_position_x', $printzone->tray['position']['x'], [
+                                        {!! Form::number('tray_position_x', $printzone->position_on_tray['x'], [
                                         'class' => 'form-control'.$errors->first('tray_position_x', 'is-invalid'),
                                         'placeholder' =>'0'
                                         ]) !!}
@@ -297,7 +306,7 @@
                                         <label>
                                             Position Y
                                         </label>
-                                        {!! Form::number('tray_position_y', $printzone->tray['position']['y'], [
+                                        {!! Form::number('tray_position_y', $printzone->position_on_tray['y'], [
                                         'class' => 'form-control'.$errors->first('tray_position_y', 'is-invalid'),
                                         'placeholder' =>'0'
                                         ]) !!}
@@ -311,10 +320,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">

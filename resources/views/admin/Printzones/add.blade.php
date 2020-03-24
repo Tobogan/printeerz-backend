@@ -28,6 +28,7 @@
             'class' => 'mb-4'
             ]) !!}
             {{csrf_field()}}
+            {{-- PRINTZONE NAME --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -64,6 +65,51 @@
                     </div>
                 </div>
             </div>
+            {{-- PRINTZONE SIZE --}}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Taille de la zone d'impression
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Largeur (mm)
+                                        </label>
+                                        {!! Form::number('size_width', null, ['class' =>
+                                        'form-control'.$errors->first('width', ' is-invalid'),
+                                        'placeholder' =>'250'
+                                        ]) !!}
+                                        @if ($errors->has('size_width'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Hauteur (mm)
+                                        </label>
+                                        {!! Form::number('size_height', null, [
+                                        'class' => 'form-control'.$errors->first('height', ' is-invalid'),
+                                        'placeholder' =>'250'
+                                        ]) !!}
+                                        @if ($errors->has('size_height'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- TRAY SIZE --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -108,12 +154,13 @@
                     </div>
                 </div>
             </div>
+            {{-- Printzone position on the screen --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Taille de la zone d'impression
+                                Position de la zone sur l'écran
                             </h4>
                         </div>
                         <div class="card-body">
@@ -121,29 +168,23 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Largeur (mm)
+                                            X (mm)
                                         </label>
-                                        {!! Form::number('size_width', null, ['class' =>
-                                        'form-control'.$errors->first('width', ' is-invalid'),
-                                        'placeholder' =>'250'
+                                        {!! Form::number('screen_pos_x', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '0'
                                         ]) !!}
-                                        @if ($errors->has('size_width'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label>
-                                            Hauteur (mm)
+                                            Y (mm)
                                         </label>
-                                        {!! Form::number('size_height', null, [
-                                        'class' => 'form-control'.$errors->first('height', ' is-invalid'),
-                                        'placeholder' =>'250'
+                                        {!! Form::number('screen_pos_y', null, [
+                                        'class' => 'form-control',
+                                        'placeholder' =>'0'
                                         ]) !!}
-                                        @if ($errors->has('size_height'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -151,20 +192,21 @@
                     </div>
                 </div>
             </div>
+            {{-- Printzone align on screen --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Alignement de la zone d'impression par rapport au plateau
+                                Alignement & ratio de la zone d'impression sur l'écran
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-4">
                                     <div class="form-group">
                                         <label>Alignement horizontal</label>
-                                        <select name="tray_align_x" id="tray_align_x" class="form-control" data-toggle="select">
+                                        <select name="screen_pos_align_x" id="screen_pos_align_x" class="form-control" data-toggle="select">
                                             <option value="left">Gauche</option>
                                             <option value="right">Droite</option>
                                             <option value="center">Centré</option>
@@ -172,10 +214,10 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-4">
                                     <div class="form-group">
                                         <label>Alignement vertical</label>
-                                        <select name="tray_align_y" id="tray_align_y" class="form-control" data-toggle="select">
+                                        <select name="screen_pos_align_y" id="screen_pos_align_y" class="form-control" data-toggle="select">
                                             <option value="top">En haut</option>
                                             <option value="middle">Milieu</option>
                                             <option value="bottom">Bas</option>
@@ -183,12 +225,27 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Ratio
+                                        </label>
+                                        {!! Form::number('screen_pos_ratio', null, [
+                                        'class' => 'form-control'.$errors->first('screen_pos_ratio', ' is-invalid'),
+                                        'placeholder' =>'0.5',
+                                        'step' => 'any'
+                                        ]) !!}
+                                        @if($errors->has('screen_pos_ratio'))
+                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            {{-- Printzone position on tray --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -232,140 +289,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Alignement
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>Alignement horizontal</label>
-                                        <select name="alignX" id="alignX" class="form-control" data-toggle="select">
-                                            <option value="left">Gauche</option>
-                                            <option value="right">Droite</option>
-                                            <option value="center">Centré</option>
-                                            <option value="false">Aucun</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>Alignement vertical</label>
-                                        <select name="alignY" id="alignY" class="form-control" data-toggle="select">
-                                            <option value="top">En haut</option>
-                                            <option value="middle">Milieu</option>
-                                            <option value="bottom">Bas</option>
-                                            <option value="false">Aucun</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Alignement & Ratio
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-4">
-                                    <div class="form-group">
-                                        <label>
-                                            Position X
-                                        </label>
-                                        {!! Form::number('position_x', null, [
-                                        'class' => 'form-control'.$errors->first('position_x', ' is-invalid'),
-                                        'placeholder' =>'0.5',
-                                        'step' => 'any'
-                                        ]) !!}
-                                        @if($errors->has('position_x'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="form-group">
-                                        <label>
-                                            Position Y
-                                        </label>
-                                        {!! Form::number('position_y', null, [
-                                        'class' => 'form-control'.$errors->first('position_y', ' is-invalid'),
-                                        'placeholder' =>'0.5', 'step' => 'any'
-                                        ]) !!}
-                                        @if($errors->has('position_y'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="form-group">
-                                        <label>
-                                            Ratio
-                                        </label>
-                                        {!! Form::number('ratio', null, [
-                                        'class' => 'form-control'.$errors->first('ratio', ' is-invalid'),
-                                        'placeholder' =>'0.5',
-                                        'step' => 'any'
-                                        ]) !!}
-                                        @if($errors->has('ratio'))
-                                        <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Position de la zone par rapport au plateau
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            X (mm)
-                                        </label>
-                                        {!! Form::number('origin_x', null, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '0'
-                                        ]) !!}
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>
-                                            Y (mm)
-                                        </label>
-                                        {!! Form::number('origin_y', null, [
-                                        'class' => 'form-control',
-                                        'placeholder' =>'0'
-                                        ]) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{-- Description --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
