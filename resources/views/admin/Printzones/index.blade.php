@@ -80,14 +80,14 @@
                             <tr>
                                 <td class="printzones-name">
                                     <a href="{{route('edit_printzones', $printzone->id)}}"><b>
-                                            @if(strlen($printzone->name) <= 25) {{$printzone->name}} @else
-                                                {{substr($printzone->name,0,25)}} ... @endif </b> </a> </td> <td
-                                                class="printzones-zone">@if(strlen($printzone->zone) <= 25)
-                                                    {{$printzone->zone}} @else {{substr($printzone->zone,0,25)}} ...
-                                                    @endif</td> <td class="printzones-width">
-                                                    {{ $printzone->width }}x{{ $printzone->height }}</td>
+                                        @if(strlen($printzone->name) <= 25) {{$printzone->name}} @else
+                                            {{substr($printzone->name,0,25)}} ... @endif </b> </a> </td> <td
+                                            class="printzones-zone">@if(strlen($printzone->zone) <= 25)
+                                                {{$printzone->zone}} @else {{substr($printzone->zone,0,25)}} ...
+                                                @endif</td> <td class="printzones-width">
+                                                {{ $printzone->size['width'] }}x{{ $printzone->size['height'] }}</td>
                                 <td class="printzones-tray_width">
-                                    {{ $printzone->tray_width }}x{{ $printzone->tray_height }}</td>
+                                    {{ $printzone->tray['width'] }}x{{ $printzone->tray['height'] }}</td>
                                 <td class="printzones-is_active">
                                     @if($printzone->is_active === 'true')
                                     <span class="badge badge-soft-success">Activée</span>
