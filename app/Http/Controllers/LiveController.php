@@ -306,14 +306,32 @@ class LiveController extends Controller
                 $printzone = Printzones::find($printzone_id);
                     $printzoneData = array(
                         'id' => $printzone->id,
-                        'title' => $printzone->name,
+                        'name' => $printzone->name,
                         'zone' => $printzone->zone,
-                        'width' => $printzone->width,
-                        'height' => $printzone->height,
-                        'origin_x' => $printzone->origin_x,
-                        'origin_y' => $printzone->origin_y,
-                        'tray_width' => $printzone->tray_width,
-                        'tray_height' => $printzone->tray_height
+                        'description' => $printzone->description,
+                        'size' => [
+                            'width' => $printzone->size['width'],
+                            'height' => $printzone->size['height']
+                        ],
+                        'position' => [
+                            'x' => $printzone->position_on_tray['x'],
+                            'y' => $printzone->position_on_tray['y']
+                        ],
+                        'product_position' => [
+                            'x' => $printzone->position_on_screen['x'],
+                            'y' => $printzone->position_on_screen['y'],
+                            'align_x' => $printzone->position_on_screen['align_x'],
+                            'align_y' => $printzone->position_on_screen['align_y'],
+                            'ratio' => $printzone->position_on_screen['ratio']
+                        ],
+                        'tray' => [
+                            'width' => $printzone->tray['width'],
+                            'height' => $printzone->tray['height']
+                        ],
+                        'printer_id' => $printzone->printer_id,
+                        'is_active' => $printzone->is_active,
+                        'is_deleted' => $printzone->is_deleted,
+                        'created_by' => $printzone->created_by
                     );
                     array_push($printzonesArray, $printzoneData);
             }
