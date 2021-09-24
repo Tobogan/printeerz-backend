@@ -1,5 +1,9 @@
 {
     "git.ignoreLimitWarning": true,
     "editor.renderWhitespace": "all",
-    "blade.format.enable": true
+    "blade.format.enable": true,
+    "i18n-ally.localesPaths": [
+        "resources/lang",
+        "public/libs/highlight.js/lib/languages"
+    ]
 }
