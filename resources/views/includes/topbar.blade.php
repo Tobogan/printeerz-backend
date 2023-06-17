@@ -16,14 +16,7 @@
                     <div class="col-auto">
                         <!-- Avatar -->
                         <a class="avatar avatar-sm">
-                            <?php 
-                            $disk = Storage::disk('s3');
-                            ?>
-                            @if(!empty(Auth::user()->profile_img) && $disk->exists(Auth::user()->profile_img))
-                            <div class="avatar avatar-sm">
-                                <img src="{{$disk->url(Auth::user()->profile_img) }}" class="avatar-img rounded-circle"
-                                    alt="img_profile">
-                            </div>
+                           
                             @else <!--Initials-->
                             <div class="avatar-sm">
                                 <?php 
