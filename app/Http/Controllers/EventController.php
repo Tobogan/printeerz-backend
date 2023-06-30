@@ -25,7 +25,8 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         //$this->middleware(isActivate::class);
         // $this->middleware(isAdmin::class);
         $this->middleware('auth');
@@ -36,14 +37,17 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
         $events = Event::all();
         $disk = Storage::disk('s3');
         $exists = $disk->exists('file.jpg');
-        return view('admin/Event.index', [
-            'events' => $events, 
-            'disk' => $disk,
-            'exists' => $exists
+        return view(
+            'admin/Event.index',
+            [
+                'events' => $events,
+                'disk' => $disk,
+                'exists' => $exists
             ]
         );
     }
@@ -53,41 +57,47 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(){
+    public function create()
+    {
         $events = Event::all();
         $products = Product::all();
         $customers = Customer::all();
         $select_customers = [];
-        foreach($customers as $customer) {
+        foreach ($customers as $customer) {
             $select_customers[$customer->id] = $customer->title;
         }
-        return view('admin/Event.add', [
-            'events' => $events, 
-            'select_customers' => $select_customers, 
-            'products' => $products
+        return view(
+            'admin/Event.add',
+            [
+                'events' => $events,
+                'select_customers' => $select_customers,
+                'products' => $products
             ]
         );
     }
 
-        /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function clientCreate($id){
+    public function clientCreate($id)
+    {
         $events = Event::all();
         $products = Product::all();
         $customers = Customer::all();
         $select_customers = [];
-        foreach($customers as $customer) {
-            if($customer->id == $id){
+        foreach ($customers as $customer) {
+            if ($customer->id == $id) {
                 $select_customers[$customer->id] = $customer->title;
             }
         }
-        return view('admin/Event.add', [
-            'events' => $events, 
-            'select_customers' => $select_customers, 
-            'products' => $products
+        return view(
+            'admin/Event.add',
+            [
+                'events' => $events,
+                'select_customers' => $select_customers,
+                'products' => $products
             ]
         );
     }
@@ -97,7 +107,8 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ajax(){
+    public function ajax()
+    {
         $prod_id = Input::get('product_id');
         $productVariants = ProductVariants::where('product_id', '=', $prod_id)->get();
         return Response::json($productVariants);
@@ -111,6 +122,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation des données
         $validatedData = $request->validate([
             'name' => 'required|unique:events|string|max:255',
             'advertiser' => 'required|string|max:255',
@@ -119,10 +131,16 @@ class EventController extends Controller
             'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
             'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
             'BAT' => 'mimes:pdf|max:4000',
-            'start_datetime'=>'required|date|before_or_equal:end_datetime',
-            'description' => 'nullable|string|max:2750'
+            'start_datetime' => 'required|date|before_or_equal:end_datetime',
+            'description' => 'nullable|string|max:2750',
+            'collect_tel' => 'nullable|in:true,null',
+            'collect_email' => 'nullable|in:true,null',
         ]);
+
+        // Création d'une nouvelle instance de l'événement
         $event = new Event;
+
+        // Attribution des valeurs des champs
         $event->created_by = Auth::user()->username;
         $event->title = $request->name;
         $event->advertiser = $request->advertiser;
@@ -132,7 +150,7 @@ class EventController extends Controller
         $event->end_time = $request->end_time;
         $event->start_datetime = $request->start_datetime;
         $event->end_datetime = $request->end_datetime;
-        $event->event_products_id   = array();
+        $event->event_products_id = array();
         $event->products = array();
         $event->location = [
             'address' => $request->address,
@@ -140,17 +158,25 @@ class EventController extends Controller
             'city' => $request->city,
             'country' => $request->country,
             'longitude' => $request->longitude,
-            'lattitude' => $request->lattitude
+            'latitude' => $request->latitude
         ];
         $event->type = $request->type;
         $event->description = $request->description;
         $event->user_ids = $request->get('employees');
+
+        $event->collect_data = [
+            'phone' => ($request->collect_tel === "true"),
+            'email' => ($request->collect_email === "true"),
+        ];
+
         $event->save();
         $disk = Storage::disk('s3');
-        if ($request->hasFile('logo_img')){
+
+        // Traitement de l'image du logo
+        if ($request->hasFile('logo_img')) {
             $file = $request->file('logo_img');
             $name = $file->getClientOriginalName();
-            $filePath = 'events/' . $event->id . '/'. $name;
+            $filePath = 'events/' . $event->id . '/' . $name;
             $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
             $disk->put($filePath, $img, 'public');
             if (file_exists(public_path() . '/' . $name)) {
@@ -160,12 +186,14 @@ class EventController extends Controller
                 'url' => $filePath
             ];
         }
+
+        // Traitement de l'image de couverture
         if ($request->hasFile('cover_img')) {
             $disk = Storage::disk('s3');
             $file = $request->file('cover_img');
             $name = time() . $file->getClientOriginalName();
-            $thumbFilePath = 'events/' . $event->id . '/covers/thumb/'. $name;
-            $filePath = 'events/' . $event->id . '/covers/original/'.$name;
+            $thumbFilePath = 'events/' . $event->id . '/covers/thumb/' . $name;
+            $filePath = 'events/' . $event->id . '/covers/original/' . $name;
             $image = Image::make(file_get_contents($file));
             $image->backup();
             $image->resize(1080, 1920)->save($name);
@@ -184,10 +212,12 @@ class EventController extends Controller
                 unlink(public_path() . '/' . $name);
             }
         }
-        if ($request->hasFile('BAT')){
+
+        // Traitement du fichier BAT (Bon à tirer)
+        if ($request->hasFile('BAT')) {
             $file = $request->file('BAT');
             $name = time() . $file->getClientOriginalName();
-            $filePath = 'events/' . $event->id . '/'. $name;
+            $filePath = 'events/' . $event->id . '/' . $name;
             $disk->put($filePath, file_get_contents($file), 'public');
             $event->files = [
                 'bat' => [
@@ -195,19 +225,19 @@ class EventController extends Controller
                 ]
             ];
         }
+
+        // Attribution des images à l'événement
         if (isset($cover) && isset($logo)) {
             $event->images = [
                 'cover' => $cover,
                 'logo' => $logo
             ];
-        }
-        elseif (isset($cover) && !isset($logo)) {
+        } elseif (isset($cover) && !isset($logo)) {
             $event->images = [
                 'cover' => $cover,
                 'logo' => $event->images['logo']
             ];
-        }
-        elseif (!isset($cover) && isset($logo)) {
+        } elseif (!isset($cover) && isset($logo)) {
             $event->images = [
                 'cover' => [
                     'url' => $event->images['cover']['url'],
@@ -216,26 +246,29 @@ class EventController extends Controller
                 'logo' => $logo
             ];
         }
+
         $event->save();
-        // here I push the id in the corresponding customer
+
+        // Ajout de l'ID de l'événement au client correspondant
         $customer = Customer::find($event->customer_id);
         if (!$customer->events_id) {
             $customer->events_id = [];
-            $arr_event= $customer->events_id;
+            $arr_event = $customer->events_id;
+            array_push($arr_event, $event->id);
+            $customer->events_id = $arr_event;
+            $customer->update();
+        } else {
+            $arr_event = $customer->events_id;
             array_push($arr_event, $event->id);
             $customer->events_id = $arr_event;
             $customer->update();
         }
-        else {
-            $arr_event= $customer->events_id;
-            array_push($arr_event, $event->id);
-            $customer->events_id = $arr_event;
-            $customer->update();
-        }
+
         $notification = array(
-            'status' => 'L\'événement a été correctement ajouté.',
+            'status' => "L'événement a été correctement ajouté.",
             'alert-type' => 'success'
         );
+
         return redirect('admin/Event/show/' . $event->id)->with($notification);
     }
 
@@ -257,14 +290,16 @@ class EventController extends Controller
         foreach ($products as $product) {
             $select_products[$product->id] = $product->title;
         }
-        return view('admin/Event.show', [
-            'event' => $event, 
-            'users' => $users, 
-            'printzones' => $printzones, 
-            'select_products' => $select_products,
-            'events_products' => $events_products, 
-            'products' => $products, 
-            'disk' => $disk
+        return view(
+            'admin/Event.show',
+            [
+                'event' => $event,
+                'users' => $users,
+                'printzones' => $printzones,
+                'select_products' => $select_products,
+                'events_products' => $events_products,
+                'products' => $products,
+                'disk' => $disk
             ]
         );
     }
@@ -281,11 +316,13 @@ class EventController extends Controller
         $eventVariants = EventVariants::all();
         $productVariants = ProductVariants::all();
         $disk = Storage::disk('s3');
-        return view('admin/Event.show_eventVariants', [
-            'event' => $event,
-            'productVariants' => $productVariants,
-            'eventVariants' => $eventVariants, 
-            'disk' => $disk
+        return view(
+            'admin/Event.show_eventVariants',
+            [
+                'event' => $event,
+                'productVariants' => $productVariants,
+                'eventVariants' => $eventVariants,
+                'disk' => $disk
             ]
         );
     }
@@ -302,13 +339,15 @@ class EventController extends Controller
         $products = Product::all();
         $customers = Customer::all();
         $select_customers = [];
-        foreach($customers as $customer) {
+        foreach ($customers as $customer) {
             $select_customers[$customer->id] = $customer->title;
         }
-        return view('admin/Event.edit', [
-            'event' => $event, 
-            'select_customers' => $select_customers, 
-            'products' => $products
+        return view(
+            'admin/Event.edit',
+            [
+                'event' => $event,
+                'select_customers' => $select_customers,
+                'products' => $products
             ]
         );
     }
@@ -322,7 +361,7 @@ class EventController extends Controller
      */
     public function update(Request $request)
     {
-        if (request('actual_customer_id') == request('customer_id') || request('actual_customer_id') !== request('customer_id')){
+        if (request('actual_customer_id') == request('customer_id') || request('actual_customer_id') !== request('customer_id')) {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'advertiser' => 'required|string|max:255',
@@ -332,7 +371,7 @@ class EventController extends Controller
                 'logo_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'cover_img' => 'image|mimes:jpeg,jpg,png|max:4000',
                 'BAT' => 'mimes:pdf|max:4000',
-                'start_datetime'=>'required|date|before_or_equal:end_datetime',
+                'start_datetime' => 'required|date|before_or_equal:end_datetime',
                 'end_time' => 'required',
                 'start_time' => 'required',
                 'description' => 'nullable|string|max:2750'
@@ -348,12 +387,12 @@ class EventController extends Controller
                 $event->customer_id = $request->customer_id;
                 // here I push the id in the corresponding customer
                 $customer = Customer::find($request->customer_id);
-                $arr_event= $customer->events_id;
+                $arr_event = $customer->events_id;
                 array_push($arr_event, $event->id);
                 $customer->events_id = $arr_event;
                 $customer->update();
             }
-            $event->title= $request->name;
+            $event->title = $request->name;
             $event->advertiser = $request->advertiser;
             $event->status = 'draft';
             $event->location = array(
@@ -371,13 +410,13 @@ class EventController extends Controller
             $event->type = $request->type;
             $event->description = $request->description;
             // $event->event_products_id = $request->get('event_products_id');
-            $event->user_ids=$request->get('employees');
+            $event->user_ids = $request->get('employees');
             // Update logo image
-           if ($request->hasFile('logo_img')){
+            if ($request->hasFile('logo_img')) {
                 $disk = Storage::disk('s3');
                 $file = $request->file('logo_img');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = 'events/' . $event->id . '/'. $name;
+                $newFilePath = 'events/' . $event->id . '/' . $name;
                 $img = Image::make(file_get_contents($file))->heighten(400)->save($name);
                 $disk->put($newFilePath, $img, 'public');
                 $logo = [
@@ -386,17 +425,17 @@ class EventController extends Controller
                 if (file_exists(public_path() . '/' . $name)) {
                     unlink(public_path() . '/' . $name);
                 }
-                if (!empty($event->logo ) && $disk->exists($newFilePath)) {
+                if (!empty($event->logo) && $disk->exists($newFilePath)) {
                     $disk->delete($event->logoUrl);
                 }
-           }
+            }
             // Update Cover image
-           if ($request->hasFile('cover_img')) {
+            if ($request->hasFile('cover_img')) {
                 $disk = Storage::disk('s3');
                 $file = $request->file('cover_img');
                 $name = time() . $file->getClientOriginalName();
-                $thumbFilePath = 'events/' . $event->id . '/covers/thumb/'. $name;
-                $filePath = 'events/' . $event->id . '/covers/original/'.$name;
+                $thumbFilePath = 'events/' . $event->id . '/covers/thumb/' . $name;
+                $filePath = 'events/' . $event->id . '/covers/original/' . $name;
                 $image = Image::make(file_get_contents($file));
                 $image->backup();
                 $image->resize(1080, 1920)->save($name);
@@ -412,21 +451,21 @@ class EventController extends Controller
                     unlink(public_path() . '/' . $name);
                 }
                 if (isset($event->images['cover']['thumb_url'])) {
-                    if(!empty($event->images['cover']['thumb_url']) && $disk->exists($event->images['cover']['thumb_url'])){
+                    if (!empty($event->images['cover']['thumb_url']) && $disk->exists($event->images['cover']['thumb_url'])) {
                         $disk->delete($event->images['cover']['thumb_url']);
                     }
                 }
                 if (isset($event->images['cover']['url'])) {
-                    if(!empty($event->images['cover']['url']) && $disk->exists($event->images['cover']['url'])){
+                    if (!empty($event->images['cover']['url']) && $disk->exists($event->images['cover']['url'])) {
                         $disk->delete($event->images['cover']['url']);
                     }
                 }
-           }
+            }
             if ($request->hasFile('BAT')) {
                 $disk = Storage::disk('s3');
                 $file = $request->file('BAT');
                 $name = time() . $file->getClientOriginalName();
-                $newFilePath = 'events/' . $event->id . '/'. $name;
+                $newFilePath = 'events/' . $event->id . '/' . $name;
                 $disk->put($newFilePath, file_get_contents($file), 'public');
                 $event->files = [
                     'bat' => [
@@ -443,20 +482,18 @@ class EventController extends Controller
                 'cover' => $cover,
                 'logo' => $logo
             ];
-        }
-        elseif (isset($cover) && !isset($logo)) {
+        } elseif (isset($cover) && !isset($logo)) {
             $event->images = [
                 'cover' => $cover,
                 'logo' => $event->images['logo']
             ];
-        }
-        elseif (!isset($cover) && isset($logo)) {
+        } elseif (!isset($cover) && isset($logo)) {
             $event->images = [
                 'cover' => $event->images['cover'],
                 'logo' => $logo
             ];
         }
-        $event_local_download = Event_local_download::where('eventId','=',$event->id);
+        $event_local_download = Event_local_download::where('eventId', '=', $event->id);
         if ($event_local_download) {
             $event_local_download->delete();
         }
@@ -474,7 +511,8 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeStatus(Request $request, $event_id, $new_status) {
+    public function changeStatus(Request $request, $event_id, $new_status)
+    {
         if ($request->ajax()) {
             $event = Event::find($event_id);
             $event->status = $new_status;
@@ -484,8 +522,7 @@ class EventController extends Controller
                 'msg' => 'You have change event\'s status.'
             ];
             return response()->json($response);
-        }
-        else {
+        } else {
             return 'no';
         }
     }
@@ -496,35 +533,36 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $event = Event::find($id);
         // Delete logo image
         $disk = Storage::disk('s3');
-        Storage::disk('s3')->deleteDirectory('/events/'.$id);
+        Storage::disk('s3')->deleteDirectory('/events/' . $id);
         // Delete events_customs of this event
         $events_products = Events_products::where('event_id', '=', $id)->get();
-        if ($events_products != null){
-            foreach($events_products as $events_product){
+        if ($events_products != null) {
+            foreach ($events_products as $events_product) {
                 app('App\Http\Controllers\EventsProductsController')->destroy($events_product->id);
             }
         }
         // Delete events_customs of this event
         $events_customs = Events_customs::where('event_id', '=', $id)->get();
-        if($events_customs != null){
-            foreach($events_customs as $events_custom){
+        if ($events_customs != null) {
+            foreach ($events_customs as $events_custom) {
                 app('App\Http\Controllers\EventsCustomsController')->destroy($events_custom->id);
             }
         }
         // Delete events_component of this event
         $events_components = Events_component::where('event_id', '=', $id)->get();
-        if($events_components != null){
-            foreach($events_components as $events_component){
+        if ($events_components != null) {
+            foreach ($events_components as $events_component) {
                 app('App\Http\Controllers\EventsComponentController')->destroy($events_component->id);
             }
         }
-         // Delete events_local download of this event
-         if ($event->event_local_download_id !== null)
-        app('App\Http\Controllers\EventLocalDownloadController')->destroy($id);
+        // Delete events_local download of this event
+        if ($event->event_local_download_id !== null)
+            app('App\Http\Controllers\EventLocalDownloadController')->destroy($id);
         // delete event id in the customer data
         $customer = Customer::find($event->customer_id);
         if ($customer->events_id) {
@@ -543,7 +581,8 @@ class EventController extends Controller
         return redirect('admin/Event/index')->with($notification);
     }
 
-    public function desactivate($id) {
+    public function desactivate($id)
+    {
         $event = Event::find($id);
         $event->is_active = false;
         $event->update();
@@ -554,7 +593,8 @@ class EventController extends Controller
         return redirect('admin/Event/index')->with($notification);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $event = Event::find($id);
         $event->is_deleted = true;
         $event->update();
@@ -565,7 +605,8 @@ class EventController extends Controller
         return redirect('admin/Event/index')->with($notification);
     }
 
-    public function activate($id) {
+    public function activate($id)
+    {
         $event = Event::find($id);
         $event->is_active = true;
         $event->update();
@@ -576,10 +617,11 @@ class EventController extends Controller
         return redirect('admin/Event/index')->with($notification);
     }
 
-    public function is_not_ready($id) {
+    public function is_not_ready($id)
+    {
         $event = Event::find($id);
         $event->status = "draft";
-        $event_local_download = Event_local_download::where($event_local_download->event_id,'=',$event->id);
+        $event_local_download = Event_local_download::where($event_local_download->event_id, '=', $event->id);
         if ($event_local_download !== null) {
             app('App\Http\Controllers\EventLocalDownloadController')->destroy($event_local_download->id);
         }

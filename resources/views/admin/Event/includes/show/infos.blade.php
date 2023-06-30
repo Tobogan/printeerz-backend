@@ -55,6 +55,37 @@
                             </small>
                         </div>
                     </div>
+
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">
+                                Collecte des adresses mails
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <small class="text-muted">
+                            {{ isset($event->collect_data["email"]) ? "Activé" : "Désactivé" }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">
+                                Collecte des numéros de téléphone
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <small class="text-muted">
+                            {{ isset($event->collect_data["phone"]) ? "Activé" : "Désactivé" }}
+                            </small>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             @if($event->description)
@@ -103,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-                @if($event->location['lattitude'] && $event->location['longitude'])
+                @if(isset($event->location['lattitude']) && isset($event->location['longitude']))
                 <div style="position:relative; display: block; width: 100%; height: 300px;">
                     <div id="map"></div>
                 </div>
@@ -113,7 +144,7 @@
     </div>
 </div>
 
-@if($event->location['lattitude'] && $event->location['longitude'])
+@if(isset($event->location['lattitude']) && isset($event->location['longitude']))
 
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
@@ -131,14 +162,16 @@
         container: 'map', // container id
         style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
         center: [
-            '{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}'
+            '{!! $event->location['
+            longitude '] !!}', '{!! $event->location['
+            lattitude '] !!}'
         ], // starting position [lng, lat]
         zoom: 15 // starting zoom
     });
 
-    map.on("load", function () {
+    map.on("load", function() {
         /* Image: An image is loaded and added to the map. */
-        map.loadImage("https://i.imgur.com/MK4NUzI.png", function (error, image) {
+        map.loadImage("https://i.imgur.com/MK4NUzI.png", function(error, image) {
             if (error) throw error;
             map.addImage("custom-marker", image);
             /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
@@ -155,7 +188,9 @@
                             properties: {},
                             geometry: {
                                 type: "Point",
-                                coordinates: ['{!! $event->location['longitude'] !!}', '{!! $event->location['lattitude'] !!}'
+                                coordinates: ['{!! $event->location['
+                                    longitude '] !!}', '{!! $event->location['
+                                    lattitude '] !!}'
                                 ]
                             }
                         }]

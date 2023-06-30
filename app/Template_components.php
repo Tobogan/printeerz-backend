@@ -11,6 +11,6 @@ class Template_components extends Eloquent
     protected $collection = 'template_components';
 
     protected $fillable = [
-        'id','title','type','size[]','origin[]','is_customizable','is_active','is_delected','created_at','updated_at'
+        'id','title','type','characters[]', 'size[]','origin[]','is_customizable','is_active','is_delected','created_at','updated_at'
     ];
 }

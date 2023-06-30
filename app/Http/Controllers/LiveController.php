@@ -13,6 +13,7 @@ use App\Products_variants;
 use App\Event_local_download;
 use App\CustomOrder;
 use App\Order;
+use App\Send_File;
 
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,7 @@ class LiveController extends Controller
      */
     public function events()
     {
-        $events = Event::where('status','!=','draft')->get();
+        $events = Event::where('status', '!=', 'draft')->get();
         return $events->toJson();
     }
 
@@ -144,7 +145,7 @@ class LiveController extends Controller
         return $product->toJson();
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -225,10 +226,10 @@ class LiveController extends Controller
     public function customs($id)
     {
         $event = Event::find($id);
-        $events_customs = Events_customs::where('event_id','=',$event->id)->get();
+        $events_customs = Events_customs::where('event_id', '=', $event->id)->get();
         return $events_customs->toJson();
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -245,7 +246,7 @@ class LiveController extends Controller
             foreach ($events_product->variants as $variant) {
                 $products_variant = Products_variants::find($variant[0]);
                 if ($products_variant['size'] !==  null)
-                array_push($sizes, $products_variant['size']);
+                    array_push($sizes, $products_variant['size']);
             }
             $arr_sizes = array(
                 'events_product_id' => $events_product_id,
@@ -262,13 +263,14 @@ class LiveController extends Controller
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function event_local_store($id) {
-        $event_local_download = New Event_local_download;
+    public function event_local_store($id)
+    {
+        $event_local_download = new Event_local_download;
         // DB requests
         $event = Event::find($id);
         $customer = Customer::find($event->customer_id);
-        $events_products = Events_products::where('event_id','=',$event->id)->get();
-        $events_customs = Events_customs::where('event_id','=',$event->id)->get();
+        $events_products = Events_products::where('event_id', '=', $event->id)->get();
+        $events_customs = Events_customs::where('event_id', '=', $event->id)->get();
         // Mains Data
         $event_local_download->title = $event->title;
         $event_local_download->status = $event->status;
@@ -283,7 +285,7 @@ class LiveController extends Controller
         $event_local_download->customer = array(
             'title' => $customer->title,
             'contact' => array(
-                'fullname' => $customer->contact_person["firstname"].' '.$customer->contact_person["lastname"],
+                'fullname' => $customer->contact_person["firstname"] . ' ' . $customer->contact_person["lastname"],
                 'phone' => $customer->contact_person["phone"]
             ),
         );
@@ -304,36 +306,36 @@ class LiveController extends Controller
             $product = Product::find($events_product->product_id);
             foreach ($product->printzones_id as $printzone_id) {
                 $printzone = Printzones::find($printzone_id);
-                    $printzoneData = array(
-                        'id' => $printzone->id,
-                        'name' => $printzone->name,
-                        'zone' => $printzone->zone,
-                        'description' => $printzone->description,
-                        'size' => [
-                            'width' => $printzone->size['width'],
-                            'height' => $printzone->size['height']
-                        ],
-                        'position' => [
-                            'x' => $printzone->position_on_tray['x'],
-                            'y' => $printzone->position_on_tray['y']
-                        ],
-                        'product_position' => [
-                            'x' => $printzone->position_on_screen['x'],
-                            'y' => $printzone->position_on_screen['y'],
-                            'align_x' => $printzone->position_on_screen['align_x'],
-                            'align_y' => $printzone->position_on_screen['align_y'],
-                            'ratio' => $printzone->position_on_screen['ratio']
-                        ],
-                        'tray' => [
-                            'width' => $printzone->tray['width'],
-                            'height' => $printzone->tray['height']
-                        ],
-                        'printer_id' => $printzone->printer_id,
-                        'is_active' => $printzone->is_active,
-                        'is_deleted' => $printzone->is_deleted,
-                        'created_by' => $printzone->created_by
-                    );
-                    array_push($printzonesArray, $printzoneData);
+                $printzoneData = array(
+                    'id' => $printzone->id,
+                    'name' => $printzone->name,
+                    'zone' => $printzone->zone,
+                    'description' => $printzone->description,
+                    'size' => [
+                        'width' => $printzone->size['width'],
+                        'height' => $printzone->size['height']
+                    ],
+                    'position' => [
+                        'x' => $printzone->position_on_tray['x'],
+                        'y' => $printzone->position_on_tray['y']
+                    ],
+                    'product_position' => [
+                        'x' => $printzone->position_on_screen['x'],
+                        'y' => $printzone->position_on_screen['y'],
+                        'align_x' => $printzone->position_on_screen['align_x'],
+                        'align_y' => $printzone->position_on_screen['align_y'],
+                        'ratio' => $printzone->position_on_screen['ratio']
+                    ],
+                    'tray' => [
+                        'width' => $printzone->tray['width'],
+                        'height' => $printzone->tray['height']
+                    ],
+                    'printer_id' => $printzone->printer_id,
+                    'is_active' => $printzone->is_active,
+                    'is_deleted' => $printzone->is_deleted,
+                    'created_by' => $printzone->created_by
+                );
+                array_push($printzonesArray, $printzoneData);
             }
             // Events customs
             foreach ($events_product->event_customs_ids as $events_custom_id) {
@@ -392,12 +394,12 @@ class LiveController extends Controller
                 'sizes' => $sizes,
                 'events_customs' => $events_customs_final
             );
-        array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
+            array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
         }
         $event_local_download->products = $eventLocalDownloadProducts;
         // the event is now ready
         $event->status = "ready";
-        $locals = Event_local_download::where('eventId','=',$event->id)->get();
+        $locals = Event_local_download::where('eventId', '=', $event->id)->get();
         foreach ($locals as $local) {
             $local->delete();
         }
@@ -411,24 +413,44 @@ class LiveController extends Controller
         );
         return response()->json($event_local_download);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function event_global($event_id) {
+    public function event_global($event_id)
+    {
         // DB requests
+
+
         $event = Event::find($event_id);
         $customer = Customer::find($event->customer_id);
-        $events_products = Events_products::where('event_id','=',$event_id)->get();
-        $events_customs = Events_customs::where('event_id','=',$event_id)->get();
+        $events_products = Events_products::where('event_id', '=', $event_id)->get();
+        $events_customs = Events_customs::where('event_id', '=', $event_id)->get();
+        $upload_file = Send_File::where('event_id', '=', $event_id)->get();
+
         // Instance empty array for loop
         $productsVariantsArray = array();
         $printzonesArray = array();
         $finalProducts = array();
         $eventLocalDownloadProducts = array();
+
+        $upload_fileArray = array();
+
+        // Upload Files
+        foreach ($upload_file as $file) {
+            $upload_fileItem = [
+                'event_id' => $file->event_id,
+                'events_custom_id' => $file->events_custom_id,
+                'orderId' => $file->orderId,
+                'img' => $file->img,
+            ];
+            array_push($upload_fileArray, $upload_fileItem);
+        }
+
+
         // Printzones & products variant image by printzone
         foreach ($events_products as $events_product) {
             $events_customsArray = array();
@@ -440,7 +462,7 @@ class LiveController extends Controller
             $product = Product::find($events_product->product_id);
             foreach ($product->printzones_id as $printzone_id) {
                 $printzone = Printzones::find($printzone_id);
-                    array_push($printzonesArray, $printzone);
+                array_push($printzonesArray, $printzone);
             }
             // Events customs
             foreach ($events_product->event_customs_ids as $events_custom_id) {
@@ -458,7 +480,7 @@ class LiveController extends Controller
                     'title' => $events_custom->title,
                     'templates' => [
                         'id' => $events_custom->template_id,
-                        'title' => $events_custom->template['title']
+                        'title' => $events_custom->title
                     ],
                     'zone' => $printzone->zone,
                     'image' => $events_custom->imageUrl,
@@ -494,8 +516,10 @@ class LiveController extends Controller
                 'sizes' => $sizes,
                 'events_customs' => $events_customs_final
             );
-        array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
+            array_push($eventLocalDownloadProducts, $eventLocalDownloadProduct);
         }
+
+        // Génération de L'API api/event/(id_event)/global
         $global_event = [
             '_id' => $event->id,
             'title' => $event->title,
@@ -508,8 +532,8 @@ class LiveController extends Controller
                 'postal_code' => $event->location['postal_code'],
                 'city' => $event->location['city'],
                 'country' => $event->location['country'],
-                'longitude' => $event->location['longitude'],
-                'lattitude' => $event->location['lattitude']
+                'longitude' => isset($event->location['longitude']) ? $event->location['longitude'] : 'Non renseigné',
+                'lattitude' => isset($event->location['latitude']) ? $event->location['latitude'] : 'Non renseigné'
             ],
             'schedule' => [
                 'start_date' => $event->start_datetime,
@@ -527,7 +551,7 @@ class LiveController extends Controller
             ],
             'files' => [
                 'bat' => [
-                    'url' => $event->files['bat']['url']
+                    'url' => isset($event->files['bat']['url']) ? $event->files['bat']['url'] : null
                 ]
             ],
             'products' => $eventLocalDownloadProducts,
@@ -535,7 +559,12 @@ class LiveController extends Controller
             'users' => $event->user_ids,
             'created_by' => $event->created_by,
             'created_at' => $event->created_at,
-            'updated_at' => $event->updated_at
+            'updated_at' => $event->updated_at,
+            'collect_data' => [
+                'phone' => $event->collect_data['phone'],
+                'email' => $event->collect_data['email'],
+            ],
+            'upload_file' => $upload_fileArray,
         ];
 
         return response()->json($global_event);
@@ -551,13 +580,14 @@ class LiveController extends Controller
 
     //         return response()->json(['error' => 'refresh_token_error'], 401);
     //     }   
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function event_synchro(Request $request) {
+    public function event_synchro(Request $request)
+    {
         $orders = $request->all();
         // For each orders stored on browser create a new Custom Order
         if ($orders !== null) {
@@ -598,7 +628,8 @@ class LiveController extends Controller
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function status($id, $status) {
+    public function status($id, $status)
+    {
         $event = Event::find($id);
         $event->status = $status;
         $event->update();
@@ -626,14 +657,15 @@ class LiveController extends Controller
         header("Content-Type:" . $request->type);
         return readfile($file);
     }
-   
+
     /**
      * Update event status
      *
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getEventStatus($id) {
+    public function getEventStatus($id)
+    {
         $event = Event::find($id);
         return $event->status;
     }
@@ -644,7 +676,8 @@ class LiveController extends Controller
      * @return \Illuminate\Http\Response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store_orders(Request $request) {  
+    public function store_orders(Request $request)
+    {
         $orders = $request->json()->all();
         // $mongoClient=new Client();
         // $mongodata=$mongoClient->order;

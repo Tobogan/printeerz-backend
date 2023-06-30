@@ -38,6 +38,10 @@ Route::get('admin/User/delete/{id}', 'UserController@delete')->name('delete_user
 Route::get('admin/User/desactivate/{id}', 'UserController@desactivate')->name('desactivate_user');
 Route::get('admin/User/activate/{id}', 'UserController@activate')->name('activate_user');
 
+// User SendFile
+Route::get('/sendfile/{event}/{product}/{orderId}', 'SendFileController@send');
+Route::post('/sendfile/{event}/{product}/{orderId}', 'SendFileController@handleSend')->name('handleSend');
+
 // Products Routes
 Route::get('admin/Product/index', 'ProductController@index')->name('index_product');
 Route::get('admin/Product/create', 'ProductController@create')->name('create_product');

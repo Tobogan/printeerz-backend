@@ -163,14 +163,17 @@ class EventsCustomsController extends Controller
                     $events_component->height = $template_component->size['height'];
                     $events_component->origin_x =  $template_component->origin['x'];
                     $events_component->origin_y = $template_component->origin['y'];
-                    $events_component->input_min = $template_component->characters['min'];
-                    $events_component->input_max = $template_component->characters['max'];
+                    if($template_component['type'] == 'input' ){
+                        $events_component->input_min = $template_component->characters['min'];
+                        $events_component->input_max = $template_component->characters['max'];
+                    }
                     $events_component->highlight = $template_component->highlight;
                     $events_component->save();
                     array_push($components, $events_component->id);
                 }
             }
         }
+        
         $events_custom->components_ids = $components;
         $events_custom->save();
         return redirect('admin/EventsCustoms/edit/'.$events_custom->id);
@@ -364,6 +367,7 @@ class EventsCustomsController extends Controller
                     $disk->delete($oldPath);
                 }
             }
+            $components = [];
             // for ($i = 0; $i <= $count_component; $i++) {
             $i = 1;
             foreach ($events_custom->components_ids as $ec_id) {

@@ -15,7 +15,25 @@ class Event extends Eloquent
     protected $collection = 'events';
 
     protected $fillable = [
-        'id', 'customer_id', 'advertiser', 'name', 'location[]', 'start_datetime', 'end_datetime', 'type', 'logo_img', 'cover_img', 'description', 'event_products_id[]', 'employees[]', 'comments[]', 'is_active', 'is_delected', 'created_at', 'updated_at'
+        'id',
+        'customer_id',
+        'advertiser',
+        'name',
+        'location',
+        'start_datetime',
+        'end_datetime',
+        'type',
+        'logo_img',
+        'cover_img',
+        'description',
+        'event_products_id',
+        'employees',
+        'comments',
+        'is_active',
+        'is_deleted',
+        'created_at',
+        'updated_at',
+        'collect_data'
     ];
 
     public function customer() {

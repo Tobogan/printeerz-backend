@@ -2,7 +2,9 @@
 @section('title', 'Zones d\'impression')
 
 @section('content')
-
+          @php
+    dd($event);
+@endphp
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
@@ -78,7 +80,7 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('size_width', $printzone->size_width, [
+                                        {!! Form::number('size_width', $printzone->size['width'], [
                                         'class' => 'form-control'.$errors->first('size_width', ' is-invalid'),
                                         'placeholder' =>'250'
                                         ])
@@ -122,11 +124,11 @@
                                         <label>
                                             Largeur (mm)
                                         </label>
-                                        {!! Form::number('tray_width', $printzone->tray_width, [
+                                        {!! Form::number('tray["width"]', $printzone->tray["width"], [
                                         'class' => 'form-control',
                                         'placeholder' => '250'
                                         ]) !!}
-                                        <div>{!! $errors->first('tray_width', '<p class="help-block mt-2"
+                                        <div>{!! $errors->first('tray["width"]', '<p class="help-block mt-2"
                                                 style="color:red;"><small>Champ obligatoire</small></p>') !!}
                                         </div>
                                     </div>
@@ -136,11 +138,11 @@
                                         <label>
                                             Hauteur (mm)
                                         </label>
-                                        {!! Form::number('tray_height', $printzone->tray_height, [
+                                        {!! Form::number('tray["height"]', $printzone->tray["height"], [
                                         'class' => 'form-control',
                                         'placeholder' => '250'
                                         ]) !!}
-                                        <div>{!! $errors->first('tray_height', '<p class="help-block mt-2"
+                                        <div>{!! $errors->first('tray["height"]', '<p class="help-block mt-2"
                                                 style="color:red;"><small>Champ obligatoire</small>
                                             </p>') !!}
                                         </div>
@@ -151,6 +153,7 @@
                     </div>
                 </div>
             </div>
+
             {{-- Printzone position on the screen --}}
             <div class="row">
                 <div class="col-12">
@@ -167,7 +170,7 @@
                                         <label>
                                             X (mm)
                                         </label>
-                                        {!! Form::number('screen_pos_x', $printzone->position_on_screen['x'], [
+                                        {!! Form::number('screen_pos_x', $printzone->product_position['x'], [
                                         'class' => 'form-control',
                                         'placeholder' => '0'
                                         ]) !!}
@@ -178,7 +181,7 @@
                                         <label>
                                             Y (mm)
                                         </label>
-                                        {!! Form::number('screen_pos_y', $printzone->position_on_screen['y'], [
+                                        {!! Form::number('screen_pos_y', $printzone->product_position['y'], [
                                         'class' => 'form-control',
                                         'placeholder' =>'0'
                                         ]) !!}
@@ -189,7 +192,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -204,17 +206,17 @@
                                     <div class="form-group">
                                         <label>Alignement horizontal</label>
                                         <select name="screen_pos_align_x" id="screen_pos_align_x" class="form-control" data-toggle="select">
-                                            @if ($printzone->position_on_screen['align_x'] == "left")
+                                            @if ($printzone->product_position['align_x'] == "left")
                                             <option value="left" selected>Gauche</option>
                                             <option value="right">Droite</option>
                                             <option value="center">Centré</option>
                                             <option value="false">Aucun</option>
-                                        @elseif ($printzone->position_on_screen['align_x'] == "right")
+                                        @elseif ($printzone->product_position['align_x'] == "right")
                                             <option value="left">Gauche</option>
                                             <option value="right" selected>Droite</option>
                                             <option value="center">Centré</option>
                                             <option value="false">Aucun</option>
-                                        @elseif ($printzone->position_on_screen['align_x'] == "center")
+                                        @elseif ($printzone->product_position['align_x'] == "center")
                                             <option value="left">Gauche</option>
                                             <option value="right">Droite</option>
                                             <option value="center" selected>Centré</option>
@@ -232,22 +234,22 @@
                                     <div class="form-group">
                                         <label>Alignement vertical</label>
                                         <select name="screen_pos_align_y" id="screen_pos_align_y" class="form-control" data-toggle="select">
-                                            @if ($printzone->position_on_screen['align_y'] == "top")
+                                            @if ($printzone->product_position['align_y'] == "top")
                                                 <option value="top" selected>En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom">Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->position_on_screen['align_y'] == "middle")
+                                            @elseif ($printzone->product_position['align_y'] == "middle")
                                                 <option value="top">En haut</option>
                                                 <option value="middle" selected>Milieu</option>
                                                 <option value="bottom">Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->position_on_screen['align_y'] == "bottom")
+                                            @elseif ($printzone->product_position['align_y'] == "bottom")
                                                 <option value="top">En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom" selected>Bas</option>
                                                 <option value="false">Aucun</option>
-                                            @elseif ($printzone->position_on_screen['align_y'] == "middle")
+                                            @elseif ($printzone->product_position['align_y'] == "middle")
                                                 <option value="top">En haut</option>
                                                 <option value="middle">Milieu</option>
                                                 <option value="bottom">Bas</option>
@@ -261,7 +263,7 @@
                                         <label>
                                             Ratio
                                         </label>
-                                        {!! Form::number('screen_pos_ratio', $printzone->position_on_screen['ratio'], [
+                                        {!! Form::number('screen_pos_ratio', $printzone->product_position['ratio'], [
                                         'class' => 'form-control'.$errors->first('screen_pos_ratio', ' is-invalid'),
                                         'placeholder' =>'0.5',
                                         'step' => 'any'
@@ -276,6 +278,7 @@
                     </div>
                 </div>
             </div>
+
             {{-- Printzone position on tray --}}
             <div class="row">
                 <div class="col-12">
@@ -292,7 +295,7 @@
                                         <label>
                                             Position X
                                         </label>
-                                        {!! Form::number('tray_position_x', $printzone->position_on_tray['x'], [
+                                        {!! Form::number('tray_position_x', $printzone->tray['x'], [
                                         'class' => 'form-control'.$errors->first('tray_position_x', 'is-invalid'),
                                         'placeholder' =>'0'
                                         ]) !!}
@@ -306,7 +309,7 @@
                                         <label>
                                             Position Y
                                         </label>
-                                        {!! Form::number('tray_position_y', $printzone->position_on_tray['y'], [
+                                        {!! Form::number('tray_position_y', $printzone->tray['y'], [
                                         'class' => 'form-control'.$errors->first('tray_position_y', 'is-invalid'),
                                         'placeholder' =>'0'
                                         ]) !!}

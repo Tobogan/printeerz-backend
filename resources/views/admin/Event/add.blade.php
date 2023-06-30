@@ -128,7 +128,8 @@
                   'class' => 'form-control'
                   ]) }}
                 {!! $errors->first('start_time', '<p class="help-block mt-2" style="color:red;">
-                  <small>:message</small></p>') !!}
+                  <small>:message</small>
+                </p>') !!}
               </div>
             </div>
 
@@ -152,10 +153,8 @@
             <small class="form-text text-muted">
               Où se déroule l'événement?
             </small>
-            <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse"
-              name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
-            <input class="{{ 'form-control mt-2' . $errors->first('address', ' is-invalid')}}" name="address"
-              id="address" type="hidden">
+            <input class="form-control mt-2" id="formPlacesAuto" placeholder="Renseigner l'adresse" name="autocompleteAddress" type="text" autocomplete="false" onFocus="initMap();">
+            <input class="{{ 'form-control mt-2' . $errors->first('address', ' is-invalid')}}" name="address" id="address" type="hidden">
             <input class="form-control mt-2" name="postal_code" id="postal_code" type="hidden">
             <input class="form-control mt-2" name="city" id="city" type="hidden">
             <input class="form-control mt-2" name="country" id="country" type="hidden">
@@ -261,6 +260,44 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-header-title mt-2">
+                Option de l'événement
+                <p>
+                  <small class="form-text text-muted">
+                    Personnalisez l'événement en ajoutant des options
+                  </small>
+                </p>
+              </h4>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  {!! Form::checkbox('collect_tel', 'true', false, ['class' => 'custom-control-input', 'id' => 'collect_tel']) !!}
+
+                  {!! Form::label('collect_tel', 'Activez la récolte des numéros de téléphone', ['class' => 'custom-control-label']) !!}
+                  {!! $errors->first('collect_tel', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>')!!}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  {!! Form::checkbox('collect_email', 'true', false, ['class' => 'custom-control-input', 'id' => 'collect_email']) !!}
+                  {!! Form::label('collect_email', 'Activez la récolte des adresses mail', ['class' => 'custom-control-label']) !!}
+                  {!! $errors->first('collect_email', '<p class="help-block mt-2" style="color:red;"><small>:message</small></p>')!!}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -290,6 +327,7 @@
           </div>
         </div>
       </div>
+
       {!! Form::submit('Créer l\'événement', [
       'class' => 'btn btn-block btn-primary'
       ]) !!}

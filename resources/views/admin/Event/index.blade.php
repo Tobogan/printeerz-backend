@@ -33,6 +33,7 @@
                     </div>
                 </div>
             </div>
+            
             <div id="eventTable" class="card mt-3" data-toggle="lists"
                 data-lists-values='["event-name", "event-annonceur", "event-customer", "event-place","event-type", "event-date"]'>
                 <div class="card-header">

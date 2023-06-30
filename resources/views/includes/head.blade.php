@@ -18,6 +18,9 @@
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     {{-- Theme CSS --}}
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}" id="stylesheetLight">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
     {{-- To remove later --}}
     <style>
         nav.navbar-dark {
