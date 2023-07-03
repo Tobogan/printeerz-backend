@@ -79,7 +79,19 @@ class SendFileController extends Controller
 
             $order_upload->img = $filePath;
             $order_upload->save();
+
             
+
+            /* Supprimer tous les fichiers du storage */
+            /*$folderPath = 'orders/uploads/';
+            $files = $disk->files($folderPath);
+
+            foreach ($files as $file) {
+                $disk->delete($file);
+            }
+
+            dd($disk->allFiles($folderPath));*/
+
             return view('sendfile');
         }
     }

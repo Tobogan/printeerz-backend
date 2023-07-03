@@ -664,7 +664,9 @@ class EventsCustomsController extends Controller
                         $image_file = $newFilePath;
                         $imgs = [
                             'original_url' => $filePath,
-                            'display_url' => $newFilePath
+                            'display_url' => $newFilePath,
+                            'default_display_url' => $newFilePath,
+                            'default_original_url' => $filePath
                         ];
                         $component_image['settings']['image'] = $imgs;
                     }

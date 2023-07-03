@@ -570,6 +570,43 @@ class LiveController extends Controller
         return response()->json($global_event);
     }
 
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function event_uploads($event_id)
+    {
+        // DB requests
+
+        $event = Event::find($event_id);
+        $customer = Customer::find($event->customer_id);
+        $upload_file = Send_File::where('event_id', '=', $event_id)->get();
+
+        $upload_fileArray = array();
+
+        // Upload Files
+        foreach ($upload_file as $file) {
+            $upload_fileItem = [
+                'event_id' => $file->event_id,
+                'events_custom_id' => $file->events_custom_id,
+                'orderId' => $file->orderId,
+                'img' => $file->img,
+            ];
+            array_push($upload_fileArray, $upload_fileItem);
+        }
+
+        $global_event = [
+            'upload_file' => $upload_fileArray,
+        ];
+
+        return response()->json($global_event);
+    }
+
+
+
     // public function refresh()
     //     {
     //         if ($token = $this->guard()->refresh()) {

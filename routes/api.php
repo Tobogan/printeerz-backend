@@ -49,6 +49,7 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::post('event/downloaded/{id}', 'LiveController@downloaded');
     Route::post('event_local_store/{id}', 'LiveController@event_local_store');
+    Route::get('event/{id}/uploads', 'LiveController@event_uploads');
     Route::get('event/{id}/global', 'LiveController@event_global');
     Route::post('event_synchro', 'LiveController@event_synchro');
     Route::get('user/{id}', 'LiveController@user');
